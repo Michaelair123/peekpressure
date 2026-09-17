@@ -509,56 +509,185 @@ select {
    PROCESS
 ========================================================= */
 
+/* ================================
+   PROCESS
+================================ */
+
 .process {
     padding-block: var(--section-space);
-
-    background: var(--surface);
-}
-
-.process-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: clamp(1rem, 2vw, 1.5rem);
-}
-
-.step {
-    min-width: 0;
-
-    padding-block: clamp(1rem, 2vw, 1.4rem);
-
     border-top: 1px solid var(--line);
 }
 
-.step > span {
-    color: #555;
+.process-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 380px);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+}
 
-    font-size: clamp(.45rem, .6vw, .5rem);
+.process-header h2 {
+    margin: 0;
+    font-size: clamp(2.8rem, 7vw, 7rem);
+    line-height: .88;
+    letter-spacing: -.065em;
+    font-weight: 700;
+}
+
+.process-header p {
+    margin: 0 0 .25rem;
+    max-width: 340px;
+    color: var(--muted);
+    font-size: clamp(.85rem, 1vw, 1rem);
+    line-height: 1.6;
+}
+
+/* 4 equal process steps */
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+}
+
+.process-step {
+    position: relative;
+    min-width: 0;
+    padding:
+        clamp(1.5rem, 3vw, 2.5rem)
+        clamp(1rem, 2.5vw, 2rem)
+        0;
+    border-right: 1px solid var(--line);
+}
+
+.process-step:first-child {
+    padding-left: 0;
+}
+
+.process-step:last-child {
+    padding-right: 0;
+    border-right: 0;
+}
+
+.step-number {
+    display: block;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    color: var(--dim);
+    font-size: .65rem;
     font-weight: 600;
+    letter-spacing: .14em;
 }
 
-.step h3 {
-    margin-top: clamp(1.25rem, 2vw, 1.75rem);
-
-    font-size: clamp(
-        1.15rem,
-        1.8vw,
-        1.5rem
-    );
-
-    font-weight: 500;
-
-    letter-spacing: -.04em;
+.process-step h3 {
+    margin: 0 0 1rem;
+    color: var(--text);
+    font-size: clamp(.8rem, 1vw, 1rem);
+    font-weight: 700;
+    letter-spacing: .12em;
 }
 
-.step p {
-    margin-top: .4rem;
+.process-step p {
+    margin: 0;
+    max-width: 240px;
+    color: var(--muted);
+    font-size: clamp(.78rem, .95vw, .9rem);
+    line-height: 1.65;
+}
 
-    color: #666;
 
-    font-size: clamp(.6rem, .75vw, .7rem);
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 900px) {
+
+    .process-header {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .process-step {
+        min-height: 240px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+    }
+
+    .process-step:nth-child(2) {
+        border-right: 0;
+    }
+
+    .process-step:nth-child(3),
+    .process-step:nth-child(4) {
+        border-bottom: 0;
+    }
+
+    .process-step:nth-child(4) {
+        border-right: 0;
+    }
+
+    .process-step:nth-child(3),
+    .process-step:nth-child(4) {
+        padding-top: 2rem;
+    }
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+    .process {
+        padding-block: clamp(4rem, 14vw, 6rem);
+    }
+
+    .process-header {
+        margin-bottom: 3rem;
+    }
+
+    .process-header h2 {
+        font-size: clamp(2.8rem, 14vw, 4.5rem);
+    }
+
+    .process-header p {
+        max-width: 300px;
+        font-size: .82rem;
+    }
+
+    .process-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .process-step,
+    .process-step:nth-child(3),
+    .process-step:nth-child(4) {
+        min-height: auto;
+        padding: 1.75rem 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .process-step:first-child {
+        padding-top: 1.75rem;
+    }
+
+    .process-step:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+
+    .step-number {
+        margin-bottom: 2rem;
+    }
+
+    .process-step p {
+        max-width: 330px;
+        font-size: .82rem;
+    }
 }
 
 
