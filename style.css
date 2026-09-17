@@ -89,10 +89,13 @@ select {
    HEADER
 ========================================================= */
 
+/* =========================================================
+   HEADER — MINIMAL EDITORIAL NAV
+========================================================= */
+
 .header {
     position: absolute;
     inset: 0 0 auto;
-
     z-index: 10;
 
     padding-block: clamp(1rem, 2vw, 1.5rem);
@@ -101,16 +104,16 @@ select {
 .header-inner {
     display: flex;
     align-items: center;
-    gap: clamp(.75rem, 2vw, 1.5rem);
+    gap: 2rem;
 }
 
 .logo {
-    font-size: clamp(.9rem, 1.2vw, 1rem);
+    flex-shrink: 0;
+
+    font-size: clamp(.9rem, 1.1vw, 1rem);
     font-weight: 800;
 
     letter-spacing: -.065em;
-
-    white-space: nowrap;
 }
 
 .logo span {
@@ -120,47 +123,109 @@ select {
     font-weight: 400;
 }
 
+
+/* NAV */
+
 .header nav {
     display: flex;
-    gap: clamp(1rem, 2vw, 1.75rem);
+    align-items: center;
+
+    gap: clamp(1.1rem, 2vw, 1.8rem);
 
     margin-left: auto;
 }
 
 .header nav a {
+    position: relative;
+
     color: #777;
 
-    font-size: clamp(.45rem, .65vw, .55rem);
+    font-size: clamp(.48rem, .62vw, .56rem);
     font-weight: 600;
 
-    letter-spacing: .13em;
+    letter-spacing: .12em;
     text-transform: uppercase;
 
     transition: color .2s ease;
+}
+
+.header nav a::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+
+    width: 0;
+    height: 1px;
+
+    background: #fff;
+
+    transition: width .2s ease;
 }
 
 .header nav a:hover {
     color: #fff;
 }
 
+.header nav a:hover::after {
+    width: 100%;
+}
+
+
+/* QUOTE BUTTON */
+
 .header-cta {
     flex-shrink: 0;
 
     padding:
-        clamp(.55rem, 1vw, .7rem)
-        clamp(.7rem, 1.3vw, 1rem);
+        clamp(.55rem, .8vw, .65rem)
+        clamp(.75rem, 1.1vw, .95rem);
 
     border: 1px solid #383838;
 
-    font-size: clamp(.45rem, .65vw, .55rem);
+    color: #eee;
+
+    font-size: clamp(.45rem, .6vw, .52rem);
     font-weight: 700;
 
     letter-spacing: .13em;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        border-color .2s ease;
 }
 
 .header-cta:hover {
+    border-color: #fff;
+
     background: #fff;
     color: #000;
+}
+
+
+/* =========================================================
+   MOBILE HEADER
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .header {
+        padding-block: 1rem;
+    }
+
+    .header-inner {
+        gap: .75rem;
+    }
+
+    .header nav {
+        display: none;
+    }
+
+    .header-cta {
+        margin-left: auto;
+    }
 }
 
 
