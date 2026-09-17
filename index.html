@@ -342,113 +342,102 @@
         </div>
 
 
-        <form id="quoteForm">
+       <form
+    id="quoteForm"
+    action="https://formspree.io/f/mdekoerb"
+    method="POST"
+>
 
-            <div class="field">
+    <div class="form-field">
+        <label for="name">NAME</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Your name"
+            required
+        >
+    </div>
 
-                <label for="name">
-                    NAME
-                </label>
+    <div class="form-field">
+        <label for="email">EMAIL</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+        >
+    </div>
 
-                <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    placeholder="Your name"
-                    required
-                >
+    <div class="form-field">
+        <label for="phone">PHONE</label>
+        <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="(415) 555-5555"
+            required
+        >
+    </div>
 
-            </div>
+    <div class="form-field">
+        <label for="address">PROPERTY ADDRESS</label>
+        <input
+            type="text"
+            id="address"
+            name="address"
+            placeholder="Property address"
+            required
+        >
+    </div>
 
+    <div class="form-field">
+        <label for="service">SERVICE</label>
 
-            <div class="field">
+        <select
+            id="service"
+            name="service"
+            required
+        >
+            <option value="" disabled selected>
+                Select a service
+            </option>
 
-                <label for="phone">
-                    PHONE
-                </label>
+            <option value="Driveway">
+                Driveway
+            </option>
 
-                <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="415-000-0000"
-                    required
-                >
+            <option value="Sidewalk / Walkway">
+                Sidewalk / Walkway
+            </option>
 
-            </div>
+            <option value="Commercial">
+                Commercial
+            </option>
+        </select>
+    </div>
 
+    <div class="form-field">
+        <label for="details">JOB DETAILS</label>
 
-            <div class="field">
+        <textarea
+            id="details"
+            name="details"
+            rows="5"
+            placeholder="Tell us about the property and what you'd like cleaned."
+        ></textarea>
+    </div>
 
-                <label for="address">
-                    PROPERTY ADDRESS
-                </label>
+    <button type="submit">
+        REQUEST QUOTE →
+    </button>
 
-                <input
-                    id="address"
-                    name="address"
-                    type="text"
-                    placeholder="Property address"
-                    required
-                >
+    <p class="form-note">
+        No obligation.
+    </p>
 
-            </div>
-
-
-            <div class="field">
-
-                <label for="service">
-                    SERVICE
-                </label>
-
-                <select id="service" name="service" required>
-
-                    <option value="">
-                        Select service
-                    </option>
-
-                    <option value="driveway">
-                        Driveway Cleaning
-                    </option>
-
-                    <option value="sidewalk">
-                        Sidewalk / Walkway Cleaning
-                    </option>
-
-                    <option value="commercial">
-                        Commercial Cleaning
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="message">
-                    DETAILS
-                </label>
-
-                <textarea
-                    id="message"
-                    name="message"
-                    rows="3"
-                    placeholder="Tell us what you need cleaned."
-                ></textarea>
-
-            </div>
-
-
-            <button type="submit">
-                REQUEST QUOTE →
-            </button>
-
-            <small class="form-note">
-                No obligation.
-            </small>
-
-        </form>
+</form>
 
     </div>
 
