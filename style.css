@@ -1030,3 +1030,334 @@ footer {
         max-width: 270px;
     }
 }
+/* =========================================================
+   PEEK PRESSURE — LIGHTWEIGHT MOTION
+   ========================================================= */
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Respect reduced-motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   HEADER
+   --------------------------------------------------------- */
+
+.header {
+    transition:
+        background-color .35s ease,
+        border-color .35s ease;
+}
+
+.logo {
+    transition: opacity .25s ease;
+}
+
+.logo:hover {
+    opacity: .65;
+}
+
+nav a {
+    position: relative;
+    transition: color .25s ease;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -.35rem;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .3s ease;
+}
+
+nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+
+/* ---------------------------------------------------------
+   BUTTONS
+   --------------------------------------------------------- */
+
+.header-cta,
+.hero-actions a,
+.quote-form button {
+    transition:
+        transform .25s ease,
+        background-color .25s ease,
+        color .25s ease,
+        border-color .25s ease;
+}
+
+.header-cta:hover,
+.hero-actions a:hover,
+.quote-form button:hover {
+    transform: translateY(-2px);
+}
+
+.header-cta:active,
+.hero-actions a:active,
+.quote-form button:active {
+    transform: translateY(0);
+}
+
+
+/* ---------------------------------------------------------
+   HERO IMAGE
+   --------------------------------------------------------- */
+
+.hero-image {
+    overflow: hidden;
+}
+
+.hero-image img {
+    transform: scale(1.02);
+    transition: transform 1.2s cubic-bezier(.2,.65,.25,1);
+}
+
+.hero-image:hover img {
+    transform: scale(1.055);
+}
+
+
+/* ---------------------------------------------------------
+   SERVICE CARDS
+   --------------------------------------------------------- */
+
+.service-card {
+    overflow: hidden;
+}
+
+.service-card img {
+    display: block;
+    transform: scale(1.01);
+    transition:
+        transform .8s cubic-bezier(.2,.65,.25,1),
+        filter .5s ease;
+}
+
+.service-card:hover img {
+    transform: scale(1.045);
+    filter: brightness(1.08);
+}
+
+.service-card h3 {
+    transition: transform .3s ease;
+}
+
+.service-card:hover h3 {
+    transform: translateX(4px);
+}
+
+
+/* ---------------------------------------------------------
+   SERVICE NUMBER
+   --------------------------------------------------------- */
+
+.service-card > span {
+    transition:
+        color .3s ease,
+        transform .3s ease;
+}
+
+.service-card:hover > span {
+    transform: translateX(4px);
+}
+
+
+/* ---------------------------------------------------------
+   PROCESS STEPS
+   --------------------------------------------------------- */
+
+.process-step {
+    transition:
+        background-color .35s ease,
+        transform .35s ease;
+}
+
+.process-step:hover {
+    background: #080808;
+}
+
+.process-step h3 {
+    transition: transform .3s ease;
+}
+
+.process-step:hover h3 {
+    transform: translateX(4px);
+}
+
+
+/* ---------------------------------------------------------
+   FORM FIELDS
+   --------------------------------------------------------- */
+
+.quote-form input,
+.quote-form select,
+.quote-form textarea {
+    transition:
+        border-color .25s ease,
+        background-color .25s ease;
+}
+
+.quote-form input:focus,
+.quote-form select:focus,
+.quote-form textarea:focus {
+    background: #080808;
+    border-color: #666;
+}
+
+
+/* ---------------------------------------------------------
+   SECTION REVEAL
+   --------------------------------------------------------- */
+
+@keyframes peekFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-content {
+    animation: peekFadeUp .8s cubic-bezier(.2,.65,.25,1) both;
+}
+
+.hero-image {
+    animation: peekFadeUp 1s cubic-bezier(.2,.65,.25,1) .08s both;
+}
+
+
+/* ---------------------------------------------------------
+   IMAGE LIGHTBOX
+   --------------------------------------------------------- */
+
+.service-card img {
+    cursor: zoom-in;
+}
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 5vw;
+
+    background: rgba(0, 0, 0, .94);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity .3s ease,
+        visibility .3s ease;
+}
+
+.lightbox.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox img {
+    max-width: min(1200px, 92vw);
+    max-height: 88vh;
+
+    object-fit: contain;
+
+    transform: scale(.94);
+    transition:
+        transform .45s cubic-bezier(.2,.65,.25,1);
+}
+
+.lightbox.active img {
+    transform: scale(1);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid #444;
+    background: transparent;
+    color: #fff;
+
+    font-size: 1.4rem;
+    cursor: pointer;
+
+    transition:
+        background-color .25s ease,
+        border-color .25s ease;
+}
+
+.lightbox-close:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE — KEEP IT FAST
+   --------------------------------------------------------- */
+
+@media (max-width: 700px) {
+
+    .hero-image img,
+    .service-card img {
+        transition: transform .5s ease;
+    }
+
+    .hero-image:hover img,
+    .service-card:hover img {
+        transform: none;
+    }
+
+    .lightbox {
+        padding: 1rem;
+    }
+
+    .lightbox img {
+        max-width: 96vw;
+        max-height: 82vh;
+    }
+
+    .lightbox-close {
+        top: 1rem;
+        right: 1rem;
+    }
+}
