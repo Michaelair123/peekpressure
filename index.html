@@ -482,62 +482,6 @@
 
 </footer>
 
-<script>
-document.getElementById("quoteForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    const button = this.querySelector("button");
-    button.textContent = "REQUEST RECEIVED ✓";
-    button.disabled = true;
-});
-
-
-/* SERVICE IMAGE LIGHTBOX */
-
-const serviceImages = document.querySelectorAll(".service-card img");
-
-const lightbox = document.createElement("div");
-lightbox.className = "lightbox";
-
-lightbox.innerHTML = `
-    <button class="lightbox-close" aria-label="Close image">×</button>
-    <img src="" alt="">
-`;
-
-document.body.appendChild(lightbox);
-
-const lightboxImage = lightbox.querySelector("img");
-const lightboxClose = lightbox.querySelector(".lightbox-close");
-
-serviceImages.forEach((image) => {
-    image.addEventListener("click", () => {
-        lightboxImage.src = image.src;
-        lightboxImage.alt = image.alt;
-
-        lightbox.classList.add("active");
-        document.body.style.overflow = "hidden";
-    });
-});
-
-function closeLightbox() {
-    lightbox.classList.remove("active");
-    document.body.style.overflow = "";
-}
-
-lightboxClose.addEventListener("click", closeLightbox);
-
-lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox) {
-        closeLightbox();
-    }
-});
-
-document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-        closeLightbox();
-    }
-});
-</script>
 
 </body>
 </html>
