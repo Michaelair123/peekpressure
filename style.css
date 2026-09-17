@@ -43,11 +43,8 @@ body {
     margin: 0;
     background: var(--bg);
     color: var(--text);
-
     font-family: "Inter", Arial, sans-serif;
-
     overflow-x: hidden;
-
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
@@ -72,7 +69,7 @@ select {
 
 
 /* =========================================================
-   FLUID CONTAINER
+   CONTAINER
 ========================================================= */
 
 .container {
@@ -89,15 +86,10 @@ select {
    HEADER
 ========================================================= */
 
-/* =========================================================
-   HEADER — MINIMAL EDITORIAL NAV
-========================================================= */
-
 .header {
     position: absolute;
     inset: 0 0 auto;
     z-index: 10;
-
     padding-block: clamp(1rem, 2vw, 1.5rem);
 }
 
@@ -109,58 +101,42 @@ select {
 
 .logo {
     flex-shrink: 0;
-
     font-size: clamp(.9rem, 1.1vw, 1rem);
     font-weight: 800;
-
     letter-spacing: -.065em;
 }
 
 .logo span {
     margin-left: .25rem;
-
     color: #777;
     font-weight: 400;
 }
 
-
-/* NAV */
-
 .header nav {
     display: flex;
     align-items: center;
-
     gap: clamp(1.1rem, 2vw, 1.8rem);
-
     margin-left: auto;
 }
 
 .header nav a {
     position: relative;
-
     color: #777;
-
     font-size: clamp(.48rem, .62vw, .56rem);
     font-weight: 600;
-
     letter-spacing: .12em;
     text-transform: uppercase;
-
     transition: color .2s ease;
 }
 
 .header nav a::after {
     content: "";
-
     position: absolute;
     left: 0;
     bottom: -5px;
-
     width: 0;
     height: 1px;
-
     background: #fff;
-
     transition: width .2s ease;
 }
 
@@ -172,23 +148,17 @@ select {
     width: 100%;
 }
 
-
-/* QUOTE BUTTON */
-
 .header-cta {
     flex-shrink: 0;
-
     padding:
         clamp(.55rem, .8vw, .65rem)
         clamp(.75rem, 1.1vw, .95rem);
 
     border: 1px solid #383838;
-
     color: #eee;
 
     font-size: clamp(.45rem, .6vw, .52rem);
     font-weight: 700;
-
     letter-spacing: .13em;
 
     transition:
@@ -199,47 +169,20 @@ select {
 
 .header-cta:hover {
     border-color: #fff;
-
     background: #fff;
     color: #000;
 }
 
 
 /* =========================================================
-   MOBILE HEADER
-========================================================= */
-
-@media (max-width: 700px) {
-
-    .header {
-        padding-block: 1rem;
-    }
-
-    .header-inner {
-        gap: .75rem;
-    }
-
-    .header nav {
-        display: none;
-    }
-
-    .header-cta {
-        margin-left: auto;
-    }
-}
-
-
-/* =========================================================
-   SMALL LABELS
+   LABELS
 ========================================================= */
 
 .eyebrow,
 .label {
     color: #666;
-
     font-size: clamp(.45rem, .65vw, .55rem);
     font-weight: 600;
-
     letter-spacing: .17em;
     text-transform: uppercase;
 }
@@ -256,13 +199,11 @@ select {
 
 .hero-grid {
     display: grid;
-
     grid-template-columns:
         minmax(0, .82fr)
         minmax(0, 1.18fr);
 
     gap: clamp(2rem, 5vw, 5rem);
-
     align-items: center;
 }
 
@@ -273,10 +214,6 @@ select {
 .hero-copy h1 {
     margin-top: clamp(1rem, 2vw, 1.5rem);
 
-    /*
-       Fluid from small phones through ultrawide monitors.
-       It won't explode on a 4K display.
-    */
     font-size: clamp(
         4rem,
         8vw,
@@ -284,17 +221,14 @@ select {
     );
 
     line-height: .82;
-
     letter-spacing: -.09em;
 }
 
 .hero-copy > p {
     width: min(100%, 24rem);
-
     margin-top: clamp(1.5rem, 2.5vw, 2rem);
 
     color: var(--muted);
-
     font-size: clamp(.7rem, .9vw, .8rem);
     line-height: 1.65;
 }
@@ -302,25 +236,20 @@ select {
 .hero-buttons {
     display: flex;
     flex-wrap: wrap;
-
     gap: .5rem;
-
     margin-top: clamp(1.25rem, 2vw, 1.75rem);
 }
 
 .button {
     display: inline-flex;
-
     align-items: center;
     justify-content: center;
 
     min-height: clamp(2.5rem, 4vw, 2.9rem);
-
     padding-inline: clamp(1rem, 1.7vw, 1.4rem);
 
     font-size: clamp(.45rem, .65vw, .55rem);
     font-weight: 700;
-
     letter-spacing: .13em;
     text-transform: uppercase;
 }
@@ -342,23 +271,14 @@ select {
 
 .hero-image {
     width: 100%;
-
-    /*
-       Scales with viewport but stays reasonable.
-    */
-    height: clamp(
-        18rem,
-        40vw,
-        32rem
-    );
-
+    height: clamp(18rem, 40vw, 32rem);
     overflow: hidden;
+    background: #111;
 }
 
 .hero-image img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 }
 
@@ -369,23 +289,18 @@ select {
 
 .services {
     padding-block: var(--section-space);
-
     background: var(--surface);
 }
 
 .section-top {
     display: flex;
     align-items: center;
-
     margin-bottom: clamp(1.5rem, 3vw, 2rem);
 }
 
 .services-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(1rem, 1.8vw, 1.5rem);
 }
 
@@ -395,24 +310,15 @@ select {
 
 .service-image {
     width: 100%;
-
-    height: clamp(
-        13rem,
-        23vw,
-        19rem
-    );
-
+    height: clamp(13rem, 23vw, 19rem);
     overflow: hidden;
-
     background: #111;
 }
 
 .service-image img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
     transition: transform .45s ease;
 }
 
@@ -422,16 +328,13 @@ select {
 
 .service-body {
     padding-top: clamp(.75rem, 1.5vw, 1rem);
-
     border-top: 1px solid var(--line);
 }
 
 .number {
     color: #555;
-
     font-size: clamp(.45rem, .6vw, .5rem);
     font-weight: 600;
-
     letter-spacing: .12em;
 }
 
@@ -445,18 +348,15 @@ select {
     );
 
     font-weight: 500;
-
     line-height: .95;
     letter-spacing: -.05em;
 }
 
 .service p {
     width: min(100%, 18rem);
-
     margin-top: clamp(.5rem, 1vw, .7rem);
 
     color: #6c6c6c;
-
     font-size: clamp(.6rem, .8vw, .7rem);
     line-height: 1.55;
 }
@@ -472,7 +372,6 @@ select {
 
 .about-grid {
     display: grid;
-
     grid-template-columns:
         minmax(8rem, .28fr)
         minmax(0, .72fr);
@@ -495,11 +394,9 @@ select {
 
 .about p {
     width: min(100%, 26rem);
-
     margin-top: clamp(1.25rem, 2.5vw, 2rem);
 
     color: #707070;
-
     font-size: clamp(.7rem, .9vw, .8rem);
     line-height: 1.65;
 }
@@ -509,10 +406,6 @@ select {
    PROCESS
 ========================================================= */
 
-/* ================================
-   PROCESS
-================================ */
-
 .process {
     padding-block: var(--section-space);
     border-top: 1px solid var(--line);
@@ -520,42 +413,59 @@ select {
 
 .process-header {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(220px, 380px);
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(220px, 360px);
+
     gap: clamp(2rem, 6vw, 6rem);
     align-items: end;
-    margin-bottom: clamp(3rem, 6vw, 5rem);
+
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
 }
 
 .process-header h2 {
     margin: 0;
-    font-size: clamp(2.8rem, 7vw, 7rem);
-    line-height: .88;
-    letter-spacing: -.065em;
+
+    font-size: clamp(
+        3.25rem,
+        7vw,
+        7rem
+    );
+
+    line-height: .84;
+    letter-spacing: -.075em;
     font-weight: 700;
 }
 
 .process-header p {
-    margin: 0 0 .25rem;
-    max-width: 340px;
+    margin: 0 0 .2rem;
+
+    max-width: 330px;
+
     color: var(--muted);
-    font-size: clamp(.85rem, 1vw, 1rem);
-    line-height: 1.6;
+    font-size: clamp(.7rem, .9vw, .8rem);
+    line-height: 1.65;
 }
 
-/* 4 equal process steps */
+
+/* FOUR STEP ROW */
+
 .process-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+
     border-top: 1px solid var(--line);
 }
 
 .process-step {
-    position: relative;
     min-width: 0;
+
     padding:
-        clamp(1.5rem, 3vw, 2.5rem)
+        clamp(1.5rem, 2.5vw, 2rem)
         clamp(1rem, 2.5vw, 2rem)
         0;
+
     border-right: 1px solid var(--line);
 }
 
@@ -570,124 +480,49 @@ select {
 
 .step-number {
     display: block;
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+
+    margin-bottom: clamp(
+        2.5rem,
+        5vw,
+        4rem
+    );
+
     color: var(--dim);
-    font-size: .65rem;
+
+    font-size: .6rem;
     font-weight: 600;
     letter-spacing: .14em;
 }
 
 .process-step h3 {
-    margin: 0 0 1rem;
+    margin: 0 0 .8rem;
+
     color: var(--text);
-    font-size: clamp(.8rem, 1vw, 1rem);
+
+    font-size: clamp(
+        .7rem,
+        .9vw,
+        .9rem
+    );
+
     font-weight: 700;
     letter-spacing: .12em;
 }
 
 .process-step p {
-    margin: 0;
     max-width: 240px;
+
+    margin: 0;
+
     color: var(--muted);
-    font-size: clamp(.78rem, .95vw, .9rem);
+
+    font-size: clamp(
+        .68rem,
+        .8vw,
+        .78rem
+    );
+
     line-height: 1.65;
-}
-
-
-/* ================================
-   TABLET
-================================ */
-
-@media (max-width: 900px) {
-
-    .process-header {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .process-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .process-step {
-        min-height: 240px;
-        border-right: 1px solid var(--line);
-        border-bottom: 1px solid var(--line);
-    }
-
-    .process-step:nth-child(2) {
-        border-right: 0;
-    }
-
-    .process-step:nth-child(3),
-    .process-step:nth-child(4) {
-        border-bottom: 0;
-    }
-
-    .process-step:nth-child(4) {
-        border-right: 0;
-    }
-
-    .process-step:nth-child(3),
-    .process-step:nth-child(4) {
-        padding-top: 2rem;
-    }
-}
-
-
-/* ================================
-   MOBILE
-================================ */
-
-@media (max-width: 600px) {
-
-    .process {
-        padding-block: clamp(4rem, 14vw, 6rem);
-    }
-
-    .process-header {
-        margin-bottom: 3rem;
-    }
-
-    .process-header h2 {
-        font-size: clamp(2.8rem, 14vw, 4.5rem);
-    }
-
-    .process-header p {
-        max-width: 300px;
-        font-size: .82rem;
-    }
-
-    .process-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .process-step,
-    .process-step:nth-child(3),
-    .process-step:nth-child(4) {
-        min-height: auto;
-        padding: 1.75rem 0;
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-    }
-
-    .process-step:first-child {
-        padding-top: 1.75rem;
-    }
-
-    .process-step:last-child {
-        padding-bottom: 0;
-        border-bottom: 0;
-    }
-
-    .step-number {
-        margin-bottom: 2rem;
-    }
-
-    .process-step p {
-        max-width: 330px;
-        font-size: .82rem;
-    }
 }
 
 
@@ -726,13 +561,11 @@ select {
     margin-top: clamp(1rem, 2vw, 1.5rem);
 
     color: #777;
-
     font-size: clamp(.65rem, .8vw, .75rem);
 }
 
 .contact {
     margin-top: clamp(1.25rem, 2.5vw, 2rem);
-
     border-top: 1px solid var(--line);
 }
 
@@ -753,7 +586,6 @@ select {
 
     font-size: clamp(.4rem, .55vw, .45rem);
     font-weight: 600;
-
     letter-spacing: .15em;
 }
 
@@ -775,7 +607,6 @@ select {
 
     font-size: clamp(.4rem, .55vw, .45rem);
     font-weight: 600;
-
     letter-spacing: .15em;
 }
 
@@ -788,7 +619,6 @@ select {
 
     border: 0;
     border-bottom: 1px solid #2d2d2d;
-
     border-radius: 0;
     outline: none;
 
@@ -833,7 +663,6 @@ form button {
 
     font-size: clamp(.45rem, .6vw, .5rem);
     font-weight: 700;
-
     letter-spacing: .15em;
 }
 
@@ -895,7 +724,6 @@ footer {
 
     font-size: clamp(.4rem, .55vw, .45rem);
     font-weight: 600;
-
     letter-spacing: .14em;
 }
 
@@ -904,7 +732,7 @@ footer {
    TABLET / SMALL LAPTOP
 ========================================================= */
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
 
     .hero-grid {
         grid-template-columns: 1fr;
@@ -923,11 +751,48 @@ footer {
         grid-template-columns: 1fr;
         gap: 3rem;
     }
+
+    /* PROCESS */
+
+    .process-header {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .process-step {
+        min-height: 230px;
+        padding: 1.75rem 1.5rem;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .process-step:first-child {
+        padding-left: 0;
+    }
+
+    .process-step:nth-child(2) {
+        padding-right: 0;
+        border-right: 0;
+    }
+
+    .process-step:nth-child(3) {
+        padding-left: 0;
+        border-bottom: 0;
+    }
+
+    .process-step:nth-child(4) {
+        padding-right: 0;
+        border-right: 0;
+        border-bottom: 0;
+    }
 }
 
 
 /* =========================================================
-   PHONE
+   MOBILE
 ========================================================= */
 
 @media (max-width: 600px) {
@@ -1023,24 +888,67 @@ footer {
 
     /* PROCESS */
 
+    .process {
+        padding-block: 4.5rem;
+    }
+
+    .process-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .process-header h2 {
+        font-size: clamp(
+            3rem,
+            14vw,
+            4.5rem
+        );
+    }
+
+    .process-header p {
+        max-width: 300px;
+        font-size: .78rem;
+    }
+
     .process-grid {
         grid-template-columns: 1fr;
     }
 
-    .step {
-        display: grid;
+    .process-step,
+    .process-step:first-child,
+    .process-step:nth-child(2),
+    .process-step:nth-child(3),
+    .process-step:nth-child(4),
+    .process-step:last-child {
+        min-height: auto;
 
-        grid-template-columns: 2rem minmax(0, 1fr);
+        padding:
+            1.5rem
+            0;
 
-        column-gap: .5rem;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
     }
 
-    .step > span {
-        grid-row: span 2;
+    .process-step:first-child {
+        padding-top: 1.5rem;
     }
 
-    .step h3 {
-        margin-top: 0;
+    .process-step:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+
+    .step-number {
+        margin-bottom: 1.5rem;
+    }
+
+    .process-step h3 {
+        margin-bottom: .65rem;
+    }
+
+    .process-step p {
+        max-width: 330px;
+        font-size: .78rem;
     }
 
 
@@ -1093,11 +1001,15 @@ footer {
     .service-image {
         height: 10.5rem;
     }
+
+    .process-header h2 {
+        font-size: 2.8rem;
+    }
 }
 
 
 /* =========================================================
-   LARGE / ULTRAWIDE MONITORS
+   LARGE / ULTRAWIDE
 ========================================================= */
 
 @media (min-width: 1600px) {
@@ -1112,5 +1024,9 @@ footer {
 
     .hero-grid {
         gap: 5rem;
+    }
+
+    .process-step p {
+        max-width: 270px;
     }
 }
