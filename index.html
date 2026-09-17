@@ -176,85 +176,101 @@
     <!-- =============================================
          QUOTE / CONTACT
     ============================================= -->
-    <section id="quote" class="quote">
-      <div class="container quote-inner">
+  <div data-fs-success class="form-success">
+  Thanks! Your quote request has been sent. We'll be in touch shortly.
+</div>
 
-        <div class="quote-copy">
-          <div class="label">04 / LET'S GET IT CLEAN</div>
-          <h2>CONTACT<br>US</h2>
-          <p>Call, text, or send a quote request. We'll respond within 24 hours.</p>
+<div data-fs-error class="form-error"></div>
 
-          <div class="quote-contact">
-            <div class="quote-contact-item">
-              <span>CALL / TEXT</span>
-              <a href="tel:14156898377">415-689-8377</a>
-            </div>
-            <div class="quote-contact-item">
-              <span>EMAIL</span>
-              <a href="mailto:look@peekpressure.com">look@peekpressure.com</a>
-            </div>
-            <div class="quote-contact-item">
-              <span>WEB</span>
-              <a href="https://peekpressure.com">peekpressure.com</a>
-            </div>
-          </div>
-        </div>
+<form id="quoteForm">
+  <div class="form-field">
+    <label for="name">NAME</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      placeholder="Your name"
+      required
+      data-fs-field
+    >
+    <span data-fs-error="name"></span>
+  </div>
 
-        <form
-          id="quoteForm"
-          class="quote-form"
-          action="https://formspree.io/f/mdekoerb"
-          method="POST"
-          novalidate
-        >
-          <!-- Honeypot anti-spam -->
-          <input class="bot-trap" type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+  <div class="form-field">
+    <label for="email">EMAIL</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="you@example.com"
+      required
+      data-fs-field
+    >
+    <span data-fs-error="email"></span>
+  </div>
 
-          <div class="form-field">
-            <label for="name">NAME</label>
-            <input type="text" id="name" name="name" placeholder="Your name" required>
-          </div>
+  <div class="form-field">
+    <label for="phone">PHONE</label>
+    <input
+      type="tel"
+      id="phone"
+      name="phone"
+      placeholder="(415) 555-5555"
+      required
+      data-fs-field
+    >
+    <span data-fs-error="phone"></span>
+  </div>
 
-          <div class="form-field">
-            <label for="email">EMAIL</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required>
-          </div>
+  <div class="form-field">
+    <label for="address">PROPERTY ADDRESS</label>
+    <input
+      type="text"
+      id="address"
+      name="address"
+      placeholder="Property address"
+      required
+      data-fs-field
+    >
+    <span data-fs-error="address"></span>
+  </div>
 
-          <div class="form-field">
-            <label for="phone">PHONE</label>
-            <input type="tel" id="phone" name="phone" placeholder="(415) 555-5555" required>
-          </div>
+  <div class="form-field">
+    <label for="service">SERVICE</label>
+    <select
+      id="service"
+      name="service"
+      required
+      data-fs-field
+    >
+      <option value="" disabled selected>Select a service</option>
+      <option value="Driveway">Driveway</option>
+      <option value="Sidewalk">Sidewalk</option>
+      <option value="Walkway">Walkway</option>
+      <option value="Sidewalk / Walkway">Sidewalk / Walkway</option>
+      <option value="Commercial">Commercial</option>
+    </select>
+    <span data-fs-error="service"></span>
+  </div>
 
-          <div class="form-field">
-            <label for="address">PROPERTY ADDRESS</label>
-            <input type="text" id="address" name="address" placeholder="Property address" required>
-          </div>
+  <div class="form-field">
+    <label for="details">JOB DETAILS</label>
+    <textarea
+      id="details"
+      name="details"
+      rows="5"
+      placeholder="Tell us about the property and what you'd like cleaned."
+      data-fs-field
+    ></textarea>
+    <span data-fs-error="details"></span>
+  </div>
 
-          <div class="form-field">
-            <label for="service">SERVICE</label>
-            <select id="service" name="service" required>
-              <option value="" disabled selected>Select a service</option>
-              <option value="Driveway">Driveway</option>
-              <option value="Sidewalk / Walkway">Sidewalk / Walkway</option>
-              <option value="Commercial">Commercial</option>
-            </select>
-          </div>
+  <button type="submit" data-fs-submit-btn>
+    REQUEST QUOTE →
+  </button>
 
-          <div class="form-field">
-            <label for="details">JOB DETAILS</label>
-            <textarea id="details" name="details" rows="5" placeholder="Tell us about the property and what you'd like cleaned."></textarea>
-          </div>
-
-          <button type="submit" id="submitBtn">REQUEST QUOTE →</button>
-          <p class="form-note">No obligation. We'll get back to you within 24 hours.</p>
-          <p class="form-note" id="formSuccess" style="display:none;color:#aaa;">✓ Sent — we'll be in touch shortly.</p>
-
-        </form>
-
-      </div>
-    </section>
-
-  </main>
+  <p class="form-note">No obligation.</p>
+</form>
 
   <!-- =============================================
        FOOTER
@@ -321,39 +337,6 @@
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 
-    // ── FORM SUBMIT ──────────────────────────────
-    const form    = document.getElementById('quoteForm');
-    const btn     = document.getElementById('submitBtn');
-    const success = document.getElementById('formSuccess');
-
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      btn.disabled = true;
-      btn.textContent = 'SENDING…';
-
-      try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (res.ok) {
-          form.reset();
-          btn.style.display = 'none';
-          success.style.display = 'block';
-        } else {
-          btn.disabled = false;
-          btn.textContent = 'REQUEST QUOTE →';
-          alert('Something went wrong — please email us at look@peekpressure.com');
-        }
-      } catch {
-        btn.disabled = false;
-        btn.textContent = 'REQUEST QUOTE →';
-        alert('Something went wrong — please email us at look@peekpressure.com');
-      }
-    });
-
 
     // ── LIGHTBOX ─────────────────────────────────
     const lightbox = document.createElement('div');
@@ -392,6 +375,19 @@
       }
     });
   </script>
+<script>
+  window.formspree =
+    window.formspree ||
+    function () {
+      (formspree.q = formspree.q || []).push(arguments);
+    };
 
+  formspree('initForm', {
+    formElement: '#quoteForm',
+    formId: 'mdekoerb'
+  });
+</script>
+
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </body>
 </html>
