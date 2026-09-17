@@ -591,100 +591,149 @@ select {
 
 
 /* =========================================================
-   FORM
-========================================================= */
+   CONTACT FORM
+   ========================================================= */
 
-.field {
-    margin-bottom: clamp(.9rem, 1.5vw, 1.2rem);
+.quote-form {
+    display: grid;
+    gap: 1.5rem;
 }
 
-.field label {
-    display: block;
+.form-field {
+    display: grid;
+    gap: .55rem;
+}
 
-    margin-bottom: .3rem;
-
-    color: #555;
-
-    font-size: clamp(.4rem, .55vw, .45rem);
+.form-field label {
+    font-size: .65rem;
     font-weight: 600;
-    letter-spacing: .15em;
+    letter-spacing: .12em;
+    color: var(--muted);
 }
 
-.field input,
-.field select,
-.field textarea {
+.form-field input,
+.form-field select,
+.form-field textarea {
     width: 100%;
+    box-sizing: border-box;
 
-    padding-block: clamp(.5rem, .9vw, .65rem);
+    padding: 1rem 0;
 
     border: 0;
-    border-bottom: 1px solid #2d2d2d;
+    border-bottom: 1px solid var(--line);
+
     border-radius: 0;
-    outline: none;
 
     background: transparent;
-    color: #eee;
+    color: var(--text);
 
-    font-size: clamp(.7rem, .85vw, .8rem);
+    font: inherit;
+    font-size: .9rem;
+
+    outline: none;
+
+    transition:
+        border-color .25s ease,
+        padding-left .25s ease;
 }
 
-.field textarea {
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: #555;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-bottom-color: #aaa;
+    background: transparent;
+}
+
+.form-field textarea {
+    min-height: 120px;
     resize: vertical;
 }
 
-.field input::placeholder,
-.field textarea::placeholder {
-    color: #444;
+.form-field select {
+    appearance: none;
+    cursor: pointer;
 }
 
-.field input:focus,
-.field textarea:focus,
-.field select:focus {
-    border-color: #888;
+/* Make select placeholder look muted */
+.form-field select:invalid {
+    color: #555;
 }
 
-.field select option {
-    background: #111;
+.form-field select option {
+    background: #080808;
+    color: #f2f1ed;
 }
 
-form button {
-    width: 100%;
 
-    min-height: clamp(2.75rem, 4vw, 3.1rem);
+/* Submit */
 
-    margin-top: .2rem;
+.quote-form button {
+    justify-self: start;
+
+    margin-top: .75rem;
+
+    padding: 1rem 1.5rem;
 
     border: 1px solid var(--text);
+    border-radius: 0;
 
     background: var(--text);
     color: #000;
 
+    font: inherit;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+
     cursor: pointer;
 
-    font-size: clamp(.45rem, .6vw, .5rem);
-    font-weight: 700;
-    letter-spacing: .15em;
+    transition:
+        transform .25s ease,
+        background-color .25s ease,
+        color .25s ease;
 }
 
-form button:hover {
+.quote-form button:hover {
+    transform: translateY(-2px);
     background: transparent;
-    color: #fff;
+    color: var(--text);
 }
 
-form button:disabled {
-    cursor: default;
+.quote-form button:active {
+    transform: translateY(0);
 }
 
 .form-note {
-    display: block;
+    margin: -.5rem 0 0;
 
-    margin-top: .5rem;
-
-    color: #444;
-
-    font-size: clamp(.4rem, .55vw, .45rem);
+    color: var(--dim);
+    font-size: .65rem;
 }
 
+
+/* Mobile */
+
+@media (max-width: 700px) {
+    .quote-form {
+        gap: 1.25rem;
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+        font-size: 16px;
+    }
+
+    .quote-form button {
+        width: 100%;
+        justify-self: stretch;
+    }
+}
 
 /* =========================================================
    FOOTER
