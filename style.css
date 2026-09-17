@@ -1,8 +1,27 @@
 /* =========================================================
    PEEK PRESSURE
+   FLUID / RESPONSIVE CSS
 ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+    --bg: #000;
+    --surface: #080808;
+    --text: #f2f1ed;
+    --muted: #777;
+    --dim: #555;
+    --line: #292929;
+
+    --page-padding: clamp(1rem, 3vw, 3rem);
+    --section-space: clamp(4rem, 8vw, 7rem);
+    --content-width: 1280px;
+}
 
 
 /* =========================================================
@@ -17,19 +36,26 @@
 
 html {
     scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
-    background: #000;
-    color: #f2f1ed;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+
     font-family: "Inter", Arial, sans-serif;
+
     overflow-x: hidden;
+
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 img {
     display: block;
     width: 100%;
+    max-width: 100%;
 }
 
 a {
@@ -46,12 +72,16 @@ select {
 
 
 /* =========================================================
-   CONTAINER
+   FLUID CONTAINER
 ========================================================= */
 
 .container {
-    width: min(100% - 48px, 1320px);
-    margin: 0 auto;
+    width: min(
+        calc(100% - (var(--page-padding) * 2)),
+        var(--content-width)
+    );
+
+    margin-inline: auto;
 }
 
 
@@ -61,44 +91,52 @@ select {
 
 .header {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    inset: 0 0 auto;
+
     z-index: 10;
 
-    padding: 24px 0;
+    padding-block: clamp(1rem, 2vw, 1.5rem);
 }
 
 .header-inner {
     display: flex;
     align-items: center;
+    gap: clamp(.75rem, 2vw, 1.5rem);
 }
 
 .logo {
-    font-size: 17px;
+    font-size: clamp(.9rem, 1.2vw, 1rem);
     font-weight: 800;
-    letter-spacing: -0.06em;
+
+    letter-spacing: -.065em;
+
+    white-space: nowrap;
 }
 
 .logo span {
+    margin-left: .25rem;
+
     color: #777;
     font-weight: 400;
-    margin-left: 5px;
 }
 
 .header nav {
     display: flex;
-    gap: 28px;
+    gap: clamp(1rem, 2vw, 1.75rem);
+
     margin-left: auto;
-    margin-right: 28px;
 }
 
 .header nav a {
-    color: #888;
-    font-size: 9px;
+    color: #777;
+
+    font-size: clamp(.45rem, .65vw, .55rem);
     font-weight: 600;
-    letter-spacing: .14em;
+
+    letter-spacing: .13em;
     text-transform: uppercase;
+
+    transition: color .2s ease;
 }
 
 .header nav a:hover {
@@ -106,13 +144,18 @@ select {
 }
 
 .header-cta {
-    padding: 11px 16px;
+    flex-shrink: 0;
 
-    border: 1px solid #444;
+    padding:
+        clamp(.55rem, 1vw, .7rem)
+        clamp(.7rem, 1.3vw, 1rem);
 
-    font-size: 8px;
+    border: 1px solid #383838;
+
+    font-size: clamp(.45rem, .65vw, .55rem);
     font-weight: 700;
-    letter-spacing: .14em;
+
+    letter-spacing: .13em;
 }
 
 .header-cta:hover {
@@ -122,25 +165,17 @@ select {
 
 
 /* =========================================================
-   COMMON
+   SMALL LABELS
 ========================================================= */
 
 .eyebrow,
 .label {
     color: #666;
 
-    font-size: 8px;
+    font-size: clamp(.45rem, .65vw, .55rem);
     font-weight: 600;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-}
 
-.section-note {
-    color: #555;
-
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: .14em;
+    letter-spacing: .17em;
     text-transform: uppercase;
 }
 
@@ -150,63 +185,89 @@ select {
 ========================================================= */
 
 .hero {
-    padding: 130px 0 70px;
+    padding-top: clamp(7rem, 10vw, 9rem);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
 }
 
 .hero-grid {
     display: grid;
-    grid-template-columns: .9fr 1.1fr;
-    gap: 55px;
+
+    grid-template-columns:
+        minmax(0, .82fr)
+        minmax(0, 1.18fr);
+
+    gap: clamp(2rem, 5vw, 5rem);
+
     align-items: center;
 }
 
-.hero-copy h1 {
-    margin-top: 20px;
+.hero-copy {
+    min-width: 0;
+}
 
-    font-size: clamp(78px, 10vw, 145px);
-    line-height: .78;
-    letter-spacing: -.095em;
+.hero-copy h1 {
+    margin-top: clamp(1rem, 2vw, 1.5rem);
+
+    /*
+       Fluid from small phones through ultrawide monitors.
+       It won't explode on a 4K display.
+    */
+    font-size: clamp(
+        4rem,
+        8vw,
+        7.5rem
+    );
+
+    line-height: .82;
+
+    letter-spacing: -.09em;
 }
 
 .hero-copy > p {
-    max-width: 400px;
+    width: min(100%, 24rem);
 
-    margin-top: 35px;
+    margin-top: clamp(1.5rem, 2.5vw, 2rem);
 
-    color: #888;
+    color: var(--muted);
 
-    font-size: 13px;
+    font-size: clamp(.7rem, .9vw, .8rem);
     line-height: 1.65;
 }
 
 .hero-buttons {
     display: flex;
-    gap: 10px;
-    margin-top: 28px;
+    flex-wrap: wrap;
+
+    gap: .5rem;
+
+    margin-top: clamp(1.25rem, 2vw, 1.75rem);
 }
 
 .button {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
 
-    min-height: 46px;
-    padding: 0 19px;
+    min-height: clamp(2.5rem, 4vw, 2.9rem);
 
-    font-size: 8px;
+    padding-inline: clamp(1rem, 1.7vw, 1.4rem);
+
+    font-size: clamp(.45rem, .65vw, .55rem);
     font-weight: 700;
+
     letter-spacing: .13em;
     text-transform: uppercase;
 }
 
 .primary {
-    background: #f2f1ed;
+    background: var(--text);
     color: #000;
 }
 
 .secondary {
     border: 1px solid #333;
-    color: #999;
+    color: #888;
 }
 
 .secondary:hover {
@@ -215,12 +276,24 @@ select {
 }
 
 .hero-image {
-    height: 590px;
+    width: 100%;
+
+    /*
+       Scales with viewport but stays reasonable.
+    */
+    height: clamp(
+        18rem,
+        40vw,
+        32rem
+    );
+
     overflow: hidden;
 }
 
 .hero-image img {
+    width: 100%;
     height: 100%;
+
     object-fit: cover;
 }
 
@@ -230,72 +303,97 @@ select {
 ========================================================= */
 
 .services {
-    padding: 90px 0 110px;
-    background: #080808;
+    padding-block: var(--section-space);
+
+    background: var(--surface);
 }
 
 .section-top {
     display: flex;
-    justify-content: space-between;
     align-items: center;
 
-    margin-bottom: 35px;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
 }
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: clamp(1rem, 1.8vw, 1.5rem);
+}
+
+.service {
+    min-width: 0;
 }
 
 .service-image {
-    height: 350px;
+    width: 100%;
+
+    height: clamp(
+        13rem,
+        23vw,
+        19rem
+    );
+
     overflow: hidden;
+
     background: #111;
 }
 
 .service-image img {
+    width: 100%;
     height: 100%;
+
     object-fit: cover;
 
-    transition: transform .5s ease;
+    transition: transform .45s ease;
 }
 
 .service:hover .service-image img {
-    transform: scale(1.03);
+    transform: scale(1.025);
 }
 
 .service-body {
-    padding-top: 18px;
-    border-top: 1px solid #2a2a2a;
+    padding-top: clamp(.75rem, 1.5vw, 1rem);
+
+    border-top: 1px solid var(--line);
 }
 
 .number {
     color: #555;
 
-    font-size: 8px;
+    font-size: clamp(.45rem, .6vw, .5rem);
     font-weight: 600;
+
     letter-spacing: .12em;
 }
 
 .service h2 {
-    margin-top: 17px;
+    margin-top: clamp(.65rem, 1.2vw, .9rem);
 
-    font-size: 28px;
+    font-size: clamp(
+        1.35rem,
+        2.1vw,
+        1.75rem
+    );
+
     font-weight: 500;
+
     line-height: .95;
-    letter-spacing: -.055em;
+    letter-spacing: -.05em;
 }
 
 .service p {
-    max-width: 300px;
+    width: min(100%, 18rem);
 
-    margin-top: 14px;
+    margin-top: clamp(.5rem, 1vw, .7rem);
 
-    color: #707070;
+    color: #6c6c6c;
 
-    font-size: 11px;
-    line-height: 1.6;
+    font-size: clamp(.6rem, .8vw, .7rem);
+    line-height: 1.55;
 }
 
 
@@ -304,30 +402,41 @@ select {
 ========================================================= */
 
 .about {
-    padding: 115px 0;
+    padding-block: var(--section-space);
 }
 
 .about-grid {
     display: grid;
-    grid-template-columns: .25fr .75fr;
-    gap: 45px;
+
+    grid-template-columns:
+        minmax(8rem, .28fr)
+        minmax(0, .72fr);
+
+    gap: clamp(2rem, 5vw, 4rem);
 }
 
 .about h2 {
-    font-size: clamp(55px, 7vw, 100px);
-    line-height: .84;
-    letter-spacing: -.08em;
+    max-width: 60rem;
+
+    font-size: clamp(
+        3rem,
+        6vw,
+        5.5rem
+    );
+
+    line-height: .86;
+    letter-spacing: -.075em;
 }
 
 .about p {
-    max-width: 430px;
+    width: min(100%, 26rem);
 
-    margin-top: 35px;
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
 
-    color: #777;
+    color: #707070;
 
-    font-size: 13px;
-    line-height: 1.7;
+    font-size: clamp(.7rem, .9vw, .8rem);
+    line-height: 1.65;
 }
 
 
@@ -336,43 +445,55 @@ select {
 ========================================================= */
 
 .process {
-    padding: 90px 0 110px;
-    background: #080808;
+    padding-block: var(--section-space);
+
+    background: var(--surface);
 }
 
 .process-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: clamp(1rem, 2vw, 1.5rem);
 }
 
 .step {
-    padding: 25px 0;
+    min-width: 0;
 
-    border-top: 1px solid #292929;
+    padding-block: clamp(1rem, 2vw, 1.4rem);
+
+    border-top: 1px solid var(--line);
 }
 
 .step > span {
     color: #555;
 
-    font-size: 8px;
+    font-size: clamp(.45rem, .6vw, .5rem);
     font-weight: 600;
 }
 
 .step h3 {
-    margin-top: 35px;
+    margin-top: clamp(1.25rem, 2vw, 1.75rem);
 
-    font-size: 24px;
+    font-size: clamp(
+        1.15rem,
+        1.8vw,
+        1.5rem
+    );
+
     font-weight: 500;
+
     letter-spacing: -.04em;
 }
 
 .step p {
-    margin-top: 10px;
+    margin-top: .4rem;
 
     color: #666;
 
-    font-size: 11px;
+    font-size: clamp(.6rem, .75vw, .7rem);
 }
 
 
@@ -381,73 +502,86 @@ select {
 ========================================================= */
 
 .quote {
-    padding: 110px 0;
+    padding-block: var(--section-space);
 }
 
 .quote-grid {
     display: grid;
-    grid-template-columns: .8fr 1.2fr;
-    gap: 90px;
+
+    grid-template-columns:
+        minmax(0, .8fr)
+        minmax(0, 1.2fr);
+
+    gap: clamp(2.5rem, 7vw, 6rem);
 }
 
 .quote-copy h2 {
-    margin-top: 22px;
+    margin-top: clamp(1rem, 2vw, 1.4rem);
 
-    font-size: clamp(62px, 8vw, 110px);
-    line-height: .82;
-    letter-spacing: -.09em;
+    font-size: clamp(
+        3.25rem,
+        7vw,
+        6rem
+    );
+
+    line-height: .84;
+    letter-spacing: -.085em;
 }
 
 .quote-copy > p {
-    margin-top: 28px;
+    margin-top: clamp(1rem, 2vw, 1.5rem);
 
     color: #777;
 
-    font-size: 12px;
+    font-size: clamp(.65rem, .8vw, .75rem);
 }
 
 .contact {
-    margin-top: 35px;
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
 
-    border-top: 1px solid #292929;
+    border-top: 1px solid var(--line);
 }
 
 .contact a {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: .3rem;
 
-    padding: 17px 0;
+    padding-block: clamp(.75rem, 1.5vw, 1rem);
 
-    border-bottom: 1px solid #292929;
+    border-bottom: 1px solid var(--line);
 
-    font-size: 15px;
+    font-size: clamp(.8rem, 1vw, .95rem);
 }
 
 .contact small {
     color: #555;
 
-    font-size: 7px;
+    font-size: clamp(.4rem, .55vw, .45rem);
     font-weight: 600;
+
     letter-spacing: .15em;
 }
 
 
-/* FORM */
+/* =========================================================
+   FORM
+========================================================= */
 
 .field {
-    margin-bottom: 20px;
+    margin-bottom: clamp(.9rem, 1.5vw, 1.2rem);
 }
 
 .field label {
     display: block;
 
-    margin-bottom: 7px;
+    margin-bottom: .3rem;
 
     color: #555;
 
-    font-size: 7px;
+    font-size: clamp(.4rem, .55vw, .45rem);
     font-weight: 600;
+
     letter-spacing: .15em;
 }
 
@@ -456,7 +590,7 @@ select {
 .field textarea {
     width: 100%;
 
-    padding: 11px 0;
+    padding-block: clamp(.5rem, .9vw, .65rem);
 
     border: 0;
     border-bottom: 1px solid #2d2d2d;
@@ -467,7 +601,7 @@ select {
     background: transparent;
     color: #eee;
 
-    font-size: 13px;
+    font-size: clamp(.7rem, .85vw, .8rem);
 }
 
 .field textarea {
@@ -492,19 +626,20 @@ select {
 form button {
     width: 100%;
 
-    min-height: 52px;
+    min-height: clamp(2.75rem, 4vw, 3.1rem);
 
-    margin-top: 5px;
+    margin-top: .2rem;
 
-    border: 1px solid #f2f1ed;
+    border: 1px solid var(--text);
 
-    background: #f2f1ed;
+    background: var(--text);
     color: #000;
 
     cursor: pointer;
 
-    font-size: 8px;
+    font-size: clamp(.45rem, .6vw, .5rem);
     font-weight: 700;
+
     letter-spacing: .15em;
 }
 
@@ -520,11 +655,11 @@ form button:disabled {
 .form-note {
     display: block;
 
-    margin-top: 10px;
+    margin-top: .5rem;
 
     color: #444;
 
-    font-size: 8px;
+    font-size: clamp(.4rem, .55vw, .45rem);
 }
 
 
@@ -533,101 +668,86 @@ form button:disabled {
 ========================================================= */
 
 footer {
-    padding: 55px 0 25px;
+    padding-top: clamp(2rem, 4vw, 3rem);
+    padding-bottom: clamp(1rem, 2vw, 1.5rem);
 
     border-top: 1px solid #1c1c1c;
 }
 
 .footer-inner {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 40px;
 }
 
 .footer-inner p {
-    margin-top: 15px;
+    margin-top: .7rem;
 
     color: #555;
 
-    font-size: 10px;
-}
-
-.footer-contact {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    text-align: right;
-}
-
-.footer-contact a {
-    color: #888;
-    font-size: 10px;
-}
-
-.footer-contact a:hover {
-    color: #fff;
+    font-size: clamp(.5rem, .7vw, .6rem);
 }
 
 .footer-bottom {
     display: flex;
     justify-content: space-between;
 
-    margin-top: 50px;
-    padding-top: 18px;
+    margin-top: clamp(1.75rem, 3vw, 2.5rem);
+    padding-top: .9rem;
 
     border-top: 1px solid #1c1c1c;
 
     color: #444;
 
-    font-size: 7px;
+    font-size: clamp(.4rem, .55vw, .45rem);
     font-weight: 600;
+
     letter-spacing: .14em;
 }
 
 
 /* =========================================================
-   TABLET
+   TABLET / SMALL LAPTOP
 ========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 850px) {
 
     .hero-grid {
         grid-template-columns: 1fr;
     }
 
     .hero-image {
-        height: 430px;
+        height: clamp(18rem, 55vw, 26rem);
     }
 
     .about-grid {
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 1.5rem;
     }
 
     .quote-grid {
         grid-template-columns: 1fr;
-        gap: 55px;
+        gap: 3rem;
     }
-
 }
 
 
 /* =========================================================
-   MOBILE
+   PHONE
 ========================================================= */
 
 @media (max-width: 600px) {
 
-    .container {
-        width: calc(100% - 32px);
+    :root {
+        --page-padding: 1rem;
+        --section-space: 3.75rem;
     }
 
 
     /* HEADER */
 
     .header {
-        padding: 18px 0;
+        padding-block: 1rem;
     }
 
     .header nav {
@@ -635,31 +755,36 @@ footer {
     }
 
     .header-cta {
-        padding: 9px 12px;
+        margin-left: auto;
     }
 
 
     /* HERO */
 
     .hero {
-        padding: 105px 0 55px;
+        padding-top: 6rem;
+        padding-bottom: 2.75rem;
     }
 
     .hero-grid {
-        gap: 35px;
+        gap: 1.75rem;
     }
 
     .hero-copy h1 {
-        font-size: 72px;
+        font-size: clamp(
+            3.75rem,
+            17vw,
+            5rem
+        );
     }
 
     .hero-copy > p {
-        max-width: 340px;
-        margin-top: 25px;
+        max-width: 21rem;
     }
 
     .hero-buttons {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
 
     .button {
@@ -667,70 +792,53 @@ footer {
     }
 
     .hero-image {
-        height: 300px;
+        height: clamp(
+            14rem,
+            65vw,
+            20rem
+        );
     }
 
 
     /* SERVICES */
 
-    .services {
-        padding: 70px 0;
-    }
-
-    .section-top {
-        margin-bottom: 25px;
-    }
-
-    .section-note {
-        display: none;
-    }
-
     .services-grid {
         grid-template-columns: 1fr;
-        gap: 42px;
+        gap: 2.25rem;
     }
 
     .service-image {
-        height: 245px;
-    }
-
-    .service h2 {
-        font-size: 25px;
+        height: clamp(
+            11rem,
+            58vw,
+            15rem
+        );
     }
 
 
     /* ABOUT */
 
-    .about {
-        padding: 75px 0;
-    }
-
     .about h2 {
-        font-size: 56px;
-    }
-
-    .about p {
-        margin-top: 25px;
+        font-size: clamp(
+            2.9rem,
+            14vw,
+            4rem
+        );
     }
 
 
     /* PROCESS */
 
-    .process {
-        padding: 70px 0;
-    }
-
     .process-grid {
         grid-template-columns: 1fr;
-        gap: 0;
     }
 
     .step {
         display: grid;
-        grid-template-columns: 35px 1fr;
-        column-gap: 10px;
 
-        padding: 22px 0;
+        grid-template-columns: 2rem minmax(0, 1fr);
+
+        column-gap: .5rem;
     }
 
     .step > span {
@@ -739,47 +847,76 @@ footer {
 
     .step h3 {
         margin-top: 0;
-        font-size: 20px;
-    }
-
-    .step p {
-        margin-top: 7px;
     }
 
 
     /* QUOTE */
 
-    .quote {
-        padding: 75px 0;
-    }
-
     .quote-grid {
-        gap: 45px;
+        gap: 2.5rem;
     }
 
     .quote-copy h2 {
-        font-size: 62px;
+        font-size: clamp(
+            3.2rem,
+            15vw,
+            4.25rem
+        );
     }
 
 
     /* FOOTER */
 
-    footer {
-        padding-top: 45px;
-    }
-
-    .footer-inner {
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .footer-contact {
-        text-align: left;
-    }
-
     .footer-bottom {
         flex-direction: column;
-        gap: 8px;
+        gap: .5rem;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .container {
+        width: calc(100% - 24px);
     }
 
+    .hero-copy h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-image {
+        height: 13rem;
+    }
+
+    .service-image {
+        height: 10.5rem;
+    }
+}
+
+
+/* =========================================================
+   LARGE / ULTRAWIDE MONITORS
+========================================================= */
+
+@media (min-width: 1600px) {
+
+    .container {
+        max-width: 1360px;
+    }
+
+    .hero {
+        padding-top: 9rem;
+    }
+
+    .hero-grid {
+        gap: 5rem;
+    }
 }
