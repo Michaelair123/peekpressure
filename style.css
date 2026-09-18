@@ -906,3 +906,31 @@ footer .logo:hover {
         transition: none;
     }
 }
+/* FIX 1 — footer bar at bottom */
+footer {
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+/* FIX 2 — sticky header so anchor links work */
+.header {
+    position: fixed;
+}
+
+/* FIX 3 — section scroll targets clear the fixed header */
+#services,
+#process,
+#quote {
+    scroll-margin-top: 80px;
+}
+
+/* FIX 4 — hero clears the fixed header */
+.hero {
+    padding-top: clamp(9rem, 14vw, 13rem);
+}
+
+/* FIX 5 — contact breathing room on mobile */
+@media (max-width: 600px) {
+    .quote-grid {
+        padding-inline: 1.5rem;
+    }
+}
