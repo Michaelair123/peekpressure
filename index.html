@@ -1050,20 +1050,23 @@ document.addEventListener('DOMContentLoaded', () => {
     launcher.addEventListener('click', openChat);
     close.addEventListener('click', closeChat);
 
-    // Open Lucy automatically on mobile after the page is fully loaded.
-    // Use a guarded load trigger so this still works when the page has heavy/lazy content.
+    // Open Lucy automatically on mobile without waiting for every page asset to finish loading.
+    // Some mobile browsers can delay the window load event because of external images/widgets.
+    let autoOpenScheduled = false;
     const autoOpenLucyOnMobile = () => {
-      if (!window.matchMedia('(max-width: 700px)').matches || state.open) return;
+      if (autoOpenScheduled || state.open || !window.matchMedia('(max-width: 700px)').matches) return;
+      autoOpenScheduled = true;
       window.setTimeout(() => {
         if (!state.open) openChat(false);
       }, 700);
     };
 
-    if (document.readyState === 'complete') {
-      autoOpenLucyOnMobile();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', autoOpenLucyOnMobile, { once: true });
     } else {
-      window.addEventListener('load', autoOpenLucyOnMobile, { once: true });
+      autoOpenLucyOnMobile();
     }
+    window.addEventListener('load', autoOpenLucyOnMobile, { once: true });
 
     form.addEventListener('submit', event => {
       event.preventDefault();
