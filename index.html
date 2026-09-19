@@ -366,7 +366,7 @@
           <div class="service-map" aria-label="Map showing PEEK PRESSURE service area across the San Francisco Bay Area">
             <iframe
               title="San Francisco Bay Area service map"
-              src="https://www.google.com/maps?q=San+Francisco+Bay+Area&z=10&output=embed"
+              src="https://www.google.com/maps?q=37.65,-122.25&z=9&output=embed"
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"></iframe>
             <div id="service-area" class="service-map-dots" aria-label="PEEK PRESSURE service locations">
@@ -599,6 +599,106 @@
       } else {
         loadAboutReel();
       }
+    }
+
+
+
+    // ── SERVICE AREA MAP OVERLAY ─────────────────
+    // Coordinates are projected onto the fixed Google Maps viewport so dots/boundary
+    // stay geographically aligned without requiring a Google Maps API key.
+    const serviceMap = document.querySelector('.service-map');
+    const serviceDots = document.querySelector('.service-map-dots');
+
+    if (serviceMap && serviceDots) {
+      const serviceCities = {
+        sf:        { lat: 37.7749, lng: -122.4194 },
+        oakland:   { lat: 37.8044, lng: -122.2712 },
+        sanleandro:{ lat: 37.7249, lng: -122.1561 },
+        hayward:   { lat: 37.6688, lng: -122.0808 },
+        burlingame:{ lat: 37.5779, lng: -122.3481 },
+        southsf:   { lat: 37.6547, lng: -122.4077 },
+        dalycity:  { lat: 37.6879, lng: -122.4702 },
+        sanmateo:  { lat: 37.5630, lng: -122.3255 },
+        fremont:   { lat: 37.5485, lng: -121.9886 },
+        sanjose:   { lat: 37.3382, lng: -121.8863 }
+      };
+
+      const mapCenter = { lat: 37.65, lng: -122.25 };
+      const mapZoom = 9;
+
+      const project = (lat, lng, width, height) => {
+        const scale = 256 * Math.pow(2, mapZoom);
+        const worldX = (lng + 180) / 360 * scale;
+        const sinLat = Math.sin(lat * Math.PI / 180);
+        const worldY = (0.5 - Math.log((1 + sinLat) / (1 - sinLat)) / (4 * Math.PI)) * scale;
+        const sinCenter = Math.sin(mapCenter.lat * Math.PI / 180);
+        const centerX = (mapCenter.lng + 180) / 360 * scale;
+        const centerY = (0.5 - Math.log((1 + sinCenter) / (1 - sinCenter)) / (4 * Math.PI)) * scale;
+        return {
+          x: width / 2 + (worldX - centerX),
+          y: height / 2 + (worldY - centerY)
+        };
+      };
+
+      const drawServiceArea = () => {
+        const rect = serviceMap.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        if (!width || !height) return;
+
+        const points = Object.entries(serviceCities).map(([key, city]) => {
+          const p = project(city.lat, city.lng, width, height);
+          return { key, ...p };
+        });
+
+        let svg = serviceMap.querySelector('.service-area-overlay');
+        if (!svg) {
+          svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.classList.add('service-area-overlay');
+          svg.setAttribute('aria-hidden', 'true');
+          serviceMap.insertBefore(svg, serviceDots);
+        }
+
+        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        svg.setAttribute('width', width);
+        svg.setAttribute('height', height);
+
+        // Coverage boundary follows the outer service-city footprint.
+        const boundaryKeys = ['dalycity','sf','oakland','sanleandro','hayward','fremont','sanjose','burlingame'];
+        const boundary = boundaryKeys
+          .map(key => points.find(p => p.key === key))
+          .filter(Boolean);
+
+        // Order the footprint around the perimeter for a clean service-area shape.
+        const ordered = [
+          points.find(p => p.key === 'dalycity'),
+          points.find(p => p.key === 'sf'),
+          points.find(p => p.key === 'oakland'),
+          points.find(p => p.key === 'sanleandro'),
+          points.find(p => p.key === 'hayward'),
+          points.find(p => p.key === 'fremont'),
+          points.find(p => p.key === 'sanjose'),
+          points.find(p => p.key === 'burlingame')
+        ].filter(Boolean);
+
+        const path = ordered.map((p, i) => `${i ? 'L' : 'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ') + ' Z';
+
+        svg.innerHTML = `
+          <path class="service-area-fill" d="${path}"></path>
+          <path class="service-area-stroke" d="${path}"></path>
+        `;
+
+        points.forEach(p => {
+          const dot = serviceDots.querySelector('.' + p.key);
+          if (dot) {
+            dot.style.left = p.x + 'px';
+            dot.style.top = p.y + 'px';
+          }
+        });
+      };
+
+      drawServiceArea();
+      window.addEventListener('resize', drawServiceArea, { passive: true });
     }
 
 
