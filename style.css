@@ -1843,3 +1843,239 @@ textarea:focus-visible {
     margin-bottom: 2rem;
   }
 }
+
+/* =========================================================
+   CONVERSION POLISH — HERO / WHY PEEK / SERVICE AREA / MOBILE CTA
+========================================================= */
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1.75rem;
+}
+
+.hero-buttons .button {
+  min-width: 150px;
+  text-align: center;
+}
+
+/* Keep the new informational sections visually quiet and premium. */
+.why-peek {
+  padding: var(--section-space) 0;
+  background: #fff;
+}
+
+.why-peek-container,
+.service-area-container {
+  width: min(var(--content-width), calc(100% - (var(--page-padding) * 2)));
+  margin: 0 auto;
+}
+
+.why-peek-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(3rem, 9vw, 9rem);
+  margin-top: 3rem;
+}
+
+.why-peek-intro h2 {
+  margin: 0;
+  color: #111;
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  line-height: .82;
+  letter-spacing: -.085em;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.why-peek-points {
+  border-top: 1px solid #ddd;
+}
+
+.why-peek-point {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 1rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid #ddd;
+  transition: padding .35s var(--peek-ease), background-color .35s var(--peek-ease);
+}
+
+.why-peek-point > span {
+  color: #999;
+  font-size: .55rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+
+.why-peek-point h3 {
+  margin: 0;
+  color: #111;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.why-peek-point p {
+  max-width: 34rem;
+  margin-top: .5rem;
+  color: #666;
+  font-size: .76rem;
+  line-height: 1.65;
+}
+
+.why-peek-point:hover {
+  padding-left: .75rem;
+  background: #fafafa;
+}
+
+/* Service area: searchable, readable location language without clutter. */
+.service-area {
+  padding: var(--section-space) 0;
+  background: #f6f6f6;
+}
+
+.service-area-container > .label {
+  display: block;
+}
+
+.service-area h2 {
+  margin-top: 1.25rem;
+  color: #111;
+  font-size: clamp(3.5rem, 8vw, 8rem);
+  line-height: .8;
+  letter-spacing: -.09em;
+  font-weight: 700;
+}
+
+.service-area-container > p {
+  max-width: 600px;
+  margin-top: 1.5rem;
+  color: #666;
+  font-size: .78rem;
+  line-height: 1.7;
+}
+
+.service-area-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  margin-top: 2rem;
+}
+
+.service-area-list span {
+  padding: .7rem .9rem;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: #fff;
+  color: #333;
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  transition: transform .3s var(--peek-ease), border-color .3s var(--peek-ease), box-shadow .3s var(--peek-ease);
+}
+
+.service-area-list span:hover {
+  transform: translateY(-2px);
+  border-color: #bbb;
+  box-shadow: 0 8px 24px rgba(0,0,0,.05);
+}
+
+/* Fixed mobile conversion bar. Hidden on desktop. */
+.mobile-action-bar {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .hero-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-buttons .button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .why-peek-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .why-peek-intro h2 {
+    font-size: clamp(3.25rem, 15vw, 5.5rem);
+  }
+
+  .why-peek-point:hover {
+    padding-left: 0;
+    background: transparent;
+  }
+
+  .service-area h2 {
+    font-size: clamp(3.4rem, 15vw, 5.5rem);
+  }
+
+  .service-area-list {
+    gap: .45rem;
+  }
+
+  .service-area-list span {
+    padding: .62rem .75rem;
+  }
+
+  .mobile-action-bar {
+    position: fixed;
+    left: .75rem;
+    right: .75rem;
+    bottom: .75rem;
+    z-index: 1000;
+    display: grid;
+    grid-template-columns: .8fr 1.35fr .8fr;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 999px;
+    background: rgba(17,17,17,.96);
+    box-shadow: 0 12px 40px rgba(0,0,0,.18);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .mobile-action-bar a {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: .55rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-decoration: none;
+  }
+
+  .mobile-action-bar a + a {
+    border-left: 1px solid rgba(255,255,255,.15);
+  }
+
+  .mobile-action-bar a:nth-child(2) {
+    background: #fff;
+    color: #111;
+  }
+
+  body {
+    padding-bottom: 5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-peek-point,
+  .service-area-list span {
+    transition: none;
+  }
+}
