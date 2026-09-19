@@ -698,11 +698,50 @@ footer {
     --section-space: 4rem;
   }
 
-  .header { padding-block: .9rem; }
+  .header { padding-block: .8rem; }
+
+  .header-inner {
+    gap: .65rem;
+  }
 
   .header nav { display: none; }
 
-  .header-cta { margin-left: auto; }
+  .header-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    margin-left: auto;
+    padding: .5rem .6rem;
+    border: 1px solid #dedede;
+    border-radius: 999px;
+    background: rgba(255,255,255,.9);
+    color: #111;
+    font-size: .55rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    white-space: nowrap;
+    transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+  }
+
+  .header-phone::before {
+    content: "CALL";
+    font-size: .48rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    color: #777;
+  }
+
+  .header-phone:hover {
+    background: #f5f5f5;
+    border-color: #111;
+    transform: translateY(-1px);
+  }
+
+  .header-cta {
+    margin-left: 0;
+    padding: .58rem .78rem;
+    font-size: .52rem;
+  }
 
   .hero {
     padding-top: 6.5rem;
