@@ -7,6 +7,23 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    const origin = request.headers.get("Origin");
+    const allowedOrigin =
+      origin === "https://www.peekpressure.com" || origin === "https://peekpressure.com"
+        ? origin
+        : "https://www.peekpressure.com";
+
+    const cors = {
+      "Access-Control-Allow-Origin": allowedOrigin,
+      "Access-Control-Allow-Headers": "Content-Type, X-Lucy-Staging-Token",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Vary": "Origin"
+    };
+
+    if (request.method === "OPTIONS" && url.pathname.startsWith("/api/")) {
+      return new Response(null, { status: 204, headers: cors });
+    }
+
     if (url.pathname === "/api/health") {
       return Response.json({
         ok: true,
@@ -17,10 +34,7 @@ export default {
 
     if (url.pathname === "/api/faq") {
       return Response.json({ faq: LUCY_FAQ }, {
-        headers: {
-          "Cache-Control": "public, max-age=300",
-          "Access-Control-Allow-Origin": "https://peekpressure.com"
-        }
+        headers: { ...cors, "Cache-Control": "public, max-age=300" }
       });
     }
 
