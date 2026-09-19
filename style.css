@@ -4108,3 +4108,18 @@ body::before {
   background: #ffd43b;
   box-shadow: 0 0 0 2px #111;
 }
+
+
+/* SERVICE AREA — simple red location dots */
+.map-dot {
+  background: #e53935;
+  border-color: #fff;
+  box-shadow: 0 3px 12px rgba(229,57,53,.35);
+}
+.map-dot::after {
+  border-color: rgba(229,57,53,.55);
+}
+.map-key-dot {
+  background: #e53935;
+  box-shadow: none;
+}
