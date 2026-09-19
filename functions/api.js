@@ -170,7 +170,7 @@ async function handleChat(context) {\n  const OPENAI_API_KEY = context.env.OPENA
     console.error("Lucy chat handler error:", error);
     return json({ error: "Lucy hit a server error. Please try again." }, 500);\n  }\n}\n
 
-const TO_EMAIL = "look@peekpressure.com";\nconst FROM_EMAIL = "PEEK PRESSURE <onboarding@resend.dev>";
+const TO_EMAIL = "look@peekpressure.com";\nconst FROM_EMAIL = "PEEK PRESSURE <look@peekpressure.com>";
 
 function json(body, status = 200) { return Response.json(body, { status }); }
 
