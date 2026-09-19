@@ -1,6 +1,7 @@
 import { LUCY_FAQ } from "./faq.js";
 
 const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
+const LUCY_FAST_MODEL = "gpt-5.6-terra";
 const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
 const LUCY_REQUEST_TIMEOUT_MS = 10000;
 const LUCY_MAX_RETRIES = 1;
@@ -15,9 +16,11 @@ function isTransientOpenAIStatus(status) {
 
 async function callOpenAI(body, requestId) {
   let lastError = null;
+  const primaryModel = body.primaryModel || LUCY_PRIMARY_MODEL;
+  const fallbackModel = body.fallbackModel || LUCY_FALLBACK_MODEL;
 
   for (let attempt = 0; attempt <= LUCY_MAX_RETRIES; attempt++) {
-    const model = attempt === LUCY_MAX_RETRIES ? LUCY_FALLBACK_MODEL : LUCY_PRIMARY_MODEL;
+    const model = attempt === LUCY_MAX_RETRIES ? fallbackModel : primaryModel;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), LUCY_REQUEST_TIMEOUT_MS);
 
@@ -727,10 +730,6 @@ async function handleLucyRequest({ request, env }) {
     return Response.json({ error: "Method not allowed." }, { status: 405, headers: cors });
   }
 
-  if (!env.OPENAI_API_KEY) {
-    return Response.json({ error: "AI service is not configured." }, { status: 503, headers: cors });
-  }
-
   try {
     const body = await request.json();
     const messages = Array.isArray(body.messages) ? body.messages.slice(-10) : [];
@@ -794,6 +793,10 @@ async function handleLucyRequest({ request, env }) {
     }
 
     const latestUserText = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
+    const hasImage = safeMessages.some(message => Array.isArray(message.content) && message.content.some(part => part?.type === "input_image"));
+    const pricingRequest = pricingContext.requested;
+    const needsStrongModel = hasImage || pricingRequest || /\b(commercial|contract|property manager|stain|rust|oil|grease|damage|booking|schedule|appointment)\b/i.test(String(latestUserText));
+    const selectedPrimaryModel = needsStrongModel ? (env.OPENAI_MODEL || LUCY_PRIMARY_MODEL) : LUCY_FAST_MODEL;
     const pricingContext = extractPricingContext(safeMessages);
     const faqAnswer = findFaqAnswer(latestUserText);
     const fastReply = buildFastReply(latestUserText);
@@ -857,12 +860,18 @@ SCHEDULING ACTIONS
 - If a requested time has not been checked/offered yet, use check_availability instead of booking.
 `;
 
+    if (!env.OPENAI_API_KEY) {
+      return Response.json({ error: "AI service is not configured." }, { status: 503, headers: cors });
+    }
+
     const requestId = crypto.randomUUID();
     let data;
 
     try {
       const result = await callOpenAI({
         apiKey: env.OPENAI_API_KEY,
+        primaryModel: selectedPrimaryModel,
+        fallbackModel: LUCY_FALLBACK_MODEL,
         payload: {
           instructions: SYSTEM_PROMPT + pricingInstruction + "\n\n" + schedulingContext,
           input: safeMessages,
