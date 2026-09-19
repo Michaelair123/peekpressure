@@ -523,7 +523,8 @@ async function handleLead(context) {
 export async function onRequestGet(context) {
   const path = Array.isArray(context.params?.path) ? context.params.path.join("/") : String(context.params?.path || "");
 
-  if (path === "availability") return handleAvailability(context);\n  if (path === "book") return createCalendlyBooking(context);
+  if (path === "availability") return handleAvailability(context);
+  if (path === "book") return createCalendlyBooking(context);
   return json({ error: "Not found" }, 404);
 }
 
