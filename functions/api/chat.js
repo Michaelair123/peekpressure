@@ -793,11 +793,11 @@ async function handleLucyRequest({ request, env }) {
     }
 
     const latestUserText = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
+    const pricingContext = extractPricingContext(safeMessages);
     const hasImage = safeMessages.some(message => Array.isArray(message.content) && message.content.some(part => part?.type === "input_image"));
     const pricingRequest = pricingContext.requested;
     const needsStrongModel = hasImage || pricingRequest || /\b(commercial|contract|property manager|stain|rust|oil|grease|damage|booking|schedule|appointment)\b/i.test(String(latestUserText));
     const selectedPrimaryModel = needsStrongModel ? (env.OPENAI_MODEL || LUCY_PRIMARY_MODEL) : LUCY_FAST_MODEL;
-    const pricingContext = extractPricingContext(safeMessages);
     const faqAnswer = findFaqAnswer(latestUserText);
     const fastReply = buildFastReply(latestUserText);
     if (faqAnswer && !pricingContext.requested) {
@@ -908,7 +908,7 @@ SCHEDULING ACTIONS
     if (!raw) {
       console.error("Lucy empty model response", JSON.stringify({
         requestId,
-        model: "gpt-5.6-luna"
+        model: selectedPrimaryModel
       }));
       return Response.json({ error: "No response generated.", request_id: requestId }, { status: 502, headers: cors });
     }
