@@ -905,7 +905,8 @@ document.addEventListener('DOMContentLoaded', () => {
       open: false,
       leadSubmitted: false,
       selectedImages: [],
-      sending: false
+      sending: false,
+      pendingLead: null
     };
 
     function addMessage(text, role, imageParts = []) {
@@ -1149,8 +1150,22 @@ document.addEventListener('DOMContentLoaded', () => {
           body: formData.toString()
         });
 
-        if (!response.ok) throw new Error('Lead submission failed');
+        let result = null;
+        try {
+          result = await response.json();
+        } catch {}
+
+        if (!response.ok) {
+          console.warn('Lucy/Formspree lead submission failed', {
+            status: response.status,
+            response: result
+          });
+          const detail = result?.errors?.map(item => item?.message || item?.code).filter(Boolean).join(', ');
+          throw new Error(detail || ('Formspree returned HTTP ' + response.status));
+        }
+
         state.leadSubmitted = true;
+        console.info('Lucy/Formspree lead submitted successfully', result);
         return true;
       } catch (error) {
         console.warn('Lucy lead submission failed', error);
@@ -1164,6 +1179,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!clean && !hasImages) return;
       if (state.sending) return;
+
+      // If Lucy has collected a lead, confirm the contact details before
+      // sending anything to PEEK PRESSURE.
+      if (state.pendingLead && !hasImages) {
+        const normalized = clean.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+        const affirmative = /^(yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|send it|yes send it|yes send)$/i.test(normalized) ||
+          /\b(yes|correct|right|looks good|send it)\b/.test(normalized);
+        const correction = /\b(change|wrong|incorrect|fix|update|different|no)\b/.test(normalized);
+
+        addMessage(clean, 'user');
+        state.history.push({ role: 'user', content: clean });
+        input.value = '';
+        input.style.height = 'auto';
+        quick.innerHTML = '';
+
+        if (affirmative) {
+          state.sending = true;
+          try {
+            const leadToSend = state.pendingLead;
+            state.pendingLead = null;
+            const sent = await submitLead(leadToSend);
+
+            if (sent) {
+              const success = "Perfect — your information has been sent to PEEK PRESSURE. We’ll follow up directly.";
+              addMessage(success, 'assistant');
+              state.history.push({ role: 'assistant', content: success });
+              setQuick(['Ask another question', 'Book a time']);
+            } else {
+              state.pendingLead = leadToSend;
+              const failure = "I couldn’t complete the handoff just yet. I haven’t told you it was sent. Please call or text PEEK PRESSURE at 415-689-8377, or reply TRY AGAIN.";
+              addMessage(failure, 'assistant');
+              state.history.push({ role: 'assistant', content: failure });
+              setQuick(['TRY AGAIN', 'Book a time']);
+            }
+          } finally {
+            state.sending = false;
+            input.focus();
+          }
+          return;
+        }
+
+        if (correction) {
+          state.pendingLead = null;
+          const changeReply = "No problem. Tell me the correct name, phone number, email, or other detail and I’ll update it before anything is sent.";
+          addMessage(changeReply, 'assistant');
+          state.history.push({ role: 'assistant', content: changeReply });
+          input.focus();
+          return;
+        }
+
+        const reminder = "Just reply YES if those details are correct, or tell me what needs to be changed.";
+        addMessage(reminder, 'assistant');
+        state.history.push({ role: 'assistant', content: reminder });
+        setQuick(['YES — SEND IT', 'I NEED TO CHANGE SOMETHING']);
+        input.focus();
+        return;
+      }
 
       state.sending = true;
       attachButton.disabled = true;
@@ -1228,11 +1300,23 @@ document.addEventListener('DOMContentLoaded', () => {
         state.history.push({ role: 'assistant', content: reply });
 
         if (data.lead_ready && data.lead) {
-          const sent = await submitLead(data.lead);
-          if (sent) {
-            addMessage("Perfect — I’ve sent your information and question over to PEEK PRESSURE. We’ll follow up directly.", 'assistant');
-            state.history.push({ role: 'assistant', content: "Perfect — I’ve sent your information and question over to PEEK PRESSURE. We’ll follow up directly." });
-          }
+          state.pendingLead = data.lead;
+
+          const pending = data.lead;
+          const confirmationParts = [
+            pending.name && "Name: " + pending.name,
+            pending.email && "Email: " + pending.email,
+            pending.phone && "Phone: " + pending.phone,
+            pending.service && "Service: " + pending.service,
+            pending.location && "Location: " + pending.location
+          ].filter(Boolean);
+
+          const confirmation = "Before I send this to PEEK PRESSURE, please confirm these details are correct:\n\n" +
+            confirmationParts.join("\n") +
+            "\n\nReply YES to send it, or tell me what you’d like to change.";
+          addMessage(confirmation, 'assistant');
+          state.history.push({ role: 'assistant', content: confirmation });
+          setQuick(['YES — SEND IT', 'I NEED TO CHANGE SOMETHING']);
         }
 
         if (!data.lead_ready && /book|schedule|appointment/i.test(reply)) {
