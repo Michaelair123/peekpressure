@@ -1025,7 +1025,11 @@ document.addEventListener('DOMContentLoaded', () => {
         state.history.push({ role: 'assistant', content: reply });
 
         if (data.lead_ready && data.lead) {
-          await submitLead(data.lead);
+          const sent = await submitLead(data.lead);
+          if (sent) {
+            addMessage("Perfect — I’ve sent your information and question over to PEEK PRESSURE. We’ll follow up directly.", 'assistant');
+            state.history.push({ role: 'assistant', content: "Perfect — I’ve sent your information and question over to PEEK PRESSURE. We’ll follow up directly." });
+          }
         }
 
         // Keep the UI helpful without forcing a scripted sales flow.
