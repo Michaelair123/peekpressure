@@ -233,6 +233,42 @@ const LEAD_SCHEMA = {
   ]
 };
 
+
+function containsSuspiciousInstruction(text) {
+  const value = String(text || "").toLowerCase();
+  return [
+    /ignore\s+(all\s+)?previous\s+instructions/,
+    /reveal\s+(the\s+)?system\s+prompt/,
+    /show\s+(me\s+)?(your|the)\s+(api\s+key|secret|credentials)/,
+    /api\s*key|access\s*token|password|verification\s*code/,
+    /send\s+(money|crypto|gift\s*card)/,
+    /seo\s+(services|backlinks)|guest\s+post|link\s+building/,
+    /click\s+(this\s+)?link.*(verify|login|account)/
+  ].some(pattern => pattern.test(value));
+}
+
+function enforceLeadSafety(result, safeMessages) {
+  const latestUser = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
+  const suspicious = containsSuspiciousInstruction(latestUser);
+  const name = typeof result.name === "string" ? result.name.trim() : "";
+  const phone = typeof result.phone === "string" ? result.phone.trim() : "";
+  const email = typeof result.email === "string" ? result.email.trim() : "";
+  const hasBasicScope = Boolean(result.service && result.location);
+  const usableContact = Boolean(name && (phone || email));
+
+  if (suspicious || result.lead_status === "spam") {
+    result.lead_ready = false;
+    result.lead_status = "spam";
+  } else if (result.lead_status !== "real" || !hasBasicScope || !usableContact) {
+    result.lead_ready = false;
+    if (result.lead_status !== "real") result.lead_status = "uncertain";
+  } else {
+    result.lead_ready = true;
+    result.lead_status = "real";
+  }
+  return result;
+}
+
 async function calendlyRequest(path, env, options = {}) {
   if (!env.CALENDLY_ACCESS_TOKEN) throw new Error("Calendly is not configured.");
   const response = await fetch("https://api.calendly.com" + path, {
@@ -385,7 +421,7 @@ SCHEDULING ACTIONS
       return Response.json({ error: "No response generated." }, { status: 502, headers: cors });
     }
 
-    const result = JSON.parse(raw);
+    const result = enforceLeadSafety(JSON.parse(raw), safeMessages);
     let reply = result.reply;
     let scheduling = null;
 
@@ -503,7 +539,9 @@ SCHEDULING ACTIONS
         property_type: result.property_type,
         name: result.name,
         phone: result.phone,
-        email: result.email
+        email: result.email,
+        question: result.question,
+        lead_status: result.lead_status
       },
       scheduling
     }, { headers: cors });
