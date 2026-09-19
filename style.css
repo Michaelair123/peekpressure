@@ -1284,3 +1284,80 @@ footer {
     scrollbar-color: #111 transparent;
   }
 }
+
+
+/* =========================================================
+   PERFORMANCE + MICRO-POLISH
+========================================================= */
+
+/* Avoid rendering expensive below-the-fold sections until needed. */
+.services,
+.about,
+.process,
+footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
+}
+
+/* Let the browser reserve image space and avoid layout shifts. */
+.service-image {
+  overflow: hidden;
+  background: #f1f1f1;
+}
+
+.service-image img {
+  height: 100%;
+  object-fit: cover;
+  content-visibility: auto;
+  transition: transform .65s var(--peek-ease);
+}
+
+.service:hover .service-image img {
+  transform: scale(1.025);
+}
+
+/* Smoother anchor jumps without a heavy scroll effect. */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Keep interactive elements responsive without expensive effects. */
+.header-cta,
+.button,
+#quoteForm button,
+.header-phone {
+  backface-visibility: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Make focus visible for keyboard users without changing the visual language. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 4px;
+}
+
+/* Don't run the image reel on devices that request less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .about-reel-track {
+    animation: none;
+  }
+}
+
+/* On small screens, prioritize touch performance and readability. */
+@media (max-width: 700px) {
+  .about-reel-track {
+    will-change: auto;
+  }
+
+  .service-image img {
+    transition: none;
+  }
+
+  .services-grid {
+    overscroll-behavior-x: contain;
+  }
+}
