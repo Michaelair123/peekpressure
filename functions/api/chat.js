@@ -350,8 +350,8 @@ Use this as the default competitive starting point for PEEK PRESSURE. It is base
 - Typical Bay Area pressure-washing guidance clusters around roughly $0.28–$0.62/sq ft for broader power-washing projects, with many projects having a minimum around $300.
 - Burlingame research puts a standard 2-car concrete driveway around $90 low / $180 typical / $370 high.
 - A broader Bay Area driveway guide puts an 800 sq ft driveway around $210–$370 and a 1,200 sq ft driveway around $310–$550.
-- A useful PEEK PRESSURE starting target for standard residential concrete driveway cleaning is about $0.30–$0.45/sq ft, with a practical minimum around $175.
-- Standard concrete sidewalk/walkway cleaning: about $0.30–$0.50/sq ft, with a small-job minimum around $150 when standalone.
+- A useful PEEK PRESSURE starting target for standard residential concrete driveway cleaning is about $0.30–$0.45/sq ft, subject to a $150 minimum job charge.
+- Standard concrete sidewalk/walkway cleaning: about $0.30–$0.50/sq ft, subject to the $150 minimum job charge when standalone.
 - Patio/paver/harder-detail surfaces: about $0.35–$0.60/sq ft depending on joints, buildup, and surface sensitivity.
 - Oil/grease/rust/heavy organic buildup: add roughly $30–$100+ depending on severity and treatment required; never promise complete stain removal.
 - Commercial flatwork should generally be estimated from square footage, access, water/runoff requirements, frequency, and site complexity rather than residential minimums.
