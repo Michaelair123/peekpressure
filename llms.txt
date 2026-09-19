@@ -1,75 +1,82 @@
 # PEEK PRESSURE
 
-> PEEK PRESSURE provides professional pressure washing and exterior cleaning services throughout the San Francisco Bay Area.
+> PEEK PRESSURE is a Bay Area pressure washing and exterior cleaning company serving residential and commercial properties in the San Francisco Bay Area.
 
-## About
+## Business
 
-PEEK PRESSURE provides exterior surface cleaning for residential and commercial properties throughout the San Francisco Bay Area.
+- Name: PEEK PRESSURE
+- Website: https://peekpressure.com/
+- Phone: 415-689-8377
+- Email: look@peekpressure.com
+- Service type: Pressure washing and exterior surface cleaning
+- Property types: Residential and commercial
+- Quote pricing: Custom pricing after job details are reviewed; fixed service prices are not published.
 
 ## Services
 
-### Driveway Cleaning
+### Driveway Pressure Washing
 
-PEEK PRESSURE cleans concrete driveways and removes buildup and tough stains.
+PEEK PRESSURE cleans residential concrete driveways and removes surface buildup and tough stains.
 
-### Sidewalk and Walkway Cleaning
+### Sidewalk and Walkway Pressure Washing
 
 PEEK PRESSURE cleans sidewalks, walkways, entrances, and pedestrian areas.
 
-### Commercial Exterior Cleaning
+### Commercial Pressure Washing
 
-PEEK PRESSURE provides routine exterior cleaning for offices, retail properties, and apartment properties.
+PEEK PRESSURE provides exterior cleaning for offices, retail properties, apartment properties, and other commercial properties. Recurring service can be requested.
 
 ## Service Area
 
 PEEK PRESSURE currently services:
 
-* San Francisco
-* Oakland
-* San Leandro
-* Hayward
-* Burlingame
-* South San Francisco
-* Daly City
-* San Mateo
-* Fremont
-* San Jose
+- San Francisco
+- Oakland
+- San Leandro
+- Hayward
+- Burlingame
+- South San Francisco
+- Daly City
+- San Mateo
+- Fremont
+- San Jose
 
 ## Process
 
-1. Customers provide property details and describe what they need cleaned.
-2. PEEK PRESSURE reviews the job and provides clear pricing before work begins.
-3. PEEK PRESSURE performs the cleaning.
-4. Customers receive before-and-after photos and notification when the work is complete.
+1. Customers provide the property address, service type, and basic job details.
+2. Customers can optionally upload photos to help with quoting.
+3. PEEK PRESSURE reviews the request and provides clear pricing before work begins.
+4. PEEK PRESSURE performs the cleaning.
+5. Customers receive before-and-after photos and completion notification when applicable.
 
 ## Request a Quote
 
 Quote form: https://peekpressure.com/#quoteForm
 
 Quote requests collect:
-* Name
-* Email
-* Phone
-* Property address
-* Service type
-* Job details
+- Name
+- Email
+- Phone
+- Property address
+- Service type
+- Job details
+- Optional photos
 
-Pricing is provided after the requested work is reviewed; fixed service prices are not published.
+## Book Online
+
+Scheduling page: https://calendly.com/look-peekpressure/pressure-wash
 
 ## Contact
 
-Phone: 415-689-8377
+- Phone: 415-689-8377
+- Email: look@peekpressure.com
+- Quote form: https://peekpressure.com/#quoteForm
 
-Email: look@peekpressure.com
+## Website Sections
 
-Customers can request a quote through the website contact form.
-
-## Website
-
-Homepage: https://peekpressure.com/
-
-Services: https://peekpressure.com/#services
-
-Process: https://peekpressure.com/#process
-
-Contact: https://peekpressure.com/#quote
+- Homepage: https://peekpressure.com/
+- Services: https://peekpressure.com/#services
+- Process: https://peekpressure.com/#process
+- Service area: https://peekpressure.com/#service-area
+- Contact and quote form: https://peekpressure.com/#contact
+- Booking: https://peekpressure.com/#book
