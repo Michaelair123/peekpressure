@@ -617,8 +617,8 @@ function buildFastReply(text) {
   if (/\b(areas do you serve|where do you serve|service area|serve (what|which) areas)\b/i.test(value)) {
     return "We serve the Bay Area, with a focus on the Peninsula and nearby areas. Tell me the city and what you need cleaned and I’ll let you know if we cover it.";
   }
-  if (/\b(website|book|booking|schedule|appointment|calendly)\b/i.test(value) && /\b(link|where|how)\b/i.test(value)) {
-    return "You can book a pressure-washing appointment here: https://calendly.com/look-peekpressure/pressure-wash";
+  if (/\b(book|booking|schedule|scheduled|appointment|appointments|calendly|available|availability)\b/i.test(value)) {
+    return "Absolutely — you can pick a time that works for you here: https://calendly.com/look-peekpressure/pressure-wash";
   }
   return null;
 }
