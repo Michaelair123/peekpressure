@@ -2079,3 +2079,227 @@ textarea:focus-visible {
     transition: none;
   }
 }
+
+/* =========================================================
+   LOW-FRICTION QUOTE FORM
+========================================================= */
+
+#quoteForm .quote-intro {
+  margin-bottom: 2.5rem;
+}
+
+#quoteForm .quote-intro h3 {
+  margin-top: .7rem;
+  color: #111;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: .84;
+  letter-spacing: -.08em;
+}
+
+#quoteForm .quote-intro p {
+  max-width: 38rem;
+  margin-top: .9rem;
+  color: #666;
+  font-size: .78rem;
+  line-height: 1.65;
+}
+
+#quoteForm fieldset {
+  margin: 0 0 2rem;
+  padding: 0;
+  border: 0;
+}
+
+#quoteForm legend {
+  margin-bottom: .85rem;
+  color: #777;
+  font-size: .55rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.service-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .7rem;
+}
+
+.service-choice {
+  position: relative;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 1.1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fafafa;
+  color: #222;
+  cursor: pointer;
+  transition: border-color .3s var(--peek-ease), background-color .3s var(--peek-ease), transform .3s var(--peek-ease), box-shadow .3s var(--peek-ease);
+}
+
+.service-choice input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.service-choice span {
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+
+.service-choice b {
+  color: #999;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: transform .3s var(--peek-ease), color .3s var(--peek-ease);
+}
+
+.service-choice:hover {
+  transform: translateY(-2px);
+  border-color: #bbb;
+  background: #fff;
+}
+
+.service-choice:has(input:checked) {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+  box-shadow: 0 10px 28px rgba(0,0,0,.1);
+}
+
+.service-choice:has(input:checked) b {
+  color: #fff;
+  transform: translateX(3px);
+}
+
+#quoteForm .form-field {
+  margin-bottom: 1.5rem;
+}
+
+#quoteForm .form-field > label {
+  display: block;
+  margin-bottom: .55rem;
+  color: #777;
+  font-size: .55rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+#quoteForm .form-field > label span {
+  color: #aaa;
+}
+
+#quoteForm .photo-field {
+  margin-top: .5rem;
+}
+
+#quoteForm input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#quoteForm .photo-upload {
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-sizing: border-box;
+  padding: 1rem 1.1rem;
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: border-color .3s var(--peek-ease), background-color .3s var(--peek-ease), transform .3s var(--peek-ease);
+}
+
+#quoteForm .photo-upload:hover {
+  border-color: #999;
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+#quoteForm .photo-upload strong {
+  color: #111;
+  font-size: .62rem;
+  letter-spacing: .1em;
+}
+
+#quoteForm .photo-upload span {
+  color: #888;
+  font-size: .65rem;
+}
+
+#quoteForm .quote-contact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 1rem;
+}
+
+#quoteForm .quote-email {
+  grid-column: 1 / -1;
+}
+
+#quoteForm button {
+  width: 100%;
+  min-height: 68px;
+  margin-top: .5rem;
+  border-radius: 999px;
+  letter-spacing: .14em;
+}
+
+#quoteForm .form-note {
+  margin-top: 1rem !important;
+}
+
+@media (max-width: 700px) {
+  #quoteForm .quote-intro {
+    margin-bottom: 2rem;
+  }
+
+  #quoteForm .quote-intro h3 {
+    font-size: clamp(2.6rem, 12vw, 4.5rem);
+  }
+
+  .service-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-choice {
+    min-height: 60px;
+  }
+
+  #quoteForm .photo-upload {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 76px;
+  }
+
+  #quoteForm .quote-contact {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  #quoteForm .quote-email {
+    grid-column: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-choice,
+  .service-choice b,
+  #quoteForm .photo-upload {
+    transition: none;
+  }
+}
