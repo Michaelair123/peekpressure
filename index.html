@@ -172,7 +172,6 @@
         <a href="#services">Services</a>
         <a href="#process">Process</a>
         <a href="#book">Book</a>
-        <a href="faq.html">FAQ</a>
       </nav>
       <span class="header-contact"><a href="tel:14156898377" class="header-phone" aria-label="Call PEEK PRESSURE at 415-689-8377">📞 415-689-8377</a><a href="sms:14156898377" class="header-text" aria-label="Text PEEK PRESSURE at 415-689-8377">💬</a></span>
     <a href="mailto:look@peekpressure.com" class="header-email" aria-label="Email PEEK PRESSURE">✉️</a>
@@ -552,7 +551,6 @@
       <div>
         <a href="#" class="logo">PEEK<span>PRESSURE</span></a>
         <p>For general inquiries, <a href="mailto:look@peekpressure.com">📧 email look@peekpressure.com</a> or <span class="footer-contact"><a href="sms:14156898377">text</a> or <a href="tel:14156898377" class="footer-phone">📞 call 415-689-8377</a></span>.</p>
-        <p><a href="/faq.html">Lucy FAQ →</a></p>
       </div>
     </div>
     <div class="container footer-bottom">
@@ -1129,8 +1127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         lead.condition && 'Condition: ' + lead.condition,
         lead.timing && 'Timing: ' + lead.timing,
         lead.property_type && 'Property: ' + lead.property_type,
-        lead.estimate_low != null && lead.estimate_high != null && 'ROUGH ESTIMATE: $' + Number(lead.estimate_low).toFixed(0) + '–$' + Number(lead.estimate_high).toFixed(0),
-        'OWNER APPROVAL REQUIRED — rough estimate only; final price must be confirmed by PEEK PRESSURE.',
         'CONTACT BACK REQUESTED — please follow up with this customer.',
         "Lead captured by Lucy, PEEK PRESSURE's AI assistant."
       ].filter(Boolean).join('\\n'));
