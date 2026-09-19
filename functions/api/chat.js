@@ -212,9 +212,7 @@ export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
     const messages = Array.isArray(body.messages) ? body.messages.slice(-16) : [];
-    const customerTimezone = typeof body.timezone === "string" && body.timezone
-      ? body.timezone
-      : "America/Los_Angeles";
+    const customerTimezone = "America/Los_Angeles";
 
     if (!messages.length) {
       return Response.json({ error: "No messages supplied." }, { status: 400, headers: cors });
