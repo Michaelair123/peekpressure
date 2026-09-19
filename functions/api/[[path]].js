@@ -347,8 +347,7 @@ async function handleAvailability(context) {
       .slice(0, 8)
       .map(slot => ({
         start_time: slot.start_time,
-        scheduling_url: slot.scheduling_url || CALENDLY_URL,
-        event_type: eventType.uri
+        scheduling_url: slot.scheduling_url || CALENDLY_URL
       }));
 
     return json({
@@ -524,7 +523,7 @@ async function handleLead(context) {
 export async function onRequestGet(context) {
   const path = Array.isArray(context.params?.path) ? context.params.path.join("/") : String(context.params?.path || "");
 
-  if (path === "availability") return handleAvailability(context);
+  if (path === "availability") return handleAvailability(context);\n  if (path === "book") return createCalendlyBooking(context);
   return json({ error: "Not found" }, 404);
 }
 
