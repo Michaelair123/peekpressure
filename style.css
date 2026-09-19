@@ -774,226 +774,81 @@ footer {
 }
 
 
-/* CONTACT + SPACING POLISH */
-.hero {
-  padding-top: clamp(7rem, 10vw, 9.5rem);
-  padding-bottom: clamp(3.5rem, 6vw, 5.5rem);
-}
 
-.services,
-.about,
-.process {
-  padding-block: clamp(4rem, 7vw, 6.5rem);
-}
 
-.process-header {
-  margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
-}
-
+/* CONTACT SECTION */
 main > h2 {
-  max-width: 1100px;
-  margin-inline: auto;
+  width: 100%;
+  margin: 0;
+  padding: clamp(4rem, 7vw, 6.5rem) 1rem 0;
+  border-top: 1px solid var(--line);
   text-align: center;
-  text-wrap: balance;
-  padding-top: clamp(4rem, 7vw, 6.5rem);
+  box-sizing: border-box;
 }
 
 main > h2 + p {
-  max-width: 680px;
+  width: min(680px, calc(100% - 2rem));
   margin: 1.25rem auto 2.75rem;
+  padding: 0;
   text-align: center;
+  box-sizing: border-box;
 }
 
-#quoteForm {
-  width: min(calc(100% - (var(--page-padding) * 2)), 720px);
-  margin-inline: auto;
-  padding-bottom: clamp(4rem, 7vw, 6.5rem);
+main > form#quoteForm {
+  width: min(720px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 0 0 clamp(4rem, 7vw, 6.5rem);
+  box-sizing: border-box;
 }
 
-.form-field {
-  gap: .55rem;
+main > form#quoteForm .form-field {
+  width: 100%;
   margin-top: 1.35rem;
 }
 
-.form-field input,
-.form-field select,
-.form-field textarea {
-  min-height: 58px;
+main > form#quoteForm .form-field:first-child {
+  margin-top: 0;
+}
+
+main > form#quoteForm input,
+main > form#quoteForm select,
+main > form#quoteForm textarea {
+  width: 100%;
+  min-height: 60px;
   padding: 1rem 1.1rem;
   border: 1px solid #d8d8d8;
   border-radius: 10px;
   background: #fafafa;
   box-sizing: border-box;
-  transition:
-    border-color .25s ease,
-    background-color .25s ease,
-    box-shadow .25s ease,
-    transform .25s ease;
 }
 
-.form-field textarea {
+main > form#quoteForm textarea {
   min-height: 155px;
-  resize: vertical;
 }
 
-.form-field input:focus,
-.form-field select:focus,
-.form-field textarea:focus {
+main > form#quoteForm input:focus,
+main > form#quoteForm select:focus,
+main > form#quoteForm textarea:focus {
   border-color: #111;
   background: #fff;
   box-shadow: 0 0 0 3px rgba(0,0,0,.05);
 }
 
-#quoteForm button {
-  min-height: 58px;
-  margin-top: 2rem;
-  padding-inline: 2rem;
+main > form#quoteForm button {
+  min-height: 60px;
 }
 
 @media (max-width: 700px) {
   main > h2 {
-    padding-top: 4.5rem;
-    font-size: clamp(2.8rem, 15vw, 5rem);
+    padding-top: 4rem;
+    font-size: clamp(3.1rem, 15vw, 5rem);
   }
 
   main > h2 + p {
     margin-bottom: 2rem;
   }
 
-  #quoteForm {
-    width: min(calc(100% - 2rem), 720px);
+  main > form#quoteForm {
+    width: calc(100% - 2rem);
   }
-
-  .form-field input,
-  .form-field select,
-  .form-field textarea {
-    min-height: 60px;
-    padding: 1rem;
-  }
-
-  .form-field textarea {
-    min-height: 150px;
-  }
-}
-
-
-/* FORCE CONTACT CONTENT TO STAY CENTERED */
-main > h2,
-main > h2 + p,
-#quoteForm {
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-main > h2 {
-  width: min(1100px, calc(100% - (var(--page-padding) * 2)));
-  box-sizing: border-box;
-}
-
-main > h2 + p {
-  width: min(680px, calc(100% - (var(--page-padding) * 2)));
-  box-sizing: border-box;
-}
-
-#quoteForm {
-  width: min(720px, calc(100% - (var(--page-padding) * 2)));
-  box-sizing: border-box;
-  margin-left: 0;
-  margin-right: 0;
-}
-
-@media (max-width: 700px) {
-  main > h2,
-  main > h2 + p,
-  #quoteForm {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
-
-
-/* FINAL CONTACT LAYOUT FIX */
-main > h2,
-main > h2 + p,
-#quoteForm {
-  left: auto !important;
-  right: auto !important;
-  transform: none !important;
-}
-
-main > h2 {
-  display: block !important;
-  width: min(1100px, calc(100% - 2rem)) !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
-}
-
-main > h2 + p {
-  display: block !important;
-  width: min(680px, calc(100% - 2rem)) !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
-}
-
-#quoteForm {
-  display: block !important;
-  width: min(720px, calc(100% - 2rem)) !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  box-sizing: border-box !important;
-}
-
-
-/* CONTACT CENTER — STRUCTURAL FIX */
-main {
-  width: 100%;
-}
-
-main > h2,
-main > h2 + p,
-main > form#quoteForm {
-  position: static !important;
-  left: auto !important;
-  right: auto !important;
-  transform: none !important;
-  float: none !important;
-  clear: both !important;
-}
-
-main > h2 {
-  display: block !important;
-  width: min(1100px, calc(100% - 2rem)) !important;
-  margin: clamp(4rem, 7vw, 6.5rem) auto 0 !important;
-  padding: 0 !important;
-  text-align: center !important;
-}
-
-main > h2 + p {
-  display: block !important;
-  width: min(680px, calc(100% - 2rem)) !important;
-  margin: 1.25rem auto 2.75rem !important;
-  padding: 0 !important;
-  text-align: center !important;
-}
-
-main > form#quoteForm {
-  display: block !important;
-  width: min(720px, calc(100% - 2rem)) !important;
-  margin: 0 auto !important;
-  padding-bottom: clamp(4rem, 7vw, 6.5rem) !important;
-}
-
-main > form#quoteForm .form-field {
-  width: 100% !important;
-}
-
-main > form#quoteForm input,
-main > form#quoteForm select,
-main > form#quoteForm textarea {
-  width: 100% !important;
 }
