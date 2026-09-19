@@ -155,6 +155,9 @@
   .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 </style>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://assets.calendly.com" crossorigin>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
@@ -562,7 +565,7 @@
   </div>
 
   <script>
-    // ── STICKY HEADER ────────────────────────────
+
     const header = document.querySelector('.header');
     let scrollTicking = false;
     const updateScrollUI = () => {
@@ -579,7 +582,6 @@
     }, { passive: true });
     updateScrollUI();
 
-    // ── ABOUT IMAGE REEL ─────────────────────────
     // Temporary pressure-washing photos for testing. Replace these URLs with PEEK PRESSURE job photos later.
     const aboutReelImages = [
       "https://images.unsplash.com/photo-1754797007471-68300d87b793?auto=format&fit=crop&fm=jpg&q=65&w=1200",
@@ -629,7 +631,6 @@
       }
     }
 
-    // ── SERVICE AREA MAP OVERLAY ─────────────────
     // Coordinates are projected onto the fixed Google Maps viewport so dots/boundary
     // stay geographically aligned without requiring a Google Maps API key.
     const serviceMap = document.querySelector('.service-map');
@@ -726,7 +727,6 @@
       window.addEventListener('resize', drawServiceArea, { passive: true });
     }
 
-    // ── ACTIVE NAV on scroll ─────────────────────
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.header nav a');
 
@@ -742,7 +742,6 @@
 
     sections.forEach(s => navObserver.observe(s));
 
-    // ── SCROLL REVEAL ────────────────────────────
     document.querySelectorAll(
       '.services-grid, .about-grid, .process-header, .process-grid, .service, .process-step, .why-peek-grid, .why-peek-point, .service-area-container, .contact-container, .booking-cta-inner'
     ).forEach((el, i) => {
@@ -762,7 +761,6 @@
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // ── LOW-FRICTION LEAD HELPERS ────────────────
     const serviceLinks = document.querySelectorAll('.service-cta[data-service]');
     serviceLinks.forEach(link => {
       link.addEventListener('click', () => {
@@ -783,43 +781,6 @@
           : 'Photos help us quote faster.';
       });
     }
-
-        // ── LIGHTBOX ─────────────────────────────────
-    const lightbox = document.createElement('div');
-    lightbox.classList.add('lightbox');
-    lightbox.innerHTML = `
-      <button class="lightbox-close" aria-label="Close">✕</button>
-
-    `;
-    document.body.appendChild(lightbox);
-
-    const lbImg   = lightbox.querySelector('img');
-    const lbClose = lightbox.querySelector('.lightbox-close');
-
-    document.querySelectorAll('.service-card img').forEach(img => {
-      img.addEventListener('click', () => {
-        lbImg.src = img.src;
-        lbImg.alt = img.alt;
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-    });
-
-    [lbClose, lightbox].forEach(el => {
-      el.addEventListener('click', e => {
-        if (e.target === lightbox || e.target === lbClose || e.currentTarget === lbClose) {
-          lightbox.classList.remove('active');
-          document.body.style.overflow = '';
-        }
-      });
-    });
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    });
   </script>
 <script>
   window.formspree =
@@ -838,37 +799,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  /* PEEK micro-interactions — desktop only */
-  if (window.matchMedia('(pointer:fine)').matches) {
-    const buttons = document.querySelectorAll('.button, .booking-cta-button, .header-cta, .service-cta, #quoteForm button');
-    buttons.forEach(btn => {
-      btn.addEventListener('pointermove', e => {
-        const r = btn.getBoundingClientRect();
-        btn.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
-        btn.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
-      });
-      btn.addEventListener('pointerleave', () => {
-        btn.style.removeProperty('--mx');
-        btn.style.removeProperty('--my');
-      });
-    });
 
-    document.querySelectorAll('.service-card, .service').forEach(card => {
-      card.addEventListener('pointermove', e => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX-r.left)/r.width-.5;
-        const y = (e.clientY-r.top)/r.height-.5;
-        card.style.setProperty('--tilt-x', (y*-2.5)+'deg');
-        card.style.setProperty('--tilt-y', (x*2.5)+'deg');
-      });
-      card.addEventListener('pointerleave', () => {
-        card.style.setProperty('--tilt-x','0deg');
-        card.style.setProperty('--tilt-y','0deg');
-      });
-    });
-  }
-
-  /* Quote progress */
   const form = document.querySelector('#quoteForm');
   if (form) {
     const fields = [...form.querySelectorAll('input, textarea')].filter(el => el.type !== 'hidden' && el.type !== 'file');
@@ -891,7 +822,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  /* Discoverable, quiet PEEK easter eggs */
+
   const logo = document.querySelector('.logo');
   if (logo) {
     let taps = 0, timer;
@@ -908,7 +839,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* Only trigger the keyboard egg after a user has discovered the logo. */
   let armed = false;
   document.addEventListener('click', (e) => {
     if (e.target.closest('.logo')) armed = true;
