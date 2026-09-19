@@ -623,7 +623,7 @@ SCHEDULING ACTIONS
     }
 
 
-    if (result.action === "check_availability") {
+    if (!staging && result.action === "check_availability") {
       try {
         const eventType = await getPressureWashEventType(env);
         let start = new Date(result.availability_start || now);
@@ -662,7 +662,7 @@ SCHEDULING ACTIONS
       }
     }
 
-    if (result.action === "book_appointment") {
+    if (!staging && result.action === "book_appointment") {
       const name = (result.name || "").trim();
       const email = (result.email || "").trim();
       const selected = result.selected_start_time;
