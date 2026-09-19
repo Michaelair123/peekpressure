@@ -577,6 +577,20 @@ async function handleLucyRequest({ request, env }) {
     return new Response(null, { status: 204, headers: cors });
   }
 
+  if (request.method === "GET") {
+    return Response.json({
+      ok: Boolean(env.OPENAI_API_KEY),
+      service: "lucy",
+      api_key_configured: Boolean(env.OPENAI_API_KEY),
+      staging_configured: Boolean(env.LUCY_STAGING_TOKEN),
+      calendly_configured: Boolean(env.CALENDLY_ACCESS_TOKEN)
+    }, { headers: cors });
+  }
+
+  if (request.method !== "POST") {
+    return Response.json({ error: "Method not allowed." }, { status: 405, headers: cors });
+  }
+
   if (!env.OPENAI_API_KEY) {
     return Response.json({ error: "AI service is not configured." }, { status: 503, headers: cors });
   }
@@ -656,10 +670,25 @@ SCHEDULING ACTIONS
           .trim();
 
     if (!raw) {
-      return Response.json({ error: "No response generated." }, { status: 502, headers: cors });
+      console.error("Lucy empty model response", JSON.stringify({
+        requestId,
+        model: "gpt-5.6-luna"
+      }));
+      return Response.json({ error: "No response generated.", request_id: requestId }, { status: 502, headers: cors });
     }
 
-    const result = enforceLeadSafety(JSON.parse(raw), safeMessages);
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (error) {
+      console.error("Lucy structured output parse failure", JSON.stringify({
+        requestId,
+        error: error?.message || "JSON parse failed"
+      }));
+      return Response.json({ error: "Lucy response format error.", request_id: requestId }, { status: 502, headers: cors });
+    }
+
+    const result = enforceLeadSafety(parsed, safeMessages);
     let reply = result.reply;
     let scheduling = null;
     const stagingToken = env.LUCY_STAGING_TOKEN;
