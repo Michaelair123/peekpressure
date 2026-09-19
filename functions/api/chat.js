@@ -513,8 +513,7 @@ function isUsablePhone(value) {
 
 function enforceLeadSafety(result, safeMessages) {
   const latestUser = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
-    const faqAnswer = findFaqAnswer(latestUser);
-  const suspicious = [...safeMessages].filter(message => message.role === "user").some(message => containsSuspiciousInstruction(message.content));
+    const suspicious = [...safeMessages].filter(message => message.role === "user").some(message => containsSuspiciousInstruction(message.content));
   const name = typeof result.name === "string" ? result.name.trim() : "";
   const phone = typeof result.phone === "string" ? result.phone.trim() : "";
   const email = typeof result.email === "string" ? result.email.trim() : "";
@@ -788,8 +787,32 @@ async function handleLucyRequest({ request, env }) {
       return Response.json({ error: "Images are too large. Please send a smaller photo." }, { status: 413, headers: cors });
     }
 
+    const latestUserText = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
     const pricingContext = extractPricingContext(safeMessages);
-    const fastReply = buildFastReply([...safeMessages].reverse().find(message => message.role === "user")?.content || "");
+    const faqAnswer = findFaqAnswer(latestUserText);
+    const fastReply = buildFastReply(latestUserText);
+    if (faqAnswer && !pricingContext.requested) {
+      const fastResult = enforceLeadSafety({
+        reply: faqAnswer,
+        lead_ready: false,
+        service: null, location: null, size: null, surface: null, condition: null, timing: null,
+        property_type: null, name: null, phone: null, email: null, question: null,
+        estimate_low: null, estimate_high: null, lead_status: "uncertain",
+        action: "none", availability_start: null, availability_end: null, selected_start_time: null
+      }, safeMessages);
+      return Response.json({
+        reply: fastResult.reply, lead_ready: fastResult.lead_ready,
+        lead: {
+          service: fastResult.service, location: fastResult.location, size: fastResult.size,
+          surface: fastResult.surface, condition: fastResult.condition, timing: fastResult.timing,
+          property_type: fastResult.property_type, name: fastResult.name, phone: fastResult.phone,
+          email: fastResult.email, question: fastResult.question,
+          estimate_low: fastResult.estimate_low, estimate_high: fastResult.estimate_high,
+          lead_status: fastResult.lead_status
+        },
+        scheduling: null
+      }, { headers: cors });
+    }
     if (fastReply && !pricingContext.requested) {
       const fastResult = enforceLeadSafety({
         reply: fastReply,
@@ -888,9 +911,6 @@ SCHEDULING ACTIONS
 
     parsed.reply = enforceRoughPricing(parsed.reply, pricingContext);
     const result = enforceLeadSafety(parsed, safeMessages);
-    if (faqAnswer && !pricingContext.requested && !result.lead_ready) {
-      result.reply = faqAnswer;
-    }
     let reply = result.reply;
     let scheduling = null;
     const stagingToken = env.LUCY_STAGING_TOKEN;
