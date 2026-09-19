@@ -1101,7 +1101,23 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!name || (!phone && !email)) return false;
       if (lead.lead_status === 'spam' || lead.lead_status === 'uncertain') return false;
 
+      const transcript = state.history
+        .map(message => {
+          const role = message.role === 'user' ? 'CUSTOMER' : 'LUCY';
+          const content = Array.isArray(message.content)
+            ? message.content
+                .filter(part => part?.type === 'input_text')
+                .map(part => part.text || '')
+                .join(' ')
+            : String(message.content || '');
+          return content.trim() ? role + ': ' + content.trim() : null;
+        })
+        .filter(Boolean)
+        .join('\\n\\n');
+
       const formData = new URLSearchParams();
+      formData.set('_to', 'look@peekpressure.com');
+      formData.set('_subject', 'Lucy customer callback request — ' + (name || 'New lead'));
       formData.set('service', lead.service || 'Exterior cleaning');
       formData.set('address', lead.location || 'Bay Area');
       formData.set('details', [
@@ -1111,14 +1127,16 @@ document.addEventListener('DOMContentLoaded', () => {
         lead.condition && 'Condition: ' + lead.condition,
         lead.timing && 'Timing: ' + lead.timing,
         lead.property_type && 'Property: ' + lead.property_type,
+        'CONTACT BACK REQUESTED — please follow up with this customer.',
         "Lead captured by Lucy, PEEK PRESSURE's AI assistant."
-      ].filter(Boolean).join('\n'));
+      ].filter(Boolean).join('\\n'));
       formData.set('name', name);
       if (phone) formData.set('phone', phone);
       if (email) formData.set('email', email);
       formData.set('lead_status', lead.lead_status || 'real');
       formData.set('handoff', 'Owner follow-up requested by Lucy');
       formData.set('source', 'Lucy - PEEK PRESSURE AI');
+      formData.set('chat_log', transcript || 'No text transcript available.');
 
       try {
         const response = await fetch('https://formspree.io/f/mdekoerb', {
