@@ -3689,7 +3689,7 @@ body.peek-clean::after {
   100% { opacity:0; transform:scale(1.025); }
 }
 body.peek-maximum::after {
-  content: "💦";
+  content: "💦 PRESSURE OVER 9000!";
   position: fixed;
   left:50%;
   top:50%;
