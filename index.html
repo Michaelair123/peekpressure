@@ -151,7 +151,6 @@
   }
   </script>
 
-
 <style>
   .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 </style>
@@ -163,9 +162,6 @@
 </head>
 <body>
 
-  <!-- =============================================
-       HEADER
-  ============================================= -->
   <header class="header" aria-label="PEEK PRESSURE site header">
     <div class="container header-inner">
       <a href="#" class="logo">PEEK<span>PRESSURE</span></a>
@@ -182,9 +178,6 @@
 
   <main>
 
-    <!-- =============================================
-         HERO
-    ============================================= -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-copy hero-content">
@@ -197,13 +190,10 @@
             <a href="#services" class="button secondary">VIEW SERVICES →</a>
           </div>
         </div>
-        
+
       </div>
     </section>
 
-    <!-- =============================================
-         SERVICES
-    ============================================= -->
     <section id="services" class="services" aria-labelledby="services-title">
       <div class="container">
 
@@ -263,9 +253,6 @@
       </div>
     </section>
 
-    <!-- =============================================
-         ABOUT
-    ============================================= -->
     <section class="about" aria-labelledby="about-title">
       <div class="container about-grid">
         <span class="label">ABOUT</span>
@@ -276,9 +263,6 @@
       </div>
     </section>
 
-    <!-- =============================================
-         PROCESS
-    ============================================= -->
     <section id="process" class="process">
       <div class="container">
 
@@ -311,8 +295,6 @@
       </div>
     </section>
 
-    
-    <!-- WHY PEEK -->
     <section class="why-peek" aria-labelledby="why-peek-title">
       <div class="container why-peek-container">
         <div class="section-top">
@@ -344,10 +326,6 @@
       </div>
     </section>
 
-    <!-- PROOF / BEFORE + AFTER + REVIEWS
-         Foundation for real PEEK PRESSURE work.
-         Replace placeholders with actual job photos and verified customer reviews as they are earned.
-    -->
     <section class="proof-section" id="proof" aria-labelledby="proof-title">
       <div class="container proof-container">
         <div class="section-top">
@@ -376,7 +354,7 @@
             </div>
             <div class="before-after-meta">
               <span class="label">PROJECT 001</span>
-              
+
             </div>
           </div>
 
@@ -393,7 +371,6 @@
       </div>
     </section>
 
-    <!-- SERVICE AREA -->
     <section id="service-area" class="service-area" aria-labelledby="service-area-title">
       <div class="container service-area-container">
         <span class="label">SERVICE AREA</span>
@@ -438,7 +415,7 @@
             <span>SERVICE AREA</span>
           </div>
         </div>
- 
+
         <div class="service-area-details" aria-label="Pressure washing services offered across the service area">
           <span>DRIVEWAYS</span>
           <span>SIDEWALKS</span>
@@ -454,9 +431,6 @@
       </div>
     </section>
 
-    <!-- =============================================
-         QUOTE / CONTACT
-    ============================================= -->
   <div data-fs-success class="form-success">
   Thanks! Your quote request has been sent. We'll be in touch shortly.
 </div>
@@ -468,7 +442,7 @@
 <div class="contact-container">
     <h2 id="quote">HAVE QUESTIONS?<br>NEED SOMETHING SPECIAL?</h2>
     <p>Tell us what you need, including any special service or property requirements. Send us a message below and we’ll take it from there.</p>
-    
+
     <div class="booking-cta" id="book">
       <div class="booking-container">
 <div class="booking-cta-inner">
@@ -487,8 +461,7 @@
       </div>
       </div>
     </div>
-    
-    
+
     <form
       id="quoteForm"
       action="https://formspree.io/f/mdekoerb"
@@ -570,9 +543,6 @@
 </div>
 </section>
 
-  <!-- =============================================
-       FOOTER
-  ============================================= -->
   <footer>
     <div class="container footer-inner">
       <div>
@@ -591,9 +561,6 @@
     <a href="#book">BOOK</a>
   </div>
 
-  <!-- =============================================
-       JS — FORM + LIGHTBOX
-  ============================================= -->
   <script>
     // ── STICKY HEADER ────────────────────────────
     const header = document.querySelector('.header');
@@ -611,7 +578,6 @@
       }
     }, { passive: true });
     updateScrollUI();
-
 
     // ── ABOUT IMAGE REEL ─────────────────────────
     // Temporary pressure-washing photos for testing. Replace these URLs with PEEK PRESSURE job photos later.
@@ -662,8 +628,6 @@
         loadAboutReel();
       }
     }
-
-
 
     // ── SERVICE AREA MAP OVERLAY ─────────────────
     // Coordinates are projected onto the fixed Google Maps viewport so dots/boundary
@@ -762,7 +726,6 @@
       window.addEventListener('resize', drawServiceArea, { passive: true });
     }
 
-
     // ── ACTIVE NAV on scroll ─────────────────────
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.header nav a');
@@ -778,7 +741,6 @@
     }, { rootMargin: '-40% 0px -55% 0px' });
 
     sections.forEach(s => navObserver.observe(s));
-
 
     // ── SCROLL REVEAL ────────────────────────────
     document.querySelectorAll(
@@ -799,8 +761,6 @@
     }, { rootMargin: '0px 0px -80px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-
 
     // ── LOW-FRICTION LEAD HELPERS ────────────────
     const serviceLinks = document.querySelectorAll('.service-cta[data-service]');
@@ -829,7 +789,7 @@
     lightbox.classList.add('lightbox');
     lightbox.innerHTML = `
       <button class="lightbox-close" aria-label="Close">✕</button>
-      
+
     `;
     document.body.appendChild(lightbox);
 
