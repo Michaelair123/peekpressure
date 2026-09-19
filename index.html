@@ -658,5 +658,52 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  /* PEEK micro-interactions — desktop only */
+  if (window.matchMedia('(pointer:fine)').matches) {
+    const buttons = document.querySelectorAll('.button, .booking-cta-button, .header-cta, .service-cta, #quoteForm button');
+    buttons.forEach(btn => {
+      btn.addEventListener('pointermove', e => {
+        const r = btn.getBoundingClientRect();
+        btn.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+        btn.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+      });
+      btn.addEventListener('pointerleave', () => {
+        btn.style.removeProperty('--mx');
+        btn.style.removeProperty('--my');
+      });
+    });
+
+    document.querySelectorAll('.service-card, .service').forEach(card => {
+      card.addEventListener('pointermove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX-r.left)/r.width-.5;
+        const y = (e.clientY-r.top)/r.height-.5;
+        card.style.setProperty('--tilt-x', (y*-2.5)+'deg');
+        card.style.setProperty('--tilt-y', (x*2.5)+'deg');
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--tilt-x','0deg');
+        card.style.setProperty('--tilt-y','0deg');
+      });
+    });
+  }
+
+  /* Quote progress */
+  const form = document.querySelector('#quoteForm');
+  if (form) {
+    const fields = [...form.querySelectorAll('input, textarea')].filter(el => el.type !== 'hidden' && el.type !== 'file');
+    const update = () => {
+      const filled = fields.filter(el => el.type === 'radio' ? el.checked : el.value.trim()).length;
+      form.style.setProperty('--quote-progress', Math.min(100, Math.round(filled/Math.max(fields.length,1)*100))+'%');
+    };
+    fields.forEach(el => el.addEventListener('input', update));
+    fields.forEach(el => el.addEventListener('change', update));
+    update();
+  }
+});
+</script>
 </body>
 </html>
