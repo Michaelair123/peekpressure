@@ -1111,3 +1111,36 @@ body::before{content:"";position:fixed;top:0;left:0;width:var(--scroll-progress,
   .hero-copy h1,.hero-copy>p,.hero-buttons{animation:none!important}
   .service-image img,.button,.header-cta,.mobile-action-bar a{transition:none!important}
 }
+
+/* MOBILE HEADER CONTACT — CALL + TEXT GROUP */
+@media (max-width:700px){
+  .header-contact{
+    display:inline-flex!important;
+    align-items:center!important;
+    gap:.28rem!important;
+    margin-left:auto!important;
+    flex:0 0 auto!important;
+  }
+  .header-contact .header-phone{
+    margin-left:0!important;
+  }
+  .header-contact .header-text{
+    margin:0!important;
+  }
+  .header-email{
+    font-size:1rem!important;
+    flex:0 0 2rem!important;
+    width:2rem!important;
+    min-width:2rem!important;
+    height:2rem!important;
+    padding:0!important;
+    white-space:nowrap!important;
+  }
+  .header-email::first-letter{font-size:1rem!important}
+  .header-cta{flex:0 0 auto!important}
+}
+@media (max-width:375px){
+  .header-contact{gap:.2rem!important}
+  .header-contact .header-phone{font-size:.5rem!important}
+  .header-email{flex-basis:1.85rem!important;width:1.85rem!important;min-width:1.85rem!important;height:1.85rem!important}
+}
