@@ -25,6 +25,7 @@
   </style>
 </head>
 <body>
+  <header class="header" aria-label="PEEK PRESSURE site header"><div class="container header-inner"><a href="/" class="logo">PEEK<span>PRESSURE</span></a><nav aria-label="Primary navigation"><a href="/">Home</a><a href="/faq.html" aria-current="page">FAQ</a><a href="/#book">Book</a></nav><span class="header-contact"><a href="tel:14156898377" class="header-phone" aria-label="Call PEEK PRESSURE at 415-689-8377">📞 415-689-8377</a><a href="sms:14156898377" class="header-text" aria-label="Text PEEK PRESSURE at 415-689-8377">💬</a></span><a href="mailto:look@peekpressure.com" class="header-email" aria-label="Email PEEK PRESSURE">✉️</a><a href="/#quoteForm" class="header-cta">GET A QUOTE</a></div></header>
   <main class="faq-wrap">
     <div class="faq-eyebrow">PEEK PRESSURE / LUCY</div>
     <h1 class="faq-title">Frequently asked questions.</h1>
@@ -41,9 +42,24 @@
     function render(){
       const term=search.value.trim().toLowerCase();
       const filtered=items.filter(item=>!term || (item.question+' '+item.answer+' '+(item.keywords||[]).join(' ')).toLowerCase().includes(term));
-      list.innerHTML=filtered.length
-        ? filtered.map(item=>'<article class="faq-item"><h2>'+item.question+'</h2><p>'+item.answer+'</p></article>').join('')
-        : '<div class="faq-empty">No matching answer yet. Ask Lucy and we can add it here.</div>';
+      list.replaceChildren();
+      if(!filtered.length){
+        const empty=document.createElement('div');
+        empty.className='faq-empty';
+        empty.textContent='No matching answer yet. Ask Lucy and we can add it here.';
+        list.appendChild(empty);
+        return;
+      }
+      filtered.forEach(item=>{
+        const article=document.createElement('article');
+        article.className='faq-item';
+        const h2=document.createElement('h2');
+        h2.textContent=item.question;
+        const p=document.createElement('p');
+        p.textContent=item.answer;
+        article.append(h2,p);
+        list.appendChild(article);
+      });
     }
     async function loadFaq(){
       try{
