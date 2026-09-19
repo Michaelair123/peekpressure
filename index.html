@@ -1169,7 +1169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
       } catch (error) {
         console.warn('Lucy lead submission failed', error);
-        return false;
+        return { ok: false, error: error?.message || 'Unknown submission error' };
       }
     }
 
@@ -1184,8 +1184,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // sending anything to PEEK PRESSURE.
       if (state.pendingLead && !hasImages) {
         const normalized = clean.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
-        const affirmative = /^(yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|send it|yes send it|yes send)$/i.test(normalized) ||
-          /\b(yes|correct|right|looks good|send it)\b/.test(normalized);
+        const affirmative = /^(yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|send it|yes send it|yes send|try again)$/i.test(normalized) ||
+          /\b(yes|correct|right|looks good|send it|try again)\b/.test(normalized);
         const correction = /\b(change|wrong|incorrect|fix|update|different|no)\b/.test(normalized);
 
         addMessage(clean, 'user');
@@ -1199,7 +1199,8 @@ document.addEventListener('DOMContentLoaded', () => {
           try {
             const leadToSend = state.pendingLead;
             state.pendingLead = null;
-            const sent = await submitLead(leadToSend);
+            const result = await submitLead(leadToSend);
+            const sent = result === true;
 
             if (sent) {
               const success = "Perfect — your information has been sent to PEEK PRESSURE. We’ll follow up directly.";
@@ -1208,7 +1209,8 @@ document.addEventListener('DOMContentLoaded', () => {
               setQuick(['Ask another question', 'Book a time']);
             } else {
               state.pendingLead = leadToSend;
-              const failure = "I couldn’t complete the handoff just yet. I haven’t told you it was sent. Please reply TRY AGAIN, or call/text PEEK PRESSURE at 415-689-8377.";
+              const failureDetail = result?.error ? " Formspree says: " + result.error : "";
+              const failure = "I couldn’t complete the handoff just yet. I haven’t told you it was sent. Please reply TRY AGAIN, or call/text PEEK PRESSURE at 415-689-8377." + failureDetail;
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
               setQuick(['TRY AGAIN', 'Book a time']);
