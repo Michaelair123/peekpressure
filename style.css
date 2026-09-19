@@ -210,3 +210,31 @@
   .peek-chat-attach,
   .peek-chat-send{transition:none!important}
 }
+
+
+/* Lucy reliability: keep the launcher tappable above the mobile action bar. */
+@media (max-width:700px){
+  .peek-chat-launcher{
+    right:12px !important;
+    bottom:calc(4.9rem + env(safe-area-inset-bottom)) !important;
+    z-index:2147483646 !important;
+    pointer-events:auto !important;
+    touch-action:manipulation;
+  }
+  .peek-chat-launcher.is-hidden{pointer-events:none !important;}
+  .peek-chat{
+    right:8px !important;
+    bottom:calc(.5rem + env(safe-area-inset-bottom)) !important;
+    width:calc(100vw - 16px) !important;
+    height:min(720px,calc(100dvh - 16px)) !important;
+    max-height:calc(100dvh - 16px) !important;
+    z-index:2147483647 !important;
+  }
+  .mobile-action-bar{z-index:100 !important;}
+}
+/* Prevent accidental giant footer copy from inherited heading styles. */
+footer .footer-inner,
+footer .footer-inner p,
+footer .footer-bottom{font-size:inherit;}
+footer .footer-inner p{font-size:.65rem;line-height:1.6;}
+
