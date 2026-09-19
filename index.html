@@ -23,88 +23,127 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "@id": "https://peekpressure.com/#business",
-    "name": "PEEK PRESSURE",
-    "url": "https://peekpressure.com/",
-    "telephone": "+14156898377",
-    "email": "look@peekpressure.com",
-    "description": "Professional pressure washing for residential and commercial properties throughout the Bay Area, including driveways, sidewalks, walkways, and commercial exteriors.",
-    "areaServed": [
-      { "@type": "City", "name": "San Francisco" },
-      { "@type": "City", "name": "Burlingame" },
-      { "@type": "City", "name": "San Mateo" },
-      { "@type": "City", "name": "South San Francisco" },
-      { "@type": "City", "name": "Hayward" },
-      { "@type": "City", "name": "San Bruno" }
-    ],
-    "serviceType": [
-      "Pressure washing",
-      "Driveway cleaning",
-      "Sidewalk cleaning",
-      "Walkway cleaning",
-      "Commercial exterior cleaning"
-    ],
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "PEEK PRESSURE Services",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Driveway Pressure Washing",
-            "serviceType": "Driveway cleaning",
-            "description": "Pressure washing and exterior cleaning for residential concrete driveways."
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Sidewalk and Walkway Pressure Washing",
-            "serviceType": "Sidewalk and walkway cleaning",
-            "description": "Pressure washing for sidewalks, walkways, entrances, and pedestrian areas."
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Commercial Pressure Washing",
-            "serviceType": "Commercial exterior cleaning",
-            "description": "Routine exterior pressure washing for offices, retail centers, apartment properties, and other commercial properties."
-          }
-        }
-      ]
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "customer service",
-      "telephone": "+14156898377",
-      "email": "look@peekpressure.com",
-      "availableLanguage": "English"
-    },
-    "potentialAction": [
+    "@graph": [
       {
-        "@type": "ContactAction",
-        "name": "Request a pressure washing quote",
-        "target": "https://peekpressure.com/#quoteForm"
+        "@type": ["LocalBusiness", "ProfessionalService"],
+        "@id": "https://peekpressure.com/#business",
+        "name": "PEEK PRESSURE",
+        "url": "https://peekpressure.com/",
+        "telephone": "+14156898377",
+        "email": "look@peekpressure.com",
+        "description": "PEEK PRESSURE provides professional pressure washing and exterior cleaning for residential and commercial properties throughout the San Francisco Bay Area.",
+        "areaServed": [
+          { "@type": "City", "name": "San Francisco" },
+          { "@type": "City", "name": "Oakland" },
+          { "@type": "City", "name": "San Leandro" },
+          { "@type": "City", "name": "Hayward" },
+          { "@type": "City", "name": "Burlingame" },
+          { "@type": "City", "name": "South San Francisco" },
+          { "@type": "City", "name": "Daly City" },
+          { "@type": "City", "name": "San Mateo" },
+          { "@type": "City", "name": "Fremont" },
+          { "@type": "City", "name": "San Jose" }
+        ],
+        "serviceType": [
+          "Pressure washing",
+          "Driveway pressure washing",
+          "Sidewalk and walkway pressure washing",
+          "Commercial pressure washing",
+          "Concrete cleaning",
+          "Exterior surface cleaning"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "@id": "https://peekpressure.com/#services",
+          "name": "PEEK PRESSURE Services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "@id": "https://peekpressure.com/#driveway-cleaning",
+                "name": "Driveway Pressure Washing",
+                "serviceType": "Driveway cleaning",
+                "description": "Pressure washing and exterior cleaning for residential concrete driveways."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "@id": "https://peekpressure.com/#sidewalk-walkway-cleaning",
+                "name": "Sidewalk and Walkway Pressure Washing",
+                "serviceType": "Sidewalk and walkway cleaning",
+                "description": "Pressure washing for sidewalks, walkways, entrances, and pedestrian areas."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "@id": "https://peekpressure.com/#commercial-cleaning",
+                "name": "Commercial Pressure Washing",
+                "serviceType": "Commercial exterior cleaning",
+                "description": "Routine exterior pressure washing for offices, retail properties, apartment properties, and other commercial properties."
+              }
+            }
+          ]
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "telephone": "+14156898377",
+          "email": "look@peekpressure.com",
+          "availableLanguage": "English"
+        },
+        "potentialAction": [
+          {
+            "@type": "ContactAction",
+            "name": "Request a pressure washing quote",
+            "target": "https://peekpressure.com/#quoteForm"
+          },
+          {
+            "@type": "ScheduleAction",
+            "name": "Schedule a pressure washing appointment",
+            "target": "https://calendly.com/look-peekpressure/pressure-wash"
+          }
+        ],
+        "knowsAbout": [
+          "Pressure washing",
+          "Concrete cleaning",
+          "Driveway cleaning",
+          "Sidewalk cleaning",
+          "Walkway cleaning",
+          "Commercial exterior cleaning"
+        ]
       },
       {
-        "@type": "ScheduleAction",
-        "name": "Schedule a pressure washing appointment",
-        "target": "https://calendly.com/look-peekpressure/pressure-wash"
+        "@type": "WebSite",
+        "@id": "https://peekpressure.com/#website",
+        "url": "https://peekpressure.com/",
+        "name": "PEEK PRESSURE",
+        "description": "Bay Area pressure washing and exterior cleaning services.",
+        "publisher": {
+          "@id": "https://peekpressure.com/#business"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://peekpressure.com/#webpage",
+        "url": "https://peekpressure.com/",
+        "name": "PEEK PRESSURE | Bay Area Pressure Washing",
+        "description": "Professional pressure washing for driveways, sidewalks, walkways, and commercial properties throughout the Bay Area.",
+        "isPartOf": {
+          "@id": "https://peekpressure.com/#website"
+        },
+        "about": {
+          "@id": "https://peekpressure.com/#business"
+        },
+        "mainEntity": {
+          "@id": "https://peekpressure.com/#business"
+        }
       }
-    ],
-    "knowsAbout": [
-      "Pressure washing",
-      "Concrete cleaning",
-      "Driveway cleaning",
-      "Sidewalk cleaning",
-      "Commercial exterior cleaning"
-    ],
-    "sameAs": []
+    ]
   }
   </script>
 
