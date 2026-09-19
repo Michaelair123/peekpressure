@@ -4123,3 +4123,20 @@ body::before {
   background: #e53935;
   box-shadow: none;
 }
+
+
+/* SERVICE AREA — red dots only */
+.service-area-overlay {
+  display: none !important;
+}
+.map-dot {
+  background: #e53935;
+  border: 0 !important;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  box-shadow: 0 3px 12px rgba(229,57,53,.35);
+}
+.map-dot::after {
+  border: 1px solid rgba(229,57,53,.5);
+}
