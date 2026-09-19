@@ -42,13 +42,27 @@ PEEK PRESSURE currently services:
 3. PEEK PRESSURE performs the cleaning.
 4. Customers receive before-and-after photos and notification when the work is complete.
 
+## Request a Quote
+
+Quote form: https://peekpressure.com/#quoteForm
+
+Quote requests collect:
+* Name
+* Email
+* Phone
+* Property address
+* Service type
+* Job details
+
+Pricing is provided after the requested work is reviewed; fixed service prices are not published.
+
 ## Contact
 
 Phone: 415-689-8377
 
-Email: [look@peekpressure.com](mailto:look@peekpressure.com)
+Email: look@peekpressure.com
 
-Quote requests can be submitted through the website's contact form.
+Customers can request a quote through the website contact form.
 
 ## Website
 
