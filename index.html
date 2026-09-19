@@ -949,7 +949,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         button.addEventListener('click', () => {
           if (/^(book a time|check availability again)$/i.test(item)) {
-            checkCalendlyAvailability();
+            window.open('https://calendly.com/look-peekpressure/pressure-wash', '_blank', 'noopener,noreferrer');
             return;
           }
 
@@ -1434,7 +1434,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const bookingIntent = /\b(book|schedule|appointment|availability|available times?)\b/i.test(clean);
 
         if (bookingIntent && !data.lead_ready) {
-          await checkCalendlyAvailability(true);
+          setQuick(['Open Calendly', 'Get a quote']);
         } else if (!data.lead_ready && /book|schedule|appointment/i.test(reply)) {
           setQuick(['Book a time', 'Get a quote']);
         } else if (!data.lead_ready) {
