@@ -4176,3 +4176,110 @@ body::before {
   visibility: visible;
   transform: translate(-50%, 0);
 }
+
+
+/* =========================================================
+   PEEK CONVERSION LAYER — quiet, high-impact polish
+========================================================= */
+
+/* Header gains weight as the customer scrolls. */
+.header {
+  transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease, transform .35s var(--peek-ease);
+}
+.header.scrolled {
+  background: rgba(255,255,255,.94);
+  border-bottom-color: rgba(17,17,17,.09);
+  box-shadow: 0 8px 30px rgba(17,17,17,.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Give customers a subtle sense of progress through the quote. */
+#quoteForm {
+  position: relative;
+}
+#quoteForm::before {
+  content: "";
+  display: block;
+  width: var(--quote-progress, 0%);
+  height: 3px;
+  margin-bottom: 1.35rem;
+  border-radius: 999px;
+  background: #111;
+  transition: width .45s var(--peek-ease);
+}
+#quoteForm[data-progress="100"]::before {
+  background: #1f8f4c;
+}
+
+/* Make the final submit feel like the finish line. */
+#quoteForm button[type="submit"] {
+  min-height: 58px;
+  border-radius: 999px;
+  transition: transform .35s var(--peek-ease), box-shadow .35s var(--peek-ease), background-color .25s ease;
+}
+#quoteForm button[type="submit"]:hover,
+#quoteForm button[type="submit"]:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(17,17,17,.15);
+}
+
+/* Images feel interactive without becoming flashy. */
+.service-image {
+  position: relative;
+}
+.service-image::after {
+  content: "VIEW";
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  padding: .45rem .65rem;
+  border-radius: 999px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  font-size: .55rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .25s ease, transform .35s var(--peek-ease);
+  pointer-events: none;
+}
+.service:hover .service-image::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Nav becomes a quiet orientation system. */
+.header nav a {
+  position: relative;
+  transition: color .25s ease;
+}
+.header nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -.45rem;
+  height: 2px;
+  border-radius: 999px;
+  background: #111;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .3s var(--peek-ease);
+}
+.header nav a:hover::after,
+.header nav a.active::after {
+  transform: scaleX(1);
+}
+
+/* Keep motion elegant and restrained. */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  #quoteForm::before,
+  #quoteForm button[type="submit"],
+  .service-image::after,
+  .header nav a::after {
+    transition: none !important;
+  }
+}
