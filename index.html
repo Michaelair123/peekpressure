@@ -9,6 +9,10 @@
   <link rel="canonical" href="https://peekpressure.com/">
   <meta name="theme-color" content="#ffffff">
 
+  <meta name="author" content="PEEK PRESSURE">
+  <meta name="application-name" content="PEEK PRESSURE">
+  <meta name="format-detection" content="telephone=yes">
+
   <meta property="og:title" content="PEEK PRESSURE | Bay Area Pressure Washing">
   <meta property="og:description" content="Professional pressure washing for driveways, sidewalks, walkways, and commercial properties throughout the Bay Area.">
   <meta property="og:url" content="https://peekpressure.com/">
@@ -147,6 +151,10 @@
   }
   </script>
 
+
+<style>
+  .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+</style>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
@@ -157,10 +165,10 @@
   <!-- =============================================
        HEADER
   ============================================= -->
-  <header class="header">
+  <header class="header" aria-label="PEEK PRESSURE site header">
     <div class="container header-inner">
       <a href="#" class="logo">PEEK<span>PRESSURE</span></a>
-      <nav>
+      <nav aria-label="Primary navigation">
         <a href="#services">Services</a>
         <a href="#process">Process</a>
         <a href="#book">Book</a>
@@ -176,11 +184,11 @@
     <!-- =============================================
          HERO
     ============================================= -->
-    <section class="hero">
+    <section class="hero" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-copy hero-content">
           <div class="eyebrow">BAY AREA · CALIFORNIA</div>
-          <h1>PROFESSIONAL<br>PRESSURE<br>WASHING.</h1>
+          <h1 id="hero-title">PROFESSIONAL<br>PRESSURE<br>WASHING.</h1>
           <p>Driveways, sidewalks, walkways, and commercial exteriors — professionally cleaned throughout the Bay Area.</p>
           <div class="hero-buttons">
             <a href="#quoteForm" class="button">GET A QUOTE →</a>
@@ -194,11 +202,12 @@
     <!-- =============================================
          SERVICES
     ============================================= -->
-    <section id="services" class="services">
+    <section id="services" class="services" aria-labelledby="services-title">
       <div class="container">
 
         <div class="section-top">
           <span class="label">01 / SERVICES</span>
+          <h2 id="services-title" class="sr-only">Pressure Washing Services</h2>
         </div>
 
         <div class="services-grid">
@@ -255,11 +264,11 @@
     <!-- =============================================
          ABOUT
     ============================================= -->
-    <section class="about">
+    <section class="about" aria-labelledby="about-title">
       <div class="container about-grid">
         <span class="label">02 / ABOUT</span>
         <div>
-          <h2>YOUR PROPERTY<br>SHOULD LOOK<br>THE PART.</h2>
+          <h2 id="about-title">YOUR PROPERTY<br>SHOULD LOOK<br>THE PART.</h2>
           <p>Peek Pressure focuses on the exterior surfaces people look at — first impressions matter. Owned and operated by experienced property management professionals who understand what building owners actually need.</p>
         </div>
       </div>
@@ -339,7 +348,7 @@
         <span class="label">05 / SERVICE AREA</span>
         <h2 id="service-area-title">SERVING THE<br>BAY AREA.</h2>
         <p>PEEK PRESSURE provides residential and commercial exterior cleaning across the San Francisco Bay Area.</p>
-        <div class="service-area-list" aria-label="PEEK PRESSURE service areas">
+        <div id="service-area" class="service-area-list" aria-label="PEEK PRESSURE service areas">
           <span>San Francisco</span>
           <span>Oakland</span>
           <span>San Leandro</span>
@@ -363,7 +372,7 @@
 
 <div data-fs-error class="form-error"></div>
 
-<section class="contact-section" id="contact">
+<section class="contact-section" id="contact" aria-labelledby="quote">
   <div class="contact-content">
 <div class="contact-container">
     <h2 id="quote">HAVE QUESTIONS?<br>NEED SOMETHING SPECIAL?</h2>
