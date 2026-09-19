@@ -1,4 +1,11 @@
+# PEEK PRESSURE crawler access
 User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: OAI-AdsBot
 Allow: /
 
 Sitemap: https://peekpressure.com/sitemap.xml
