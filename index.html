@@ -1286,22 +1286,6 @@ document.addEventListener('DOMContentLoaded', () => {
       input.style.height = Math.min(input.scrollHeight, 120) + 'px';
     });
 
-    let autoOpenScheduled = false;
-    const autoOpenLucyOnMobile = () => {
-      if (autoOpenScheduled || state.open || !window.matchMedia('(max-width: 700px)').matches) return;
-      autoOpenScheduled = true;
-      window.setTimeout(() => {
-        if (!state.open) openChat(false);
-      }, 700);
-    };
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', autoOpenLucyOnMobile, { once: true });
-    } else {
-      autoOpenLucyOnMobile();
-    }
-    window.addEventListener('load', autoOpenLucyOnMobile, { once: true });
-
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && state.open) closeChat();
     });
