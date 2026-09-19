@@ -762,7 +762,7 @@ SCHEDULING ACTIONS
       const result = await callOpenAI({
         apiKey: env.OPENAI_API_KEY,
         payload: {
-          instructions: SYSTEM_PROMPT + "\n\n" + schedulingContext,
+          instructions: SYSTEM_PROMPT + pricingInstruction + "\n\n" + schedulingContext,
           input: safeMessages,
           text: {
             format: {
