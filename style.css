@@ -3597,3 +3597,47 @@ body::before {
     border-radius: 999px !important;
   }
 }
+
+/* PEEK signature */
+.peek-signature {
+  position: fixed;
+  right: 18px;
+  bottom: 14px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: .32rem;
+  padding: .42rem .65rem;
+  border: 1px solid rgba(17,17,17,.1);
+  border-radius: 999px;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #777;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  opacity: .72;
+  transition: opacity .3s ease, transform .3s var(--peek-ease);
+}
+.peek-signature:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+.peek-heart {
+  display: inline-block;
+  color: #111;
+  font-size: .82rem;
+  line-height: 1;
+  transition: transform .35s var(--peek-ease);
+}
+.peek-signature:hover .peek-heart {
+  transform: scale(1.35);
+}
+@media (max-width:700px) {
+  .peek-signature {
+    right: 10px;
+    bottom: 74px;
+    font-size: .5rem;
+  }
+}
