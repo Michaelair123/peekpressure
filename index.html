@@ -875,11 +875,14 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="peek-chat-status"><span></span> Online · Usually replies instantly</div>
     <div class="peek-chat-messages" id="peekChatMessages" aria-live="polite"></div>
     <div class="peek-chat-quick" id="peekChatQuick"></div>
+    <div class="peek-chat-attachments" id="peekChatAttachments" aria-live="polite"></div>
     <form class="peek-chat-form" id="peekChatForm">
-      <input id="peekChatInput" type="text" autocomplete="off" placeholder="Tell us what you need cleaned…" aria-label="Message Lucy">
-      <button type="submit" aria-label="Send message">→</button>
+      <button class="peek-chat-attach" id="peekChatAttach" type="button" aria-label="Attach a photo" title="Attach a photo">＋</button>
+      <input id="peekChatPhotoInput" type="file" accept="image/*" multiple hidden>
+      <textarea id="peekChatInput" rows="1" enterkeyhint="send" autocomplete="off" placeholder="Tell Lucy what you need cleaned…" aria-label="Message Lucy"></textarea>
+      <button class="peek-chat-send" type="submit" aria-label="Send message">↑</button>
     </form>
-    <div class="peek-chat-note">Lucy helps with service questions, quote intake, and scheduling. Final pricing is confirmed by PEEK PRESSURE.</div>
+    <div class="peek-chat-note">Lucy helps with service questions, quote intake, photo review, and scheduling. Final pricing is confirmed by PEEK PRESSURE.</div>
   </aside>
 
   <script>
@@ -891,19 +894,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('peekChatForm');
     const input = document.getElementById('peekChatInput');
     const quick = document.getElementById('peekChatQuick');
+    const photoInput = document.getElementById('peekChatPhotoInput');
+    const attachButton = document.getElementById('peekChatAttach');
+    const attachments = document.getElementById('peekChatAttachments');
 
-    if (!launcher || !panel || !messages || !form) return;
+    if (!launcher || !panel || !messages || !form || !input) return;
 
     const state = {
       history: [],
       open: false,
-      leadSubmitted: false
+      leadSubmitted: false,
+      selectedImages: [],
+      sending: false
     };
 
-    function addMessage(text, role) {
+    function addMessage(text, role, imageParts = []) {
       const bubble = document.createElement('div');
       bubble.className = 'peek-chat-message ' + role;
-      bubble.textContent = text;
+
+      if (text) {
+        const textNode = document.createElement('div');
+        textNode.textContent = text;
+        bubble.appendChild(textNode);
+      }
+
+      if (Array.isArray(imageParts) && imageParts.length) {
+        const imageGrid = document.createElement('div');
+        imageGrid.className = 'peek-chat-message-images';
+
+        imageParts.forEach(part => {
+          if (!part?.image_url) return;
+          const img = document.createElement('img');
+          img.src = part.image_url;
+          img.alt = 'Photo attached to message';
+          imageGrid.appendChild(img);
+        });
+
+        bubble.appendChild(imageGrid);
+      }
+
       messages.appendChild(bubble);
       messages.scrollTop = messages.scrollHeight;
     }
@@ -918,10 +947,62 @@ document.addEventListener('DOMContentLoaded', () => {
         button.textContent = item;
         button.addEventListener('click', () => {
           input.value = item;
+          input.focus();
           form.requestSubmit();
         });
         quick.appendChild(button);
       });
+    }
+
+    function renderAttachments() {
+      attachments.innerHTML = '';
+      if (!state.selectedImages.length) return;
+
+      state.selectedImages.forEach((item, index) => {
+        const chip = document.createElement('div');
+        chip.className = 'peek-chat-attachment';
+
+        const thumb = document.createElement('img');
+        thumb.src = item.previewUrl;
+        thumb.alt = 'Selected photo';
+        chip.appendChild(thumb);
+
+        const name = document.createElement('span');
+        name.textContent = item.file.name.length > 22 ? item.file.name.slice(0, 19) + '…' : item.file.name;
+        chip.appendChild(name);
+
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.textContent = '×';
+        remove.setAttribute('aria-label', 'Remove ' + item.file.name);
+        remove.addEventListener('click', () => {
+          URL.revokeObjectURL(item.previewUrl);
+          state.selectedImages.splice(index, 1);
+          renderAttachments();
+        });
+        chip.appendChild(remove);
+
+        attachments.appendChild(chip);
+      });
+    }
+
+    function addImageFiles(files) {
+      const incoming = Array.from(files || []).filter(file => file.type.startsWith('image/'));
+      const room = Math.max(0, 3 - state.selectedImages.length);
+
+      incoming.slice(0, room).forEach(file => {
+        state.selectedImages.push({
+          file,
+          previewUrl: URL.createObjectURL(file)
+        });
+      });
+
+      if (incoming.length > room) {
+        addMessage('You can attach up to 3 photos per message.', 'assistant');
+      }
+
+      renderAttachments();
+      if (state.selectedImages.length) input.focus();
     }
 
     function openChat(shouldFocus = true) {
@@ -929,11 +1010,14 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.classList.add('is-open');
       panel.setAttribute('aria-hidden', 'false');
       launcher.classList.add('is-hidden');
-      if (shouldFocus) input.focus();
 
       if (!messages.children.length) {
-        addMessage("Hello — I’m Lucy, PEEK PRESSURE’s AI assistant. 👋 I can help with service questions, cleaning requests, and getting you started with a quote.", 'assistant');
+        addMessage("Hello — I’m Lucy, PEEK PRESSURE’s AI assistant. 👋 I can help with service questions, cleaning requests, photos, and getting you started with a quote.", 'assistant');
         setQuick(['Driveway', 'Sidewalk / walkway', 'Commercial property']);
+      }
+
+      if (shouldFocus) {
+        window.setTimeout(() => input.focus(), 80);
       }
     }
 
@@ -942,6 +1026,69 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.classList.remove('is-open');
       panel.setAttribute('aria-hidden', 'true');
       launcher.classList.remove('is-hidden');
+    }
+
+    async function fileToDataUrl(file) {
+      const maxDimension = 1600;
+      const quality = 0.78;
+
+      try {
+        const objectUrl = URL.createObjectURL(file);
+        const image = await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = objectUrl;
+        });
+
+        const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth || image.width, image.naturalHeight || image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round((image.naturalWidth || image.width) * scale));
+        canvas.height = Math.max(1, Math.round((image.naturalHeight || image.height) * scale));
+
+        const context = canvas.getContext('2d', { alpha: false });
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(objectUrl);
+
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
+        if (!blob) throw new Error('Image conversion failed');
+
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      } catch (error) {
+        if (!/^image\/(jpeg|jpg|png|webp)$/i.test(file.type) || file.size > 1800000) {
+          throw new Error('Please choose a JPG, PNG, or WebP image under 1.8 MB.');
+        }
+
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+    }
+
+    async function prepareImages() {
+      const prepared = [];
+
+      for (const item of state.selectedImages) {
+        const dataUrl = await fileToDataUrl(item.file);
+        if (typeof dataUrl !== 'string' || dataUrl.length > 2400000) {
+          throw new Error('One of those photos is still too large. Please choose a smaller image.');
+        }
+
+        prepared.push({
+          type: 'input_image',
+          image_url: dataUrl
+        });
+      }
+
+      return prepared;
     }
 
     async function submitLead(lead) {
@@ -987,7 +1134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         state.leadSubmitted = true;
         return true;
       } catch (error) {
-        // The conversation should still work if the notification service is temporarily unavailable.
         console.warn('Lucy lead submission failed', error);
         return false;
       }
@@ -995,27 +1141,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function sendMessage(text) {
       const clean = text.trim();
-      if (!clean) return;
+      const hasImages = state.selectedImages.length > 0;
 
-      addMessage(clean, 'user');
-      state.history.push({ role: 'user', content: clean });
-      input.value = '';
-      quick.innerHTML = '';
+      if (!clean && !hasImages) return;
+      if (state.sending) return;
 
-      const typing = document.createElement('div');
-      typing.className = 'peek-chat-message assistant typing';
-      typing.textContent = 'Lucy is checking that for you…';
-      messages.appendChild(typing);
-      messages.scrollTop = messages.scrollHeight;
+      state.sending = true;
+      attachButton.disabled = true;
 
+      let imageParts = [];
       try {
+        if (hasImages) {
+          imageParts = await prepareImages();
+        }
+
+        addMessage(clean || 'Photo attached', 'user', imageParts);
+        const userContent = [];
+
+        if (clean) {
+          userContent.push({ type: 'input_text', text: clean });
+        }
+
+        userContent.push(...imageParts);
+        state.history.push({
+          role: 'user',
+          content: userContent.length === 1 && userContent[0].type === 'input_text'
+            ? clean
+            : userContent
+        });
+
+        input.value = '';
+        input.style.height = 'auto';
+        state.selectedImages.forEach(item => URL.revokeObjectURL(item.previewUrl));
+        state.selectedImages = [];
+        renderAttachments();
+        quick.innerHTML = '';
+
+        const typing = document.createElement('div');
+        typing.className = 'peek-chat-message assistant typing';
+        typing.textContent = 'Lucy is checking that for you…';
+        messages.appendChild(typing);
+        messages.scrollTop = messages.scrollHeight;
+
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: state.history.slice(-16), timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Los_Angeles' })
+          body: JSON.stringify({
+            messages: state.history.slice(-16),
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Los_Angeles'
+          })
         });
 
-        if (!response.ok) throw new Error('Chat service unavailable');
+        if (!response.ok) {
+          let detail = '';
+          try {
+            const errorData = await response.json();
+            detail = errorData?.error || '';
+          } catch {}
+          throw new Error(detail || 'Chat service unavailable');
+        }
 
         const data = await response.json();
         typing.remove();
@@ -1032,7 +1216,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        // Keep the UI helpful without forcing a scripted sales flow.
         if (!data.lead_ready && /book|schedule|appointment/i.test(reply)) {
           setQuick(['Book a time', 'Get a quote']);
         } else if (!data.lead_ready) {
@@ -1041,17 +1224,50 @@ document.addEventListener('DOMContentLoaded', () => {
           setQuick(['Book a time', 'Ask another question']);
         }
       } catch (error) {
-        typing.remove();
-        addMessage("I hit a hiccup connecting to my brain. 😅 You can still call or text PEEK PRESSURE at 415-689-8377.", 'assistant');
+        const typing = messages.querySelector('.peek-chat-message.typing');
+        if (typing) typing.remove();
+
+        addMessage(
+          error?.message === 'Images are too large. Please send a smaller photo.'
+            ? 'That photo is too large. Try a smaller image and I’ll take a look.'
+            : error?.message === 'Please choose a JPG, PNG, or WebP image under 1.8 MB.'
+              ? 'I can read JPG, PNG, and WebP photos. Please choose one of those formats.'
+              : "I hit a hiccup connecting to my brain. 😅 You can still call or text PEEK PRESSURE at 415-689-8377.",
+          'assistant'
+        );
         setQuick(['Get a quote', 'Book a time']);
+      } finally {
+        state.sending = false;
+        attachButton.disabled = false;
+        input.focus();
       }
     }
 
     launcher.addEventListener('click', openChat);
     close.addEventListener('click', closeChat);
+    attachButton.addEventListener('click', () => photoInput.click());
+    photoInput.addEventListener('change', () => {
+      addImageFiles(photoInput.files);
+      photoInput.value = '';
+    });
 
-    // Open Lucy automatically on mobile without waiting for every page asset to finish loading.
-    // Some mobile browsers can delay the window load event because of external images/widgets.
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      sendMessage(input.value);
+    });
+
+    input.addEventListener('keydown', event => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        form.requestSubmit();
+      }
+    });
+
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    });
+
     let autoOpenScheduled = false;
     const autoOpenLucyOnMobile = () => {
       if (autoOpenScheduled || state.open || !window.matchMedia('(max-width: 700px)').matches) return;
@@ -1067,11 +1283,6 @@ document.addEventListener('DOMContentLoaded', () => {
       autoOpenLucyOnMobile();
     }
     window.addEventListener('load', autoOpenLucyOnMobile, { once: true });
-
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      sendMessage(input.value);
-    });
 
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && state.open) closeChat();
