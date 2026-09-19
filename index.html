@@ -924,12 +924,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    function openChat() {
+    function openChat(shouldFocus = true) {
       state.open = true;
       panel.classList.add('is-open');
       panel.setAttribute('aria-hidden', 'false');
       launcher.classList.add('is-hidden');
-      input.focus();
+      if (shouldFocus) input.focus();
 
       if (!messages.children.length) {
         addMessage("Hello — I’m Lucy, PEEK PRESSURE’s AI assistant. 👋 I can help with service questions, cleaning requests, and getting you started with a quote.", 'assistant');
@@ -1039,6 +1039,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     launcher.addEventListener('click', openChat);
     close.addEventListener('click', closeChat);
+
+    // Open Lucy automatically on mobile after the page settles, without opening the keyboard.
+    if (window.matchMedia('(max-width: 700px)').matches) {
+      window.setTimeout(() => openChat(false), 900);
+    }
 
     form.addEventListener('submit', event => {
       event.preventDefault();
