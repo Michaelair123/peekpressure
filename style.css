@@ -4283,3 +4283,94 @@ body::before {
     transition: none !important;
   }
 }
+
+
+/* =========================================================
+   PEEK ART DIRECTION — FINAL LAUNCH POLISH
+========================================================= */
+
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .55rem;
+  margin-top: 1.15rem;
+  color: rgba(17,17,17,.56);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+.hero-proof i {
+  font-style: normal;
+  color: rgba(17,17,17,.25);
+}
+.hero-buttons .button:first-child {
+  min-width: 170px;
+}
+.hero-buttons .button.secondary {
+  color: rgba(17,17,17,.66);
+  border-color: rgba(17,17,17,.14);
+  background: rgba(255,255,255,.72);
+}
+.hero-buttons .button.secondary:hover,
+.hero-buttons .button.secondary:focus-visible {
+  color: #111;
+  border-color: rgba(17,17,17,.28);
+  background: #fff;
+}
+
+/* Let the service imagery carry more visual weight. */
+.service-image {
+  overflow: hidden;
+}
+.service-image img {
+  transition: transform .8s var(--peek-ease), filter .5s ease;
+}
+.service:hover .service-image img {
+  transform: scale(1.035);
+}
+
+/* A little more editorial breathing room around the credibility section. */
+.why-peek {
+  padding-block: clamp(5.5rem, 10vw, 9rem);
+}
+.why-peek-points {
+  gap: 0;
+}
+.why-peek-point {
+  padding-block: 1.35rem;
+  border-top: 1px solid rgba(17,17,17,.08);
+}
+.why-peek-point:last-child {
+  border-bottom: 1px solid rgba(17,17,17,.08);
+}
+
+/* The promise strip should read like a confident signature, not another section. */
+.proof-strip-inner {
+  position: relative;
+}
+.proof-strip-inner::after {
+  content: "PEEK PRESSURE";
+  color: rgba(17,17,17,.18);
+  font-size: .55rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+
+/* Mobile: keep the new hero cue compact. */
+@media (max-width:700px) {
+  .hero-proof {
+    font-size: .54rem;
+    letter-spacing: .12em;
+    gap: .4rem;
+  }
+  .proof-strip-inner::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-image img {
+    transition: none !important;
+  }
+}
