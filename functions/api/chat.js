@@ -487,7 +487,7 @@ async function getAvailability(eventTypeUri, startTime, endTime, env) {
 export async function onRequestPost({ request, env }) {
   const cors = {
     "Access-Control-Allow-Origin": "https://peekpressure.com",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, X-Lucy-Staging-Token",
     "Access-Control-Allow-Methods": "POST, OPTIONS"
   };
 
@@ -576,6 +576,52 @@ SCHEDULING ACTIONS
     const result = enforceLeadSafety(JSON.parse(raw), safeMessages);
     let reply = result.reply;
     let scheduling = null;
+    const stagingToken = env.LUCY_STAGING_TOKEN;
+    const staging = Boolean(
+      stagingToken &&
+      request.headers.get("X-Lucy-Staging-Token") === stagingToken
+    );
+
+    // Staging mode exercises the real Lucy model and backend safety logic without
+    // touching Calendly. It is server-to-server and requires a secret token.
+    if (staging && result.action === "check_availability") {
+      const base = Date.now() + 24 * 60 * 60 * 1000;
+      const simulated = [10, 13, 16].map(hours => {
+        const date = new Date(base);
+        date.setUTCHours(hours, 0, 0, 0);
+        return {
+          start_time: date.toISOString(),
+          formatted: formatSlot(date.toISOString(), customerTimezone)
+        };
+      });
+      scheduling = { action: "availability", staged: true, slots: simulated };
+      reply = `Absolutely 📅 I have these times available: ${simulated.map((slot, i) => `${i + 1}. ${slot.formatted}`).join(" · ")}. Which one works best?`;
+    }
+
+    if (staging && result.action === "book_appointment") {
+      const name = (result.name || "").trim();
+      const email = (result.email || "").trim();
+      const selected = result.selected_start_time;
+      if (!name || !email || !selected) {
+        reply = "I just need your name and email before I can book that for you.";
+      } else {
+        const selectedDate = new Date(selected);
+        if (!Number.isFinite(selectedDate.getTime()) || selectedDate.getTime() <= Date.now()) {
+          reply = "That time isn't valid anymore. Give me another time and I'll check what's open.";
+        } else {
+          scheduling = {
+            action: "booked",
+            staged: true,
+            start_time: selectedDate.toISOString(),
+            formatted: formatSlot(selectedDate.toISOString(), customerTimezone),
+            reschedule_url: null,
+            cancel_url: null
+          };
+          reply = `Staging check passed — I would book you for ${formatSlot(selectedDate.toISOString(), customerTimezone)}. No real appointment was created.`;
+        }
+      }
+    }
+
 
     if (result.action === "check_availability") {
       try {
