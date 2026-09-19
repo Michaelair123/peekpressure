@@ -4053,3 +4053,58 @@ body::before {
   .service-area-details{gap:.4rem!important}
 }
 
+
+
+/* SERVICE AREA — geographic SVG overlay */
+.service-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,.14), transparent 35%, rgba(255,255,255,.06));
+  pointer-events: none;
+  z-index: 4;
+}
+
+.service-area-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.service-area-fill {
+  fill: rgba(255, 212, 59, .14);
+  stroke: none;
+}
+
+.service-area-stroke {
+  fill: none;
+  stroke: #ffd43b;
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px rgba(255,212,59,.55));
+}
+
+.service-map-dots {
+  z-index: 3;
+}
+
+.map-dot {
+  left: 0;
+  top: 0;
+  background: #ffd43b;
+  border: 2px solid #111;
+  box-shadow: 0 2px 10px rgba(0,0,0,.22);
+  transition: left .25s ease, top .25s ease;
+}
+
+.map-dot::after {
+  border-color: rgba(255,212,59,.8);
+}
+
+.map-key-dot {
+  background: #ffd43b;
+  box-shadow: 0 0 0 2px #111;
+}
