@@ -967,8 +967,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    async function checkCalendlyAvailability() {
-      if (state.sending) return;
+    async function checkCalendlyAvailability(force = false) {
+      if (state.sending && !force) return;
       state.sending = true;
       quick.innerHTML = '';
 
@@ -1384,7 +1384,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const bookingIntent = /\b(book|schedule|appointment|availability|available times?)\b/i.test(clean);
 
         if (bookingIntent && !data.lead_ready) {
-          await checkCalendlyAvailability();
+          await checkCalendlyAvailability(true);
         } else if (!data.lead_ready && /book|schedule|appointment/i.test(reply)) {
           setQuick(['Book a time', 'Get a quote']);
         } else if (!data.lead_ready) {
