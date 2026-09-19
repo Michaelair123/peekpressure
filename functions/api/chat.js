@@ -566,7 +566,7 @@ async function getAvailability(eventTypeUri, startTime, endTime, env) {
   return data?.collection || [];
 }
 
-export async function onRequest({ request, env }) {
+async function handleLucyRequest({ request, env }) {
   const cors = {
     "Access-Control-Allow-Origin": "https://peekpressure.com",
     "Access-Control-Allow-Headers": "Content-Type, X-Lucy-Staging-Token",
@@ -833,4 +833,15 @@ SCHEDULING ACTIONS
   } catch {
     return Response.json({ error: "Invalid chat request." }, { status: 400, headers: cors });
   }
+}
+
+
+// Export both the general handler and an explicit POST handler so Cloudflare Pages
+// cannot route POST /api/chat through a method-mismatch path.
+export async function onRequest(context) {
+  return handleLucyRequest(context);
+}
+
+export async function onRequestPost(context) {
+  return handleLucyRequest(context);
 }
