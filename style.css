@@ -4595,3 +4595,64 @@ body::before {
   transform: none !important;
   box-shadow: none !important;
 }
+
+
+/* PEEK visual-effects audit — keep motion quiet, purposeful, and premium */
+
+/* Remove legacy service-card 3D/lift effects. */
+.services .service,
+.services .service-card {
+  transform: none !important;
+  box-shadow: none !important;
+  will-change: auto !important;
+}
+
+/* Service cards: image-only micro-zoom. */
+.services .service-image,
+.services .service-card .service-image {
+  overflow: hidden;
+}
+.services .service-image img,
+.services .service-card .service-image img {
+  filter: none !important;
+  transition: transform .55s cubic-bezier(.16,1,.3,1) !important;
+}
+.services .service:hover .service-image img,
+.services .service-card:hover .service-image img {
+  transform: scale(1.035) !important;
+}
+.services .service-image::before,
+.services .service-image::after,
+.services .service-card .service-image::before,
+.services .service-card .service-image::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Remove generic button shine/sweep overlays; keep normal color/position transitions. */
+.button::after,
+.header-cta::after,
+.service-cta::after,
+#quoteForm button::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Remove legacy quote-form card lift; selected state remains visually clear. */
+#quoteForm .service-choice:hover {
+  transform: none !important;
+}
+
+/* Keep booking CTA as the intentional primary interactive moment. */
+.booking-cta-button {
+  overflow: hidden;
+}
+
+/* Accessibility: reduce decorative motion when requested. */
+@media (prefers-reduced-motion: reduce) {
+  .services .service-image img,
+  .services .service-card .service-image img {
+    transition: none !important;
+    transform: none !important;
+  }
+}
