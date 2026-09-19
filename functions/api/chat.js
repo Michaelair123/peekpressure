@@ -680,12 +680,12 @@ function findFaqAnswer(text) {
     [["clean driveways","do you clean driveway","driveway cleaning"],"driveways"],
     [["clean sidewalks","sidewalks","walkways"],"sidewalks"],
     [["minimum charge","minimum price","minimum"],"minimum"],
-    [["quote","get a quote","rough estimate"],"estimate"],
-    [["send photos","send a photo","photos"],"photos"],
-    [["how do i book","how can i book","book"],"booking"],
-    [["final price","is that the final","final estimate"],"final-price"],
-    [["oil stain","oil grease rust","remove stains","stains"],"stains"],
-    [["commercial cleaning","commercial"],"commercial"]
+    [["can i get a quote","get a quote","rough estimate"],"estimate"],
+    [["can i send photos","send photos","send a photo"],"photos"],
+    [["how do i book","how can i book","booking link"],"booking"],
+    [["is that the final price","final price","final estimate"],"final-price"],
+    [["can you remove oil","oil stain","remove stains"],"stains"],
+    [["do you do commercial","commercial cleaning"],"commercial"]
   ];
   for (const [phrases,id] of aliases) {
     if (phrases.some(p => normalized.includes(p))) {
