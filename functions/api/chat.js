@@ -484,7 +484,7 @@ async function getAvailability(eventTypeUri, startTime, endTime, env) {
   return data?.collection || [];
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequest({ request, env }) {
   const cors = {
     "Access-Control-Allow-Origin": "https://peekpressure.com",
     "Access-Control-Allow-Headers": "Content-Type, X-Lucy-Staging-Token",
