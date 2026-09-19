@@ -25,23 +25,14 @@
     <h1 class="faq-title">Frequently asked questions.</h1>
     <p class="faq-intro">Straight answers to the questions customers ask most about pressure washing, estimates, photos, and scheduling.</p>
     <section class="faq-list" id="faqList" aria-label="Frequently asked questions"></section>
-    <p class="faq-note">Lucy uses this knowledge base for common questions. Update <code>functions/api/faq.js</code> in the repository when an answer changes.</p>
+    <p class="faq-note">Lucy uses the same FAQ source as the chat assistant. Edit <code>functions/api/faq.js</code> to change an answer, and the page and Lucy stay in sync.</p>
     <a class="faq-back" href="/">← Back to PEEK PRESSURE</a>
   </main>
   <script type="module">
     const list=document.getElementById('faqList');
-    const items=[
-      ['What services do you offer?','PEEK PRESSURE provides exterior pressure washing and surface cleaning, including driveways, sidewalks and walkways, patios, and commercial flatwork.'],
-      ['Do you clean driveways?','Yes. We clean concrete driveways and other suitable hard surfaces. Send Lucy the approximate size and a photo if you\'d like a rough estimate.'],
-      ['Do you clean sidewalks and walkways?','Yes. We clean concrete sidewalks and walkways, including buildup from dirt, grime, algae, and other surface deposits.'],
-      ['What is your minimum charge?','PEEK PRESSURE has a $150 minimum job charge. Larger jobs are priced from the actual scope, size, condition, and access.'],
-      ['Can I get a quote?','Absolutely. Lucy can give you a preliminary rough estimate and collect the job details. Final pricing is confirmed by PEEK PRESSURE after review.'],
-      ['Can I send photos?','Yes. Send a few clear photos of the surfaces you want cleaned. Photos help us understand condition and scope, although they do not always show exact square footage.'],
-      ['How do I book?','You can book through the scheduling link on the PEEK PRESSURE website, or ask Lucy to help you get started.'],
-      ['Is Lucy\'s estimate the final price?','No. Lucy\'s number is a preliminary estimate only. PEEK PRESSURE reviews the job details and confirms the final price before the work is scheduled.'],
-      ['Can you remove oil, grease, rust, or stains?','We can treat many stains and buildup, but results depend on the surface and how deeply the stain has penetrated. We never promise complete stain removal.'],
-      ['Do you do commercial cleaning?','Yes. PEEK PRESSURE handles commercial exterior surface cleaning and flatwork. Commercial pricing depends on size, access, water and runoff requirements, condition, and frequency.']
-    ];
+    import { LUCY_FAQ } from '/functions/api/faq.js';
+
+    const items=LUCY_FAQ.map(item => [item.question, item.answer]);
     list.innerHTML=items.map(([q,a])=>'<article class="faq-item"><h2>'+q+'</h2><p>'+a+'</p></article>').join('');
   </script>
 </body>
