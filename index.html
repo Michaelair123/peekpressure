@@ -1116,11 +1116,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .join('\\n\\n');
 
       const formData = new URLSearchParams();
-      formData.set('_to', 'look@peekpressure.com');
-      formData.set('_subject', 'Lucy customer callback request — ' + (name || 'New lead'));
+      // Formspree's current workflow uses the form's configured target recipient.
+      // _to is not a supported special field, so do not rely on it for delivery.
+      formData.set('subject', 'Lucy customer callback request — ' + (name || 'New lead'));
       formData.set('service', lead.service || 'Exterior cleaning');
       formData.set('address', lead.location || 'Bay Area');
-      formData.set('details', [
+      formData.set('message', [
         lead.question && 'Customer question: ' + lead.question,
         lead.size && 'Size: ' + lead.size,
         lead.surface && 'Surface: ' + lead.surface,
