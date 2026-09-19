@@ -1529,3 +1529,96 @@ textarea:focus-visible {
     min-width: 0;
   }
 }
+
+
+/* =========================================================
+   BOOKING CTA — MATCH CONTACT FORM SCALE
+========================================================= */
+
+.booking-cta {
+  width: min(1100px, calc(100% - 2rem));
+  min-height: 360px;
+  margin: 0 auto clamp(4rem, 7vw, 6.5rem);
+  padding: clamp(2.25rem, 5vw, 4.5rem);
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 7rem);
+  border: 1px solid #dedede;
+  border-radius: 22px;
+  background: #f5f5f5;
+  box-shadow: 0 24px 70px rgba(0,0,0,.06);
+}
+
+.booking-cta-copy {
+  flex: 1 1 auto;
+}
+
+.booking-cta-copy .label {
+  display: block;
+}
+
+.booking-cta-copy h3 {
+  margin-top: .8rem;
+  font-size: clamp(3.5rem, 7vw, 6.5rem);
+  line-height: .82;
+  letter-spacing: -.085em;
+  font-weight: 700;
+}
+
+.booking-cta-copy p {
+  max-width: 34rem;
+  margin-top: 1.5rem;
+  font-size: .8rem;
+  line-height: 1.7;
+  color: #666;
+}
+
+.booking-cta-button {
+  flex: 0 0 230px;
+  min-height: 68px;
+  box-sizing: border-box;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  font-size: .65rem;
+  letter-spacing: .14em;
+}
+
+@media (max-width: 900px) {
+  .booking-cta {
+    min-height: 0;
+    align-items: flex-start;
+    gap: 2.5rem;
+  }
+
+  .booking-cta-button {
+    flex-basis: 210px;
+  }
+}
+
+@media (max-width: 700px) {
+  .booking-cta {
+    width: calc(100% - 2rem);
+    min-height: 0;
+    margin-bottom: 4rem;
+    padding: 2rem 1.5rem;
+    flex-direction: column;
+    gap: 2rem;
+    border-radius: 16px;
+  }
+
+  .booking-cta-copy h3 {
+    font-size: clamp(3.4rem, 16vw, 5.5rem);
+  }
+
+  .booking-cta-copy p {
+    margin-top: 1.25rem;
+  }
+
+  .booking-cta-button {
+    flex: none;
+    width: 100%;
+    min-height: 64px;
+  }
+}
