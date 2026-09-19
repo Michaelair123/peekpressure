@@ -911,3 +911,39 @@ main > h2 + p {
     transform: translateX(-50%);
   }
 }
+
+
+/* FINAL CONTACT LAYOUT FIX */
+main > h2,
+main > h2 + p,
+#quoteForm {
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+}
+
+main > h2 {
+  display: block !important;
+  width: min(1100px, calc(100% - 2rem)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+main > h2 + p {
+  display: block !important;
+  width: min(680px, calc(100% - 2rem)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+#quoteForm {
+  display: block !important;
+  width: min(720px, calc(100% - 2rem)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
