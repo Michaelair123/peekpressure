@@ -1208,3 +1208,17 @@ footer {
     animation: none;
   }
 }
+
+
+/* QUOTE RESPONSE REASSURANCE */
+#quoteForm .form-note {
+  margin-top: 1rem !important;
+  padding: 0 !important;
+  color: #777 !important;
+  font-size: .55rem !important;
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.5;
+  text-align: center;
+  text-transform: uppercase;
+}
