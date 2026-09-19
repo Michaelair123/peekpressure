@@ -858,5 +858,134 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
+  <button class="peek-chat-launcher" id="peekChatLauncher" type="button" aria-label="Chat with PEEK AI">
+    <span class="peek-chat-launcher-dot"></span>
+    <span>PEEK AI</span>
+  </button>
+
+  <aside class="peek-chat" id="peekChat" aria-label="PEEK PRESSURE AI assistant" aria-hidden="true">
+    <div class="peek-chat-head">
+      <div>
+        <span class="peek-chat-kicker">PEEK PRESSURE</span>
+        <strong>PEEK AI</strong>
+      </div>
+      <button type="button" class="peek-chat-close" id="peekChatClose" aria-label="Close chat">×</button>
+    </div>
+    <div class="peek-chat-status"><span></span> Online · Usually replies instantly</div>
+    <div class="peek-chat-messages" id="peekChatMessages" aria-live="polite"></div>
+    <div class="peek-chat-quick" id="peekChatQuick"></div>
+    <form class="peek-chat-form" id="peekChatForm">
+      <input id="peekChatInput" type="text" autocomplete="off" placeholder="Tell us what you need cleaned…" aria-label="Message PEEK AI">
+      <button type="submit" aria-label="Send message">→</button>
+    </form>
+    <div class="peek-chat-note">PEEK AI helps with service questions and quote intake. Final pricing is confirmed by PEEK PRESSURE.</div>
+  </aside>
+
+  <script>
+  (() => {
+    const launcher = document.getElementById('peekChatLauncher');
+    const panel = document.getElementById('peekChat');
+    const close = document.getElementById('peekChatClose');
+    const messages = document.getElementById('peekChatMessages');
+    const form = document.getElementById('peekChatForm');
+    const input = document.getElementById('peekChatInput');
+    const quick = document.getElementById('peekChatQuick');
+
+    if (!launcher || !panel || !messages || !form) return;
+
+    const state = { history: [], open: false };
+
+    function addMessage(text, role) {
+      const bubble = document.createElement('div');
+      bubble.className = 'peek-chat-message ' + role;
+      bubble.textContent = text;
+      messages.appendChild(bubble);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function setQuick(items) {
+      quick.innerHTML = '';
+      items.forEach(item => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = item;
+        button.addEventListener('click', () => {
+          input.value = item;
+          form.requestSubmit();
+        });
+        quick.appendChild(button);
+      });
+    }
+
+    function openChat() {
+      state.open = true;
+      panel.classList.add('is-open');
+      panel.setAttribute('aria-hidden', 'false');
+      launcher.classList.add('is-hidden');
+      input.focus();
+      if (!messages.children.length) {
+        addMessage("Hey! I’m PEEK AI. What would you like cleaned?", 'assistant');
+        setQuick(['Driveway', 'Sidewalk / walkway', 'Commercial property']);
+      }
+    }
+
+    function closeChat() {
+      state.open = false;
+      panel.classList.remove('is-open');
+      panel.setAttribute('aria-hidden', 'true');
+      launcher.classList.remove('is-hidden');
+    }
+
+    async function sendMessage(text) {
+      const clean = text.trim();
+      if (!clean) return;
+      addMessage(clean, 'user');
+      state.history.push({ role: 'user', content: clean });
+      input.value = '';
+      quick.innerHTML = '';
+
+      const typing = document.createElement('div');
+      typing.className = 'peek-chat-message assistant typing';
+      typing.textContent = 'PEEK AI is typing…';
+      messages.appendChild(typing);
+      messages.scrollTop = messages.scrollHeight;
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: state.history.slice(-12) })
+        });
+
+        if (!response.ok) throw new Error('Chat service unavailable');
+        const data = await response.json();
+        typing.remove();
+
+        const reply = data.reply || "Thanks — I’ve got that. What else can you tell me about the job?";
+        addMessage(reply, 'assistant');
+        state.history.push({ role: 'assistant', content: reply });
+
+        if (Array.isArray(data.quick_replies)) setQuick(data.quick_replies);
+      } catch (error) {
+        typing.remove();
+        addMessage("I can still help get your quote started. What needs cleaning, and what city is the property in?", 'assistant');
+        setQuick(['Driveway', 'Sidewalk / walkway', 'Commercial property']);
+      }
+    }
+
+    launcher.addEventListener('click', openChat);
+    close.addEventListener('click', closeChat);
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      sendMessage(input.value);
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && state.open) closeChat();
+    });
+  })();
+  </script>
+
 </body>
 </html>
