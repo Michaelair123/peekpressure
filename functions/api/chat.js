@@ -259,9 +259,9 @@ function enforceLeadSafety(result, safeMessages) {
   if (suspicious || result.lead_status === "spam") {
     result.lead_ready = false;
     result.lead_status = "spam";
-  } else if (result.lead_status !== "real" || !hasBasicScope || !usableContact) {
+  } else if (!hasBasicScope || !usableContact) {
     result.lead_ready = false;
-    if (result.lead_status !== "real") result.lead_status = "uncertain";
+    result.lead_status = "uncertain";
   } else {
     result.lead_ready = true;
     result.lead_status = "real";
