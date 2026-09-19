@@ -1,4 +1,5 @@
 const MODEL = "gpt-5.6-luna";
+const CALENDLY_URL = "https://calendly.com/look-peekpressure/pressure-wash";
 
 function json(body, status = 200) { return Response.json(body, { status }); }
 
@@ -47,6 +48,7 @@ Your job is to:
 - Do not claim that a lead was emailed or submitted. The website handles that separately after the customer confirms their details.
 - Do not ask for information you already have.
 - Do not pressure the customer.
+- If the customer wants to book, schedule, or choose a time, give them this Calendly booking link: https://calendly.com/look-peekpressure/pressure-wash . Do not claim you booked a time unless the booking is actually confirmed by Calendly.
 
 For a lead, collect when reasonably possible:
 name, phone, email, service, location/address, property type, approximate size, surface, condition, timing, and any useful project question/details.
@@ -62,7 +64,9 @@ For images, describe only what can reasonably be observed. Do not pretend an ima
 Return ONLY JSON matching the supplied schema.
 `;
 
-async function handleChat(context) {\n  const OPENAI_API_KEY = context.env.OPENAI_API_KEY;\n  if (!OPENAI_API_KEY) return json({ error: "Lucy is not configured yet. Add OPENAI_API_KEY to Cloudflare." }, 500);\n  try {\n    const body = await context.request.json();
+async function handleChat(context) {\n  const OPENAI_API_KEY = context.env.OPENAI_API_KEY;
+  const OPENAI_MODEL = context.env.OPENAI_MODEL || MODEL;
+  const CALENDLY_ACCESS_TOKEN = context.env.CALENDLY_ACCESS_TOKEN;\n  if (!OPENAI_API_KEY) return json({ error: "Lucy is not configured yet. Add OPENAI_API_KEY to Cloudflare." }, 500);\n  try {\n    const body = await context.request.json();
     const messages = cleanMessages(body.messages);
 
     if (!messages.length) {
@@ -76,7 +80,7 @@ async function handleChat(context) {\n  const OPENAI_API_KEY = context.env.OPENA
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: MODEL,
+        model: OPENAI_MODEL,
         instructions,
         input: messages,
         text: {
