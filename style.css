@@ -622,9 +622,11 @@ body::before{content:"";position:fixed;top:0;left:0;width:var(--scroll-progress,
   .header-inner{width:calc(100% - 1rem);gap:.35rem;display:flex;align-items:center;min-width:0}
   .logo{flex:0 0 auto;white-space:nowrap}
   .header-phone{flex:0 0 auto;white-space:nowrap}
-  .header-email{display:none!important}
+  .header-email{display:inline-flex!important;flex:0 0 2rem;width:2rem;height:2rem;align-items:center;justify-content:center;overflow:hidden;font-size:0;white-space:nowrap}
+  .header-email::first-letter{font-size:1rem}
   .header-cta{flex:0 0 auto;white-space:nowrap}
 }
 @media (min-width:481px) and (max-width:700px){
-  .header-email{display:none!important}
+  .header-email{display:inline-flex!important;flex:0 0 2rem;width:2rem;height:2rem;align-items:center;justify-content:center;overflow:hidden;font-size:0;white-space:nowrap}
+  .header-email::first-letter{font-size:.95rem}
 }
