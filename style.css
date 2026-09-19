@@ -1783,3 +1783,63 @@ textarea:focus-visible {
     min-height: 66px;
   }
 }
+
+
+/* =========================================================
+   CONTACT FORM — DEDICATED CONTAINER
+========================================================= */
+
+.contact-section {
+  width: min(1100px, calc(100% - 2rem));
+  margin: 0 auto clamp(4rem, 7vw, 6.5rem);
+}
+
+.contact-container {
+  padding: clamp(2.5rem, 5vw, 4.5rem);
+  border: 1px solid #dedede;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0,0,0,.055);
+}
+
+.contact-container > h2 {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: left;
+  font-size: clamp(3rem, 6.5vw, 6rem);
+  line-height: .84;
+  letter-spacing: -.085em;
+}
+
+.contact-container > h2 + p {
+  width: min(680px, 100%);
+  margin: 1.35rem 0 2.75rem;
+  text-align: left;
+}
+
+.contact-container > form#quoteForm {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 700px) {
+  .contact-section {
+    width: calc(100% - 2rem);
+  }
+
+  .contact-container {
+    padding: 2rem 1.25rem;
+    border-radius: 18px;
+  }
+
+  .contact-container > h2 {
+    font-size: clamp(3rem, 14vw, 5rem);
+  }
+
+  .contact-container > h2 + p {
+    margin-bottom: 2rem;
+  }
+}
