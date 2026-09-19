@@ -1578,4 +1578,507 @@ footer {
 [data-fs-error][data-fs-active] {
     display: block;
 }
+```css
+/* =========================================================
+   PEEK PRESSURE — MODERN WHITE / PREMIUM OVERRIDE
+   HTML UNTOUCHED
+   ========================================================= */
+
+/* ---------- COLOR SYSTEM ---------- */
+
+:root {
+    --bg: #ffffff;
+    --surface: #f7f7f7;
+    --text: #171717;
+    --muted: #666666;
+    --dim: #999999;
+    --line: #e6e6e6;
+
+    --black: #000000;
+    --soft: #f3f3f3;
+    --radius: 2px;
+}
+
+
+/* ---------- GLOBAL ---------- */
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+::selection {
+    background: #111;
+    color: #fff;
+}
+
+a,
+button,
+.service,
+.service-image,
+.hero-image,
+.header-cta,
+.button,
+.quote-form input,
+.quote-form select,
+.quote-form textarea {
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ---------- HEADER ---------- */
+
+.header {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+    transition:
+        background-color .3s ease,
+        border-color .3s ease;
+}
+
+.logo {
+    color: #111;
+}
+
+.logo span {
+    color: #999;
+}
+
+.header nav a {
+    color: #666;
+    transition:
+        color .25s ease,
+        opacity .25s ease;
+}
+
+.header nav a::after {
+    background: #111;
+    transition: width .3s cubic-bezier(.22, 1, .36, 1);
+}
+
+.header nav a:hover {
+    color: #000;
+}
+
+.header-cta {
+    border: 1px solid #d9d9d9;
+    background: #fff;
+    color: #111;
+
+    transition:
+        background-color .25s ease,
+        color .25s ease,
+        border-color .25s ease,
+        transform .25s ease;
+}
+
+.header-cta:hover {
+    background: #000;
+    border-color: #000;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+
+/* ---------- LABELS ---------- */
+
+.eyebrow,
+.label {
+    color: #777;
+}
+
+
+/* ---------- HERO ---------- */
+
+.hero {
+    background: #fff;
+}
+
+.hero-copy h1 {
+    color: #111;
+}
+
+.hero-copy > p {
+    color: #666;
+}
+
+.hero-image {
+    background: #f2f2f2;
+    border-radius: var(--radius);
+    box-shadow:
+        0 1px 2px rgba(0,0,0,.04),
+        0 12px 40px rgba(0,0,0,.08);
+}
+
+.hero-image img {
+    transition:
+        transform .8s cubic-bezier(.22, 1, .36, 1),
+        filter .5s ease;
+}
+
+.hero-image:hover img {
+    transform: scale(1.015);
+}
+
+
+/* ---------- BUTTONS ---------- */
+
+.button {
+    border-radius: 999px;
+
+    transition:
+        background-color .3s ease,
+        color .3s ease,
+        border-color .3s ease,
+        transform .3s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .3s ease;
+}
+
+.primary {
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.10);
+}
+
+.primary:hover {
+    background: #222;
+    border-color: #222;
+    color: #fff;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,.15);
+}
+
+.secondary {
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    color: #222;
+}
+
+.secondary:hover {
+    background: #f5f5f5;
+    border-color: #bdbdbd;
+    color: #000;
+
+    transform: translateY(-2px);
+}
+
+
+/* ---------- SERVICES ---------- */
+
+.services {
+    background: #f7f7f7;
+    border-top: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
+}
+
+.services-grid {
+    gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.service {
+    transition:
+        transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+
+.service:hover {
+    transform: translateY(-4px);
+}
+
+.service-image {
+    background: #ededed;
+    border-radius: var(--radius);
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.04);
+}
+
+.service-image img {
+    transition:
+        transform .65s cubic-bezier(.22, 1, .36, 1),
+        filter .4s ease;
+}
+
+.service:hover .service-image img {
+    transform: scale(1.035);
+}
+
+.service-body {
+    border-top: 1px solid #ddd;
+}
+
+.number {
+    color: #999;
+}
+
+.service h2 {
+    color: #111;
+}
+
+.service p {
+    color: #666;
+}
+
+
+/* ---------- ABOUT ---------- */
+
+.about {
+    background: #fff;
+}
+
+.about h2 {
+    color: #111;
+}
+
+.about p {
+    color: #666;
+}
+
+
+/* ---------- PROCESS ---------- */
+
+.process {
+    background: #fff;
+    border-top: 1px solid #e5e5e5;
+}
+
+.process-header h2 {
+    color: #111;
+}
+
+.process-header p {
+    color: #666;
+}
+
+.process-grid {
+    border-top: 1px solid #ddd;
+}
+
+.process-step {
+    border-right-color: #ddd;
+}
+
+.step-number {
+    color: #999;
+}
+
+.process-step h3 {
+    color: #111;
+}
+
+.process-step p {
+    color: #666;
+}
+
+
+/* ---------- QUOTE / CONTACT ---------- */
+
+.quote {
+    background: #fff;
+    border-top-color: #e5e5e5;
+}
+
+.quote-copy h2 {
+    color: #111;
+}
+
+.quote-copy p {
+    color: #666;
+}
+
+.quote-contact {
+    margin-top: 3rem;
+}
+
+.quote-contact-item span {
+    color: #999;
+}
+
+.quote-contact-item a {
+    color: #111;
+    border-bottom-color: #ddd;
+
+    transition:
+        color .25s ease,
+        border-color .25s ease;
+}
+
+.quote-contact-item a:hover {
+    color: #555;
+    border-color: #111;
+}
+
+
+/* ---------- FORM ---------- */
+
+.quote-form label {
+    color: #666;
+}
+
+.quote-form input,
+.quote-form select,
+.quote-form textarea {
+    background: #fff;
+    color: #111;
+
+    border-bottom-color: #d8d8d8;
+
+    transition:
+        border-color .3s ease,
+        background-color .3s ease,
+        box-shadow .3s ease;
+}
+
+.quote-form input::placeholder,
+.quote-form textarea::placeholder {
+    color: #aaa;
+}
+
+.quote-form input:hover,
+.quote-form select:hover,
+.quote-form textarea:hover {
+    border-bottom-color: #999;
+}
+
+.quote-form input:focus,
+.quote-form select:focus,
+.quote-form textarea:focus {
+    border-bottom-color: #111;
+
+    box-shadow:
+        0 1px 0 #111;
+}
+
+.quote-form select option {
+    background: #fff;
+    color: #111;
+}
+
+
+/* ---------- FORM BUTTON ---------- */
+
+.quote-form button {
+    border: 1px solid #000;
+    border-radius: 999px;
+
+    background: #000;
+    color: #fff;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.10);
+
+    transition:
+        background-color .3s ease,
+        color .3s ease,
+        border-color .3s ease,
+        transform .3s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .3s ease;
+}
+
+.quote-form button:hover {
+    background: #222;
+    border-color: #222;
+    color: #fff;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,.16);
+}
+
+.quote-form button:active {
+    transform: translateY(0);
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.10);
+}
+
+.quote-form button:disabled {
+    background: #aaa;
+    border-color: #aaa;
+    color: #fff;
+}
+
+
+/* ---------- FORM NOTE ---------- */
+
+.quote-form .form-note {
+    color: #999;
+}
+
+
+/* =========================================================
+   SUBTLE SCROLL / INTERACTION POLISH
+   ========================================================= */
+
+a {
+    transition:
+        color .25s ease,
+        opacity .25s ease;
+}
+
+img {
+    backface-visibility: hidden;
+}
+
+
+/* =========================================================
+   MOBILE POLISH
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        background: rgba(255,255,255,.94);
+    }
+
+    .hero-image {
+        box-shadow:
+            0 8px 28px rgba(0,0,0,.08);
+    }
+
+    .service:hover {
+        transform: none;
+    }
+
+    .service:hover .service-image img {
+        transform: none;
+    }
+
+    .button,
+    .quote-form button,
+    .header-cta {
+        min-height: 44px;
+    }
+
+    .quote-form button {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
 ```
+
