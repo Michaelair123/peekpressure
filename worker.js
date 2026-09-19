@@ -1,5 +1,7 @@
 import { LUCY_FAQ } from "./functions/api/faq.js";
 import { onRequest as handleLucyRequest } from "./functions/api/chat.js";
+import { onRequestGet as handleAvailability } from "./functions/api/availability.js";
+import { onRequestPost as handleBooking } from "./functions/api/book.js";
 
 export default {
   async fetch(request, env, ctx) {
@@ -15,7 +17,30 @@ export default {
     }
 
     if (url.pathname === "/api/chat") {
-      return handleLucyRequest({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) });
+      return handleLucyRequest({
+        request,
+        env,
+        ctx,
+        waitUntil: ctx.waitUntil.bind(ctx)
+      });
+    }
+
+    if (url.pathname === "/api/availability" && request.method === "GET") {
+      return handleAvailability({
+        request,
+        env,
+        ctx,
+        waitUntil: ctx.waitUntil.bind(ctx)
+      });
+    }
+
+    if (url.pathname === "/api/book" && request.method === "POST") {
+      return handleBooking({
+        request,
+        env,
+        ctx,
+        waitUntil: ctx.waitUntil.bind(ctx)
+      });
     }
 
     if (env.ASSETS) {
