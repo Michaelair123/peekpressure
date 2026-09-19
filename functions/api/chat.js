@@ -541,7 +541,7 @@ SCHEDULING ACTIONS
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: env.OPENAI_MODEL || "gpt-5.6-luna",
+        model: "gpt-5.6-luna",
         instructions: SYSTEM_PROMPT + "\n\n" + schedulingContext,
         input: safeMessages,
         text: {
