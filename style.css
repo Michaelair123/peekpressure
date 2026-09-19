@@ -4052,3 +4052,45 @@ body::before {
   .map-dot{width:10px;height:10px;margin:-5px 0 0 -5px}
   .service-area-details{gap:.4rem!important}
 }
+
+
+/* SERVICE AREA — clean coverage boundary */
+.service-map::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  left: 17%;
+  top: 16%;
+  width: 40%;
+  height: 72%;
+  background: rgba(255, 212, 59, .16);
+  border: 2px solid #ffd43b;
+  clip-path: polygon(
+    34% 0%, 53% 4%, 68% 14%, 73% 27%,
+    69% 39%, 78% 51%, 86% 65%, 79% 77%,
+    67% 88%, 52% 100%, 38% 91%, 29% 80%,
+    21% 67%, 12% 57%, 18% 45%, 8% 34%,
+    18% 23%, 22% 10%
+  );
+  filter: drop-shadow(0 0 7px rgba(255,212,59,.65));
+  pointer-events: none;
+}
+
+.service-map-dots {
+  opacity: .72;
+}
+
+.map-dot {
+  background: #ffd43b;
+  border-color: #111;
+  box-shadow: 0 2px 10px rgba(0,0,0,.22);
+}
+
+.map-dot::after {
+  border-color: rgba(255,212,59,.8);
+}
+
+.map-key-dot {
+  background: #ffd43b;
+  box-shadow: 0 0 0 2px #111;
+}
