@@ -673,27 +673,33 @@ function enforceRoughPricing(reply, pricing) {
 
 
 function findFaqAnswer(text) {
-  const normalized = String(text || "").toLowerCase().replace(/[^a-z0-9$ ]+/g, " ").replace(/\s+/g, " ").trim();
+  const normalized = String(text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9$ ]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   if (!normalized || normalized.length > 180) return null;
-  const aliases = [
-    [["what services","services do you offer","what do you clean"],"services"],
-    [["clean driveways","do you clean driveway","driveway cleaning"],"driveways"],
-    [["clean sidewalks","sidewalks","walkways"],"sidewalks"],
-    [["minimum charge","minimum price","minimum"],"minimum"],
-    [["can i get a quote","get a quote","rough estimate"],"estimate"],
-    [["can i send photos","send photos","send a photo"],"photos"],
-    [["how do i book","how can i book","booking link"],"booking"],
-    [["is that the final price","final price","final estimate"],"final-price"],
-    [["can you remove oil","oil stain","remove stains"],"stains"],
-    [["do you do commercial","commercial cleaning"],"commercial"]
-  ];
-  for (const [phrases,id] of aliases) {
-    if (phrases.some(p => normalized.includes(p))) {
-      const item = LUCY_FAQ.find(f => f.id === id);
-      if (item) return item.answer;
+
+  let best = null;
+  let bestScore = 0;
+
+  for (const item of LUCY_FAQ) {
+    const keywords = Array.isArray(item.keywords) ? item.keywords : [];
+    for (const keyword of keywords) {
+      const phrase = String(keyword || "").toLowerCase().trim();
+      if (!phrase) continue;
+      if (normalized === phrase) {
+        if (100 > bestScore) { best = item; bestScore = 100; }
+        continue;
+      }
+      if (normalized.includes(phrase)) {
+        const score = phrase.includes(" ") ? 20 + phrase.length / 10 : 10 + phrase.length / 20;
+        if (score > bestScore) { best = item; bestScore = score; }
+      }
     }
   }
-  return null;
+
+  return best?.answer || null;
 }
 
 async function handleLucyRequest({ request, env }) {
