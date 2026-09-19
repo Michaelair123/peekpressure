@@ -4374,3 +4374,191 @@ body::before {
     transition: none !important;
   }
 }
+
+
+/* =========================================================
+   PEEK PROOF FOUNDATION — before/after + verified reviews
+========================================================= */
+.proof-section {
+  padding-block: clamp(5rem, 9vw, 8rem);
+  background: #fff;
+}
+.proof-container {
+  min-width: 0;
+}
+.proof-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+.proof-header h2 {
+  margin: 0;
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  line-height: .88;
+  letter-spacing: -.055em;
+}
+.proof-header p {
+  max-width: 470px;
+  margin: 0 0 .3rem;
+  color: var(--peek-gray, #6d6d6d);
+  line-height: 1.7;
+}
+.proof-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, .85fr);
+  gap: clamp(1rem, 2vw, 2rem);
+}
+.before-after-card,
+.review-card {
+  min-width: 0;
+  border: 1px solid rgba(17,17,17,.09);
+  background: #f7f7f7;
+}
+.before-after-media {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: clamp(260px, 30vw, 460px);
+  overflow: hidden;
+  position: relative;
+}
+.proof-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: .3rem;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  min-width: 0;
+}
+.proof-placeholder.before {
+  background: linear-gradient(135deg, #e7e7e7, #d8d8d8);
+}
+.proof-placeholder.after {
+  background: linear-gradient(135deg, #f4f4f4, #eaeaea);
+}
+.proof-placeholder span {
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.proof-placeholder small {
+  color: rgba(17,17,17,.5);
+  font-size: .55rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+.before-after-divider {
+  position: absolute;
+  inset: 0 auto 0 50%;
+  width: 1px;
+  background: rgba(17,17,17,.2);
+  transform: translateX(-50%);
+}
+.before-after-divider::after {
+  content: "→";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: .85rem;
+}
+.before-after-meta {
+  padding: 1.25rem 1.35rem 1.4rem;
+  border-top: 1px solid rgba(17,17,17,.08);
+  background: #fff;
+}
+.before-after-meta p {
+  margin: .5rem 0 0;
+  color: var(--peek-gray, #6d6d6d);
+  font-size: .85rem;
+  line-height: 1.55;
+}
+.review-card {
+  padding: clamp(1.35rem, 2.5vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #111;
+  color: #fff;
+}
+.review-card .label {
+  color: rgba(255,255,255,.52);
+}
+.review-placeholder {
+  padding-block: 2rem;
+}
+.review-stars {
+  display: block;
+  margin-bottom: 1.25rem;
+  letter-spacing: .15em;
+  color: #fff;
+  font-size: .85rem;
+}
+.review-placeholder blockquote {
+  margin: 0 0 1.25rem;
+  max-width: 360px;
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -.025em;
+}
+.review-placeholder small {
+  color: rgba(255,255,255,.48);
+  font-size: .55rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+.proof-review-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,.14);
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-decoration: none;
+  transition: opacity .25s ease, transform .3s var(--peek-ease);
+}
+.proof-review-cta span {
+  font-size: 1rem;
+}
+.proof-review-cta:hover,
+.proof-review-cta:focus-visible {
+  opacity: .72;
+  transform: translateX(3px);
+}
+@media (max-width: 800px) {
+  .proof-header,
+  .proof-grid {
+    grid-template-columns: 1fr;
+  }
+  .proof-header {
+    gap: 1.25rem;
+  }
+  .before-after-media {
+    min-height: 300px;
+  }
+}
+@media (max-width: 520px) {
+  .before-after-media {
+    min-height: 230px;
+  }
+  .proof-placeholder {
+    padding: 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .proof-review-cta {
+    transition: none !important;
+  }
+}
