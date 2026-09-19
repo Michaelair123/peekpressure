@@ -656,7 +656,16 @@ footer {
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-  .header-phone { display: none; }
+  .header-phone {
+    display: inline-flex;
+    margin-left: auto;
+    white-space: nowrap;
+    font-size: .58rem;
+  }
+
+  .header-cta {
+    margin-left: 0;
+  }
 
   .services-grid { grid-template-columns: 1fr; }
 
