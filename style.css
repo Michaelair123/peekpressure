@@ -947,3 +947,53 @@ main > h2 + p {
   margin-right: auto !important;
   box-sizing: border-box !important;
 }
+
+
+/* CONTACT CENTER — STRUCTURAL FIX */
+main {
+  width: 100%;
+}
+
+main > h2,
+main > h2 + p,
+main > form#quoteForm {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+  float: none !important;
+  clear: both !important;
+}
+
+main > h2 {
+  display: block !important;
+  width: min(1100px, calc(100% - 2rem)) !important;
+  margin: clamp(4rem, 7vw, 6.5rem) auto 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+main > h2 + p {
+  display: block !important;
+  width: min(680px, calc(100% - 2rem)) !important;
+  margin: 1.25rem auto 2.75rem !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+main > form#quoteForm {
+  display: block !important;
+  width: min(720px, calc(100% - 2rem)) !important;
+  margin: 0 auto !important;
+  padding-bottom: clamp(4rem, 7vw, 6.5rem) !important;
+}
+
+main > form#quoteForm .form-field {
+  width: 100% !important;
+}
+
+main > form#quoteForm input,
+main > form#quoteForm select,
+main > form#quoteForm textarea {
+  width: 100% !important;
+}
