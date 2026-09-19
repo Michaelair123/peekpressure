@@ -1,5 +1,4 @@
 import { LUCY_FAQ } from "../../faq-data.js";
-import { LUCY_FAQ } from "./faq.js";
 
 const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
 const LUCY_FAST_MODEL = "gpt-5.6-terra";
@@ -825,23 +824,12 @@ async function handleLucyRequest({ request, env }) {
     }
 
     const latestUserText = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
-    const latestUserMessage = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
-    const faqAnswer = getFaqAnswer(latestUserMessage);
-    if (faqAnswer) {
-      return Response.json({
-        reply: faqAnswer,
-        lead_ready: false,
-        lead: null,
-        scheduling: { action: "none" }
-      }, { headers: cors });
-    }
-
     const pricingContext = extractPricingContext(safeMessages);
     const hasImage = safeMessages.some(message => Array.isArray(message.content) && message.content.some(part => part?.type === "input_image"));
     const pricingRequest = pricingContext.requested;
     const needsStrongModel = hasImage || pricingRequest || /\b(commercial|contract|property manager|stain|rust|oil|grease|damage|booking|schedule|appointment)\b/i.test(String(latestUserText));
     const selectedPrimaryModel = needsStrongModel ? (env.OPENAI_MODEL || LUCY_PRIMARY_MODEL) : LUCY_FAST_MODEL;
-    const faqAnswer = findFaqAnswer(latestUserText);
+    const faqAnswer = getFaqAnswer(latestUserText);
     const fastReply = buildFastReply(latestUserText);
     if (faqAnswer && !pricingContext.requested) {
       const fastResult = enforceLeadSafety({
