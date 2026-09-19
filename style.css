@@ -1229,3 +1229,58 @@ footer {
   white-space: nowrap;
   display: inline-block;
 }
+
+
+/* =========================================================
+   SERVICES — MOBILE SWIPE SLIDER
+   Desktop keeps the clean 3-column layout.
+========================================================= */
+
+@media (max-width: 700px) {
+  .services-grid {
+    display: flex;
+    gap: .9rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: .25rem 0 1.15rem;
+    margin-right: calc(var(--page-padding) * -1);
+    padding-right: var(--page-padding);
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #111 #e8e8e8;
+  }
+
+  .services-grid::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .services-grid::-webkit-scrollbar-track {
+    background: #e8e8e8;
+    border-radius: 999px;
+  }
+
+  .services-grid::-webkit-scrollbar-thumb {
+    background: #111;
+    border-radius: 999px;
+  }
+
+  .service {
+    flex: 0 0 88%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .service-image {
+    height: 58vw;
+    max-height: 22rem;
+  }
+}
+
+@media (min-width: 701px) {
+  .services-grid {
+    scrollbar-width: thin;
+    scrollbar-color: #111 transparent;
+  }
+}
