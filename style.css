@@ -2919,3 +2919,354 @@ footer a:hover {
     width: 100%;
   }
 }
+
+/* =========================================================
+   FINAL SPACING SYSTEM — 8PX RHYTHM / CONSISTENT CONTAINERS
+========================================================= */
+
+:root {
+  --page-padding: clamp(1.25rem, 4vw, 4rem);
+  --content-width: 1240px;
+  --section-space: clamp(5rem, 9vw, 8rem);
+  --content-gap: clamp(1.25rem, 2vw, 2rem);
+}
+
+/* Keep every major section on the same horizontal grid. */
+.container,
+.why-peek-container,
+.service-area-container {
+  width: min(calc(100% - (var(--page-padding) * 2)), var(--content-width));
+  margin-inline: auto;
+}
+
+/* HEADER */
+.header {
+  padding-block: .9rem;
+}
+
+.header-inner {
+  min-height: 2.75rem;
+  gap: clamp(.75rem, 2vw, 2rem);
+}
+
+/* HERO — more breathing room between eyebrow, headline, copy and actions. */
+.hero {
+  padding-top: clamp(8rem, 14vw, 12.5rem);
+  padding-bottom: clamp(5rem, 10vw, 8rem);
+}
+
+.hero-copy {
+  max-width: 1080px;
+}
+
+.hero-copy h1 {
+  margin-top: 1.5rem;
+}
+
+.hero-copy > p {
+  margin-top: 2.25rem;
+}
+
+.hero-buttons {
+  margin-top: 1.75rem;
+  gap: .75rem;
+}
+
+/* SERVICES — heading-to-cards and card internals get a deliberate rhythm. */
+.services {
+  padding-block: var(--section-space);
+}
+
+.services .section-top {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.services-grid {
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.service-body {
+  padding: clamp(1.5rem, 2.4vw, 2rem);
+}
+
+.service-body .number {
+  margin-bottom: 1.5rem;
+}
+
+.service h2 {
+  margin-top: 0;
+}
+
+.service p {
+  margin-top: .9rem;
+}
+
+.service-cta {
+  margin-top: 1.35rem;
+}
+
+/* ABOUT — label / headline / paragraph should read as one composition. */
+.about {
+  padding-block: 0;
+}
+
+.about-grid {
+  width: min(calc(100% - (var(--page-padding) * 2)), var(--content-width));
+  min-height: clamp(620px, 72vw, 760px);
+  padding-block: var(--section-space);
+  align-items: start;
+}
+
+.about-grid h2 {
+  margin: 0;
+}
+
+.about p {
+  margin-top: 2.25rem;
+}
+
+/* PROCESS */
+.process {
+  padding-block: var(--section-space);
+}
+
+.process-header {
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.process-header h2 {
+  margin-top: 1rem;
+}
+
+.process-grid {
+  margin-top: 0;
+}
+
+.process-step {
+  min-height: 230px;
+  padding-top: 1.75rem;
+}
+
+.step-number {
+  margin-bottom: clamp(3rem, 5vw, 4rem);
+}
+
+/* WHY PEEK */
+.why-peek {
+  padding-block: var(--section-space);
+}
+
+.why-peek-grid {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  gap: clamp(3rem, 8vw, 8rem);
+}
+
+.why-peek-point {
+  padding-block: 1.5rem;
+}
+
+/* SERVICE AREA */
+.service-area {
+  padding-block: var(--section-space);
+}
+
+.service-area h2 {
+  margin-top: 1.35rem;
+}
+
+.service-area-container > p {
+  margin-top: 1.75rem;
+}
+
+.service-area-list {
+  margin-top: 2.25rem;
+}
+
+/* BOOKING */
+.booking-cta {
+  margin-top: 0;
+  margin-bottom: var(--section-space);
+}
+
+.booking-cta-inner {
+  min-height: 390px;
+  padding: clamp(2rem, 5vw, 4rem);
+}
+
+/* CONTACT — one controlled inner column, no orphaned left alignment. */
+.contact-section {
+  width: min(calc(100% - (var(--page-padding) * 2)), var(--content-width));
+  margin: var(--section-space) auto;
+}
+
+.contact-container {
+  padding: clamp(2.25rem, 5vw, 4.5rem);
+}
+
+.contact-container > h2,
+.contact-container > h2 + p,
+.contact-container > form#quoteForm {
+  width: min(100%, 820px);
+}
+
+.contact-container > h2 + p {
+  margin-top: 1.5rem;
+  margin-bottom: clamp(2.25rem, 4vw, 3rem);
+}
+
+#quoteForm .quote-intro {
+  margin-bottom: clamp(2rem, 4vw, 2.75rem);
+}
+
+#quoteForm fieldset {
+  margin-bottom: 2.25rem;
+}
+
+#quoteForm .form-field {
+  margin-bottom: 1.5rem;
+}
+
+#quoteForm .quote-contact {
+  margin-top: .25rem;
+}
+
+#quoteForm button {
+  margin-top: .75rem;
+}
+
+/* FOOTER */
+footer {
+  padding-block: 3.5rem 3rem;
+}
+
+.footer-inner {
+  padding-bottom: 3rem;
+}
+
+/* MOBILE — tighter, but never cramped. */
+@media (max-width: 700px) {
+  :root {
+    --page-padding: 1rem;
+    --section-space: 4.5rem;
+  }
+
+  .header {
+    padding-block: .7rem;
+  }
+
+  .header-inner {
+    min-height: 2.5rem;
+    gap: .55rem;
+  }
+
+  .hero {
+    padding-top: 6.5rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .hero-copy h1 {
+    margin-top: 1.25rem;
+  }
+
+  .hero-copy > p {
+    margin-top: 1.5rem;
+  }
+
+  .hero-buttons {
+    margin-top: 1.5rem;
+  }
+
+  .services {
+    padding-block: 4.5rem;
+  }
+
+  .services .section-top {
+    margin-bottom: 2rem;
+  }
+
+  .service-body {
+    padding: 1.35rem;
+  }
+
+  .about-grid {
+    min-height: 620px;
+    padding-block: 4.5rem;
+  }
+
+  .about p {
+    margin-top: 1.75rem;
+  }
+
+  .process {
+    padding-block: 4.5rem;
+  }
+
+  .process-header {
+    margin-bottom: 3rem;
+  }
+
+  .process-step {
+    padding-block: 1.5rem;
+  }
+
+  .step-number {
+    margin-bottom: 1.5rem;
+  }
+
+  .why-peek,
+  .service-area {
+    padding-block: 4.5rem;
+  }
+
+  .why-peek-grid {
+    margin-top: 2.5rem;
+    gap: 2.5rem;
+  }
+
+  .service-area h2 {
+    margin-top: 1.1rem;
+  }
+
+  .service-area-container > p {
+    margin-top: 1.25rem;
+  }
+
+  .service-area-list {
+    margin-top: 1.75rem;
+  }
+
+  .booking-cta {
+    margin-bottom: 4.5rem;
+  }
+
+  .booking-cta-inner {
+    min-height: 0;
+    padding: 2rem 1.35rem;
+  }
+
+  .contact-section {
+    width: calc(100% - 2rem);
+    margin-block: 4.5rem;
+  }
+
+  .contact-container {
+    padding: 2rem 1.25rem;
+  }
+
+  .contact-container > h2 + p {
+    margin-top: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  #quoteForm fieldset {
+    margin-bottom: 2rem;
+  }
+
+  footer {
+    padding-top: 3rem;
+  }
+
+  .footer-inner {
+    padding-bottom: 2.25rem;
+  }
+}
