@@ -676,6 +676,7 @@ function enforceRoughPricing(reply, pricing) {
 
 
 function findFaqAnswer(text) {
+  if (!isLikelyFaqQuestion(text)) return null;
   const normalized = String(text || "")
     .toLowerCase()
     .replace(/[^a-z0-9$ ]+/g, " ")
