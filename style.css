@@ -3425,3 +3425,17 @@ footer {
     min-height: 72px !important;
   }
 }
+
+/* BOOK CTA — smile on hover */
+.booking-cta-button {
+  position: relative;
+  overflow: hidden;
+}
+.booking-cta-button:hover {
+  font-size: 0 !important;
+}
+.booking-cta-button:hover::after {
+  content: "😊";
+  font-size: 1.5rem;
+  line-height: 1;
+}
