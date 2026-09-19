@@ -875,3 +875,39 @@ main > h2 + p {
     min-height: 150px;
   }
 }
+
+
+/* FORCE CONTACT CONTENT TO STAY CENTERED */
+main > h2,
+main > h2 + p,
+#quoteForm {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+main > h2 {
+  width: min(1100px, calc(100% - (var(--page-padding) * 2)));
+  box-sizing: border-box;
+}
+
+main > h2 + p {
+  width: min(680px, calc(100% - (var(--page-padding) * 2)));
+  box-sizing: border-box;
+}
+
+#quoteForm {
+  width: min(720px, calc(100% - (var(--page-padding) * 2)));
+  box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+@media (max-width: 700px) {
+  main > h2,
+  main > h2 + p,
+  #quoteForm {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
