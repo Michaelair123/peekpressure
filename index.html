@@ -951,12 +951,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const phone = (lead.phone || '').trim();
       const email = (lead.email || '').trim();
 
-      if (!name || (!phone && !email)) return;
+      if (!name || (!phone && !email)) return false;
+      if (lead.lead_status === 'spam' || lead.lead_status === 'uncertain') return false;
 
       const formData = new URLSearchParams();
       formData.set('service', lead.service || 'Exterior cleaning');
       formData.set('address', lead.location || 'Bay Area');
       formData.set('details', [
+        lead.question && 'Customer question: ' + lead.question,
         lead.size && 'Size: ' + lead.size,
         lead.surface && 'Surface: ' + lead.surface,
         lead.condition && 'Condition: ' + lead.condition,
@@ -967,6 +969,8 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.set('name', name);
       if (phone) formData.set('phone', phone);
       if (email) formData.set('email', email);
+      formData.set('lead_status', lead.lead_status || 'real');
+      formData.set('handoff', 'Owner follow-up requested by Lucy');
       formData.set('source', 'Lucy - PEEK PRESSURE AI');
 
       try {
@@ -981,9 +985,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!response.ok) throw new Error('Lead submission failed');
         state.leadSubmitted = true;
+        return true;
       } catch (error) {
         // The conversation should still work if the notification service is temporarily unavailable.
         console.warn('Lucy lead submission failed', error);
+        return false;
       }
     }
 
