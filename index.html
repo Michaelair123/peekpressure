@@ -371,16 +371,30 @@
               referrerpolicy="no-referrer-when-downgrade"></iframe>
             <div id="service-area" class="service-map-dots" aria-label="PEEK PRESSURE service locations">
               <span class="map-dot sf" title="San Francisco" aria-label="San Francisco"></span>
-              <span class="map-dot oakland" title="Oakland" aria-label="Oakland"></span>
-              <span class="map-dot sanleandro" title="San Leandro" aria-label="San Leandro"></span>
-              <span class="map-dot hayward" title="Hayward" aria-label="Hayward"></span>
-              <span class="map-dot burlingame" title="Burlingame" aria-label="Burlingame"></span>
-              <span class="map-dot southsf" title="South San Francisco" aria-label="South San Francisco"></span>
               <span class="map-dot dalycity" title="Daly City" aria-label="Daly City"></span>
+              <span class="map-dot pacifica" title="Pacifica" aria-label="Pacifica"></span>
+              <span class="map-dot southsf" title="South San Francisco" aria-label="South San Francisco"></span>
+              <span class="map-dot sanbruno" title="San Bruno" aria-label="San Bruno"></span>
+              <span class="map-dot millbrae" title="Millbrae" aria-label="Millbrae"></span>
+              <span class="map-dot burlingame" title="Burlingame" aria-label="Burlingame"></span>
               <span class="map-dot sanmateo" title="San Mateo" aria-label="San Mateo"></span>
-              <span class="map-dot fremont" title="Fremont" aria-label="Fremont"></span>
+              <span class="map-dot foster" title="Foster City" aria-label="Foster City"></span>
+              <span class="map-dot belmont" title="Belmont" aria-label="Belmont"></span>
+              <span class="map-dot redwood" title="Redwood City" aria-label="Redwood City"></span>
+              <span class="map-dot menlopark" title="Menlo Park" aria-label="Menlo Park"></span>
+              <span class="map-dot paloalto" title="Palo Alto" aria-label="Palo Alto"></span>
+              <span class="map-dot mountainview" title="Mountain View" aria-label="Mountain View"></span>
+              <span class="map-dot sunnyvale" title="Sunnyvale" aria-label="Sunnyvale"></span>
+              <span class="map-dot santa-clara" title="Santa Clara" aria-label="Santa Clara"></span>
               <span class="map-dot sanjose" title="San Jose" aria-label="San Jose"></span>
-            </div>
+              <span class="map-dot milpitas" title="Milpitas" aria-label="Milpitas"></span>
+              <span class="map-dot fremont" title="Fremont" aria-label="Fremont"></span>
+              <span class="map-dot newark" title="Newark" aria-label="Newark"></span>
+              <span class="map-dot unioncity" title="Union City" aria-label="Union City"></span>
+              <span class="map-dot hayward" title="Hayward" aria-label="Hayward"></span>
+              <span class="map-dot sanleandro" title="San Leandro" aria-label="San Leandro"></span>
+              <span class="map-dot oakland" title="Oakland" aria-label="Oakland"></span>
+              <span class="map-dot alameda" title="Alameda" aria-label="Alameda"></span></div>
           </div>
           <div class="service-map-key">
             <span class="map-key-dot"></span>
@@ -611,16 +625,15 @@
 
     if (serviceMap && serviceDots) {
       const serviceCities = {
-        sf:        { lat: 37.7599, lng: -122.4350 },
-        oakland:   { lat: 37.8044, lng: -122.2711 },
-        sanleandro:{ lat: 37.7249, lng: -122.1561 },
-        hayward:   { lat: 37.6688, lng: -122.0808 },
-        burlingame:{ lat: 37.5840, lng: -122.3660 },
-        southsf:   { lat: 37.6547, lng: -122.4077 },
-        dalycity:  { lat: 37.6879, lng: -122.4702 },
-        sanmateo:  { lat: 37.5569, lng: -122.3131 },
-        fremont:   { lat: 37.5485, lng: -121.9886 },
-        sanjose:   { lat: 37.3382, lng: -121.8863 }
+        sf:{lat:37.7599,lng:-122.4350}, dalycity:{lat:37.6879,lng:-122.4702}, pacifica:{lat:37.6138,lng:-122.4869},
+        southsf:{lat:37.6547,lng:-122.4077}, sanbruno:{lat:37.6305,lng:-122.4111}, millbrae:{lat:37.5985,lng:-122.3872},
+        burlingame:{lat:37.5840,lng:-122.3660}, sanmateo:{lat:37.5569,lng:-122.3131}, foster:{lat:37.5585,lng:-122.2711},
+        belmont:{lat:37.5202,lng:-122.2758}, redwood:{lat:37.4852,lng:-122.2364}, menlopark:{lat:37.4530,lng:-122.1817},
+        paloalto:{lat:37.4419,lng:-122.1430}, mountainview:{lat:37.3861,lng:-122.0839}, sunnyvale:{lat:37.3688,lng:-122.0363},
+        "santa-clara":{lat:37.3541,lng:-121.9552}, sanjose:{lat:37.3382,lng:-121.8863}, milpitas:{lat:37.4323,lng:-121.8996},
+        fremont:{lat:37.5485,lng:-121.9886}, newark:{lat:37.5297,lng:-122.0402}, unioncity:{lat:37.5934,lng:-122.0438},
+        hayward:{lat:37.6688,lng:-122.0808}, sanleandro:{lat:37.7249,lng:-122.1561}, oakland:{lat:37.8044,lng:-122.2711},
+        alameda:{lat:37.7799,lng:-122.2822}
       };
 
       const mapCenter = { lat: 37.65, lng: -122.25 };
