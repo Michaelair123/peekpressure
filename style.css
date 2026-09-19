@@ -1144,3 +1144,103 @@ body::before{content:"";position:fixed;top:0;left:0;width:var(--scroll-progress,
   .header-contact .header-phone{font-size:.5rem!important}
   .header-email{flex-basis:1.85rem!important;width:1.85rem!important;min-width:1.85rem!important;height:1.85rem!important}
 }
+
+/* MOBILE POLISH — FINAL PASS */
+@media (max-width:700px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  body{padding-bottom:5.75rem!important}
+  .header{height:auto!important}
+  .header-inner{min-width:0!important;width:calc(100% - 1rem)!important}
+  .logo{min-width:0!important}
+  .header-contact{min-width:0!important}
+  .header-contact .header-phone{max-width:11.5rem!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .header-text,.header-email,.header-cta{flex-shrink:0!important}
+
+  .hero{padding-top:7rem!important;padding-bottom:4rem!important}
+  .hero-copy h1{font-size:clamp(3rem,14.5vw,5rem)!important;line-height:.86!important}
+  .hero-copy>p{max-width:32rem!important}
+  .hero-proof{flex-wrap:wrap!important}
+  .hero-buttons .button{min-height:3.15rem!important}
+
+  .services{padding-block:4rem!important}
+  .services-grid{
+    scroll-padding-inline:.5rem!important;
+    overscroll-behavior-x:contain!important;
+  }
+  .service{scroll-snap-stop:always!important}
+  .service-image{height:52vw!important;min-height:205px!important}
+  .service-body{min-height:160px!important}
+
+  .about-grid,.process,.why-peek,.service-area,.faq-section,.proof-section{
+    padding-block:4rem!important;
+  }
+  .about-grid h2,.process-header h2,.why-peek-intro h2,.service-area h2,.proof-header h2{
+    font-size:clamp(2.8rem,12.2vw,4.5rem)!important;
+    line-height:.88!important;
+  }
+  .about-reel{width:100%!important;overflow:hidden!important}
+  .about-reel-track{max-width:100%!important}
+
+  .process-step{padding:1.45rem 0!important}
+  .process-step:first-child{padding-top:0!important}
+
+  .proof-grid{gap:1rem!important}
+  .before-after-media{min-height:210px!important}
+
+  .service-area-map{width:100%!important;min-height:300px!important;height:62vw!important;max-height:390px!important}
+  .service-area-list{gap:.45rem!important}
+
+  .booking-cta{padding-block:4rem!important}
+  .booking-cta-button{min-height:3.25rem!important}
+
+  #quoteForm{padding-bottom:4rem!important}
+  .form-field{margin-top:1.25rem!important}
+  #quoteForm .service-choice{min-height:3rem!important}
+  #quoteForm button[type=submit]{min-height:3.2rem!important}
+
+  .footer{padding-bottom:7rem!important}
+  .mobile-action-bar{
+    bottom:calc(.5rem + env(safe-area-inset-bottom))!important;
+    left:.5rem!important;
+    right:.5rem!important;
+  }
+}
+
+@media (max-width:480px){
+  .header-inner{gap:.28rem!important}
+  .logo{font-size:.82rem!important}
+  .header-contact{gap:.18rem!important}
+  .header-contact .header-phone{font-size:.48rem!important;letter-spacing:0!important}
+  .header-text,.header-email{width:1.9rem!important;min-width:1.9rem!important;height:1.9rem!important}
+  .header-cta{padding:.48rem .62rem!important;font-size:.45rem!important}
+
+  .hero{padding-top:6.8rem!important}
+  .hero-copy h1{font-size:clamp(2.85rem,14.6vw,4.35rem)!important}
+  .hero-copy>p{font-size:.79rem!important}
+  .hero-buttons{gap:.5rem!important}
+
+  .services-grid{width:calc(100vw - .5rem)!important;margin-left:.25rem!important}
+  .service{flex-basis:88vw!important;max-width:88vw!important}
+  .service-image{min-height:195px!important}
+  .service-body{padding:1.1rem!important}
+
+  .about-grid,.process,.why-peek,.service-area,.faq-section,.proof-section,.booking-cta{
+    padding-block:3.75rem!important;
+  }
+
+  main>h2{font-size:clamp(2.8rem,12.4vw,4.3rem)!important}
+  #quoteForm{width:calc(100% - 2rem)!important}
+}
+
+@media (max-width:375px){
+  .header-contact .header-phone{font-size:.44rem!important}
+  .header-text,.header-email{width:1.78rem!important;min-width:1.78rem!important;height:1.78rem!important}
+  .header-cta{padding-inline:.52rem!important;font-size:.42rem!important}
+  .hero-copy h1{font-size:clamp(2.7rem,14.5vw,4rem)!important}
+  .service{flex-basis:90vw!important;max-width:90vw!important}
+  .mobile-action-bar{left:.4rem!important;right:.4rem!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .service-image img,.header-cta,.button,.mobile-action-bar a{transition:none!important}
+}
