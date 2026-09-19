@@ -625,5 +625,38 @@
 </script>
 
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const logo = document.querySelector('.logo');
+  if (logo) {
+    let taps = 0, timer;
+    logo.addEventListener('click', (e) => {
+      if (logo.getAttribute('href') === '#') e.preventDefault();
+      taps++;
+      clearTimeout(timer);
+      timer = setTimeout(() => taps = 0, 1200);
+      if (taps === 5) {
+        taps = 0;
+        document.body.classList.add('peek-clean');
+        setTimeout(() => document.body.classList.remove('peek-clean'), 1100);
+      }
+    });
+  }
+
+  let secret = '';
+  const sequence = 'peek';
+  document.addEventListener('keydown', (e) => {
+    if (e.key.length === 1) {
+      secret = (secret + e.key.toLowerCase()).slice(-sequence.length);
+      if (secret === sequence) {
+        secret = '';
+        document.body.classList.add('peek-maximum');
+        setTimeout(() => document.body.classList.remove('peek-maximum'), 1400);
+      }
+    }
+  });
+});
+</script>
 </body>
 </html>
