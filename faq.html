@@ -31,7 +31,7 @@
     <p class="faq-intro">Straight answers to the questions customers ask most about pressure washing, estimates, photos, and scheduling.</p>
     <input class="faq-search" id="faqSearch" type="search" placeholder="Search the FAQ…" aria-label="Search frequently asked questions">
     <section class="faq-list" id="faqList" aria-label="Frequently asked questions"></section>
-    <p class="faq-note">Lucy uses the same FAQ source as the chat assistant. Edit <code>functions/api/faq.js</code> to change an answer. Lucy and this page use the same source.</p>
+    <p class="faq-note">Lucy uses the same FAQ source as the chat assistant. Edit <code>faq-data.js</code> to change an answer. Lucy and this page use the same source.</p>
     <a class="faq-back" href="/">← Back to PEEK PRESSURE</a>
   </main>
   <script>
@@ -47,10 +47,8 @@
     }
     async function loadFaq(){
       try{
-        const response=await fetch('/api/faq',{headers:{Accept:'application/json'}});
-        if(!response.ok) throw new Error('FAQ unavailable');
-        const data=await response.json();
-        items=Array.isArray(data.faq)?data.faq:[];
+        const module = await import('/faq-data.js');
+        items = Array.isArray(module.LUCY_FAQ) ? module.LUCY_FAQ : [];
         render();
       }catch(error){
         list.innerHTML='<div class="faq-empty">The FAQ is temporarily unavailable. Please call or text PEEK PRESSURE at 415-689-8377.</div>';
