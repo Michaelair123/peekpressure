@@ -4562,3 +4562,12 @@ body::before {
     transition: none !important;
   }
 }
+
+/* Remove circular service-card decorations */
+.services .service::before,
+.services .service::after,
+.services .service-card::before,
+.services .service-card::after {
+  content:none !important;
+  display:none !important;
+}
