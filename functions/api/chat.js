@@ -675,6 +675,12 @@ function enforceRoughPricing(reply, pricing) {
 }
 
 
+function isLikelyFaqQuestion(text) {
+  const value = String(text || "").trim();
+  if (!value || value.length > 180) return false;
+  return /\?|\b(do you|can you|what|where|how|is|are|can|does|which|minimum|quote|price|pricing|cost|book|schedule)\b/i.test(value);
+}
+
 function findFaqAnswer(text) {
   if (!isLikelyFaqQuestion(text)) return null;
   const normalized = String(text || "")
