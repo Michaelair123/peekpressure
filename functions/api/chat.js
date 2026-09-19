@@ -596,6 +596,57 @@ async function getAvailability(eventTypeUri, startTime, endTime, env) {
   return data?.collection || [];
 }
 
+function isPricingRequest(text) {
+  return /\b(how much|price|pricing|cost|quote|estimate|estimated|rate|charge|what.*cost|how.*charge)\b/i.test(String(text || ""));
+}
+function parseSquareFeet(text) {
+  const s = String(text || "").toLowerCase().replace(/,/g, "");
+  let m = s.match(/\b(\d+(?:\.\d+)?)\s*(?:sq\.?\s*ft|sqft|square\s+feet|square\s+foot)\b/);
+  if (m) return Number(m[1]);
+  m = s.match(/\b(\d+(?:\.\d+)?)\s*(?:ft|feet)\s*(?:x|by)\s*(\d+(?:\.\d+)?)\s*(?:ft|feet)?\b/);
+  if (m) return Number(m[1]) * Number(m[2]);
+  m = s.match(/\b(\d+(?:\.\d+)?)\s*(?:x|by)\s*(\d+(?:\.\d+)?)\b/);
+  return m ? Number(m[1]) * Number(m[2]) : null;
+}
+function calculateRoughEstimate(service, sizeText, conditionText) {
+  const s = String(service || "").toLowerCase();
+  const condition = String(conditionText || "").toLowerCase();
+  const sqft = parseSquareFeet(sizeText);
+  if (!sqft || sqft <= 0 || sqft > 100000) return null;
+  let lowRate = 0.30, highRate = 0.50;
+  if (/commercial/.test(s)) [lowRate, highRate] = [0.28, 0.45];
+  else if (/driveway/.test(s)) [lowRate, highRate] = [0.30, 0.45];
+  else if (/sidewalk|walkway/.test(s)) [lowRate, highRate] = [0.30, 0.50];
+  else if (/patio|paver/.test(s)) [lowRate, highRate] = [0.35, 0.60];
+  let low = sqft * lowRate, high = sqft * highRate;
+  if (/oil|grease|rust|heavy|severe|deep|stubborn|thick buildup/.test(condition)) { low += 30; high += 100; }
+  low = Math.max(150, Math.round(low / 5) * 5);
+  high = Math.max(low, Math.round(high / 5) * 5);
+  return { low, high, squareFeet: Math.round(sqft) };
+}
+function extractPricingContext(messages) {
+  const users = messages.filter(m => m?.role === "user");
+  const latest = users.length ? users[users.length - 1].content : "";
+  if (!isPricingRequest(latest)) return { requested: false, estimate: null };
+  const allText = users.map(m => typeof m.content === "string" ? m.content : JSON.stringify(m.content)).join(" ");
+  const serviceMatch = allText.match(/\b(driveway|sidewalk|walkway|patio|pavers?|commercial)\b/i);
+  const sizeMatch = allText.match(/(?:\d[\d,]*(?:\.\d+)?\s*(?:sq\.?\s*ft|sqft|square\s+feet|square\s+foot)|\d+(?:\.\d+)?\s*(?:ft|feet)?\s*(?:x|by)\s*\d+(?:\.\d+)?\s*(?:ft|feet)?)/i);
+  const conditionMatch = allText.match(/\b(oil|grease|rust|heavy|severe|deep|stubborn|thick buildup)\b/i);
+  return { requested: true, estimate: calculateRoughEstimate(serviceMatch?.[0] || "", sizeMatch?.[0] || "", conditionMatch?.[0] || "") };
+}
+function formatEstimateLine(pricing) {
+  if (!pricing?.estimate) return "For a rough price, I need the approximate size. PEEK PRESSURE has a $150 minimum.";
+  const e = pricing.estimate;
+  return `Preliminary rough estimate: $\{e.low\}–$\{e.high\} for approximately $\{e.squareFeet\} sq ft. Final pricing is confirmed by PEEK PRESSURE after reviewing the job details.`;
+}
+function enforceRoughPricing(reply, pricing) {
+  if (!pricing?.requested) return reply;
+  const line = formatEstimateLine(pricing);
+  if (!pricing.estimate) return line + "\n\n" + String(reply || "");
+  const range = new RegExp("\\$" + pricing.estimate.low + "\\s*[–-]\\s*\\$?" + pricing.estimate.high);
+  return range.test(String(reply || "")) ? String(reply) : line + "\n\n" + String(reply || "");
+}
+
 async function handleLucyRequest({ request, env }) {
   const cors = {
     "Access-Control-Allow-Origin": "https://peekpressure.com",
@@ -687,7 +738,9 @@ async function handleLucyRequest({ request, env }) {
       return Response.json({ error: "Images are too large. Please send a smaller photo." }, { status: 413, headers: cors });
     }
 
+    const pricingContext = extractPricingContext(safeMessages);
     const now = new Date().toISOString();
+    const pricingInstruction = pricingContext.requested ? "\n\nSYSTEM-GENERATED PRICING DATA — DO NOT RECALCULATE OR INVENT DOLLAR AMOUNTS. " + formatEstimateLine(pricingContext) : "";
     const schedulingContext = `
 CURRENT TIME
 - Current UTC time: ${now}
@@ -760,6 +813,7 @@ SCHEDULING ACTIONS
       return Response.json({ error: "Lucy response format error.", request_id: requestId }, { status: 502, headers: cors });
     }
 
+    parsed.reply = enforceRoughPricing(parsed.reply, pricingContext);
     const result = enforceLeadSafety(parsed, safeMessages);
     let reply = result.reply;
     let scheduling = null;
