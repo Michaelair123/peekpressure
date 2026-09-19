@@ -174,7 +174,7 @@
             <div class="service-body">
               <span class="number">01</span>
               <h2>DRIVEWAYS</h2>
-              <p>Remove buildup and tough stains from concrete driveways. Restore curb appeal fast.</p>
+              <p>Remove buildup and tough stains from concrete driveways. Restore curb appeal fast.</p><a class="service-cta" href="#quoteForm" data-service="Driveway">REQUEST QUOTE <span>→</span></a>
             </div>
           </article>
 
@@ -189,7 +189,7 @@
             <div class="service-body">
               <span class="number">02</span>
               <h2>SIDEWALKS<br>/ WALKWAYS</h2>
-              <p>Keep entrances, walkways and pedestrian areas presentable and safe.</p>
+              <p>Keep entrances, walkways and pedestrian areas presentable and safe.</p><a class="service-cta" href="#quoteForm" data-service="Sidewalk / Walkway">REQUEST QUOTE <span>→</span></a>
             </div>
           </article>
 
@@ -204,7 +204,7 @@
             <div class="service-body">
               <span class="number">03</span>
               <h2>COMMERCIAL</h2>
-              <p>Routine exterior cleaning for offices, retail centers, and apartment properties.</p>
+              <p>Routine exterior cleaning for offices, retail centers, and apartment properties.</p><a class="service-cta" href="#quoteForm" data-service="Commercial">REQUEST QUOTE <span>→</span></a>
             </div>
           </article>
 
@@ -552,7 +552,29 @@
 
 
 
-    // ── LIGHTBOX ─────────────────────────────────
+    // ── LOW-FRICTION LEAD HELPERS ────────────────
+    const serviceLinks = document.querySelectorAll('.service-cta[data-service]');
+    serviceLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const value = link.dataset.service;
+        const choice = document.querySelector(`#quoteForm input[name="service"][value="${value}"]`);
+        if (choice) choice.checked = true;
+      });
+    });
+
+    const photoInput = document.querySelector('#photos');
+    const photoUpload = document.querySelector('.photo-upload');
+    if (photoInput && photoUpload) {
+      const photoText = photoUpload.querySelector('span');
+      photoInput.addEventListener('change', () => {
+        const count = photoInput.files.length;
+        photoText.textContent = count
+          ? `${count} photo${count === 1 ? '' : 's'} selected — tap to change`
+          : 'Photos help us quote faster.';
+      });
+    }
+
+        // ── LIGHTBOX ─────────────────────────────────
     const lightbox = document.createElement('div');
     lightbox.classList.add('lightbox');
     lightbox.innerHTML = `
