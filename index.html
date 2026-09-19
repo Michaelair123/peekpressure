@@ -894,7 +894,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!launcher || !panel || !messages || !form) return;
 
-    const state = { history: [], open: false };
+    const state = {
+      history: [],
+      open: false,
+      leadSubmitted: false
+    };
 
     function addMessage(text, role) {
       const bubble = document.createElement('div');
@@ -906,6 +910,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setQuick(items) {
       quick.innerHTML = '';
+      if (!Array.isArray(items) || !items.length) return;
+
       items.forEach(item => {
         const button = document.createElement('button');
         button.type = 'button';
@@ -924,8 +930,9 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.setAttribute('aria-hidden', 'false');
       launcher.classList.add('is-hidden');
       input.focus();
+
       if (!messages.children.length) {
-        addMessage("Hey! I’m PEEK AI. What would you like cleaned?", 'assistant');
+        addMessage("Hey — I’m PEEK AI. 👋 Tell me what needs cleaning and I’ll help you figure out the next step.", 'assistant');
         setQuick(['Driveway', 'Sidewalk / walkway', 'Commercial property']);
       }
     }
@@ -937,9 +944,53 @@ document.addEventListener('DOMContentLoaded', () => {
       launcher.classList.remove('is-hidden');
     }
 
+    async function submitLead(lead) {
+      if (state.leadSubmitted || !lead || !lead.lead_ready) return;
+
+      const name = (lead.name || '').trim();
+      const phone = (lead.phone || '').trim();
+      const email = (lead.email || '').trim();
+
+      if (!name || (!phone && !email)) return;
+
+      const formData = new URLSearchParams();
+      formData.set('service', lead.service || 'Exterior cleaning');
+      formData.set('address', lead.location || 'Bay Area');
+      formData.set('details', [
+        lead.size && 'Size: ' + lead.size,
+        lead.surface && 'Surface: ' + lead.surface,
+        lead.condition && 'Condition: ' + lead.condition,
+        lead.timing && 'Timing: ' + lead.timing,
+        lead.property_type && 'Property: ' + lead.property_type,
+        'Lead captured by PEEK AI.'
+      ].filter(Boolean).join('\n'));
+      formData.set('name', name);
+      if (phone) formData.set('phone', phone);
+      if (email) formData.set('email', email);
+      formData.set('source', 'PEEK AI');
+
+      try {
+        const response = await fetch('https://formspree.io/f/mdekoerb', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: formData.toString()
+        });
+
+        if (!response.ok) throw new Error('Lead submission failed');
+        state.leadSubmitted = true;
+      } catch (error) {
+        // The conversation should still work if the notification service is temporarily unavailable.
+        console.warn('PEEK AI lead submission failed', error);
+      }
+    }
+
     async function sendMessage(text) {
       const clean = text.trim();
       if (!clean) return;
+
       addMessage(clean, 'user');
       state.history.push({ role: 'user', content: clean });
       input.value = '';
@@ -947,7 +998,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const typing = document.createElement('div');
       typing.className = 'peek-chat-message assistant typing';
-      typing.textContent = 'PEEK AI is typing…';
+      typing.textContent = 'PEEK AI is thinking…';
       messages.appendChild(typing);
       messages.scrollTop = messages.scrollHeight;
 
@@ -955,27 +1006,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: state.history.slice(-12) })
+          body: JSON.stringify({ messages: state.history.slice(-16) })
         });
 
         if (!response.ok) throw new Error('Chat service unavailable');
+
         const data = await response.json();
         typing.remove();
 
-        const reply = data.reply || "Thanks — I’ve got that. What else can you tell me about the job?";
+        const reply = data.reply || "Got it. What’s the one detail you think I should know about the job?";
         addMessage(reply, 'assistant');
         state.history.push({ role: 'assistant', content: reply });
 
-        if (Array.isArray(data.quick_replies)) setQuick(data.quick_replies);
+        if (data.lead_ready && data.lead) {
+          await submitLead(data.lead);
+        }
+
+        // Keep the UI helpful without forcing a scripted sales flow.
+        if (!data.lead_ready && /book|schedule|appointment/i.test(reply)) {
+          setQuick(['Book a time', 'Get a quote']);
+        } else if (!data.lead_ready) {
+          setQuick(['Get a quote', 'Book a time']);
+        } else {
+          setQuick(['Book a time', 'Ask another question']);
+        }
       } catch (error) {
         typing.remove();
-        addMessage("I can still help get your quote started. What needs cleaning, and what city is the property in?", 'assistant');
-        setQuick(['Driveway', 'Sidewalk / walkway', 'Commercial property']);
+        addMessage("I hit a hiccup connecting to my brain. 😅 You can still call or text PEEK PRESSURE at 415-689-8377.", 'assistant');
+        setQuick(['Get a quote', 'Book a time']);
       }
     }
 
     launcher.addEventListener('click', openChat);
     close.addEventListener('click', closeChat);
+
     form.addEventListener('submit', event => {
       event.preventDefault();
       sendMessage(input.value);
