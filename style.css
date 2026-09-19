@@ -3290,107 +3290,6 @@ footer {
   .contact-section { margin-block: 4rem; }
 }
 
-/* BOOK CTA — true pill, not stretched */
-.booking-cta-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  min-width: 190px;
-  min-height: 58px;
-  padding: 0 1.6rem;
-  box-sizing: border-box;
-  border: 1px solid #111;
-  border-radius: 999px !important;
-  background: #111;
-  color: #fff;
-  white-space: nowrap;
-  line-height: 1;
-  text-align: center;
-  transition: transform .35s var(--peek-ease), background-color .3s ease, box-shadow .35s var(--peek-ease);
-}
-.booking-cta-button:hover {
-  transform: translateY(-3px);
-  background: #000;
-  box-shadow: 0 14px 32px rgba(0,0,0,.14);
-}
-.booking-cta-button span {
-  margin-left: .65rem;
-}
-@media (max-width: 700px) {
-  .booking-cta-button {
-    min-width: 0;
-    width: 100%;
-    min-height: 56px;
-  }
-}
-
-/* BOOK CTA — exact pill geometry */
-.booking-cta-button {
-  width: 220px !important;
-  height: 60px !important;
-  min-width: 220px !important;
-  min-height: 60px !important;
-  padding: 0 !important;
-  border-radius: 30px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-sizing: border-box !important;
-  line-height: 1 !important;
-}
-@media (max-width:700px) {
-  .booking-cta-button {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 56px !important;
-    min-height: 56px !important;
-    border-radius: 28px !important;
-  }
-}
-
-/* BOOK CTA — true circle */
-.booking-cta-button {
-  width: 72px !important;
-  height: 72px !important;
-  min-width: 72px !important;
-  min-height: 72px !important;
-  padding: 0 !important;
-  border-radius: 50% !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-sizing: border-box !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
-  text-align: center !important;
-}
-.booking-cta-button span {
-  display: none !important;
-}
-@media (max-width:700px) {
-  .booking-cta-button {
-    width: 72px !important;
-    height: 72px !important;
-    min-width: 72px !important;
-    min-height: 72px !important;
-  }
-}
-
-/* BOOK CTA — smile on hover */
-.booking-cta-button {
-  position: relative;
-  overflow: hidden;
-}
-.booking-cta-button:hover {
-  font-size: 0 !important;
-}
-.booking-cta-button:hover::after {
-  content: "😊";
-  font-size: 1.5rem;
-  line-height: 1;
-}
-
 /* PEEK PRESSURE — tiny easter eggs */
 body.peek-clean::after {
   content: "✨ CLEAN.";
@@ -3448,49 +3347,6 @@ body.peek-maximum::after {
   body.peek-maximum {
     animation: none !important;
   }
-}
-
-/* PEEK — premium micro-interactions */
-.button, .booking-cta-button, .header-cta, .service-cta, #quoteForm button {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-.button::after, .booking-cta-button::after, .header-cta::after, .service-cta::after, #quoteForm button::after {
-  content: "";
-  position: absolute;
-  width: 90px;
-  height: 90px;
-  left: var(--mx,50%);
-  top: var(--my,50%);
-  border-radius: 50%;
-  background: rgba(255,255,255,.18);
-  transform: translate(-50%,-50%) scale(0);
-  transition: transform .45s var(--peek-ease);
-  pointer-events: none;
-  z-index: -1;
-}
-.button:hover::after, .booking-cta-button:hover::after, .header-cta:hover::after, .service-cta:hover::after, #quoteForm button:hover::after {
-  transform: translate(-50%,-50%) scale(1);
-}
-
-.service-card, .service {
-  transform: perspective(900px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));
-  transition: transform .5s var(--peek-ease), box-shadow .5s var(--peek-ease);
-  will-change: transform;
-}
-.service-card:hover, .service:hover {
-  box-shadow: 0 24px 60px rgba(0,0,0,.09);
-}
-.service-image {
-  overflow: hidden;
-}
-.service-image img {
-  transition: transform .8s var(--peek-ease), filter .6s ease;
-}
-.service:hover .service-image img {
-  transform: scale(1.035);
-  filter: saturate(1.04) contrast(1.02);
 }
 
 /* Scroll cleaning line */
@@ -3763,123 +3619,6 @@ body::before {
 }
 
 
-/* =========================================================
-   SERVICE AREA — EDITORIAL CITY GRID
-========================================================= */
-.service-area {
-  background: #fff;
-}
-
-.service-area-container > p {
-  max-width: 560px;
-  color: #777;
-}
-
-.service-area-list {
-  display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0 !important;
-  margin-top: clamp(2.5rem, 5vw, 4rem) !important;
-  border-top: 1px solid #e5e5e5;
-  border-left: 1px solid #e5e5e5;
-}
-
-.service-area-list span {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: clamp(76px, 8vw, 105px);
-  padding: 1.15rem 1.25rem;
-  border-right: 1px solid #e5e5e5;
-  border-bottom: 1px solid #e5e5e5;
-  background: #fff;
-  color: #222;
-  font-size: clamp(.65rem, .8vw, .78rem);
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  transition: background-color .3s ease, color .3s ease, transform .35s var(--peek-ease), border-color .3s ease;
-}
-
-.service-area-list span::after {
-  content: "↗";
-  position: absolute;
-  right: 1.15rem;
-  top: 50%;
-  transform: translateY(-50%) translateX(-5px);
-  opacity: 0;
-  color: #777;
-  font-size: .8rem;
-  transition: opacity .25s ease, transform .35s var(--peek-ease);
-}
-
-.service-area-list span:hover {
-  z-index: 1;
-  background: #f6f6f6;
-  color: #000;
-  transform: translateY(-2px);
-}
-
-.service-area-list span:hover::after {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
-}
-
-/* Service types become a quiet footer to the city grid. */
-.service-area-details {
-  display: flex !important;
-  flex-wrap: wrap;
-  gap: .55rem .7rem !important;
-  margin-top: 1.75rem !important;
-  padding-top: 0 !important;
-  border-top: 0 !important;
-}
-
-.service-area-details span {
-  padding: .55rem .8rem;
-  border: 1px solid #e5e5e5;
-  border-radius: 999px;
-  color: #777;
-  background: #fafafa;
-  font-size: .58rem;
-  font-weight: 700;
-  letter-spacing: .11em;
-}
-
-@media (max-width: 900px) {
-  .service-area-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 700px) {
-  .service-area-list {
-    grid-template-columns: 1fr 1fr;
-    margin-top: 2rem !important;
-  }
-
-  .service-area-list span {
-    min-height: 72px;
-    padding: 1rem;
-    font-size: .6rem;
-  }
-
-  .service-area-list span::after {
-    right: .8rem;
-  }
-
-  .service-area-details {
-    gap: .45rem !important;
-    margin-top: 1.25rem !important;
-  }
-
-  .service-area-details span {
-    font-size: .52rem;
-    padding: .48rem .65rem;
-  }
-}
-
-
 /* SERVICE AREA — MAP PRESENTATION */
 .service-area-list,
 .service-area-list span { display:none !important; }
@@ -4006,76 +3745,6 @@ body::before {
 
 
 
-/* SERVICE AREA — geographic SVG overlay */
-.service-map::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(255,255,255,.14), transparent 35%, rgba(255,255,255,.06));
-  pointer-events: none;
-  z-index: 4;
-}
-
-.service-area-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: block;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.service-area-fill {
-  fill: rgba(255, 212, 59, .14);
-  stroke: none;
-}
-
-.service-area-stroke {
-  fill: none;
-  stroke: #ffd43b;
-  stroke-width: 3;
-  vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 5px rgba(255,212,59,.55));
-}
-
-.service-map-dots {
-  z-index: 3;
-}
-
-.map-dot {
-  left: 0;
-  top: 0;
-  background: #ffd43b;
-  border: 2px solid #111;
-  box-shadow: 0 2px 10px rgba(0,0,0,.22);
-  transition: left .25s ease, top .25s ease;
-}
-
-.map-dot::after {
-  border-color: rgba(255,212,59,.8);
-}
-
-.map-key-dot {
-  background: #ffd43b;
-  box-shadow: 0 0 0 2px #111;
-}
-
-
-/* SERVICE AREA — simple red location dots */
-.map-dot {
-  background: #e53935;
-  border-color: #fff;
-  box-shadow: 0 3px 12px rgba(229,57,53,.35);
-}
-.map-dot::after {
-  border-color: rgba(229,57,53,.55);
-}
-.map-key-dot {
-  background: #e53935;
-  box-shadow: none;
-}
-
-
 /* SERVICE AREA — red dots only */
 .service-area-overlay {
   display: none !important;
@@ -4173,32 +3842,6 @@ body::before {
 #quoteForm button[type="submit"]:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 16px 36px rgba(17,17,17,.15);
-}
-
-/* Images feel interactive without becoming flashy. */
-.service-image {
-  position: relative;
-}
-.service-image::after {
-  content: "VIEW";
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  padding: .45rem .65rem;
-  border-radius: 999px;
-  background: rgba(17,17,17,.82);
-  color: #fff;
-  font-size: .55rem;
-  font-weight: 800;
-  letter-spacing: .12em;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity .25s ease, transform .35s var(--peek-ease);
-  pointer-events: none;
-}
-.service:hover .service-image::after {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Nav becomes a quiet orientation system. */
@@ -4621,4 +4264,38 @@ body::before {
     content-visibility: auto;
     contain-intrinsic-size: 700px;
   }
+}
+
+
+/* Final visual baseline: no legacy decorative transforms or overlays. */
+.services .service,
+.services .service-card {
+  transform: none !important;
+  box-shadow: none !important;
+}
+.services .service-image::before,
+.services .service-image::after,
+.services .service-card .service-image::before,
+.services .service-card .service-image::after {
+  content: none !important;
+  display: none !important;
+}
+.services .service-image img,
+.services .service-card .service-image img {
+  filter: none !important;
+  transition: transform .55s var(--peek-ease) !important;
+}
+.services .service:hover .service-image img,
+.services .service-card:hover .service-image img {
+  transform: scale(1.035) !important;
+}
+.button::after,
+.header-cta::after,
+.service-cta::after,
+#quoteForm button::after {
+  content: none !important;
+  display: none !important;
+}
+#quoteForm .service-choice:hover {
+  transform: none !important;
 }
