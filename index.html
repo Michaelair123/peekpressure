@@ -299,6 +299,32 @@
     }, { passive: true });
 
 
+    // ── ABOUT IMAGE REEL ─────────────────────────
+    // Add image URLs to this array later. The reel is intentionally blank for now.
+    const aboutReelImages = [];
+
+    const aboutSection = document.querySelector('.about');
+
+    if (aboutSection && aboutReelImages.length) {
+      const reel = document.createElement('div');
+      reel.className = 'about-reel has-images';
+      reel.setAttribute('aria-hidden', 'true');
+
+      const track = document.createElement('div');
+      track.className = 'about-reel-track';
+
+      aboutReelImages.forEach(src => {
+        const slide = document.createElement('div');
+        slide.className = 'about-reel-slide';
+        slide.style.backgroundImage = `url("${src}")`;
+        track.appendChild(slide);
+      });
+
+      reel.appendChild(track);
+      aboutSection.prepend(reel);
+    }
+
+
     // ── ACTIVE NAV on scroll ─────────────────────
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.header nav a');
