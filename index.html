@@ -156,19 +156,6 @@
   .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 </style>
 
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"FAQPage",
-  "mainEntity":[
-    {"@type":"Question","name":"What does PEEK PRESSURE clean?","acceptedAnswer":{"@type":"Answer","text":"PEEK PRESSURE provides driveway pressure washing, sidewalk and walkway cleaning, and commercial exterior pressure washing."}},
-    {"@type":"Question","name":"Where does PEEK PRESSURE provide service?","acceptedAnswer":{"@type":"Answer","text":"PEEK PRESSURE currently services San Francisco, Oakland, San Leandro, Hayward, Burlingame, South San Francisco, Daly City, San Mateo, Fremont, and San Jose."}},
-    {"@type":"Question","name":"How do I get a pressure washing quote?","acceptedAnswer":{"@type":"Answer","text":"Submit the quick quote form with your property address and service type. Photos are optional and can help PEEK PRESSURE review the job faster."}},
-    {"@type":"Question","name":"Does PEEK PRESSURE offer commercial cleaning?","acceptedAnswer":{"@type":"Answer","text":"Yes. PEEK PRESSURE provides exterior pressure washing for offices, retail properties, apartment properties, and other commercial properties. Recurring service can be requested."}}
-  ]
-}
-</script>
-
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
@@ -357,7 +344,7 @@
     </section>
 
     <!-- SERVICE AREA -->
-    <section class="service-area" aria-labelledby="service-area-title">
+    <section id="service-area" class="service-area" aria-labelledby="service-area-title">
       <div class="container service-area-container">
         <span class="label">05 / SERVICE AREA</span>
         <h2 id="service-area-title">SERVING THE<br>BAY AREA.</h2>
@@ -369,7 +356,7 @@
               src="https://www.google.com/maps?q=37.65,-122.25&z=9&output=embed"
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <div id="service-area" class="service-map-dots" aria-label="PEEK PRESSURE service locations">
+            <div class="service-map-dots" aria-label="PEEK PRESSURE service locations">
               <span class="map-dot sf" title="San Francisco" aria-label="San Francisco"></span>
               <span class="map-dot dalycity" title="Daly City" aria-label="Daly City"></span>
               <span class="map-dot pacifica" title="Pacifica" aria-label="Pacifica"></span>
@@ -560,9 +547,20 @@
   <script>
     // ── STICKY HEADER ────────────────────────────
     const header = document.querySelector('.header');
-    window.addEventListener('scroll', () => {
+    let scrollTicking = false;
+    const updateScrollUI = () => {
       header.classList.toggle('scrolled', window.scrollY > 40);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      document.documentElement.style.setProperty('--scroll-progress', max > 0 ? ((window.scrollY / max) * 100) + '%' : '0%');
+      scrollTicking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(updateScrollUI);
+      }
     }, { passive: true });
+    updateScrollUI();
 
 
     // ── ABOUT IMAGE REEL ─────────────────────────
@@ -830,39 +828,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const logo = document.querySelector('.logo');
-  if (logo) {
-    let taps = 0, timer;
-    logo.addEventListener('click', (e) => {
-      if (logo.getAttribute('href') === '#') e.preventDefault();
-      taps++;
-      clearTimeout(timer);
-      timer = setTimeout(() => taps = 0, 1200);
-      if (taps === 5) {
-        taps = 0;
-        document.body.classList.add('peek-clean');
-        setTimeout(() => document.body.classList.remove('peek-clean'), 1100);
-      }
-    });
-  }
-
-  let secret = '';
-  const sequence = 'peek';
-  document.addEventListener('keydown', (e) => {
-    if (e.key.length === 1) {
-      secret = (secret + e.key.toLowerCase()).slice(-sequence.length);
-      if (secret === sequence) {
-        secret = '';
-        document.body.classList.add('peek-maximum');
-        setTimeout(() => document.body.classList.remove('peek-maximum'), 1400);
-      }
-    }
-  });
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
   /* PEEK micro-interactions — desktop only */
   if (window.matchMedia('(pointer:fine)').matches) {
     const buttons = document.querySelectorAll('.button, .booking-cta-button, .header-cta, .service-cta, #quoteForm button');
@@ -899,7 +864,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const fields = [...form.querySelectorAll('input, textarea')].filter(el => el.type !== 'hidden' && el.type !== 'file');
     const update = () => {
       const filled = fields.filter(el => el.type === 'radio' ? el.checked : el.value.trim()).length;
-      form.style.setProperty('--quote-progress', Math.min(100, Math.round(filled/Math.max(fields.length,1)*100))+'%');
+      const progress = Math.min(100, Math.round(filled/Math.max(fields.length,1)*100));
+      form.style.setProperty('--quote-progress', progress + '%');
+      form.setAttribute('data-progress', progress);
     };
     fields.forEach(el => el.addEventListener('input', update));
     fields.forEach(el => el.addEventListener('change', update));
