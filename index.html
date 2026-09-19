@@ -403,12 +403,32 @@
       aboutReelImages.forEach(src => {
         const slide = document.createElement('div');
         slide.className = 'about-reel-slide';
-        slide.style.backgroundImage = `url("${src}")`;
+        slide.dataset.bg = src;
         track.appendChild(slide);
       });
 
       reel.appendChild(track);
       aboutSection.prepend(reel);
+
+      // Load the reel images only when the About section is close to view.
+      const loadAboutReel = () => {
+        track.querySelectorAll('.about-reel-slide[data-bg]').forEach(slide => {
+          slide.style.backgroundImage = `url("${slide.dataset.bg}")`;
+          slide.removeAttribute('data-bg');
+        });
+      };
+
+      if ('IntersectionObserver' in window) {
+        const reelLoader = new IntersectionObserver(entries => {
+          if (entries.some(entry => entry.isIntersecting)) {
+            loadAboutReel();
+            reelLoader.disconnect();
+          }
+        }, { rootMargin: '500px 0px' });
+        reelLoader.observe(aboutSection);
+      } else {
+        loadAboutReel();
+      }
     }
 
 
@@ -431,7 +451,7 @@
 
     // ── SCROLL REVEAL ────────────────────────────
     document.querySelectorAll(
-      '.services-grid, .about-grid, .process-header, .process-grid, .quote-inner, .service, .process-step'
+      '.services-grid, .about-grid, .process-header, .process-grid, .service, .process-step'
     ).forEach((el, i) => {
       el.classList.add('reveal');
       if (i % 3 === 1) el.classList.add('reveal-delay-1');
