@@ -7,6 +7,7 @@ PERSONALITY
 - Sound like a capable member of the PEEK PRESSURE team, while being transparent that you are an AI.
 - Use natural conversational language, with a little personality when appropriate.
 - Be friendly without being cheesy, overly casual, fake-hyped, or emoji-heavy.
+- Use 0–2 emojis when they genuinely fit the message (for example 👋 😊 👍 📸 🧼 ✨ 📅 📍 💬 🚿). Never force an emoji into every reply.
 - Keep replies concise and easy to read on a phone.
 - Never be pushy. Respect the customer's pace and answer their question directly first.
 - Never sound like a form, scripted sales bot, or call center.
@@ -17,7 +18,7 @@ YOUR JOB
 2. Naturally qualify legitimate cleaning leads.
 3. Collect enough information to make a useful quote request.
 4. When the lead is ready, summarize it and mark it ready for PEEK PRESSURE follow-up.
-5. Help customers book through the provided Calendly link.
+5. Help customers check real Calendly availability and, when explicitly requested, book appointments directly.
 6. Never make promises the business has not authorized.
 
 BUSINESS FACTS
@@ -52,8 +53,12 @@ SMART CONVERSATION RULES
 - If they change topics, follow them naturally.
 - If they give multiple details at once, acknowledge them and skip those questions.
 - Once enough information is available, stop interrogating them and move toward a quote/follow-up.
-- If they seem ready to book, provide the booking link immediately.
-- Never claim an appointment is available, booked, accepted, or scheduled.
+- If they ask to book, schedule, or find a time, use the booking capability instead of merely giving the link.
+- Never claim an appointment is available, booked, accepted, or scheduled unless the backend actually confirms it through Calendly.
+- If the customer has not provided enough information to book, ask only for the missing name, email, or time preference.
+- When real availability is returned, present a few clear options in the customer's local timezone.
+- Only book an exact slot the backend has just verified as available.
+- If direct booking is unavailable, gracefully provide the Calendly link instead.
 - Never invent a price. Explain that pricing depends on scope, size, surface, condition, access, and other job details.
 - If the customer asks for a rough price, do not make up a number. Offer to collect the details needed for PEEK PRESSURE to review.
 - If a photo would materially help, suggest one naturally rather than demanding it.
@@ -73,8 +78,13 @@ When lead_ready becomes true:
 - If a critical detail is still missing, keep lead_ready false and ask for that detail instead.
 
 BOOKING
-If the customer explicitly wants to book, include the Calendly URL exactly:
-https://calendly.com/look-peekpressure/pressure-wash
+- The backend can check live Calendly availability and book the customer.
+- If the customer asks to see times, set action to "check_availability" and provide a useful future time window.
+- If the customer chooses a specific previously offered time, set action to "book_appointment" and provide the exact selected_start_time in UTC.
+- Never invent a slot. Never book unless the customer clearly asked to book that specific time.
+- If name or email is missing for a booking, keep action as "none" and ask for the missing information.
+- If no scheduling action is needed, action must be "none".
+- If direct booking fails or the account does not permit it, the backend may return a Calendly fallback link.
 
 OUTPUT
 Return JSON matching the supplied schema exactly.
@@ -95,7 +105,11 @@ const LEAD_SCHEMA = {
     property_type: { type: ["string", "null"] },
     name: { type: ["string", "null"] },
     phone: { type: ["string", "null"] },
-    email: { type: ["string", "null"] }
+    email: { type: ["string", "null"] },
+    action: { type: "string", enum: ["none", "check_availability", "book_appointment"] },
+    availability_start: { type: ["string", "null"] },
+    availability_end: { type: ["string", "null"] },
+    selected_start_time: { type: ["string", "null"] }
   },
   required: [
     "reply",
@@ -109,9 +123,76 @@ const LEAD_SCHEMA = {
     "property_type",
     "name",
     "phone",
-    "email"
+    "email",
+    "action",
+    "availability_start",
+    "availability_end",
+    "selected_start_time"
   ]
 };
+
+async function calendlyRequest(path, env, options = {}) {
+  if (!env.CALENDLY_ACCESS_TOKEN) throw new Error("Calendly is not configured.");
+  const response = await fetch("https://api.calendly.com" + path, {
+    ...options,
+    headers: {
+      "Authorization": `Bearer ${env.CALENDLY_ACCESS_TOKEN}`,
+      "Content-Type": "application/json",
+      ...(options.headers || {})
+    }
+  });
+  const text = await response.text();
+  let data = {};
+  try { data = text ? JSON.parse(text) : {}; } catch {}
+  if (!response.ok) {
+    const error = new Error(data?.message || `Calendly request failed: ${response.status}`);
+    error.status = response.status;
+    error.data = data;
+    throw error;
+  }
+  return data;
+}
+
+async function getPressureWashEventType(env) {
+  const me = await calendlyRequest("/users/me", env);
+  const userUri = me?.resource?.uri;
+  if (!userUri) throw new Error("Calendly user could not be resolved.");
+
+  const params = new URLSearchParams({
+    user: userUri,
+    active: "true",
+    count: "100"
+  });
+  const events = await calendlyRequest("/event_types?" + params.toString(), env);
+  const match = (events?.collection || []).find(event =>
+    event.scheduling_url === "https://calendly.com/look-peekpressure/pressure-wash"
+  );
+
+  if (!match?.uri) throw new Error("Pressure Wash event type could not be found.");
+  return match;
+}
+
+function formatSlot(iso, timezone) {
+  const date = new Date(iso);
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone || "America/Los_Angeles",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(date);
+}
+
+async function getAvailability(eventTypeUri, startTime, endTime, env) {
+  const params = new URLSearchParams({
+    event_type: eventTypeUri,
+    start_time: startTime,
+    end_time: endTime
+  });
+  const data = await calendlyRequest("/event_type_available_times?" + params.toString(), env);
+  return data?.collection || [];
+}
 
 export async function onRequestPost({ request, env }) {
   const cors = {
@@ -131,6 +212,9 @@ export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
     const messages = Array.isArray(body.messages) ? body.messages.slice(-16) : [];
+    const customerTimezone = typeof body.timezone === "string" && body.timezone
+      ? body.timezone
+      : "America/Los_Angeles";
 
     if (!messages.length) {
       return Response.json({ error: "No messages supplied." }, { status: 400, headers: cors });
@@ -147,6 +231,21 @@ export async function onRequestPost({ request, env }) {
       return Response.json({ error: "No valid messages supplied." }, { status: 400, headers: cors });
     }
 
+    const now = new Date().toISOString();
+    const schedulingContext = `
+CURRENT TIME
+- Current UTC time: ${now}
+- Customer timezone: ${customerTimezone}
+
+SCHEDULING ACTIONS
+- action="none" for ordinary conversation.
+- action="check_availability" only when the customer is asking for actual appointment times or clearly wants to schedule.
+- For availability, availability_start and availability_end must be UTC ISO timestamps in the future and should cover the customer's requested window.
+- action="book_appointment" only when the customer clearly selected a specific time and has supplied a usable name and email.
+- For booking, selected_start_time must be the exact UTC timestamp of a slot previously offered in this conversation.
+- If a requested time has not been checked/offered yet, use check_availability instead of booking.
+`;
+
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -155,7 +254,7 @@ export async function onRequestPost({ request, env }) {
       },
       body: JSON.stringify({
         model: env.OPENAI_MODEL || "gpt-5.6-luna",
-        instructions: SYSTEM_PROMPT,
+        instructions: SYSTEM_PROMPT + "\n\n" + schedulingContext,
         input: safeMessages,
         text: {
           format: {
@@ -165,7 +264,7 @@ export async function onRequestPost({ request, env }) {
             schema: LEAD_SCHEMA
           }
         },
-        max_output_tokens: 500
+        max_output_tokens: 650
       })
     });
 
@@ -187,9 +286,112 @@ export async function onRequestPost({ request, env }) {
     }
 
     const result = JSON.parse(raw);
+    let reply = result.reply;
+    let scheduling = null;
+
+    if (result.action === "check_availability") {
+      try {
+        const eventType = await getPressureWashEventType(env);
+        let start = new Date(result.availability_start || now);
+        let end = new Date(result.availability_end || (Date.now() + 7 * 86400000));
+
+        if (!Number.isFinite(start.getTime()) || start.getTime() <= Date.now()) {
+          start = new Date(Date.now() + 15 * 60000);
+        }
+        if (!Number.isFinite(end.getTime()) || end <= start) {
+          end = new Date(start.getTime() + 7 * 86400000);
+        }
+        if (end.getTime() - start.getTime() > 31 * 86400000) {
+          end = new Date(start.getTime() + 31 * 86400000);
+        }
+
+        const slots = await getAvailability(eventType.uri, start.toISOString(), end.toISOString(), env);
+        const usable = slots
+          .filter(slot => slot?.status === "available" && slot?.start_time)
+          .slice(0, 5);
+
+        scheduling = {
+          action: "availability",
+          slots: usable.map(slot => ({
+            start_time: slot.start_time,
+            formatted: formatSlot(slot.start_time, customerTimezone)
+          }))
+        };
+
+        if (usable.length) {
+          reply = `Absolutely 📅 I have these times available: ${usable.map((slot, i) => `${i + 1}. ${formatSlot(slot.start_time, customerTimezone)}`).join(" · ")}. Which one works best?`;
+        } else {
+          reply = "I’m not seeing an opening in that window. 📅 If you give me another day or time range, I can check again.";
+        }
+      } catch (error) {
+        reply = "I can still get you booked through Calendly, but I’m having trouble checking live availability right now. 📅 Please use the booking link: https://calendly.com/look-peekpressure/pressure-wash";
+      }
+    }
+
+    if (result.action === "book_appointment") {
+      const name = (result.name || "").trim();
+      const email = (result.email || "").trim();
+      const selected = result.selected_start_time;
+
+      if (!name || !email || !selected) {
+        reply = "I just need your name and email before I can book that for you.";
+      } else {
+        try {
+          const eventType = await getPressureWashEventType(env);
+          const selectedDate = new Date(selected);
+          if (!Number.isFinite(selectedDate.getTime()) || selectedDate.getTime() <= Date.now()) {
+            throw new Error("Invalid booking time.");
+          }
+
+          const verificationStart = new Date(selectedDate.getTime() - 60000);
+          const verificationEnd = new Date(selectedDate.getTime() + 60000);
+          const slots = await getAvailability(
+            eventType.uri,
+            verificationStart.toISOString(),
+            verificationEnd.toISOString(),
+            env
+          );
+          const exactSlot = slots.find(slot => slot?.status === "available" && slot?.start_time === selectedDate.toISOString());
+
+          if (!exactSlot) {
+            reply = "That time was just taken. 😅 Give me another time and I’ll check what’s open.";
+          } else {
+            const booking = await calendlyRequest("/invitees", env, {
+              method: "POST",
+              body: JSON.stringify({
+                event_type: eventType.uri,
+                start_time: selectedDate.toISOString(),
+                invitee: {
+                  email,
+                  name,
+                  timezone: customerTimezone
+                }
+              })
+            });
+
+            const invitee = booking?.resource;
+            scheduling = {
+              action: "booked",
+              start_time: selectedDate.toISOString(),
+              formatted: formatSlot(selectedDate.toISOString(), customerTimezone),
+              reschedule_url: invitee?.reschedule_url || null,
+              cancel_url: invitee?.cancel_url || null
+            };
+
+            reply = `You’re all set, ${name.split(/\\s+/)[0]}! 📅 I booked you for ${formatSlot(selectedDate.toISOString(), customerTimezone)}. Calendly will send your confirmation shortly.`;
+          }
+        } catch (error) {
+          if (error?.status === 403) {
+            reply = "I’m not able to complete the booking directly from here yet. 📅 You can book the appointment securely through Calendly: https://calendly.com/look-peekpressure/pressure-wash";
+          } else {
+            reply = "I hit a snag while booking that time. 😅 Nothing was confirmed. Please try another time or use the Calendly booking link: https://calendly.com/look-peekpressure/pressure-wash";
+          }
+        }
+      }
+    }
 
     return Response.json({
-      reply: result.reply,
+      reply,
       lead_ready: Boolean(result.lead_ready),
       lead: {
         service: result.service,
@@ -202,7 +404,8 @@ export async function onRequestPost({ request, env }) {
         name: result.name,
         phone: result.phone,
         email: result.email
-      }
+      },
+      scheduling
     }, { headers: cors });
 
   } catch {
