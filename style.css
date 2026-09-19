@@ -3927,3 +3927,128 @@ body::before {
     padding: .48rem .65rem;
   }
 }
+
+
+/* SERVICE AREA — MAP PRESENTATION */
+.service-area-list,
+.service-area-list span { display:none !important; }
+
+.service-map-wrap {
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.service-map {
+  position:relative;
+  width:100%;
+  height:clamp(420px, 48vw, 650px);
+  overflow:hidden;
+  border-radius:24px;
+  background:#f4f4f2;
+  box-shadow:0 24px 70px rgba(0,0,0,.08);
+}
+
+.service-map iframe {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+  filter:grayscale(1) contrast(.9);
+  opacity:.78;
+  pointer-events:none;
+}
+
+.service-map::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(255,255,255,.18),transparent 35%,rgba(255,255,255,.08));
+  pointer-events:none;
+}
+
+.service-map-dots {
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+}
+
+.map-dot {
+  position:absolute;
+  width:12px;
+  height:12px;
+  margin:-6px 0 0 -6px;
+  border-radius:50%;
+  background:#111;
+  border:3px solid #fff;
+  box-shadow:0 3px 12px rgba(0,0,0,.3);
+}
+
+.map-dot::after {
+  content:"";
+  position:absolute;
+  inset:-7px;
+  border:1px solid rgba(17,17,17,.28);
+  border-radius:50%;
+  animation:service-pulse 2.4s ease-out infinite;
+}
+
+.sf{left:29%;top:48%}
+.oakland{left:39%;top:43%}
+.sanleandro{left:40%;top:51%}
+.hayward{left:43%;top:62%}
+.burlingame{left:31%;top:64%}
+.southsf{left:31%;top:39%}
+.dalycity{left:27%;top:53%}
+.sanmateo{left:32%;top:57%}
+.fremont{left:48%;top:72%}
+.sanjose{left:48%;top:91%}
+
+.service-map-key {
+  display:flex;
+  align-items:center;
+  gap:.65rem;
+  margin-top:1rem;
+  color:#777;
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.12em;
+}
+
+.map-key-dot {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#111;
+}
+
+@keyframes service-pulse {
+  0%{transform:scale(.55);opacity:.8}
+  70%,100%{transform:scale(1.45);opacity:0}
+}
+
+.service-area-details {
+  display:flex !important;
+  flex-wrap:wrap;
+  gap:.55rem .7rem !important;
+  margin-top:1.75rem !important;
+  padding-top:0 !important;
+  border:0 !important;
+}
+
+.service-area-details span {
+  padding:.55rem .8rem;
+  border:1px solid #e5e5e5;
+  border-radius:999px;
+  color:#777;
+  background:#fafafa;
+  font-size:.58rem;
+  font-weight:700;
+  letter-spacing:.11em;
+}
+
+@media(max-width:700px){
+  .service-map{height:380px;border-radius:18px}
+  .map-dot{width:10px;height:10px;margin:-5px 0 0 -5px}
+  .service-area-details{gap:.4rem!important}
+}
