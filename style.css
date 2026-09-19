@@ -3270,3 +3270,71 @@ footer {
     padding-bottom: 2.25rem;
   }
 }
+
+/* =========================================================
+   SCALE + SCROLL REFINEMENT — LESS HEIGHT, SAME PREMIUM FEEL
+========================================================= */
+
+.hero {
+  min-height: auto;
+  padding-top: clamp(7.5rem, 11vw, 9.5rem);
+  padding-bottom: clamp(4rem, 6vw, 5.5rem);
+}
+.hero-copy h1 { font-size: clamp(4rem, 8.5vw, 8.5rem); line-height: .8; }
+.hero-copy > p { margin-top: 1.6rem; }
+.hero-buttons { margin-top: 1.35rem; }
+
+.services { padding-block: clamp(4.5rem, 7vw, 6rem); }
+.service-image { height: clamp(230px, 23vw, 350px); }
+.service-body { min-height: 175px; padding: clamp(1.25rem, 1.8vw, 1.65rem); }
+.service-body .number { margin-bottom: 1rem; }
+.service p { margin-top: .7rem; }
+.service-cta { margin-top: 1rem; }
+
+.about { min-height: 0; }
+.about-grid { min-height: 560px; padding-block: clamp(4.5rem, 7vw, 6rem); }
+.about-grid h2 { font-size: clamp(3.5rem, 7vw, 7rem); }
+.about-grid p { margin-top: 1.75rem; }
+
+.process { padding-block: clamp(4.5rem, 7vw, 6rem); }
+.process-header { margin-bottom: clamp(2.5rem, 4vw, 3.5rem); }
+.process-header h2 { font-size: clamp(3.5rem, 7vw, 7rem); }
+.process-step { min-height: 205px; padding-top: 1.5rem; }
+.step-number { margin-bottom: 3rem; }
+
+.why-peek,
+.service-area { padding-block: clamp(4.5rem, 7vw, 6rem); }
+.why-peek-grid { margin-top: 2.5rem; }
+.why-peek-intro h2,
+.service-area h2 { font-size: clamp(3.5rem, 7vw, 7rem); }
+
+.booking-cta { margin-bottom: clamp(4rem, 6vw, 5.5rem); }
+.booking-cta-inner { min-height: 330px; padding: clamp(2rem, 4vw, 3.25rem); }
+
+.contact-section { margin-block: clamp(4.5rem, 7vw, 6rem); }
+
+@media (max-width: 700px) {
+  .hero { min-height: 0; padding-top: 6rem; padding-bottom: 3.5rem; }
+  .hero-copy h1 { font-size: clamp(3.5rem, 15vw, 5.25rem); line-height: .8; }
+  .hero-copy > p { margin-top: 1.25rem; }
+  .hero-buttons { margin-top: 1.25rem; }
+  .services { padding-block: 4rem; }
+  .service-image { height: 52vw; max-height: 20rem; }
+  .service-body { min-height: 165px; padding: 1.25rem; }
+  .about-grid { min-height: 0; padding-block: 4rem; }
+  .about-grid h2 { font-size: clamp(3.15rem, 14vw, 5rem); }
+  .about-grid p { margin-top: 1.5rem; }
+  .process { padding-block: 4rem; }
+  .process-header { margin-bottom: 2.5rem; }
+  .process-header h2 { font-size: clamp(3.15rem, 14vw, 5rem); }
+  .process-step { padding-block: 1.35rem; }
+  .step-number { margin-bottom: 1.25rem; }
+  .why-peek,
+  .service-area { padding-block: 4rem; }
+  .why-peek-intro h2,
+  .service-area h2 { font-size: clamp(3.15rem, 14vw, 5rem); }
+  .why-peek-grid { margin-top: 2rem; gap: 2rem; }
+  .booking-cta { margin-bottom: 4rem; }
+  .booking-cta-inner { min-height: 0; padding: 1.75rem 1.25rem; }
+  .contact-section { margin-block: 4rem; }
+}
