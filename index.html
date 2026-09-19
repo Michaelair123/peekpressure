@@ -1116,38 +1116,38 @@ document.addEventListener('DOMContentLoaded', () => {
         .filter(Boolean)
         .join('\\n\\n');
 
-      const formData = new URLSearchParams();
-      // Formspree's current workflow uses the form's configured target recipient.
-      // _to is not a supported special field, so do not rely on it for delivery.
-      formData.set('subject', 'Lucy customer callback request — ' + (name || 'New lead'));
-      formData.set('service', lead.service || 'Exterior cleaning');
-      formData.set('address', lead.location || 'Bay Area');
-      formData.set('message', [
-        lead.question && 'Customer question: ' + lead.question,
-        lead.size && 'Size: ' + lead.size,
-        lead.surface && 'Surface: ' + lead.surface,
-        lead.condition && 'Condition: ' + lead.condition,
-        lead.timing && 'Timing: ' + lead.timing,
-        lead.property_type && 'Property: ' + lead.property_type,
-        'CONTACT BACK REQUESTED — please follow up with this customer.',
-        "Lead captured by Lucy, PEEK PRESSURE's AI assistant."
-      ].filter(Boolean).join('\\n'));
-      formData.set('name', name);
-      if (phone) formData.set('phone', phone);
-      if (email) formData.set('email', email);
-      formData.set('lead_status', lead.lead_status || 'real');
-      formData.set('handoff', 'Owner follow-up requested by Lucy');
-      formData.set('source', 'Lucy - PEEK PRESSURE AI');
-      formData.set('chat_log', transcript || 'No text transcript available.');
+      const payload = {
+        subject: 'Lucy customer callback request — ' + (name || 'New lead'),
+        service: lead.service || 'Exterior cleaning',
+        address: lead.location || 'Bay Area',
+        message: [
+          lead.question && 'Customer question: ' + lead.question,
+          lead.size && 'Size: ' + lead.size,
+          lead.surface && 'Surface: ' + lead.surface,
+          lead.condition && 'Condition: ' + lead.condition,
+          lead.timing && 'Timing: ' + lead.timing,
+          lead.property_type && 'Property: ' + lead.property_type,
+          'CONTACT BACK REQUESTED — please follow up with this customer.',
+          "Lead captured by Lucy, PEEK PRESSURE's AI assistant."
+        ].filter(Boolean).join('\\n'),
+        name,
+        lead_status: lead.lead_status || 'real',
+        handoff: 'Owner follow-up requested by Lucy',
+        source: 'Lucy - PEEK PRESSURE AI',
+        chat_log: transcript || 'No text transcript available.'
+      };
+
+      if (phone) payload.phone = phone;
+      if (email) payload.email = email;
 
       try {
         const response = await fetch('https://formspree.io/f/mdekoerb', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json'
           },
-          body: formData.toString()
+          body: JSON.stringify(payload)
         });
 
         let result = null;
@@ -1208,7 +1208,7 @@ document.addEventListener('DOMContentLoaded', () => {
               setQuick(['Ask another question', 'Book a time']);
             } else {
               state.pendingLead = leadToSend;
-              const failure = "I couldn’t complete the handoff just yet. I haven’t told you it was sent. Please call or text PEEK PRESSURE at 415-689-8377, or reply TRY AGAIN.";
+              const failure = "I couldn’t complete the handoff just yet. I haven’t told you it was sent. Please reply TRY AGAIN, or call/text PEEK PRESSURE at 415-689-8377.";
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
               setQuick(['TRY AGAIN', 'Book a time']);
