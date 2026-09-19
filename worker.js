@@ -2,6 +2,7 @@ import { LUCY_FAQ } from "./functions/api/faq.js";
 import { onRequest as handleLucyRequest } from "./functions/api/chat.js";
 import { onRequestGet as handleAvailability } from "./functions/api/availability.js";
 import { onRequestPost as handleBooking } from "./functions/api/book.js";
+import { onRequestPost as handleLead } from "./functions/api/[[path]].js";
 
 export default {
   async fetch(request, env, ctx) {
@@ -24,12 +25,24 @@ export default {
       return new Response(null, { status: 204, headers: cors });
     }
 
+    const withCors = (response) => {
+      const headers = new Headers(response.headers);
+      for (const [key, value] of Object.entries(cors)) {
+        headers.set(key, value);
+      }
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers
+      });
+    };
+
     if (url.pathname === "/api/health") {
       return Response.json({
         ok: true,
         worker: "peekpressure",
-        build: "2026-09-19-routing-check"
-      });
+        build: "2026-09-19-cors-fix"
+      }, { headers: cors });
     }
 
     if (url.pathname === "/api/faq") {
@@ -39,30 +52,25 @@ export default {
     }
 
     if (url.pathname === "/api/chat") {
-      return handleLucyRequest({
-        request,
-        env,
-        ctx,
-        waitUntil: ctx.waitUntil.bind(ctx)
-      });
+      return withCors(await handleLucyRequest({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) }));
     }
 
     if (url.pathname === "/api/availability" && request.method === "GET") {
-      return handleAvailability({
+      return withCors(await handleAvailability({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) }));
+    }
+
+    if (url.pathname === "/api/lead" && request.method === "POST") {
+      return withCors(await handleLead({
         request,
         env,
         ctx,
+        params: { path: ["lead"] },
         waitUntil: ctx.waitUntil.bind(ctx)
-      });
+      }));
     }
 
     if (url.pathname === "/api/book" && request.method === "POST") {
-      return handleBooking({
-        request,
-        env,
-        ctx,
-        waitUntil: ctx.waitUntil.bind(ctx)
-      });
+      return withCors(await handleBooking({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) }));
     }
 
     if (env.ASSETS) {
