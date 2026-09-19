@@ -85,11 +85,18 @@
       "email": "look@peekpressure.com",
       "availableLanguage": "English"
     },
-    "potentialAction": {
-      "@type": "ContactAction",
-      "name": "Request a pressure washing quote",
-      "target": "https://peekpressure.com/#quoteForm"
-    },
+    "potentialAction": [
+      {
+        "@type": "ContactAction",
+        "name": "Request a pressure washing quote",
+        "target": "https://peekpressure.com/#quoteForm"
+      },
+      {
+        "@type": "ScheduleAction",
+        "name": "Schedule a pressure washing appointment",
+        "target": "https://calendly.com/look-peekpressure/pressure-wash"
+      }
+    ],
     "knowsAbout": [
       "Pressure washing",
       "Concrete cleaning",
@@ -261,7 +268,21 @@
 
 <h2 id="quote">LET’S GET YOU SOME PRESSURE. &#128527;</h2>
 <p>Tell us what you need. We’ll take it from there.</p>
-    
+
+<section class="booking" id="book">
+  <div class="booking-inner">
+    <div class="booking-copy">
+      <span class="label">BOOK A TIME</span>
+      <h3>SCHEDULE<br>YOUR PRESSURE WASH.</h3>
+      <p>Choose a time that works for you. If you’d rather have us review the job first, use the quote form below.</p>
+    </div>
+    <div
+      class="calendly-inline-widget"
+      data-url="https://calendly.com/look-peekpressure/pressure-wash?hide_gdpr_banner=1"
+    ></div>
+  </div>
+</section>
+
 <form
   id="quoteForm"
   action="https://formspree.io/f/mdekoerb"
