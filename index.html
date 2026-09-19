@@ -353,93 +353,78 @@
       id="quoteForm"
       action="https://formspree.io/f/mdekoerb"
       method="POST"
+      enctype="multipart/form-data"
     >
-      <div class="form-field">
-        <label for="name">NAME</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Your name"
-          required
-          data-fs-field
-        >
-        <span data-fs-error="name"></span>
+      <div class="quote-intro">
+        <span class="label">QUICK QUOTE</span>
+        <h3>YOU'RE ALMOST DONE.</h3>
+        <p>Tell us the basics. Photos and extra details are optional.</p>
       </div>
-    
+
+      <fieldset class="quote-step">
+        <legend>01 / WHAT NEEDS CLEANING?</legend>
+        <div class="service-choice-grid">
+          <label class="service-choice">
+            <input type="radio" name="service" value="Driveway" required data-fs-field>
+            <span>DRIVEWAY</span><b>→</b>
+          </label>
+          <label class="service-choice">
+            <input type="radio" name="service" value="Sidewalk / Walkway" data-fs-field>
+            <span>SIDEWALK / WALKWAY</span><b>→</b>
+          </label>
+          <label class="service-choice">
+            <input type="radio" name="service" value="Commercial" data-fs-field>
+            <span>COMMERCIAL</span><b>→</b>
+          </label>
+          <label class="service-choice">
+            <input type="radio" name="service" value="Other" data-fs-field>
+            <span>OTHER</span><b>→</b>
+          </label>
+        </div>
+        <span data-fs-error="service"></span>
+      </fieldset>
+
       <div class="form-field">
-        <label for="email">EMAIL</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="you@example.com"
-          required
-          data-fs-field
-        >
-        <span data-fs-error="email"></span>
-      </div>
-    
-      <div class="form-field">
-        <label for="phone">PHONE</label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          placeholder="(415) 555-5555"
-          required
-          data-fs-field
-        >
-        <span data-fs-error="phone"></span>
-      </div>
-    
-      <div class="form-field">
-        <label for="address">PROPERTY ADDRESS</label>
-        <input
-          type="text"
-          id="address"
-          name="address"
-          placeholder="Property address"
-          required
-          data-fs-field
-        >
+        <label for="address">02 / WHERE IS IT?</label>
+        <input type="text" id="address" name="address" placeholder="Property address" autocomplete="street-address" required data-fs-field>
         <span data-fs-error="address"></span>
       </div>
-    
-      <div class="form-field">
-        <label for="service">SERVICE</label>
-        <select
-          id="service"
-          name="service"
-          required
-          data-fs-field
-        >
-          <option value="" disabled selected>Select a service</option>
-          <option value="Driveway">Driveway</option>
-          <option value="Sidewalk / Walkway">Sidewalk / Walkway</option>
-          <option value="Commercial">Commercial</option>
-          <option value="Other">Other</option>
-        </select>
-        <span data-fs-error="service"></span>
+
+      <div class="form-field photo-field">
+        <label for="photos">03 / WANT TO SHOW US? <span>OPTIONAL</span></label>
+        <input type="file" id="photos" name="photos" accept="image/*" multiple>
+        <label for="photos" class="photo-upload">
+          <strong>+ ADD PHOTOS</strong>
+          <span>Photos help us quote faster.</span>
+        </label>
       </div>
-    
+
       <div class="form-field">
-        <label for="details">JOB DETAILS</label>
-        <textarea
-          id="details"
-          name="details"
-          rows="5"
-          placeholder="Tell us about the property and what you'd like cleaned."
-          data-fs-field
-        ></textarea>
+        <label for="details">04 / ANYTHING ELSE? <span>OPTIONAL</span></label>
+        <textarea id="details" name="details" rows="4" placeholder="Stains, size, access, timing, or anything else we should know." data-fs-field></textarea>
         <span data-fs-error="details"></span>
       </div>
-    
-      <button type="submit" data-fs-submit-btn>
-        REQUEST QUOTE →
-      </button>
-    
-      <p class="form-note">No obligation.</p>
+
+      <div class="quote-contact">
+        <div class="form-field">
+          <label for="name">YOUR NAME</label>
+          <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required data-fs-field>
+          <span data-fs-error="name"></span>
+        </div>
+        <div class="form-field">
+          <label for="phone">PHONE</label>
+          <input type="tel" id="phone" name="phone" placeholder="(415) 555-5555" autocomplete="tel" required data-fs-field>
+          <span data-fs-error="phone"></span>
+        </div>
+        <div class="form-field quote-email">
+          <label for="email">EMAIL</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required data-fs-field>
+          <span data-fs-error="email"></span>
+        </div>
+      </div>
+
+      <button type="submit" data-fs-submit-btn>GET MY QUOTE →</button>
+      <p class="form-note">NO OBLIGATION — WE'LL REVIEW YOUR REQUEST AND GET BACK TO YOU.</p>
     </form>
   </div>
 </div>
