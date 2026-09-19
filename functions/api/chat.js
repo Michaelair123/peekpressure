@@ -1,3 +1,4 @@
+import { LUCY_FAQ } from "../../faq-data.js";
 import { LUCY_FAQ } from "./faq.js";
 
 const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
@@ -623,6 +624,30 @@ function buildFastReply(text) {
   return null;
 }
 
+
+function getFaqAnswer(text) {
+  const input = String(text || "").trim().toLowerCase();
+  if (!input || input.length > 220 || isPricingRequest(input)) return null;
+  if (/\b(book|booking|schedule|appointment|calendly)\b/i.test(input)) return null;
+  const exact = LUCY_FAQ.find(item => input === String(item.question || "").trim().toLowerCase());
+  if (exact) return exact.answer;
+  let best = null;
+  let bestScore = 0;
+  for (const item of LUCY_FAQ) {
+    const keywords = Array.isArray(item.keywords) ? item.keywords : [];
+    let score = 0;
+    for (const keyword of keywords) {
+      const k = String(keyword || "").toLowerCase().trim();
+      if (k && input.includes(k)) score += k.length >= 8 ? 3 : 2;
+    }
+    if (score > bestScore) {
+      best = item;
+      bestScore = score;
+    }
+  }
+  return bestScore >= 3 ? best.answer : null;
+}
+
 function isPricingRequest(text) {
   return /\b(how much|price|pricing|cost|quote|estimate|estimated|rate|charge|what.*cost|how.*charge)\b/i.test(String(text || ""));
 }
@@ -800,6 +825,17 @@ async function handleLucyRequest({ request, env }) {
     }
 
     const latestUserText = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
+    const latestUserMessage = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
+    const faqAnswer = getFaqAnswer(latestUserMessage);
+    if (faqAnswer) {
+      return Response.json({
+        reply: faqAnswer,
+        lead_ready: false,
+        lead: null,
+        scheduling: { action: "none" }
+      }, { headers: cors });
+    }
+
     const pricingContext = extractPricingContext(safeMessages);
     const hasImage = safeMessages.some(message => Array.isArray(message.content) && message.content.some(part => part?.type === "input_image"));
     const pricingRequest = pricingContext.requested;
