@@ -859,16 +859,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-  <button class="peek-chat-launcher" id="peekChatLauncher" type="button" aria-label="Chat with PEEK AI">
+  <button class="peek-chat-launcher" id="peekChatLauncher" type="button" aria-label="Chat with Lucy, PEEK PRESSURE's AI assistant">
     <span class="peek-chat-launcher-dot"></span>
-    <span>PEEK AI</span>
+    <span>LUCY</span>
   </button>
 
-  <aside class="peek-chat" id="peekChat" aria-label="PEEK PRESSURE AI assistant" aria-hidden="true">
+  <aside class="peek-chat" id="peekChat" aria-label="Lucy, PEEK PRESSURE's AI assistant" aria-hidden="true">
     <div class="peek-chat-head">
       <div>
         <span class="peek-chat-kicker">PEEK PRESSURE</span>
-        <strong>PEEK AI</strong>
+        <strong>LUCY</strong>
       </div>
       <button type="button" class="peek-chat-close" id="peekChatClose" aria-label="Close chat">×</button>
     </div>
@@ -932,7 +932,7 @@ document.addEventListener('DOMContentLoaded', () => {
       input.focus();
 
       if (!messages.children.length) {
-        addMessage("Hey — I’m PEEK AI. 👋 Tell me what needs cleaning and I’ll help you figure out the next step.", 'assistant');
+        addMessage("Hello — I’m Lucy, PEEK PRESSURE’s AI assistant. 👋 I can help with service questions, cleaning requests, and getting you started with a quote.", 'assistant');
         setQuick(['Driveway', 'Sidewalk / walkway', 'Commercial property']);
       }
     }
