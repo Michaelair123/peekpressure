@@ -887,6 +887,16 @@ async function handleLucyRequest({ request, env }) {
         scheduling: null
       }, { headers: cors });
     }
+    if (faqAnswer && !pricingContext.requested) {
+      return Response.json({
+        reply: faqAnswer.answer,
+        lead_ready: false,
+        lead: null,
+        scheduling: null,
+        faq: faqAnswer.id
+      }, { headers: cors });
+    }
+
     const now = new Date().toISOString();
     const pricingInstruction = pricingContext.requested ? "\n\nSYSTEM-GENERATED PRICING DATA — DO NOT RECALCULATE OR INVENT DOLLAR AMOUNTS. " + formatEstimateLine(pricingContext) : "";
     const schedulingContext = `
