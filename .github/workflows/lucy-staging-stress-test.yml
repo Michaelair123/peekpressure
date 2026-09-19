@@ -1,0 +1,33 @@
+name: Lucy Staging Stress Test
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 17 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  stress-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run Lucy 40-case staging suite
+        env:
+          LUCY_STAGING_URL: ${{ secrets.LUCY_STAGING_URL }}
+          LUCY_STAGING_TOKEN: ${{ secrets.LUCY_STAGING_TOKEN }}
+        run: node scripts/lucy-stress-test.mjs
+      - name: Upload stress report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lucy-stress-report
+          path: lucy-stress-report.json
+          if-no-files-found: ignore
