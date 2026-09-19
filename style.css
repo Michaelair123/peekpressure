@@ -562,6 +562,61 @@ body::before{content:"";position:fixed;top:0;left:0;width:var(--scroll-progress,
   .service,.service-image img,.process-step,.booking-cta,.booking-cta-button{transition:none!important;transform:none!important}
 }
 
+
+/* Mobile bottom navigation — compact premium action bar */
+@media (max-width:700px){
+  .mobile-action-bar{
+    position:fixed;
+    left:.65rem;
+    right:.65rem;
+    bottom:.65rem;
+    z-index:110;
+    display:grid;
+    grid-template-columns:1fr 1.35fr 1fr;
+    align-items:center;
+    gap:.25rem;
+    padding:.3rem;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:18px;
+    background:rgba(15,15,15,.96);
+    box-shadow:0 12px 34px rgba(0,0,0,.22);
+    -webkit-backdrop-filter:blur(14px);
+    backdrop-filter:blur(14px);
+  }
+  .mobile-action-bar a{
+    min-width:0;
+    min-height:46px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:.65rem .45rem;
+    border-radius:14px;
+    color:rgba(255,255,255,.72);
+    font-size:.52rem;
+    font-weight:800;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    transition:background-color .25s var(--peek-ease),color .25s var(--peek-ease),transform .25s var(--peek-ease);
+  }
+  .mobile-action-bar a:nth-child(2){
+    background:#fff;
+    color:#111;
+  }
+  .mobile-action-bar a:hover,
+  .mobile-action-bar a:focus-visible{color:#fff;background:rgba(255,255,255,.12);transform:translateY(-1px)}
+  .mobile-action-bar a:nth-child(2):hover,
+  .mobile-action-bar a:nth-child(2):focus-visible{background:#ffd43b;color:#111}
+  .mobile-action-bar a:active{transform:translateY(0)}
+  body{padding-bottom:5.5rem}
+}
+@media (max-width:375px){
+  .mobile-action-bar{left:.45rem;right:.45rem;bottom:.45rem;border-radius:16px}
+  .mobile-action-bar a{min-height:44px;font-size:.48rem}
+  body{padding-bottom:5.25rem}
+}
+@media (prefers-reduced-motion:reduce){.mobile-action-bar a{transition:none!important}}
+
 /* iPhone header: keep contact actions inside the viewport */
 @media (max-width:480px){
   .header-inner{width:calc(100% - 1rem);gap:.35rem;display:flex;align-items:center;min-width:0}
