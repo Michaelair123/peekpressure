@@ -1102,52 +1102,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!name || (!phone && !email)) return false;
       if (lead.lead_status === 'spam' || lead.lead_status === 'uncertain') return false;
 
-      const transcript = state.history
-        .map(message => {
-          const role = message.role === 'user' ? 'CUSTOMER' : 'LUCY';
-          const content = Array.isArray(message.content)
-            ? message.content
-                .filter(part => part?.type === 'input_text')
-                .map(part => part.text || '')
-                .join(' ')
-            : String(message.content || '');
-          return content.trim() ? role + ': ' + content.trim() : null;
-        })
-        .filter(Boolean)
-        .join('\\n\\n');
-
-      const payload = {
-        subject: 'Lucy customer callback request — ' + (name || 'New lead'),
-        service: lead.service || 'Exterior cleaning',
-        address: lead.location || 'Bay Area',
-        message: [
-          lead.question && 'Customer question: ' + lead.question,
-          lead.size && 'Size: ' + lead.size,
-          lead.surface && 'Surface: ' + lead.surface,
-          lead.condition && 'Condition: ' + lead.condition,
-          lead.timing && 'Timing: ' + lead.timing,
-          lead.property_type && 'Property: ' + lead.property_type,
-          'CONTACT BACK REQUESTED — please follow up with this customer.',
-          "Lead captured by Lucy, PEEK PRESSURE's AI assistant."
-        ].filter(Boolean).join('\\n'),
-        name,
-        lead_status: lead.lead_status || 'real',
-        handoff: 'Owner follow-up requested by Lucy',
-        source: 'Lucy - PEEK PRESSURE AI',
-        chat_log: transcript || 'No text transcript available.'
-      };
-
-      if (phone) payload.phone = phone;
-      if (email) payload.email = email;
-
       try {
-        const response = await fetch('https://formspree.io/f/mdekoerb', {
+        const response = await fetch('/api/lead', {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            lead,
+            messages: state.history.slice(-32)
+          })
         });
 
         let result = null;
@@ -1155,21 +1117,21 @@ document.addEventListener('DOMContentLoaded', () => {
           result = await response.json();
         } catch {}
 
-        if (!response.ok) {
-          console.warn('Lucy/Formspree lead submission failed', {
+        if (!response.ok || result?.sent !== true) {
+          const detail = result?.error || ('Lead email returned HTTP ' + response.status);
+          console.warn('Lucy lead email failed', {
             status: response.status,
             response: result
           });
-          const detail = result?.errors?.map(item => item?.message || item?.code).filter(Boolean).join(', ');
-          throw new Error(detail || ('Formspree returned HTTP ' + response.status));
+          throw new Error(detail);
         }
 
         state.leadSubmitted = true;
-        console.info('Lucy/Formspree lead submitted successfully', result);
+        console.info('Lucy lead email sent successfully', result);
         return true;
       } catch (error) {
-        console.warn('Lucy lead submission failed', error);
-        return { ok: false, error: error?.message || 'Unknown submission error' };
+        console.warn('Lucy lead email failed', error);
+        return { ok: false, error: error?.message || 'Unknown email error' };
       }
     }
 
@@ -1209,7 +1171,7 @@ document.addEventListener('DOMContentLoaded', () => {
               setQuick(['Ask another question', 'Book a time']);
             } else {
               state.pendingLead = leadToSend;
-              const failureDetail = result?.error ? " Formspree says: " + result.error : "";
+              const failureDetail = result?.error ? " Email service says: " + result.error : "";
               const failure = "I couldn’t complete the handoff just yet. I haven’t told you it was sent. Please reply TRY AGAIN, or call/text PEEK PRESSURE at 415-689-8377." + failureDetail;
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
