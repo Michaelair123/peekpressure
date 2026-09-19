@@ -3560,7 +3560,7 @@ body::before {
   .button::after, .booking-cta-button::after, .header-cta::after, .service-cta::after, #quoteForm button::after { display:none; }
 }
 
-/* BOOK A TIME — restore full-size premium pill */
+/* BOOK A TIME — premium, professional hover */
 .booking-cta-button {
   width: 220px !important;
   height: 60px !important;
@@ -3575,18 +3575,28 @@ body::before {
   line-height: 1 !important;
   white-space: nowrap !important;
   font-size: 1rem !important;
+  transition: transform .35s var(--peek-ease), background-color .3s ease, box-shadow .35s var(--peek-ease);
 }
 .booking-cta-button span {
   display: inline !important;
   margin-left: .65rem !important;
 }
 .booking-cta-button:hover {
-  font-size: 0 !important;
+  transform: translateY(-3px);
+  background: #000;
+  box-shadow: 0 14px 32px rgba(0,0,0,.14);
 }
 .booking-cta-button:hover::after {
-  content: "😊";
-  font-size: 1.5rem;
+  content: "↗";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 1.1rem;
   line-height: 1;
+}
+.booking-cta-button:hover {
+  color: transparent;
 }
 @media (max-width:700px) {
   .booking-cta-button {
