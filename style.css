@@ -3559,3 +3559,41 @@ body::before {
   .service-card, .service { transform: none !important; }
   .button::after, .booking-cta-button::after, .header-cta::after, .service-cta::after, #quoteForm button::after { display:none; }
 }
+
+/* BOOK A TIME — restore full-size premium pill */
+.booking-cta-button {
+  width: 220px !important;
+  height: 60px !important;
+  min-width: 220px !important;
+  min-height: 60px !important;
+  padding: 0 1.6rem !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  font-size: 1rem !important;
+}
+.booking-cta-button span {
+  display: inline !important;
+  margin-left: .65rem !important;
+}
+.booking-cta-button:hover {
+  font-size: 0 !important;
+}
+.booking-cta-button:hover::after {
+  content: "😊";
+  font-size: 1.5rem;
+  line-height: 1;
+}
+@media (max-width:700px) {
+  .booking-cta-button {
+    width: 220px !important;
+    height: 56px !important;
+    min-width: 220px !important;
+    min-height: 56px !important;
+    border-radius: 999px !important;
+  }
+}
