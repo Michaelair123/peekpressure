@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lucy FAQ — PEEK PRESSURE</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body{background:#fff;color:#111}
+    .faq-wrap{max-width:900px;margin:0 auto;padding:72px 24px}
+    .faq-eyebrow{font-size:.72rem;letter-spacing:.18em;font-weight:700;opacity:.6}
+    .faq-title{font-size:clamp(2.5rem,7vw,5rem);line-height:.95;margin:12px 0 18px;letter-spacing:-.05em}
+    .faq-intro{max-width:650px;color:#666;line-height:1.6;margin-bottom:42px}
+    .faq-list{display:grid;gap:12px}
+    .faq-item{border:1px solid #e7e7e7;border-radius:18px;padding:22px 24px;background:#fafafa}
+    .faq-item h2{font-size:1rem;margin:0 0 9px}
+    .faq-item p{margin:0;color:#555;line-height:1.6}
+    .faq-note{margin-top:32px;font-size:.82rem;color:#777}
+    .faq-back{display:inline-block;margin-top:28px;color:#111;text-decoration:none;font-weight:700}
+  </style>
+</head>
+<body>
+  <main class="faq-wrap">
+    <div class="faq-eyebrow">PEEK PRESSURE / LUCY</div>
+    <h1 class="faq-title">Frequently asked questions.</h1>
+    <p class="faq-intro">Straight answers to the questions customers ask most about pressure washing, estimates, photos, and scheduling.</p>
+    <section class="faq-list" id="faqList" aria-label="Frequently asked questions"></section>
+    <p class="faq-note">Lucy uses this knowledge base for common questions. Update <code>functions/api/faq.js</code> in the repository when an answer changes.</p>
+    <a class="faq-back" href="/">← Back to PEEK PRESSURE</a>
+  </main>
+  <script type="module">
+    const list=document.getElementById('faqList');
+    const items=[
+      ['What services do you offer?','PEEK PRESSURE provides exterior pressure washing and surface cleaning, including driveways, sidewalks and walkways, patios, and commercial flatwork.'],
+      ['Do you clean driveways?','Yes. We clean concrete driveways and other suitable hard surfaces. Send Lucy the approximate size and a photo if you\'d like a rough estimate.'],
+      ['Do you clean sidewalks and walkways?','Yes. We clean concrete sidewalks and walkways, including buildup from dirt, grime, algae, and other surface deposits.'],
+      ['What is your minimum charge?','PEEK PRESSURE has a $150 minimum job charge. Larger jobs are priced from the actual scope, size, condition, and access.'],
+      ['Can I get a quote?','Absolutely. Lucy can give you a preliminary rough estimate and collect the job details. Final pricing is confirmed by PEEK PRESSURE after review.'],
+      ['Can I send photos?','Yes. Send a few clear photos of the surfaces you want cleaned. Photos help us understand condition and scope, although they do not always show exact square footage.'],
+      ['How do I book?','You can book through the scheduling link on the PEEK PRESSURE website, or ask Lucy to help you get started.'],
+      ['Is Lucy\'s estimate the final price?','No. Lucy\'s number is a preliminary estimate only. PEEK PRESSURE reviews the job details and confirms the final price before the work is scheduled.'],
+      ['Can you remove oil, grease, rust, or stains?','We can treat many stains and buildup, but results depend on the surface and how deeply the stain has penetrated. We never promise complete stain removal.'],
+      ['Do you do commercial cleaning?','Yes. PEEK PRESSURE handles commercial exterior surface cleaning and flatwork. Commercial pricing depends on size, access, water and runoff requirements, condition, and frequency.']
+    ];
+    list.innerHTML=items.map(([q,a])=>'<article class="faq-item"><h2>'+q+'</h2><p>'+a+'</p></article>').join('');
+  </script>
+</body>
+</html>
