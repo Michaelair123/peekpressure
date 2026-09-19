@@ -1,3 +1,5 @@
+import { LUCY_FAQ } from "./faq.js";
+
 const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
 const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
 const LUCY_REQUEST_TIMEOUT_MS = 10000;
@@ -505,6 +507,7 @@ function isUsablePhone(value) {
 
 function enforceLeadSafety(result, safeMessages) {
   const latestUser = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
+    const faqAnswer = findFaqAnswer(latestUser);
   const suspicious = [...safeMessages].filter(message => message.role === "user").some(message => containsSuspiciousInstruction(message.content));
   const name = typeof result.name === "string" ? result.name.trim() : "";
   const phone = typeof result.phone === "string" ? result.phone.trim() : "";
@@ -661,6 +664,31 @@ function enforceRoughPricing(reply, pricing) {
   if (!pricing.estimate) return line + "\n\n" + String(reply || "");
   const range = new RegExp("\\$" + pricing.estimate.low + "\\s*[–-]\\s*\\$?" + pricing.estimate.high);
   return range.test(String(reply || "")) ? String(reply) : line + "\n\n" + String(reply || "");
+}
+
+
+function findFaqAnswer(text) {
+  const normalized = String(text || "").toLowerCase().replace(/[^a-z0-9$ ]+/g, " ").replace(/\s+/g, " ").trim();
+  if (!normalized || normalized.length > 180) return null;
+  const aliases = [
+    [["what services","services do you offer","what do you clean"],"services"],
+    [["clean driveways","do you clean driveway","driveway cleaning"],"driveways"],
+    [["clean sidewalks","sidewalks","walkways"],"sidewalks"],
+    [["minimum charge","minimum price","minimum"],"minimum"],
+    [["quote","get a quote","rough estimate"],"estimate"],
+    [["send photos","send a photo","photos"],"photos"],
+    [["how do i book","how can i book","book"],"booking"],
+    [["final price","is that the final","final estimate"],"final-price"],
+    [["oil stain","oil grease rust","remove stains","stains"],"stains"],
+    [["commercial cleaning","commercial"],"commercial"]
+  ];
+  for (const [phrases,id] of aliases) {
+    if (phrases.some(p => normalized.includes(p))) {
+      const item = LUCY_FAQ.find(f => f.id === id);
+      if (item) return item.answer;
+    }
+  }
+  return null;
 }
 
 async function handleLucyRequest({ request, env }) {
@@ -854,6 +882,9 @@ SCHEDULING ACTIONS
 
     parsed.reply = enforceRoughPricing(parsed.reply, pricingContext);
     const result = enforceLeadSafety(parsed, safeMessages);
+    if (faqAnswer && !pricingContext.requested && !result.lead_ready) {
+      result.reply = faqAnswer;
+    }
     let reply = result.reply;
     let scheduling = null;
     const stagingToken = env.LUCY_STAGING_TOKEN;
