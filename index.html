@@ -915,7 +915,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (text) {
         const textNode = document.createElement('div');
-        textNode.textContent = text;
+        const urlPattern = /(https?:\/\/[^\s<]+)/g;
+        let lastIndex = 0;
+
+        String(text).split(urlPattern).forEach((part, index) => {
+          if (!part) return;
+          if (index % 2 === 1 && /^https?:\/\//i.test(part)) {
+            const cleanUrl = part.replace(/[),.!?;:]+$/, '');
+            const trailing = part.slice(cleanUrl.length);
+            const link = document.createElement('a');
+            link.href = cleanUrl;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = cleanUrl;
+            textNode.appendChild(link);
+            if (trailing) textNode.appendChild(document.createTextNode(trailing));
+          } else {
+            textNode.appendChild(document.createTextNode(part));
+          }
+        });
+
         bubble.appendChild(textNode);
       }
 
