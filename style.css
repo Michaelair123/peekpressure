@@ -881,15 +881,19 @@ main > form#quoteForm button {
 
 .about-reel-track {
   display: flex;
-  width: max-content;
+  width: 400vw;
   height: 100%;
-  animation: aboutReelSlide 30s linear infinite;
+  animation: aboutReelSlide 28s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .about-reel-slide {
   flex: 0 0 100vw;
+  width: 100vw;
+  min-width: 100vw;
   height: 100%;
-  background-position: center;
+  background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -899,6 +903,7 @@ main > form#quoteForm button {
   position: absolute;
   inset: 0;
   background: rgba(255,255,255,.72);
+  z-index: 2;
 }
 
 .about-grid > * {
@@ -907,8 +912,30 @@ main > form#quoteForm button {
 }
 
 @keyframes aboutReelSlide {
-  from { transform: translateX(0); }
-  to { transform: translateX(-300vw); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-300vw, 0, 0); }
+}
+
+@media (max-width: 700px) {
+  .about-reel {
+    min-height: 100%;
+    opacity: 1;
+  }
+
+  .about-reel-track {
+    width: 400vw;
+    animation-duration: 22s;
+  }
+
+  .about-reel-slide {
+    width: 100vw;
+    min-width: 100vw;
+    background-position: center center;
+  }
+
+  .about-reel::after {
+    background: rgba(255,255,255,.66);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
