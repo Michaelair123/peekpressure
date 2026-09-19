@@ -1,13 +1,81 @@
 const MODEL = "gpt-5.6-luna";
 const CALENDLY_URL = "https://calendly.com/look-peekpressure/pressure-wash";
+const CALENDLY_API = "https://api.calendly.com";
 
-function json(body, status = 200) { return Response.json(body, { status }); }
+function json(body, status = 200) {
+  return Response.json(body, { status });
+}
+
+function calendlyHeaders(token) {
+  return {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  };
+}
+
+async function calendlyGet(token, path) {
+  const response = await fetch(CALENDLY_API + path, {
+    method: "GET",
+    headers: calendlyHeaders(token)
+  });
+
+  let data = null;
+  try {
+    data = await response.json();
+  } catch {}
+
+  if (!response.ok) {
+    const message = data?.message || data?.title || `Calendly API returned HTTP ${response.status}`;
+    throw new Error(message);
+  }
+
+  return data;
+}
+
+async function getPressureWashEventType(token) {
+  const userData = await calendlyGet(token, "/users/me");
+  const userUri = userData?.resource?.uri;
+  if (!userUri) throw new Error("Calendly did not return the connected user.");
+
+  const params = new URLSearchParams({
+    user: userUri,
+    active: "true",
+    count: "100"
+  });
+
+  const eventTypesData = await calendlyGet(token, `/event_types?${params.toString()}`);
+  const eventTypes = Array.isArray(eventTypesData?.collection)
+    ? eventTypesData.collection
+    : [];
+
+  if (!eventTypes.length) {
+    throw new Error("No active Calendly event types were found.");
+  }
+
+  const exactUrl = eventTypes.find(item =>
+    item?.scheduling_url === CALENDLY_URL
+  );
+
+  if (exactUrl) return exactUrl;
+
+  const pressureWash = eventTypes.find(item =>
+    /pressure|wash|clean/i.test(String(item?.name || "")) &&
+    item?.uri
+  );
+
+  if (pressureWash) return pressureWash;
+
+  if (eventTypes.length === 1) return eventTypes[0];
+
+  throw new Error("Lucy could not identify the PEEK PRESSURE booking event in Calendly.");
+}
 
 function cleanMessages(messages) {
   if (!Array.isArray(messages)) return [];
 
   return messages.slice(-16).map(message => {
     const role = message?.role === "assistant" ? "assistant" : "user";
+
     const content = Array.isArray(message?.content)
       ? message.content
           .filter(part => {
@@ -24,12 +92,16 @@ function cleanMessages(messages) {
                 detail: "auto"
               };
             }
+
             return {
               type: "input_text",
               text: part.text.slice(0, 6000)
             };
           })
-      : [{ type: "input_text", text: String(message?.content || "").slice(0, 6000) }];
+      : [{
+          type: "input_text",
+          text: String(message?.content || "").slice(0, 6000)
+        }];
 
     return { role, content };
   });
@@ -48,7 +120,9 @@ Your job is to:
 - Do not claim that a lead was emailed or submitted. The website handles that separately after the customer confirms their details.
 - Do not ask for information you already have.
 - Do not pressure the customer.
-- If the customer wants to book, schedule, or choose a time, give them this Calendly booking link: https://calendly.com/look-peekpressure/pressure-wash . Do not claim you booked a time unless the booking is actually confirmed by Calendly.
+- If the customer wants to book, schedule, or choose a time, tell them that you can check current availability and show them available appointment times. Do not invent appointment times.
+- Do not claim a booking is confirmed unless Calendly actually confirms it.
+- If the customer asks to book but availability is not available to you, give them this Calendly link: ${CALENDLY_URL}
 
 For a lead, collect when reasonably possible:
 name, phone, email, service, location/address, property type, approximate size, surface, condition, timing, and any useful project question/details.
@@ -64,9 +138,16 @@ For images, describe only what can reasonably be observed. Do not pretend an ima
 Return ONLY JSON matching the supplied schema.
 `;
 
-async function handleChat(context) {\n  const OPENAI_API_KEY = context.env.OPENAI_API_KEY;
+async function handleChat(context) {
+  const OPENAI_API_KEY = context.env.OPENAI_API_KEY;
   const OPENAI_MODEL = context.env.OPENAI_MODEL || MODEL;
-  const CALENDLY_ACCESS_TOKEN = context.env.CALENDLY_ACCESS_TOKEN;\n  if (!OPENAI_API_KEY) return json({ error: "Lucy is not configured yet. Add OPENAI_API_KEY to Cloudflare." }, 500);\n  try {\n    const body = await context.request.json();
+
+  if (!OPENAI_API_KEY) {
+    return json({ error: "Lucy is not configured yet. Add OPENAI_API_KEY to Cloudflare." }, 500);
+  }
+
+  try {
+    const body = await context.request.json();
     const messages = cleanMessages(body.messages);
 
     if (!messages.length) {
@@ -99,7 +180,10 @@ async function handleChat(context) {\n  const OPENAI_API_KEY = context.env.OPENA
                   additionalProperties: false,
                   properties: {
                     lead_ready: { type: "boolean" },
-                    lead_status: { type: "string", enum: ["real", "uncertain", "spam"] },
+                    lead_status: {
+                      type: "string",
+                      enum: ["real", "uncertain", "spam"]
+                    },
                     name: { type: "string" },
                     phone: { type: "string" },
                     email: { type: "string" },
@@ -142,13 +226,13 @@ async function handleChat(context) {\n  const OPENAI_API_KEY = context.env.OPENA
       console.error("OpenAI Lucy error:", response.status, data);
       return json({
         error: data?.error?.message || "Lucy could not reach the AI service."
-      });
+      }, response.status >= 400 && response.status < 500 ? response.status : 502);
     }
 
     let result;
     try {
       result = JSON.parse(data.output_text || "{}");
-    } catch (error) {
+    } catch {
       console.error("Lucy JSON parse error:", data.output_text);
       return json({ error: "Lucy returned an invalid response. Please try again." }, 502);
     }
@@ -172,11 +256,65 @@ async function handleChat(context) {\n  const OPENAI_API_KEY = context.env.OPENA
     });
   } catch (error) {
     console.error("Lucy chat handler error:", error);
-    return json({ error: "Lucy hit a server error. Please try again." }, 500);\n  }\n}\n
+    return json({ error: "Lucy hit a server error. Please try again." }, 500);
+  }
+}
 
-const TO_EMAIL = "look@peekpressure.com";\nconst FROM_EMAIL = "PEEK PRESSURE <look@peekpressure.com>";
+async function handleAvailability(context) {
+  const token = context.env.CALENDLY_ACCESS_TOKEN;
 
-function json(body, status = 200) { return Response.json(body, { status }); }
+  if (!token) {
+    return json({
+      error: "Calendly is not configured yet. Add CALENDLY_ACCESS_TOKEN as a Cloudflare Secret."
+    }, 500);
+  }
+
+  try {
+    const requestUrl = new URL(context.request.url);
+    const timezone = requestUrl.searchParams.get("timezone") || "America/Los_Angeles";
+    const eventType = await getPressureWashEventType(token);
+
+    const now = new Date();
+    const end = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+
+    const params = new URLSearchParams({
+      event_type: eventType.uri,
+      start_time: now.toISOString(),
+      end_time: end.toISOString()
+    });
+
+    const availability = await calendlyGet(
+      token,
+      `/event_type_available_times?${params.toString()}`
+    );
+
+    const slots = (Array.isArray(availability?.collection) ? availability.collection : [])
+      .filter(slot => slot?.status === "available" && slot?.start_time)
+      .slice(0, 8)
+      .map(slot => ({
+        start_time: slot.start_time,
+        scheduling_url: slot.scheduling_url || CALENDLY_URL
+      }));
+
+    return json({
+      available: slots.length > 0,
+      timezone,
+      event_type: {
+        name: eventType.name || "PEEK PRESSURE appointment",
+        uri: eventType.uri
+      },
+      slots
+    });
+  } catch (error) {
+    console.error("Calendly availability error:", error);
+    return json({
+      error: "Lucy could not check Calendly availability right now."
+    }, 502);
+  }
+}
+
+const TO_EMAIL = "look@peekpressure.com";
+const FROM_EMAIL = "PEEK PRESSURE <look@peekpressure.com>";
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -189,6 +327,7 @@ function escapeHtml(value) {
 
 function normalizeMessage(message) {
   const role = message?.role === "user" ? "CUSTOMER" : "LUCY";
+
   const content = Array.isArray(message?.content)
     ? message.content
         .map(part => {
@@ -203,7 +342,17 @@ function normalizeMessage(message) {
   return content.trim() ? role + ": " + content.trim() : "";
 }
 
-async function handleLead(context) {\n  const RESEND_API_KEY = context.env.RESEND_API_KEY;\n  if (!RESEND_API_KEY) return json({ error: "Email is not configured yet. Add RESEND_API_KEY to Cloudflare." }, 500);\n  try {\n    const body = await context.request.json();
+async function handleLead(context) {
+  const RESEND_API_KEY = context.env.RESEND_API_KEY;
+
+  if (!RESEND_API_KEY) {
+    return json({
+      error: "Email is not configured yet. Add RESEND_API_KEY to Cloudflare."
+    }, 500);
+  }
+
+  try {
+    const body = await context.request.json();
     const lead = body.lead || {};
     const messages = Array.isArray(body.messages) ? body.messages.slice(-32) : [];
 
@@ -212,7 +361,9 @@ async function handleLead(context) {\n  const RESEND_API_KEY = context.env.RESEN
     const email = String(lead.email || "").trim();
 
     if (!name || (!phone && !email)) {
-      return json({ error: "A customer name and at least one contact method are required." }, 400);
+      return json({
+        error: "A customer name and at least one contact method are required."
+      }, 400);
     }
 
     if (lead.lead_status === "spam" || lead.lead_status === "uncertain") {
@@ -254,17 +405,14 @@ async function handleLead(context) {\n  const RESEND_API_KEY = context.env.RESEN
       <div style="font-family:Arial,sans-serif;max-width:760px;margin:auto;color:#111;">
         <h2 style="margin-bottom:6px;">New PEEK PRESSURE Lead</h2>
         <p style="margin-top:0;color:#666;">Captured and confirmed through Lucy.</p>
-
         <h3>Customer Details</h3>
         <table style="border-collapse:collapse;width:100%;font-size:14px;">
           ${detailsHtml}
         </table>
-
         <h3 style="margin-top:28px;">Full Chat History</h3>
         <div style="background:#f6f6f6;border:1px solid #e5e5e5;border-radius:10px;padding:16px;font-size:14px;line-height:1.6;">
           ${transcriptHtml}
         </div>
-
         <p style="margin-top:24px;font-weight:700;">
           Customer confirmed that PEEK PRESSURE should receive this information.
         </p>
@@ -303,7 +451,9 @@ async function handleLead(context) {\n  const RESEND_API_KEY = context.env.RESEN
 
     if (!resendResponse.ok) {
       console.error("Resend lead email failed:", resendResponse.status, result);
-      return json({ error: result?.message || result?.name || "Email provider rejected the lead." }, 502);
+      return json({
+        error: result?.message || result?.name || "Email provider rejected the lead."
+      }, 502);
     }
 
     return json({
@@ -312,16 +462,25 @@ async function handleLead(context) {\n  const RESEND_API_KEY = context.env.RESEN
     });
   } catch (error) {
     console.error("Lucy lead email handler error:", error);
-    return json(res, 500, {
-      error: "The lead email could not be sent."
-    });
+    return json({ error: "The lead email could not be sent." }, 500);
   }
-};
+}
 
+export async function onRequestGet(context) {
+  const path = new URL(context.request.url).pathname.replace(/\/+$/, "");
+
+  if (path === "/api/availability") {
+    return handleAvailability(context);
+  }
+
+  return json({ error: "Not found" }, 404);
+}
 
 export async function onRequestPost(context) {
-  const path = new URL(context.request.url).pathname.replace(//+$/, "");
+  const path = new URL(context.request.url).pathname.replace(/\/+$/, "");
+
   if (path === "/api/chat") return handleChat(context);
   if (path === "/api/lead") return handleLead(context);
+
   return json({ error: "Not found" }, 404);
 }
