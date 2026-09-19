@@ -617,3 +617,34 @@ body::before{content:"";position:fixed;top:0;left:0;width:var(--scroll-progress,
   .booking-cta-inner{padding-inline:1rem}
   .booking-cta-button{font-size:.88rem!important}
 }
+/* MOBILE-ONLY LAYOUT */
+@media (max-width:700px){
+:root{--page-padding:1rem;--section-space:4.5rem}
+html{scroll-padding-top:72px;overflow-x:hidden}body{overflow-x:hidden}
+.container,.why-peek-container,.service-area-container{width:calc(100% - 2rem);max-width:100%;margin-inline:auto}
+.header{padding:.7rem 0}.header-inner{width:calc(100% - 1.5rem);gap:.5rem}.header nav{display:none}
+.logo{font-size:.88rem}.header-phone{margin-left:auto;padding:.48rem .55rem;font-size:.5rem;white-space:nowrap}.header-cta{padding:.55rem .7rem;font-size:.5rem;white-space:nowrap}
+.hero{min-height:0;padding:5.5rem 0 4.25rem;align-items:flex-start}.hero-copy{width:100%;max-width:100%;min-width:0}
+.hero-copy h1{width:100%;max-width:100%;margin-top:1.15rem;font-size:clamp(3rem,14vw,5.15rem);line-height:.84;letter-spacing:-.095em;overflow-wrap:normal}
+.hero-copy>p{width:100%;max-width:100%;margin-top:1.35rem;font-size:.82rem;line-height:1.65}
+.hero-proof{width:100%;max-width:100%;margin-top:1.1rem;gap:.4rem;font-size:.53rem;line-height:1.5;letter-spacing:.1em}
+.hero-buttons{width:100%;margin-top:1.4rem;display:flex;flex-direction:column;gap:.65rem;align-items:stretch}
+.hero-buttons .button{width:100%;min-width:0;min-height:54px;padding:.9rem 1rem;font-size:.6rem}
+.services,.process,.why-peek,.service-area,.proof-section,.service-faq{padding-block:4.5rem}
+.services-grid{gap:.8rem;padding:.2rem 0 1rem;margin-right:-1rem;padding-right:1rem}
+.service{flex:0 0 86vw;max-width:86vw;border-radius:16px}.service-image{height:56vw;max-height:280px}.service-body{padding:1.2rem 1.1rem;min-height:0}.service h2{font-size:1.45rem;line-height:1}
+.about-grid{min-height:0;padding-block:4.5rem}.about-grid h2,.process-header h2,.why-peek-intro h2,.service-area h2,.contact-container>h2,.booking-cta-copy h3,.proof-header h2{font-size:clamp(2.9rem,13vw,5rem);line-height:.86;letter-spacing:-.09em;max-width:100%}
+.about-grid p,.proof-header p,.contact-container>h2+p,.booking-cta-copy p{max-width:100%;line-height:1.65}
+.process-header{margin-bottom:2rem}.process-step{min-height:0!important;padding:1.35rem 0!important;border-right:0!important}.step-number{margin-bottom:1rem}
+.why-peek-grid{margin-top:2rem;gap:1.5rem}.proof-header{display:block;margin-bottom:2rem}.proof-header p{margin-top:1.25rem}.proof-grid{grid-template-columns:1fr;gap:1rem}.before-after-media{min-height:260px}.review-card{min-height:300px}
+.service-map-wrap{margin-top:2.25rem}.service-map{height:330px;border-radius:18px}.service-area-details{gap:.45rem!important}.service-area-details span{max-width:100%;font-size:.53rem;padding:.5rem .62rem}
+.service-faq h2{margin:.7rem 0 2rem;font-size:clamp(2.75rem,12.5vw,4.5rem);line-height:.88}.faq-list summary{padding:1.1rem 0;font-size:.95rem;line-height:1.35}.faq-list details p{font-size:.86rem;line-height:1.65}
+.booking-cta{width:calc(100% - 2rem);margin:0 auto 4rem;padding:0}.booking-cta-inner{min-height:0;padding:1.7rem 1.15rem;gap:1.75rem;align-items:flex-start;flex-direction:column;border-radius:18px}.booking-cta-action{width:100%}.booking-cta-button{width:min(100%,220px)!important;min-width:0!important;height:56px!important;min-height:56px!important}
+.contact-section{width:calc(100% - 2rem);margin-block:4.5rem}.contact-container{padding:1.7rem 1.1rem}main>form#quoteForm,#quoteForm{width:100%;max-width:100%}#quoteForm input,#quoteForm select,#quoteForm textarea{font-size:16px;max-width:100%}#quoteForm button[type=submit]{min-height:56px}
+footer{padding-bottom:5.5rem}.footer-inner{width:calc(100% - 2rem)}.mobile-action-bar{left:.6rem;right:.6rem;bottom:.6rem}
+}
+@media (max-width:380px){
+.header-inner{width:calc(100% - 1rem);gap:.35rem}.logo{font-size:.82rem}.header-phone{padding:.44rem .45rem;font-size:.47rem}.header-cta{padding:.52rem .58rem;font-size:.47rem}
+.hero{padding-top:5.1rem}.hero-copy h1{font-size:clamp(2.65rem,12.8vw,3.35rem);line-height:.87}.hero-copy>p{font-size:.77rem}.hero-proof{font-size:.48rem;letter-spacing:.08em}
+.service{flex-basis:88vw;max-width:88vw}.service-map{height:300px}.before-after-media{min-height:225px}.booking-cta-inner,.contact-container{padding-inline:1rem}.booking-cta-button{width:100%!important}.mobile-action-bar{left:.45rem;right:.45rem;bottom:.45rem}
+}
