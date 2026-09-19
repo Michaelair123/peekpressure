@@ -2303,3 +2303,46 @@ textarea:focus-visible {
     transition: none;
   }
 }
+
+/* =========================================================
+   SERVICE CARDS — ONE-TAP QUOTE ACTIONS
+========================================================= */
+
+.service-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.service-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  margin-top: 1.25rem;
+  color: #111;
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: .11em;
+  text-decoration: none;
+}
+
+.service-cta span {
+  font-size: .95rem;
+  transition: transform .3s var(--peek-ease);
+}
+
+.service-cta:hover span {
+  transform: translateX(4px);
+}
+
+.service-cta:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 5px;
+}
+
+@media (max-width: 700px) {
+  .service-cta {
+    min-height: 42px;
+    padding: 0 .1rem;
+  }
+}
