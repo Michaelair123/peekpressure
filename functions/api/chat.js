@@ -605,14 +605,56 @@ async function handleLucyRequest({ request, env }) {
     }
 
     const safeMessages = messages
-      .filter(m => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
-      .map(m => ({
-        role: m.role,
-        content: m.content.slice(0, 1600)
-      }));
+      .filter(m => m && (m.role === "user" || m.role === "assistant"))
+      .map(m => {
+        if (typeof m.content === "string") {
+          return {
+            role: m.role,
+            content: m.content.slice(0, 1600)
+          };
+        }
+
+        if (!Array.isArray(m.content)) return null;
+
+        const content = m.content
+          .slice(0, 6)
+          .map(part => {
+            if (part?.type === "input_text" && typeof part.text === "string") {
+              return {
+                type: "input_text",
+                text: part.text.slice(0, 1600)
+              };
+            }
+
+            if (
+              m.role === "user" &&
+              part?.type === "input_image" &&
+              typeof part.image_url === "string" &&
+              /^data:image\/(jpeg|jpg|png|webp);base64,/i.test(part.image_url) &&
+              part.image_url.length <= 2400000
+            ) {
+              return {
+                type: "input_image",
+                image_url: part.image_url,
+                detail: "auto"
+              };
+            }
+
+            return null;
+          })
+          .filter(Boolean);
+
+        return content.length ? { role: m.role, content } : null;
+      })
+      .filter(Boolean);
 
     if (!safeMessages.length) {
       return Response.json({ error: "No valid messages supplied." }, { status: 400, headers: cors });
+    }
+
+    const serializedInputSize = JSON.stringify(safeMessages).length;
+    if (serializedInputSize > 7200000) {
+      return Response.json({ error: "Images are too large. Please send a smaller photo." }, { status: 413, headers: cors });
     }
 
     const now = new Date().toISOString();
