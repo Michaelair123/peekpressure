@@ -946,13 +946,111 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = document.createElement('button');
         button.type = 'button';
         button.textContent = item;
+
         button.addEventListener('click', () => {
+          if (/^(book a time|check availability again)$/i.test(item)) {
+            checkCalendlyAvailability();
+            return;
+          }
+
+          if (/^open calendly$/i.test(item)) {
+            window.open('https://calendly.com/look-peekpressure/pressure-wash', '_blank', 'noopener,noreferrer');
+            return;
+          }
+
           input.value = item;
           input.focus();
           form.requestSubmit();
         });
+
         quick.appendChild(button);
       });
+    }
+
+    async function checkCalendlyAvailability() {
+      if (state.sending) return;
+      state.sending = true;
+      quick.innerHTML = '';
+
+      const typing = document.createElement('div');
+      typing.className = 'peek-chat-message assistant typing';
+      typing.textContent = 'Lucy is checking live availability…';
+      messages.appendChild(typing);
+      messages.scrollTop = messages.scrollHeight;
+
+      try {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Los_Angeles';
+        const response = await fetch('/api/availability?timezone=' + encodeURIComponent(timezone), {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        let data = null;
+        try {
+          data = await response.json();
+        } catch {}
+
+        if (!response.ok) {
+          throw new Error(data?.error || 'Calendly availability is unavailable');
+        }
+
+        typing.remove();
+
+        if (!Array.isArray(data.slots) || !data.slots.length) {
+          const noSlots = "I checked the live PEEK PRESSURE calendar, but there aren't any open appointment times in the next two weeks. You can still open Calendly to see the latest availability.";
+          addMessage(noSlots, 'assistant');
+          state.history.push({ role: 'assistant', content: noSlots });
+          setQuick(['Open Calendly', 'Get a quote']);
+          return;
+        }
+
+        const formatter = new Intl.DateTimeFormat(undefined, {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          timeZone: timezone
+        });
+
+        const intro = "Yep — I checked the live Calendly calendar. Here are the next available appointment times:";
+        addMessage(intro, 'assistant');
+        state.history.push({ role: 'assistant', content: intro });
+
+        quick.innerHTML = '';
+        data.slots.forEach(slot => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = formatter.format(new Date(slot.start_time));
+          button.title = 'Open this available Calendly time';
+          button.addEventListener('click', () => {
+            const url = slot.scheduling_url || 'https://calendly.com/look-peekpressure/pressure-wash';
+            window.open(url, '_blank', 'noopener,noreferrer');
+            addMessage('Opening that available Calendly time now. Your appointment is only confirmed after Calendly completes the booking.', 'assistant');
+            quick.innerHTML = '';
+            setQuick(['Check availability again', 'Get a quote']);
+          });
+          quick.appendChild(button);
+        });
+
+        const calendlyButton = document.createElement('button');
+        calendlyButton.type = 'button';
+        calendlyButton.textContent = 'Open full Calendly';
+        calendlyButton.addEventListener('click', () => {
+          window.open('https://calendly.com/look-peekpressure/pressure-wash', '_blank', 'noopener,noreferrer');
+        });
+        quick.appendChild(calendlyButton);
+      } catch (error) {
+        typing.remove();
+        const fallback = "I couldn't reach the live Calendly calendar right now. I don't want to guess at appointment times. You can open Calendly directly to see the current availability.";
+        addMessage(fallback, 'assistant');
+        state.history.push({ role: 'assistant', content: fallback });
+        setQuick(['Open Calendly', 'Get a quote']);
+        console.warn('Lucy Calendly availability failed', error);
+      } finally {
+        state.sending = false;
+        input.focus();
+      }
     }
 
     function renderAttachments() {
@@ -1283,7 +1381,11 @@ document.addEventListener('DOMContentLoaded', () => {
           setQuick(['YES — SEND IT', 'I NEED TO CHANGE SOMETHING']);
         }
 
-        if (!data.lead_ready && /book|schedule|appointment/i.test(reply)) {
+        const bookingIntent = /\b(book|schedule|appointment|availability|available times?)\b/i.test(clean);
+
+        if (bookingIntent && !data.lead_ready) {
+          await checkCalendlyAvailability();
+        } else if (!data.lead_ready && /book|schedule|appointment/i.test(reply)) {
           setQuick(['Book a time', 'Get a quote']);
         } else if (!data.lead_ready) {
           setQuick(['Get a quote', 'Book a time']);
