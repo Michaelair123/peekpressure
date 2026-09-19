@@ -3397,3 +3397,31 @@ footer {
     border-radius: 28px !important;
   }
 }
+
+/* BOOK CTA — true circle */
+.booking-cta-button {
+  width: 72px !important;
+  height: 72px !important;
+  min-width: 72px !important;
+  min-height: 72px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+}
+.booking-cta-button span {
+  display: none !important;
+}
+@media (max-width:700px) {
+  .booking-cta-button {
+    width: 72px !important;
+    height: 72px !important;
+    min-width: 72px !important;
+    min-height: 72px !important;
+  }
+}
