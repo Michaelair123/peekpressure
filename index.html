@@ -219,7 +219,7 @@
               <img
                 src="https://lirp.cdn-website.com/757f8c36/dms3rep/multi/opt/Einfahrt%2Boder%2BZufahrt_Bild2-f71fb66b-1920w.jpeg"
                 alt="Pressure washed concrete driveway"
-                loading="lazy"
+                loading="lazy" decoding="async"
               >
             </div>
             <div class="service-body">
@@ -234,7 +234,7 @@
               <img
                 src="https://cdn.prod.website-files.com/68678debea3db500e4ad58ca/6867dc49e0c53767ff54ab68_KayaUeberUns.jpeg"
                 alt="Clean commercial sidewalk and walkway"
-                loading="lazy"
+                loading="lazy" decoding="async"
               >
             </div>
             <div class="service-body">
@@ -249,7 +249,7 @@
               <img
                 src="https://images.squarespace-cdn.com/content/v1/678fe67eb8b14f1afaeacd1c/2e4f3890-84d7-4f96-854d-d6d2243aeacb/Commercial%2Bsnow%2Bremoval%2Band%2Blandscaping%2Bservices%2Bin%2BVerona%2C%2BWI"
                 alt="Clean commercial building exterior"
-                loading="lazy"
+                loading="lazy" decoding="async"
               >
             </div>
             <div class="service-body">
@@ -616,10 +616,10 @@
     // ── ABOUT IMAGE REEL ─────────────────────────
     // Temporary pressure-washing photos for testing. Replace these URLs with PEEK PRESSURE job photos later.
     const aboutReelImages = [
-      "https://images.unsplash.com/photo-1754797007471-68300d87b793?auto=format&fit=crop&fm=jpg&q=80&w=1800",
-      "https://images.unsplash.com/photo-1718152422485-f2d62ea3f5a8?auto=format&fit=crop&fm=jpg&q=80&w=1800",
-      "https://images.unsplash.com/photo-1718152470408-cfeebeb6b9fc?auto=format&fit=crop&fm=jpg&q=80&w=1800",
-      "https://images.unsplash.com/photo-1718152421680-d1580e843cc9?auto=format&fit=crop&fm=jpg&q=80&w=1800"
+      "https://images.unsplash.com/photo-1754797007471-68300d87b793?auto=format&fit=crop&fm=jpg&q=65&w=1200",
+      "https://images.unsplash.com/photo-1718152422485-f2d62ea3f5a8?auto=format&fit=crop&fm=jpg&q=65&w=1200",
+      "https://images.unsplash.com/photo-1718152470408-cfeebeb6b9fc?auto=format&fit=crop&fm=jpg&q=65&w=1200",
+      "https://images.unsplash.com/photo-1718152421680-d1580e843cc9?auto=format&fit=crop&fm=jpg&q=65&w=1200"
     ];
 
     const aboutSection = document.querySelector('.about');
@@ -829,7 +829,7 @@
     lightbox.classList.add('lightbox');
     lightbox.innerHTML = `
       <button class="lightbox-close" aria-label="Close">✕</button>
-      <img src="" alt="">
+      
     `;
     document.body.appendChild(lightbox);
 
