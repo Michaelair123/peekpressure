@@ -1,7 +1,7 @@
 const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
 const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
-const LUCY_REQUEST_TIMEOUT_MS = 15000;
-const LUCY_MAX_RETRIES = 2;
+const LUCY_REQUEST_TIMEOUT_MS = 10000;
+const LUCY_MAX_RETRIES = 1;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -505,7 +505,7 @@ function isUsablePhone(value) {
 
 function enforceLeadSafety(result, safeMessages) {
   const latestUser = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
-  const suspicious = containsSuspiciousInstruction(latestUser);
+  const suspicious = [...safeMessages].filter(message => message.role === "user").some(message => containsSuspiciousInstruction(message.content));
   const name = typeof result.name === "string" ? result.name.trim() : "";
   const phone = typeof result.phone === "string" ? result.phone.trim() : "";
   const email = typeof result.email === "string" ? result.email.trim() : "";
@@ -596,6 +596,22 @@ async function getAvailability(eventTypeUri, startTime, endTime, env) {
   return data?.collection || [];
 }
 
+
+function buildFastReply(text) {
+  const value = String(text || "").trim().toLowerCase();
+  if (/^(do you|can you|do y'all|do you guys).*(driveway|sidewalk|walkway|patio|concrete|pressure wash)/i.test(value) ||
+      /\b(what services|services do you offer|what do you clean)\b/i.test(value)) {
+    return "Yep — we handle driveway, sidewalk/walkway, patio, and other exterior hard-surface cleaning. For commercial properties, we can handle larger flatwork too. If you tell me what you need cleaned and where, I can get you a rough estimate.";
+  }
+  if (/\b(areas do you serve|where do you serve|service area|serve (what|which) areas)\b/i.test(value)) {
+    return "We serve the Bay Area, with a focus on the Peninsula and nearby areas. Tell me the city and what you need cleaned and I’ll let you know if we cover it.";
+  }
+  if (/\b(website|book|booking|schedule|appointment|calendly)\b/i.test(value) && /\b(link|where|how)\b/i.test(value)) {
+    return "You can book a pressure-washing appointment here: https://calendly.com/look-peekpressure/pressure-wash";
+  }
+  return null;
+}
+
 function isPricingRequest(text) {
   return /\b(how much|price|pricing|cost|quote|estimate|estimated|rate|charge|what.*cost|how.*charge)\b/i.test(String(text || ""));
 }
@@ -637,7 +653,7 @@ function extractPricingContext(messages) {
 function formatEstimateLine(pricing) {
   if (!pricing?.estimate) return "For a rough price, I need the approximate size. PEEK PRESSURE has a $150 minimum.";
   const e = pricing.estimate;
-  return `Preliminary rough estimate: $\{e.low\}–$\{e.high\} for approximately $\{e.squareFeet\} sq ft. Final pricing is confirmed by PEEK PRESSURE after reviewing the job details.`;
+  return `Preliminary rough estimate: ${e.low}–${e.high} for approximately ${e.squareFeet} sq ft. Final pricing is confirmed by PEEK PRESSURE after reviewing the job details.`;
 }
 function enforceRoughPricing(reply, pricing) {
   if (!pricing?.requested) return reply;
@@ -678,7 +694,7 @@ async function handleLucyRequest({ request, env }) {
 
   try {
     const body = await request.json();
-    const messages = Array.isArray(body.messages) ? body.messages.slice(-16) : [];
+    const messages = Array.isArray(body.messages) ? body.messages.slice(-10) : [];
     const customerTimezone = "America/Los_Angeles";
 
     if (!messages.length) {
@@ -691,7 +707,7 @@ async function handleLucyRequest({ request, env }) {
         if (typeof m.content === "string") {
           return {
             role: m.role,
-            content: m.content.slice(0, 1600)
+            content: m.content.slice(0, 1200)
           };
         }
 
@@ -703,7 +719,7 @@ async function handleLucyRequest({ request, env }) {
             if (part?.type === "input_text" && typeof part.text === "string") {
               return {
                 type: "input_text",
-                text: part.text.slice(0, 1600)
+                text: part.text.slice(0, 1200)
               };
             }
 
@@ -739,6 +755,29 @@ async function handleLucyRequest({ request, env }) {
     }
 
     const pricingContext = extractPricingContext(safeMessages);
+    const fastReply = buildFastReply([...safeMessages].reverse().find(message => message.role === "user")?.content || "");
+    if (fastReply && !pricingContext.requested) {
+      const fastResult = enforceLeadSafety({
+        reply: fastReply,
+        lead_ready: false,
+        service: null, location: null, size: null, surface: null, condition: null, timing: null,
+        property_type: null, name: null, phone: null, email: null, question: null,
+        estimate_low: null, estimate_high: null, lead_status: "uncertain",
+        action: "none", availability_start: null, availability_end: null, selected_start_time: null
+      }, safeMessages);
+      return Response.json({
+        reply: fastResult.reply, lead_ready: fastResult.lead_ready,
+        lead: {
+          service: fastResult.service, location: fastResult.location, size: fastResult.size,
+          surface: fastResult.surface, condition: fastResult.condition, timing: fastResult.timing,
+          property_type: fastResult.property_type, name: fastResult.name, phone: fastResult.phone,
+          email: fastResult.email, question: fastResult.question,
+          estimate_low: fastResult.estimate_low, estimate_high: fastResult.estimate_high,
+          lead_status: fastResult.lead_status
+        },
+        scheduling: null
+      }, { headers: cors });
+    }
     const now = new Date().toISOString();
     const pricingInstruction = pricingContext.requested ? "\n\nSYSTEM-GENERATED PRICING DATA — DO NOT RECALCULATE OR INVENT DOLLAR AMOUNTS. " + formatEstimateLine(pricingContext) : "";
     const schedulingContext = `
@@ -772,7 +811,7 @@ SCHEDULING ACTIONS
               schema: LEAD_SCHEMA
             }
           },
-          max_output_tokens: 650
+          max_output_tokens: 450
         }
       }, requestId);
       data = result.data;
