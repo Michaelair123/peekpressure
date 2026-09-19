@@ -247,14 +247,31 @@ function containsSuspiciousInstruction(text) {
   ].some(pattern => pattern.test(value));
 }
 
+function isUsableEmail(value) {
+  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(String(value || "").trim());
+}
+
+function isUsablePhone(value) {
+  const digits = String(value || "").replace(/\\D/g, "");
+  return digits.length >= 7 && digits.length <= 15;
+}
+
 function enforceLeadSafety(result, safeMessages) {
   const latestUser = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
   const suspicious = containsSuspiciousInstruction(latestUser);
   const name = typeof result.name === "string" ? result.name.trim() : "";
   const phone = typeof result.phone === "string" ? result.phone.trim() : "";
   const email = typeof result.email === "string" ? result.email.trim() : "";
-  const hasBasicScope = Boolean(result.service && result.location);
-  const usableContact = Boolean(name && (phone || email));
+  const service = typeof result.service === "string" ? result.service.trim() : "";
+  const location = typeof result.location === "string" ? result.location.trim() : "";
+  const hasBasicScope = Boolean(service && location);
+  const usableContact = Boolean(name && (isUsablePhone(phone) || isUsableEmail(email)));
+
+  result.service = service || null;
+  result.location = location || null;
+  result.name = name || null;
+  result.phone = phone || null;
+  result.email = email || null;
 
   if (suspicious || result.lead_status === "spam") {
     result.lead_ready = false;
