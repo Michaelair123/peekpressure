@@ -1222,3 +1222,10 @@ footer {
   text-align: center;
   text-transform: uppercase;
 }
+
+
+/* Keep footer contact details intact on narrow screens */
+.footer-phone {
+  white-space: nowrap;
+  display: inline-block;
+}
