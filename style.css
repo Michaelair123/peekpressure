@@ -556,3 +556,64 @@ body::before{content:"";position:fixed;top:0;left:0;width:var(--scroll-progress,
 .button::after, .header-cta::after, .service-cta::after, #quoteForm button::after{content:none !important;display:none !important}
 @media (prefers-reduced-motion: reduce){.services .service-image img, .services .service-card .service-image img{transition:none !important;transform:none !important}}
 @supports (content-visibility: auto){.about, .process, .why-peek, .proof-section, .service-area, .contact-section, .booking-cta{content-visibility:auto;contain-intrinsic-size:700px}}
+
+
+/* Mobile layout safety pass: preserve the design while preventing clipped type and controls. */
+@media (max-width:700px){
+  *,*::before,*::after{box-sizing:border-box}
+  .container,.why-peek-container,.service-area-container{width:calc(100% - 2rem);max-width:100%}
+  h1,h2,h3,p,a,button{max-width:100%}
+  h1,h2,h3{overflow-wrap:break-word;word-break:normal}
+  .hero{padding-top:5.75rem;padding-bottom:4rem}
+  .hero-copy h1{font-size:clamp(3rem,13.2vw,5.1rem);line-height:.84;letter-spacing:-.095em;max-width:100%}
+  .hero-copy>p{max-width:100%;font-size:.82rem;line-height:1.65}
+  .hero-proof{max-width:100%;line-height:1.5}
+  .hero-buttons{gap:.7rem}
+  .hero-buttons .button{min-height:52px;padding-inline:1rem}
+  .services,.process,.why-peek,.service-area{padding-block:4.5rem}
+  .service-body{padding:1.25rem 1.1rem;min-height:0}
+  .service h2{font-size:1.45rem;line-height:1}
+  .about-grid{padding-block:4.5rem}
+  .about-grid h2,.process-header h2,.why-peek-intro h2,.service-area h2,.contact-container>h2,.booking-cta-copy h3{
+    font-size:clamp(2.85rem,13vw,5rem);
+    line-height:.88;
+    letter-spacing:-.085em;
+    max-width:100%;
+  }
+  .process-header{margin-bottom:2rem}
+  .process-step{padding-block:1.35rem}
+  .why-peek-grid{gap:1.5rem}
+  .service-map{height:340px}
+  .service-map-wrap{margin-top:2.25rem}
+  .service-area-details span{font-size:.55rem;padding:.5rem .65rem;max-width:100%}
+  .proof-header{margin-bottom:2rem}
+  .proof-header h2{font-size:clamp(2.85rem,13vw,5rem);line-height:.88}
+  .before-after-media{min-height:260px}
+  .review-placeholder blockquote{font-size:1.35rem}
+  .booking-cta{width:calc(100% - 2rem);padding:0;margin-bottom:4rem}
+  .booking-cta-inner{padding:1.75rem 1.15rem;gap:1.75rem}
+  .booking-cta-copy h3{font-size:clamp(2.85rem,13vw,5rem)}
+  .booking-cta-button{width:min(100%,220px)!important;min-width:0!important;height:56px!important}
+  .contact-section{width:calc(100% - 2rem);margin-block:4.5rem}
+  .contact-container{padding:1.75rem 1.1rem}
+  #quoteForm{width:100%;max-width:100%}
+  #quoteForm .service-choice{min-width:0}
+  #quoteForm input,#quoteForm select,#quoteForm textarea{max-width:100%}
+  .mobile-action-bar{left:.6rem;right:.6rem;bottom:.6rem}
+}
+@media (max-width:380px){
+  .hero{padding-top:5.25rem}
+  .hero-copy h1{font-size:clamp(2.7rem,12.7vw,3.35rem);line-height:.86;letter-spacing:-.09em}
+  .hero-copy>p{font-size:.78rem}
+  .hero-proof{font-size:.5rem;letter-spacing:.09em}
+  .header-inner{gap:.45rem}
+  .header-phone{padding-inline:.45rem;font-size:.5rem}
+  .header-cta{padding:.55rem .65rem;font-size:.48rem}
+  .button{font-size:.58rem}
+  .about-grid h2,.process-header h2,.why-peek-intro h2,.service-area h2,.contact-container>h2,.booking-cta-copy h3,.proof-header h2{
+    font-size:clamp(2.65rem,12.2vw,3.3rem)
+  }
+  .service-map{height:300px}
+  .booking-cta-inner{padding-inline:1rem}
+  .booking-cta-button{font-size:.88rem!important}
+}
