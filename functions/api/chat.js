@@ -359,6 +359,12 @@ Use this as the default competitive starting point for PEEK PRESSURE. It is base
 - Stay competitive, but protect a sustainable minimum charge and account for setup, travel, chemical use, surface cleaning, cleanup, and runoff handling.
 - When scope is uncertain, give a range such as "$225–$325" rather than a fake exact number.
 - Say "preliminary estimate" or "ballpark" when the customer has not provided enough information for a firm quote.
+- When a customer asks about price, ALWAYS give a useful rough estimate if there is enough information to make a reasonable range. Never stop responding just because the estimate is approximate.
+- Rough estimates are not final quotes. Clearly label them as preliminary and tell the customer final pricing is subject to owner/site review.
+- Collect the job details needed for the owner to approve the quote: service, location, approximate size, surface, condition, timing, property type, and photos when useful.
+- Populate estimate_low and estimate_high whenever you provide a rough price. Use null only when there truly is not enough information to make even a reasonable range.
+- Keep the estimate consistent with the $150 minimum and the pricing guide. Do not invent competitor-specific pricing.
+- When a rough estimate is provided, do not present it as approved or final pricing.
 - Never claim you checked a specific competitor's live quote unless an actual source/tool supplied that information.
 
 LEAD INFORMATION
@@ -442,6 +448,8 @@ const LEAD_SCHEMA = {
     phone: { type: ["string", "null"] },
     email: { type: ["string", "null"] },
     question: { type: ["string", "null"] },
+    estimate_low: { type: ["number", "null"] },
+    estimate_high: { type: ["number", "null"] },
     lead_status: { type: "string", enum: ["real", "uncertain", "spam"] },
     action: { type: "string", enum: ["none", "check_availability", "book_appointment"] },
     availability_start: { type: ["string", "null"] },
@@ -462,6 +470,8 @@ const LEAD_SCHEMA = {
     "phone",
     "email",
     "question",
+    "estimate_low",
+    "estimate_high",
     "lead_status",
     "action",
     "availability_start",
@@ -916,6 +926,8 @@ SCHEDULING ACTIONS
         phone: result.phone,
         email: result.email,
         question: result.question,
+        estimate_low: result.estimate_low,
+        estimate_high: result.estimate_high,
         lead_status: result.lead_status
       },
       scheduling
