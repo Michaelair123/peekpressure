@@ -1,0 +1,43 @@
+name: Lucy Competitive Pricing Review
+
+on:
+  schedule:
+    - cron: "17 16 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate competitive review
+        env:
+          REVIEW_URL: https://peekpressure.com/api/competitive-review
+          REVIEW_TOKEN: ${{ secrets.PEEK_COMPETITIVE_REVIEW_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${REVIEW_TOKEN:-}" ]; then
+            echo "Missing PEEK_COMPETITIVE_REVIEW_TOKEN repository secret."
+            exit 1
+          fi
+          payload="$(curl -fsS --max-time 180 -X POST "$REVIEW_URL" -H "Authorization: Bearer $REVIEW_TOKEN" -H "Content-Type: application/json")"
+          export PAYLOAD="$payload"
+          python3 - <<'PY'
+          import json, os
+          data = json.loads(os.environ["PAYLOAD"])
+          review = data["review"]
+          lines = ["# Lucy Competitive Pricing Review", "", f"Generated: {data.get('generated_at', 'unknown')}", "", "## Summary", review["summary"], "", "## Proposed pricing changes"]
+          for item in review["proposal"]:
+              lines += [f"### {item['service']}", f"**Proposal:** {item['proposed_price']}", f"**Confidence:** {item['confidence']}", "", item["rationale"], ""]
+          lines += ["## Public pricing observations"]
+          for item in review["observations"]:
+              lines += [f"- **{item['competitor']} — {item['service']}**: {item['published_price']}", f"  - {item['evidence']}", f"  - Source: {item['source_url']}"]
+          lines += ["", "## Guardrails"] + [f"- {g}" for g in review["guardrails"]]
+          lines += ["", "---", "**OWNER ACTION:** Review the proposal. Nothing is approved automatically.", "", "To approve, update competitive-pricing.json with the values you want Lucy to use."]
+          open("review.md", "w").write("\n".join(lines))
+          PY
+          gh issue create --title "Lucy pricing proposal — $(date -u +%Y-%m-%d)" --body-file review.md --label pricing || gh issue create --title "Lucy pricing proposal — $(date -u +%Y-%m-%d)" --body-file review.md
