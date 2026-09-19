@@ -18,6 +18,9 @@
     .faq-item h2{font-size:1rem;margin:0 0 9px}
     .faq-item p{margin:0;color:#555;line-height:1.6}
     .faq-note{margin-top:32px;font-size:.82rem;color:#777}
+    .faq-search{width:100%;box-sizing:border-box;border:1px solid #e3e3e3;border-radius:14px;padding:14px 16px;font:inherit;margin-bottom:18px;background:#fff}
+    .faq-search:focus{outline:2px solid #111;outline-offset:2px}
+    .faq-empty{padding:28px;color:#666;text-align:center;border:1px dashed #ddd;border-radius:16px}
     .faq-back{display:inline-block;margin-top:28px;color:#111;text-decoration:none;font-weight:700}
   </style>
 </head>
@@ -26,16 +29,34 @@
     <div class="faq-eyebrow">PEEK PRESSURE / LUCY</div>
     <h1 class="faq-title">Frequently asked questions.</h1>
     <p class="faq-intro">Straight answers to the questions customers ask most about pressure washing, estimates, photos, and scheduling.</p>
+    <input class="faq-search" id="faqSearch" type="search" placeholder="Search the FAQ…" aria-label="Search frequently asked questions">
     <section class="faq-list" id="faqList" aria-label="Frequently asked questions"></section>
-    <p class="faq-note">Lucy uses the same FAQ source as the chat assistant. Edit <code>functions/api/faq.js</code> to change an answer, and the page and Lucy stay in sync.</p>
+    <p class="faq-note">Lucy uses the same FAQ source as the chat assistant. Edit <code>functions/api/faq.js</code> to change an answer. Lucy and this page use the same source.</p>
     <a class="faq-back" href="/">← Back to PEEK PRESSURE</a>
   </main>
-  <script type="module">
+  <script>
     const list=document.getElementById('faqList');
-    import { LUCY_FAQ } from '/functions/api/faq.js';
-
-    const items=LUCY_FAQ.map(item => [item.question, item.answer]);
-    list.innerHTML=items.map(([q,a])=>'<article class="faq-item"><h2>'+q+'</h2><p>'+a+'</p></article>').join('');
-  </script>
-</body>
+    const search=document.getElementById('faqSearch');
+    let items=[];
+    function render(){
+      const term=search.value.trim().toLowerCase();
+      const filtered=items.filter(item=>!term || (item.question+' '+item.answer+' '+(item.keywords||[]).join(' ')).toLowerCase().includes(term));
+      list.innerHTML=filtered.length
+        ? filtered.map(item=>'<article class="faq-item"><h2>'+item.question+'</h2><p>'+item.answer+'</p></article>').join('')
+        : '<div class="faq-empty">No matching answer yet. Ask Lucy and we can add it here.</div>';
+    }
+    async function loadFaq(){
+      try{
+        const response=await fetch('/api/faq',{headers:{Accept:'application/json'}});
+        if(!response.ok) throw new Error('FAQ unavailable');
+        const data=await response.json();
+        items=Array.isArray(data.faq)?data.faq:[];
+        render();
+      }catch(error){
+        list.innerHTML='<div class="faq-empty">The FAQ is temporarily unavailable. Please call or text PEEK PRESSURE at 415-689-8377.</div>';
+      }
+    }
+    search.addEventListener('input',render);
+    loadFaq();
+  </script></body>
 </html>
