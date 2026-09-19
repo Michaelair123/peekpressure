@@ -3498,3 +3498,64 @@ body.peek-maximum::after {
     animation: none !important;
   }
 }
+
+/* PEEK — premium micro-interactions */
+.button, .booking-cta-button, .header-cta, .service-cta, #quoteForm button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.button::after, .booking-cta-button::after, .header-cta::after, .service-cta::after, #quoteForm button::after {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  left: var(--mx,50%);
+  top: var(--my,50%);
+  border-radius: 50%;
+  background: rgba(255,255,255,.18);
+  transform: translate(-50%,-50%) scale(0);
+  transition: transform .45s var(--peek-ease);
+  pointer-events: none;
+  z-index: -1;
+}
+.button:hover::after, .booking-cta-button:hover::after, .header-cta:hover::after, .service-cta:hover::after, #quoteForm button:hover::after {
+  transform: translate(-50%,-50%) scale(1);
+}
+
+.service-card, .service {
+  transform: perspective(900px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));
+  transition: transform .5s var(--peek-ease), box-shadow .5s var(--peek-ease);
+  will-change: transform;
+}
+.service-card:hover, .service:hover {
+  box-shadow: 0 24px 60px rgba(0,0,0,.09);
+}
+.service-image {
+  overflow: hidden;
+}
+.service-image img {
+  transition: transform .8s var(--peek-ease), filter .6s ease;
+}
+.service:hover .service-image img {
+  transform: scale(1.035);
+  filter: saturate(1.04) contrast(1.02);
+}
+
+/* Scroll cleaning line */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--scroll-progress, 0%);
+  height: 2px;
+  background: #111;
+  z-index: 10001;
+  pointer-events: none;
+  transform-origin: left;
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-card, .service { transform: none !important; }
+  .button::after, .booking-cta-button::after, .header-cta::after, .service-cta::after, #quoteForm button::after { display:none; }
+}
