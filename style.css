@@ -991,3 +991,220 @@ main > form#quoteForm button {
     animation: none;
   }
 }
+
+
+/* =========================================================
+   PEEK PRESSURE — TESLA-INSPIRED POLISH
+   Visual styling only — HTML structure untouched.
+========================================================= */
+
+:root {
+  --peek-ease: cubic-bezier(.22, .61, .36, 1);
+  --peek-shadow: 0 24px 70px rgba(0,0,0,.08);
+}
+
+/* Cleaner premium rhythm */
+body {
+  letter-spacing: -.01em;
+}
+
+.header {
+  transition: background-color .45s var(--peek-ease),
+              box-shadow .45s var(--peek-ease),
+              border-color .45s var(--peek-ease);
+}
+
+.header-inner {
+  min-height: 2.2rem;
+}
+
+.logo {
+  letter-spacing: -.075em;
+}
+
+.header nav a,
+.header-phone,
+.header-cta {
+  transition: color .3s var(--peek-ease),
+              background-color .3s var(--peek-ease),
+              border-color .3s var(--peek-ease),
+              transform .3s var(--peek-ease),
+              box-shadow .3s var(--peek-ease);
+}
+
+/* Hero: more cinematic entrance and scale */
+.hero {
+  min-height: min(820px, 88vh);
+  display: flex;
+  align-items: center;
+}
+
+.hero-copy h1 {
+  max-width: 1100px;
+  text-wrap: balance;
+  animation: peekHeroTitle 1s var(--peek-ease) both;
+}
+
+.hero-copy > p {
+  animation: peekHeroCopy .8s .12s var(--peek-ease) both;
+}
+
+.hero-buttons {
+  animation: peekHeroCopy .8s .2s var(--peek-ease) both;
+}
+
+@keyframes peekHeroTitle {
+  from { opacity: 0; transform: translateY(28px); letter-spacing: -.055em; }
+  to { opacity: 1; transform: translateY(0); letter-spacing: -.095em; }
+}
+
+@keyframes peekHeroCopy {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Buttons feel more tactile */
+.header-cta,
+.button,
+#quoteForm button {
+  will-change: transform;
+}
+
+.header-cta:active,
+.button:active,
+#quoteForm button:active {
+  transform: scale(.98);
+}
+
+/* Service cards: quiet luxury */
+.services {
+  background: #f8f8f8;
+}
+
+.service {
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.02);
+}
+
+.service:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--peek-shadow);
+}
+
+.service-image {
+  position: relative;
+}
+
+.service-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,.08));
+  opacity: 0;
+  transition: opacity .5s var(--peek-ease);
+  pointer-events: none;
+}
+
+.service:hover .service-image::after {
+  opacity: 1;
+}
+
+.service-body {
+  padding: 1.35rem 1.25rem 1.5rem;
+}
+
+/* About / process typography */
+.about h2,
+.process-header h2,
+main > h2 {
+  text-wrap: balance;
+}
+
+.about p,
+.process-header p,
+.service p {
+  letter-spacing: 0;
+}
+
+/* Process hover becomes subtle, not gimmicky */
+.process-step {
+  transition: background-color .4s var(--peek-ease);
+}
+
+.process-step:hover {
+  background: #fafafa;
+}
+
+/* Form: premium floating-panel feel without changing structure */
+main > form#quoteForm {
+  padding-top: .25rem;
+}
+
+main > form#quoteForm .form-field {
+  transition: transform .3s var(--peek-ease);
+}
+
+main > form#quoteForm .form-field:focus-within {
+  transform: translateY(-2px);
+}
+
+main > form#quoteForm input,
+main > form#quoteForm select,
+main > form#quoteForm textarea {
+  box-shadow: 0 1px 0 rgba(0,0,0,.02);
+  transition: border-color .3s var(--peek-ease),
+              background-color .3s var(--peek-ease),
+              box-shadow .3s var(--peek-ease),
+              transform .3s var(--peek-ease);
+}
+
+main > form#quoteForm input:hover,
+main > form#quoteForm select:hover,
+main > form#quoteForm textarea:hover {
+  border-color: #bcbcbc;
+}
+
+main > form#quoteForm input:focus,
+main > form#quoteForm select:focus,
+main > form#quoteForm textarea:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(0,0,0,.045), 0 0 0 3px rgba(0,0,0,.035);
+}
+
+/* Footer */
+footer {
+  background: #f8f8f8;
+}
+
+/* Mobile polish */
+@media (max-width: 700px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-copy h1 {
+    text-wrap: pretty;
+  }
+
+  .service {
+    border-radius: 3px;
+  }
+
+  .service:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .header-phone,
+  .header-cta {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy h1,
+  .hero-copy > p,
+  .hero-buttons {
+    animation: none;
+  }
+}
