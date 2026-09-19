@@ -1,3 +1,85 @@
+const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
+const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
+const LUCY_REQUEST_TIMEOUT_MS = 15000;
+const LUCY_MAX_RETRIES = 2;
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function isTransientOpenAIStatus(status) {
+  return status === 408 || status === 409 || status === 429 || status >= 500;
+}
+
+async function callOpenAI(body, requestId) {
+  let lastError = null;
+
+  for (let attempt = 0; attempt <= LUCY_MAX_RETRIES; attempt++) {
+    const model = attempt === LUCY_MAX_RETRIES ? LUCY_FALLBACK_MODEL : LUCY_PRIMARY_MODEL;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), LUCY_REQUEST_TIMEOUT_MS);
+
+    try {
+      const response = await fetch("https://api.openai.com/v1/responses", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${body.apiKey}`,
+          "Content-Type": "application/json",
+          "X-Client-Request-Id": requestId
+        },
+        body: JSON.stringify({ ...body.payload, model }),
+        signal: controller.signal
+      });
+
+      const text = await response.text();
+      clearTimeout(timer);
+
+      if (response.ok) {
+        return { response, data: JSON.parse(text), model, attempt };
+      }
+
+      let detail = {};
+      try { detail = JSON.parse(text); } catch {}
+
+      lastError = {
+        status: response.status,
+        type: detail?.error?.type || "unknown",
+        code: detail?.error?.code || "unknown",
+        requestId: response.headers.get("x-request-id") || null,
+        model,
+        attempt
+      };
+
+      console.error("Lucy OpenAI failure", JSON.stringify(lastError));
+
+      if (!isTransientOpenAIStatus(response.status) || attempt === LUCY_MAX_RETRIES) {
+        break;
+      }
+
+      await sleep(350 * (attempt + 1));
+    } catch (error) {
+      clearTimeout(timer);
+      lastError = {
+        status: null,
+        type: error?.name === "AbortError" ? "timeout" : "network_error",
+        code: error?.code || "unknown",
+        requestId: null,
+        model,
+        attempt
+      };
+
+      console.error("Lucy OpenAI exception", JSON.stringify(lastError));
+
+      if (attempt === LUCY_MAX_RETRIES) break;
+      await sleep(350 * (attempt + 1));
+    }
+  }
+
+  const error = new Error("Lucy AI provider unavailable.");
+  error.lucy = lastError;
+  throw error;
+}
+
 const SYSTEM_PROMPT = `
 You are Lucy, PEEK PRESSURE's AI assistant and virtual team member for a Bay Area pressure-washing company.
 
@@ -534,33 +616,37 @@ SCHEDULING ACTIONS
 - If a requested time has not been checked/offered yet, use check_availability instead of booking.
 `;
 
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "gpt-5.6-luna",
-        instructions: SYSTEM_PROMPT + "\n\n" + schedulingContext,
-        input: safeMessages,
-        text: {
-          format: {
-            type: "json_schema",
-            name: "peek_ai_response",
-            strict: true,
-            schema: LEAD_SCHEMA
-          }
-        },
-        max_output_tokens: 650
-      })
-    });
+    const requestId = crypto.randomUUID();
+    let data;
 
-    if (!response.ok) {
-      return Response.json({ error: "AI provider request failed." }, { status: 502, headers: cors });
+    try {
+      const result = await callOpenAI({
+        apiKey: env.OPENAI_API_KEY,
+        payload: {
+          instructions: SYSTEM_PROMPT + "\n\n" + schedulingContext,
+          input: safeMessages,
+          text: {
+            format: {
+              type: "json_schema",
+              name: "peek_ai_response",
+              strict: true,
+              schema: LEAD_SCHEMA
+            }
+          },
+          max_output_tokens: 650
+        }
+      }, requestId);
+      data = result.data;
+    } catch (error) {
+      console.error("Lucy request failed", JSON.stringify({
+        requestId,
+        provider: error?.lucy || null
+      }));
+      return Response.json(
+        { error: "AI provider temporarily unavailable.", request_id: requestId },
+        { status: 502, headers: cors }
+      );
     }
-
-    const data = await response.json();
     const raw = typeof data.output_text === "string"
       ? data.output_text.trim()
       : (data.output || [])
