@@ -3439,3 +3439,62 @@ footer {
   font-size: 1.5rem;
   line-height: 1;
 }
+
+/* PEEK PRESSURE — tiny easter eggs */
+body.peek-clean::after {
+  content: "✨ CLEAN.";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 800;
+  letter-spacing: -.06em;
+  color: #111;
+  background: rgba(255,255,255,.92);
+  animation: peek-clean-pop 1.1s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes peek-clean-pop {
+  0% { opacity: 0; transform: scale(.8); }
+  20%,70% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.04); }
+}
+
+body.peek-maximum {
+  animation: peek-shake .12s linear 6;
+}
+body.peek-maximum::after {
+  content: "💦 PRESSURE MAXIMUM";
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 10000;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  white-space: nowrap;
+  font-size: clamp(1.5rem, 4vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: #111;
+  animation: peek-max-pop 1.4s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes peek-shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+@keyframes peek-max-pop {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(.7); }
+  20%,75% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.peek-clean::after,
+  body.peek-maximum::after,
+  body.peek-maximum {
+    animation: none !important;
+  }
+}
