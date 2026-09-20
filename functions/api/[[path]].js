@@ -168,8 +168,6 @@ async function handleLead(context) {
     // Partial leads are intentionally capturable when we have a real customer
     // name plus phone or email. This protects against customers disconnecting
     // before qualification is complete.
-    const partialLead = lead.lead_status === "uncertain";
-
     if (!(await verifyLeadToken(LEAD_SIGNING_SECRET, leadToken, lead))) {
       return json({ error: "This lead handoff is no longer valid. Please start the quote conversation again.", handoff_state: "HANDOFF_FAILED" }, 403);
     }
@@ -179,7 +177,10 @@ async function handleLead(context) {
       .filter(Boolean)
       .join("\n\n");
 
+    const isPartial = lead.lead_status === "uncertain";
+    const handoffKind = isPartial ? "PARTIAL CAPTURE" : "QUALIFIED HANDOFF";
     const details = [
+      ["Handoff type", handoffKind],
       ["Name", name],
       ["Phone", phone],
       ["Email", email],
@@ -208,7 +209,7 @@ async function handleLead(context) {
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:760px;margin:auto;color:#111;">
         <h2 style="margin-bottom:6px;">New PEEK PRESSURE Lead</h2>
-        <p style="margin-top:0;color:#666;">Captured and confirmed through Lucy.</p>
+        <p style="margin-top:0;color:#666;">${isPartial ? "Partial contact capture through Lucy — qualification may continue later." : "Qualified lead handoff confirmed through Lucy."}</p>
         <h3>Customer Details</h3>
         <table style="border-collapse:collapse;width:100%;font-size:14px;">
           ${detailsHtml}
@@ -218,7 +219,9 @@ async function handleLead(context) {
           ${transcriptHtml}
         </div>
         <p style="margin-top:24px;font-weight:700;">
-          Customer confirmed that PEEK PRESSURE should receive this information.
+          ${isPartial
+            ? "Lucy captured the customer's contact information before qualification was complete."
+            : "Customer confirmed that PEEK PRESSURE should receive this information."}
         </p>
       </div>
     `;
@@ -232,7 +235,9 @@ async function handleLead(context) {
       "-----------------",
       transcript || "No transcript was available.",
       "",
-      "Customer confirmed that PEEK PRESSURE should receive this information.",
+      isPartial
+        ? "Lucy captured the customer's contact information before qualification was complete."
+        : "Customer confirmed that PEEK PRESSURE should receive this information.",
       conversationId ? `Conversation ID: ${conversationId}` : ""
     ].filter(Boolean).join("\n");
 
