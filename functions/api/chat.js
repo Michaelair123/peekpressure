@@ -1006,30 +1006,70 @@ function enforceLeadSafety(result, safeMessages) {
       ? latestUser.map(part => part?.text || "").join(" ")
       : "";
   const addressPromptIndexes = assistantMessages
-    .map((message, index) => ({ message, index }))
-    .filter(({ message }) =>
+    .map((message) => ({ message, index: safeMessages.indexOf(message) }))
+    .filter(({ message, index }) =>
+      index >= 0 &&
       /(?:confirm|confirmation).{0,80}(?:property address|address|location)|(?:property address|address).{0,80}(?:confirm|confirmation)|is (?:the )?(?:property )?address/i.test(String(message.content || ""))
     )
-    .map(({ message }) => safeMessages.indexOf(message))
-    .filter(index => index >= 0);
+    .map(({ index }) => index);
+
   const lastAddressPromptIndex = addressPromptIndexes.length
     ? Math.max(...addressPromptIndexes)
     : -1;
+
   const confirmationUsers = lastAddressPromptIndex >= 0
     ? safeMessages.slice(lastAddressPromptIndex + 1).filter(message => message.role === "user")
     : [];
+
+  const normalizedUserText = message =>
+    String(message.content || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[.!?]+$/g, "");
+
   const propertyAddressConfirmed = Boolean(
     location &&
     lastAddressPromptIndex >= 0 &&
     confirmationUsers.some(message =>
       /^(?:yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|yes send it)$/i.test(
-        String(message.content || "").trim().toLowerCase().replace(/[.!?]+$/g, "")
+        normalizedUserText(message)
       )
     )
   );
+
+  // Once Lucy has explicitly confirmed the same address with the customer,
+  // preserve that confirmation through later turns. This prevents the model
+  // from reopening the address step after the conversation has moved on.
+  const explicitAddressConfirmation = assistantMessages.some(message =>
+    /(?:address|location).{0,60}(?:confirmed|got|have|noted)|(?:confirmed|got|have|noted).{0,60}(?:address|location)/i.test(
+      String(message.content || "")
+    )
+  );
+  const latestUserAddress = [...userMessages]
+    .reverse()
+    .find(message =>
+      /\b\d{1,6}\s+[A-Za-z0-9.'-]+(?:\s+[A-Za-z0-9.'-]+){0,5}\s+(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ct|Court|Ln|Lane|Way|Pl|Place|Pkwy|Parkway|Hwy|Highway)\b/i.test(
+        String(message.content || "")
+      )
+    );
+  const confirmedAddressInAssistant = explicitAddressConfirmation
+    ? String([...assistantMessages]
+      .reverse()
+      .find(message =>
+        /(?:address|location).{0,60}(?:confirmed|got|have|noted)|(?:confirmed|got|have|noted).{0,60}(?:address|location)/i.test(
+          String(message.content || "")
+        )
+      )?.content || "")
+    : "";
+  const confirmedAddressMatchesCurrent = Boolean(
+    explicitAddressConfirmation &&
+    (!latestUserAddress || confirmedAddressInAssistant.toLowerCase().includes(location.toLowerCase()))
+  );
+
+  const addressConfirmed = propertyAddressConfirmed || confirmedAddressMatchesCurrent;
   const hasStreetAddress = /\b\d{1,6}\s+[A-Za-z0-9.'-]+(?:\s+[A-Za-z0-9.'-]+){0,5}\s+(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ct|Court|Ln|Lane|Way|Pl|Place|Pkwy|Parkway|Hwy|Highway)\b/i.test(location);
 
-  if (!suspicious && result.lead_status !== "spam" && location && hasStreetAddress && !propertyAddressConfirmed) {
+  if (!suspicious && result.lead_status !== "spam" && location && hasStreetAddress && !addressConfirmed) {
     result.reply = `Just to confirm, is the property address ${location}? Please reply yes if that's correct, or send me the corrected address.`;
   } else if (!suspicious && result.lead_status !== "spam" && !hasStreetAddress && service && location) {
     result.reply = `What’s the full property address for the job? I’ll confirm it with you before sending your request to PEEK PRESSURE.`;
@@ -1044,7 +1084,7 @@ function enforceLeadSafety(result, safeMessages) {
   if (suspicious || result.lead_status === "spam") {
     result.lead_ready = false;
     result.lead_status = "spam";
-  } else if (!hasBasicScope || !usableContact || !propertyAddressConfirmed) {
+  } else if (!hasBasicScope || !usableContact || !addressConfirmed) {
     result.lead_ready = false;
     result.lead_status = "uncertain";
   } else {
@@ -1261,7 +1301,7 @@ async function handleLucyRequest({ request, env }) {
 
   try {
     const body = await request.json();
-    const messages = Array.isArray(body.messages) ? body.messages.slice(-10) : [];
+    const messages = Array.isArray(body.messages) ? body.messages.slice(-24) : [];
     const customerTimezone = "America/Los_Angeles";
 
     if (!messages.length) {
