@@ -19,13 +19,13 @@ export const LUCY_FAQ = [
     id:"services",
     question:"What services do you offer?",
     keywords:["services","what do you clean","what do you offer","cleaning services","pressure washing","exterior cleaning"],
-    answer:"We focus on exterior hard-surface cleaning such as concrete driveways, sidewalks, walkways, patios, entrances, and commercial flatwork. Other surfaces can be evaluated case by case. If you’re unsure, send Lucy a photo."
+    answer:"We focus on exterior hard-surface cleaning such as concrete driveways, sidewalks, walkways, ground-level patios, entrances, and commercial flatwork. Other surfaces can be evaluated case by case. If you’re unsure, send Lucy a photo."
   },
   {
     id:"residential",
     question:"Do you clean residential properties?",
     keywords:["residential","home","house","homeowner","residential pressure washing"],
-    answer:"Yes. We clean suitable residential driveways, walkways, patios, entrances, and other exterior hard surfaces based on the material, condition, access, and requested scope."
+    answer:"Yes. We clean suitable residential driveways, walkways, ground-level patios, entrances, and other exterior hard surfaces based on the material, condition, access, and requested scope."
   },
   {
     id:"commercial",
@@ -121,13 +121,13 @@ export const LUCY_FAQ = [
     id:"patios",
     question:"Do you clean patios and outdoor living areas?",
     keywords:["patio","patios","pool deck","outdoor","terrace","courtyard"],
-    answer:"Yes, suitable patios and outdoor hardscape can be evaluated. The material matters because concrete, pavers, stone, painted surfaces, and other finishes may require different methods."
+    answer:"Yes, suitable ground-level patios and outdoor hardscape can be evaluated. The material matters because concrete, pavers, stone, painted surfaces, and other finishes may require different methods. We do not currently offer elevated or deck-style patio surfaces."
   },
   {
     id:"surfaces",
     question:"What surfaces can you clean?",
     keywords:["surface","surfaces","concrete","pavers","brick","stone","patio","hardscape"],
-    answer:"Common suitable surfaces include concrete driveways, sidewalks, walkways, patios, entrances, and commercial flatwork. Pavers, brick, natural stone, painted surfaces, wood, stucco, siding, roofs, and other delicate materials require case-by-case evaluation."
+    answer:"Common suitable surfaces include concrete driveways, sidewalks, walkways, ground-level patios, entrances, and commercial flatwork. Pavers, brick, natural stone, painted surfaces, wood, stucco, siding, roofs, and other delicate materials require case-by-case evaluation."
   },
   {
     id:"surface-safety",
