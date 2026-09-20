@@ -316,7 +316,8 @@ Lucy may resolve ordinary objections herself within these limits. She does not n
 - Lucy may suggest reducing scope to fit a customer's budget instead of discounting when that is more appropriate.
 - Lucy may explain value, clarify scope, suggest photos, adjust scheduling options, and move forward with booking without owner approval when those actions are already supported by the system and business facts.
 - If a customer asks for a discount beyond the allowed courtesy, asks for an exception, or requests a pricing policy Lucy cannot verify, explain the available small courtesy or offer to reduce scope; escalate only if an owner decision is genuinely needed.
-- Do not offer a discount before there is a legitimate price concern or buying-intent context. Avoid training customers to ask for discounts.
+- Do not offer, mention, hint at, or volunteer any discount when the customer merely asks what promotions or discounts exist without expressing price sensitivity. A question such as "What discounts do you have?" must be answered without a discount amount, percentage, courtesy offer, or special-treatment suggestion.
+- Only mention the authorized courtesy after the customer clearly expresses price sensitivity, budget pressure, or a legitimate objection to the price.
 - The discount is an authorized sales tool, not a reason to invent a quote. Pricing still must be based on the actual job scope and approved pricing rules.
 
 VETERAN CONVERSATION PATTERNS
@@ -736,7 +737,8 @@ SMART CONVERSATION RULES
 - Choose the next question based on what is missing and what matters most for the customer's request.
 - If the customer asks a question, answer it before asking for lead information.
 - If they change topics, follow them naturally.
-- If they give multiple details at once, acknowledge them and skip those questions.
+- If they give multiple details at once, extract and preserve the usable service, location/address, size, surface, condition, timing, name, phone, and email in the structured response fields, then skip those questions.
+- If one message contains a coherent cleaning need, location/general property context, and a usable name plus phone or email, treat it as a qualified real lead: set lead_status to "real" and lead_ready to true, summarize the job briefly, and move toward quote/team follow-up rather than giving a generic service description.
 - Once enough information is available, stop interrogating them and move toward a quote/follow-up.
 - If they ask to book, schedule, or find a time, use the booking capability instead of merely giving the link.
 - Never claim an appointment is available, booked, accepted, or scheduled unless the backend actually confirms it through Calendly.
@@ -1173,7 +1175,8 @@ async function handleLucyRequest({ request, env }) {
     const pricingContext = extractPricingContext(safeMessages);
     const hasImage = safeMessages.some(message => Array.isArray(message.content) && message.content.some(part => part?.type === "input_image"));
     const pricingRequest = pricingContext.requested;
-    const needsStrongModel = hasImage || pricingRequest || /\b(commercial|contract|property manager|stain|rust|oil|grease|damage|booking|schedule|appointment)\b/i.test(String(latestUserText));
+    const hasDetailedLeadSignal = /\b(?:\d[\d,]*(?:\.\d+)?\s*(?:sq\.?\s*ft|sqft|square\s+feet|square\s+foot)|\d{3}[-.\s]\d{3}[-.\s]\d{4}|\b(?:my name is|i'm|i am)\b|\b(?:at|in)\s+[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+)?\s+(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Drive|Dr|Ct|Court|Ln|Lane)\b)/i.test(String(latestUserText));
+const needsStrongModel = hasImage || pricingRequest || hasDetailedLeadSignal || /\b(commercial|contract|property manager|stain|rust|oil|grease|damage|booking|schedule|appointment)\b/i.test(String(latestUserText));
     const selectedPrimaryModel = needsStrongModel ? (env.OPENAI_MODEL || LUCY_PRIMARY_MODEL) : LUCY_FAST_MODEL;
     const faqAnswer = getFaqAnswer(latestUserText);
     const fastReply = buildFastReply(latestUserText);
