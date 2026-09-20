@@ -1180,7 +1180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const sent = result === true;
 
             if (sent) {
-              const success = "Perfect — your information has been sent to PEEK PRESSURE. We’ll follow up directly.";
+              const success = "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly.";
               addMessage(success, 'assistant');
               state.history.push({ role: 'assistant', content: success });
               setQuick(['Ask another question', 'Book a time']);
