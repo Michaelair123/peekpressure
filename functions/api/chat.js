@@ -1070,12 +1070,16 @@ async function handleLucyRequest({ request, env }) {
     return Response.json({ error: "Method not allowed." }, { status: 405, headers: cors });
   }
 
-  const rate = checkLucyRateLimit(request);
-  if (!rate.allowed) {
-    return Response.json({ error: "Lucy is taking a short break. Please try again in a moment." }, {
-      status: 429,
-      headers: { ...cors, "Retry-After": String(rate.retryAfter) }
-    });
+  const stagingToken = env.LUCY_STAGING_TOKEN;
+  const isStaging = Boolean(stagingToken) && request.headers.get("X-Lucy-Staging-Token") === stagingToken;
+  if (!isStaging) {
+    const rate = checkLucyRateLimit(request);
+    if (!rate.allowed) {
+      return Response.json({ error: "Lucy is taking a short break. Please try again in a moment." }, {
+        status: 429,
+        headers: { ...cors, "Retry-After": String(rate.retryAfter) }
+      });
+    }
   }
 
   if (lucyInFlight >= LUCY_MAX_CONCURRENT) {
