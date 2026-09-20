@@ -1358,7 +1358,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const typing = document.createElement('div');
         typing.className = 'peek-chat-message assistant typing';
-        typing.textContent = 'Lucy is checking that for you…';
+        typing.setAttribute('role', 'status');
+        typing.setAttribute('aria-live', 'polite');
+        typing.innerHTML = '<span class="peek-chat-typing-name">Lucy</span><span class="peek-chat-typing-text">is typing</span><span class="peek-chat-typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>';
         messages.appendChild(typing);
         messages.scrollTop = messages.scrollHeight;
 
