@@ -1186,8 +1186,7 @@ document.addEventListener('DOMContentLoaded', () => {
               setQuick(['Ask another question', 'Book a time']);
             } else {
               state.pendingLead = leadToSend;
-              const failureDetail = result?.error ? " Email service says: " + result.error : "";
-              const failure = "I couldn’t complete the handoff just yet. I haven’t told you it was sent. Please reply TRY AGAIN, or call/text PEEK PRESSURE at 415-689-8377." + failureDetail;
+              const failure = "I couldn’t complete the handoff just yet. Please try again, or call/text PEEK PRESSURE at 415-689-8377.";
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
               setQuick(['TRY AGAIN', 'Book a time']);
