@@ -1,0 +1,22 @@
+name: Lucy sales sandbox
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sales-lab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run controlled Lucy sales experiments
+        env:
+          LUCY_STAGING_URL: ${{ secrets.LUCY_STAGING_URL }}
+          LUCY_STAGING_TOKEN: ${{ secrets.LUCY_STAGING_TOKEN }}
+        run: node scripts/lucy-sales-lab.mjs
+      - name: Upload Lucy sales lab report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lucy-sales-lab-report
+          path: lucy-sales-lab-report.json
+          if-no-files-found: ignore
