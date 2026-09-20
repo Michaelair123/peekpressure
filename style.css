@@ -279,3 +279,113 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
   font-size:.72rem;
   font-weight:700;
 }
+
+/* Professional booking CTA refresh */
+.booking-cta{
+  background:#f7f7f5;
+  border-top:1px solid #e8e8e5;
+  border-bottom:1px solid #e8e8e5;
+}
+.booking-cta-inner{
+  position:relative;
+  align-items:center;
+  gap:clamp(32px,7vw,100px);
+}
+.booking-cta-copy{
+  max-width:620px;
+}
+.booking-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:auto;
+  height:auto;
+  margin:0 0 14px;
+  padding:0;
+  background:none!important;
+  border:0;
+  border-radius:0;
+  font-size:1.05rem;
+  line-height:1;
+  filter:grayscale(1);
+  opacity:.62;
+}
+.booking-cta-copy .label,
+.booking-action-label{
+  letter-spacing:.16em;
+  font-size:.62rem;
+  font-weight:700;
+  color:#777;
+}
+.booking-cta-copy h3{
+  margin:8px 0 12px;
+  font-size:clamp(2.25rem,5vw,4.6rem);
+  line-height:.94;
+  letter-spacing:-.055em;
+  color:#111;
+}
+.booking-cta-copy p{
+  max-width:460px;
+  margin:0;
+  color:#666;
+  font-size:.92rem;
+  line-height:1.65;
+}
+.booking-cta-action{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:12px;
+  min-width:190px;
+}
+.booking-cta-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:38px;
+  min-width:210px;
+  padding:16px 18px 16px 20px;
+  border:1px solid #171717;
+  border-radius:4px;
+  background:#111;
+  color:#fff;
+  box-shadow:none;
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-decoration:none;
+  transition:transform .2s ease,background .2s ease,border-color .2s ease;
+}
+.booking-cta-button span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1rem;
+  line-height:1;
+  transition:transform .2s ease;
+}
+.booking-cta-button:hover{
+  background:#222;
+  border-color:#222;
+  transform:translateY(-2px);
+}
+.booking-cta-button:hover span{
+  transform:translate(2px,-2px);
+}
+@media(max-width:700px){
+  .booking-cta-inner{
+    align-items:flex-start;
+    gap:30px;
+  }
+  .booking-cta-copy h3{
+    font-size:clamp(2.35rem,12vw,3.4rem);
+  }
+  .booking-cta-action{
+    width:100%;
+    min-width:0;
+  }
+  .booking-cta-button{
+    width:100%;
+    min-width:0;
+  }
+}
