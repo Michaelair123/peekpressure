@@ -561,3 +561,38 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
   color:#fff!important;
   opacity:1!important;
 }
+
+/* Before/after sample-photo demo — replace with PEEK PRESSURE project photos when ready */
+.before-after-before .proof-placeholder{
+  background-image:url("https://www.bestpowerwashli.com/images/gallery/premium_driveway_ba.jpg")!important;
+  background-size:200% 100%!important;
+  background-position:left center!important;
+  background-repeat:no-repeat!important;
+}
+.before-after-after .proof-placeholder{
+  background-image:url("https://www.bestpowerwashli.com/images/gallery/premium_driveway_ba.jpg")!important;
+  background-size:200% 100%!important;
+  background-position:right center!important;
+  background-repeat:no-repeat!important;
+}
+.before-after-before .proof-placeholder span,
+.before-after-after .proof-placeholder span,
+.before-after-before .proof-placeholder small,
+.before-after-after .proof-placeholder small{
+  position:relative;
+  z-index:2;
+  text-shadow:0 2px 10px rgba(0,0,0,.45);
+}
+.before-after-before .proof-placeholder::after,
+.before-after-after .proof-placeholder::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.before-after-before .proof-placeholder::after{
+  background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.05) 45%,rgba(0,0,0,.28));
+}
+.before-after-after .proof-placeholder::after{
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0) 55%,rgba(0,0,0,.12));
+}
