@@ -506,7 +506,7 @@
 
       <div class="form-field photo-field">
         <label for="photos">03 / WANT TO SHOW US? <span>OPTIONAL</span></label>
-        <input type="file" id="photos" name="photos" accept="image/*" multiple>
+        <input type="file" id="photos" name="photos" accept="image/*" multiple data-max-files="5">
         <label for="photos" class="photo-upload">
           <strong>+ ADD PHOTOS</strong>
           <span>Photos help us quote faster.</span>
@@ -786,14 +786,21 @@
       photoInput.addEventListener('change', () => {
         clearPreviewUrls();
         preview.innerHTML = '';
-        const files = [...photoInput.files];
-        const count = files.length;
 
+        let files = [...photoInput.files];
+        if (files.length > 5) {
+          files = files.slice(0, 5);
+          const dataTransfer = new DataTransfer();
+          files.forEach(file => dataTransfer.items.add(file));
+          photoInput.files = dataTransfer.files;
+        }
+
+        const count = files.length;
         photoText.textContent = count
           ? count + ' photo' + (count === 1 ? '' : 's') + ' selected — tap to change'
           : 'Photos help us quote faster.';
 
-        files.slice(0, 4).forEach(file => {
+        files.forEach(file => {
           if (!file.type.startsWith('image/')) return;
           const img = document.createElement('img');
           const objectUrl = URL.createObjectURL(file);
@@ -802,13 +809,6 @@
           img.dataset.objectUrl = objectUrl;
           preview.appendChild(img);
         });
-
-        if (count > 4) {
-          const more = document.createElement('span');
-          more.className = 'photo-upload-more';
-          more.textContent = '+' + (count - 4);
-          preview.appendChild(more);
-        }
       });
     }
   </script>
