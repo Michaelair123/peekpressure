@@ -123,7 +123,8 @@ async function handleLead(context) {
   const rate = checkLeadRateLimit(context.request);
   if (!rate.allowed) {
     return new Response(JSON.stringify({
-      error: "Too many quote requests. Please try again later."
+      error: "Too many quote requests. Please try again later.",
+      handoff_state: "HANDOFF_FAILED"
     }), {
       status: 429,
       headers: {
@@ -138,7 +139,8 @@ async function handleLead(context) {
 
   if (!RESEND_API_KEY) {
     return json({
-      error: "Email is not configured yet. Add RESEND_API_KEY to Cloudflare."
+      error: "Email is not configured yet. Add RESEND_API_KEY to Cloudflare.",
+      handoff_state: "HANDOFF_FAILED"
     }, 500);
   }
 
@@ -147,6 +149,7 @@ async function handleLead(context) {
     const lead = body.lead || {};
     const leadToken = String(body.lead_token || "").trim();
     const messages = Array.isArray(body.messages) ? body.messages.slice(-32) : [];
+    const conversationId = String(body.conversation_id || "").trim();
 
     const name = String(lead.name || "").trim();
     const phone = String(lead.phone || "").trim();
@@ -154,16 +157,17 @@ async function handleLead(context) {
 
     if (!name || (!phone && !email)) {
       return json({
-        error: "A customer name and at least one contact method are required."
+        error: "A customer name and at least one contact method are required.",
+        handoff_state: "HANDOFF_FAILED"
       }, 400);
     }
 
     if (lead.lead_status === "spam" || lead.lead_status === "uncertain") {
-      return json({ error: "This lead was not eligible for email handoff." }, 400);
+      return json({ error: "This lead was not eligible for email handoff.", handoff_state: lead.lead_status === "spam" ? "SPAM" : "PARTIALLY_QUALIFIED" }, 400);
     }
 
     if (!(await verifyLeadToken(LEAD_SIGNING_SECRET, leadToken, lead))) {
-      return json({ error: "This lead handoff is no longer valid. Please start the quote conversation again." }, 403);
+      return json({ error: "This lead handoff is no longer valid. Please start the quote conversation again.", handoff_state: "HANDOFF_FAILED" }, 403);
     }
 
     const transcript = messages
@@ -224,8 +228,9 @@ async function handleLead(context) {
       "-----------------",
       transcript || "No transcript was available.",
       "",
-      "Customer confirmed that PEEK PRESSURE should receive this information."
-    ].join("\n");
+      "Customer confirmed that PEEK PRESSURE should receive this information.",
+      conversationId ? `Conversation ID: ${conversationId}` : ""
+    ].filter(Boolean).join("\n");
 
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -256,18 +261,20 @@ async function handleLead(context) {
     if (!resendResponse.ok) {
       console.error("Resend lead email failed:", resendResponse.status, result || responseText);
       return json({
-        error: result?.message || result?.name || "Email provider rejected the lead."
+        error: result?.message || result?.name || "Email provider rejected the lead.",
+        handoff_state: "HANDOFF_FAILED"
       }, 502);
     }
 
     // Once Resend has returned a successful HTTP status, the handoff is complete.
     return json({
       sent: true,
+      handoff_state: "HANDED_OFF",
       email_id: result?.id || null
     });
   } catch (error) {
     console.error("Lucy lead email handler error:", error);
-    return json({ error: "The lead email could not be sent." }, 500);
+    return json({ error: "The lead email could not be sent.", handoff_state: "HANDOFF_FAILED" }, 500);
   }
 }
 
