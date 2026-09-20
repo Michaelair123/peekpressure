@@ -951,6 +951,7 @@ document.addEventListener('DOMContentLoaded', () => {
       pendingLead: null,
       pendingLeadKind: null,
       handoffState: HANDOFF_STATES.NOT_A_LEAD,
+      conversationState: null,
       conversationId: createConversationId()
     };
 
@@ -1403,6 +1404,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const data = await response.json();
         typing.remove();
+
+        state.conversationState = data.conversation_state || state.conversationState;
 
         const reply = data.reply || "Got it. What’s the one detail you think I should know about the job?";
         setHandoffState(deriveHandoffState(data));

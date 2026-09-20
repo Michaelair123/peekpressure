@@ -987,6 +987,105 @@ function validateLucyResponseShape(result) {
   return true;
 }
 
+function getLatestUserText(safeMessages) {
+  const latest = [...safeMessages].reverse().find(message => message.role === "user")?.content;
+  if (typeof latest === "string") return latest.trim();
+  if (Array.isArray(latest)) {
+    return latest
+      .filter(part => part?.type === "input_text")
+      .map(part => String(part.text || ""))
+      .join(" ")
+      .trim();
+  }
+  return "";
+}
+
+function detectLucyConversationSignals(safeMessages) {
+  const text = getLatestUserText(safeMessages);
+  const normalized = text.toLowerCase();
+
+  const frustrated = /\b(already told you|i told you|you keep asking|stop asking|why do you keep|keep repeating|just send someone|just send somebody|wtf|fuck|fucking|this is ridiculous|you're not listening|you are not listening)\b/i.test(text);
+  const delegatesSiteReview = /\b(just have someone|have someone|send someone|send somebody|someone can review|someone review|take a look|look at it|review (?:it|the site|the property)|site review|on[- ]site review|give me a proposal|send me a proposal|prepare a proposal)\b/i.test(text);
+  const humanRequested = /\b(talk to (?:a|someone|a human|a person)|speak to (?:someone|a person|a human)|call me|have someone call|real person|human|person instead)\b/i.test(text);
+  const recurring = /\b(contract|recurring|ongoing|maintenance plan|maintenance contract|regular service|routine service|monthly|quarterly|weekly|biweekly|every month|every quarter)\b/i.test(text);
+  const unknownSize = /\b(i (?:don't|do not) know|not sure|no idea|unknown|you can (?:measure|check|figure) (?:it|that) out)\b/i.test(text) &&
+    /\b(size|square|sq\.?\s*ft|sqft|footage|dimensions|area)\b/i.test(text);
+
+  return { text, normalized, frustrated, delegatesSiteReview, humanRequested, recurring, unknownSize };
+}
+
+function deriveConversationState(result, safeMessages, addressConfirmed = false) {
+  const signals = detectLucyConversationSignals(safeMessages);
+  const hasContact = Boolean(
+    String(result.name || "").trim() &&
+    (isUsablePhone(result.phone) || isUsableEmail(result.email))
+  );
+  const hasScope = Boolean(String(result.service || "").trim() && String(result.location || "").trim());
+
+  let stage = "NEW";
+  if (result.lead_status === "spam") stage = "SPAM";
+  else if (result.lead_ready) stage = "READY_FOR_HANDOFF";
+  else if (signals.humanRequested || signals.delegatesSiteReview) stage = "HUMAN_REQUESTED";
+  else if (signals.recurring) stage = "RECURRING_SERVICE";
+  else if (signals.frustrated) stage = "FRUSTRATED";
+  else if (!hasScope) stage = "DISCOVERY";
+  else if (!addressConfirmed) stage = "ADDRESS_PENDING";
+  else if (!hasContact) stage = "CONTACT_PENDING";
+  else stage = "SCOPE_BUILDING";
+
+  let nextAction = "discover";
+  if (stage === "READY_FOR_HANDOFF") nextAction = "handoff";
+  else if (stage === "HUMAN_REQUESTED") nextAction = hasContact ? "handoff" : "collect_contact";
+  else if (stage === "RECURRING_SERVICE") nextAction = hasContact ? "handoff_or_continue" : "collect_contact";
+  else if (stage === "FRUSTRATED") nextAction = hasContact ? "handoff" : "ask_one_material_question";
+  else if (stage === "ADDRESS_PENDING") nextAction = "confirm_address";
+  else if (stage === "CONTACT_PENDING") nextAction = "collect_contact";
+  else if (stage === "SCOPE_BUILDING") nextAction = "collect_next_material_detail";
+
+  return {
+    stage,
+    next_action: nextAction,
+    address_status: addressConfirmed ? "confirmed" : (result.location ? "needs_confirmation" : "missing"),
+    customer_signals: {
+      frustrated: signals.frustrated,
+      human_requested: signals.humanRequested,
+      delegates_site_review: signals.delegatesSiteReview,
+      recurring_service: signals.recurring,
+      size_unknown_by_customer: signals.unknownSize
+    }
+  };
+}
+
+function applyConversationFlow(result, safeMessages, addressConfirmed) {
+  const signals = detectLucyConversationSignals(safeMessages);
+
+  if (signals.recurring && !result.timing) {
+    result.timing = "recurring service / contract";
+  }
+
+  if (signals.recurring && !result.property_type && /\b(commercial|building|property manager|retail|office|industrial|apartments?|multifamily|hoa)\b/i.test(
+    safeMessages.map(message => String(message.content || "")).join(" ")
+  )) {
+    result.property_type = "commercial property";
+  }
+
+  if (addressConfirmed && !signals.text.match(/\b(yes|yeah|yep|yup|correct|right|looks good|send it)\b/i)) {
+    if ((signals.delegatesSiteReview || signals.humanRequested) && !result.lead_ready) {
+      result.reply = result.name && (result.phone || result.email)
+        ? "Perfect — I’ve got the site-review request and your contact information. I’ll pass this to PEEK PRESSURE for follow-up."
+        : "Absolutely — we can keep this simple. I’ll just need your name and the best phone number or email for the proposal.";
+    } else if (signals.frustrated && !result.lead_ready) {
+      result.reply = result.name && (result.phone || result.email)
+        ? "You’re right — no need to repeat the details. I’ve got what you’ve given me; I’ll pass it along to PEEK PRESSURE."
+        : "You’re right — let’s keep it simple. What’s your name and the best phone number or email for you?";
+    } else if (signals.unknownSize && addressConfirmed && !result.lead_ready && !result.name) {
+      result.reply = "No problem — you don’t need to know the square footage. We can review the site conditions. What’s your name and the best phone number or email?";
+    }
+  }
+
+  return signals;
+}
+
 function enforceLeadSafety(result, safeMessages) {
   const latestUser = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
     const suspicious = [...safeMessages].filter(message => message.role === "user").some(message => containsSuspiciousInstruction(message.content));
@@ -1081,6 +1180,8 @@ function enforceLeadSafety(result, safeMessages) {
   result.phone = phone || null;
   result.email = email || null;
 
+  const flowSignals = applyConversationFlow(result, safeMessages, addressConfirmed);
+
   if (suspicious || result.lead_status === "spam") {
     result.lead_ready = false;
     result.lead_status = "spam";
@@ -1091,6 +1192,8 @@ function enforceLeadSafety(result, safeMessages) {
     result.lead_ready = true;
     result.lead_status = "real";
   }
+  result.conversation_state = deriveConversationState(result, safeMessages, addressConfirmed);
+  result.flow_signals = flowSignals;
   return result;
 }
 
@@ -1644,6 +1747,7 @@ SCHEDULING ACTIONS
       lead: (leadReady || leadCapture) ? lead : null,
       lead_token: leadToken,
       lead_intelligence: leadIntelligence,
+      conversation_state: result.conversation_state || null,
       scheduling
     }, { headers: cors });
 
