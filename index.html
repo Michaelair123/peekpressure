@@ -1211,15 +1211,29 @@ document.addEventListener('DOMContentLoaded', () => {
           setHandoffState(HANDOFF_STATES.HANDOFF_FAILED);
         }
 
-        if (!response.ok || result?.sent !== true) {
-          console.warn('Lucy lead endpoint returned a non-success response', {
+        const handoffConfirmed =
+          response.ok === true &&
+          result?.sent === true &&
+          result?.handoff_state === HANDOFF_STATES.HANDED_OFF;
+
+        if (!handoffConfirmed) {
+          if (state.handoffState !== HANDOFF_STATES.HANDOFF_UNKNOWN) {
+            setHandoffState(
+              result?.handoff_state && Object.values(HANDOFF_STATES).includes(result.handoff_state)
+                ? result.handoff_state
+                : HANDOFF_STATES.HANDOFF_FAILED
+            );
+          }
+
+          console.warn('Lucy lead endpoint did not confirm a successful handoff', {
             status: response.status,
             response: result
           });
+
           return {
             ok: false,
             state: state.handoffState,
-            error: result?.error || 'Lead handoff failed'
+            error: result?.error || 'Lead handoff was not confirmed'
           };
         }
 
