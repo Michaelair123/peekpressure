@@ -905,13 +905,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!launcher || !panel || !messages || !form || !input) return;
 
+    const HANDOFF_STATES = Object.freeze({
+      NOT_A_LEAD: 'NOT_A_LEAD',
+      INTERESTED: 'INTERESTED',
+      QUALIFYING: 'QUALIFYING',
+      PARTIALLY_QUALIFIED: 'PARTIALLY_QUALIFIED',
+      QUALIFIED: 'QUALIFIED',
+      HANDOFF_READY: 'HANDOFF_READY',
+      SUBMITTING: 'SUBMITTING',
+      HANDED_OFF: 'HANDED_OFF',
+      HANDOFF_FAILED: 'HANDOFF_FAILED',
+      HANDOFF_UNKNOWN: 'HANDOFF_UNKNOWN',
+      SPAM: 'SPAM',
+      INVALID: 'INVALID',
+      HUMAN_ESCALATION: 'HUMAN_ESCALATION'
+    });
+
+    function createConversationId() {
+      try {
+        if (crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+      } catch {}
+      return 'lucy-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+    }
+
+    function setHandoffState(nextState) {
+      state.handoffState = nextState;
+      return nextState;
+    }
+
+    function deriveHandoffState(data) {
+      if (!data || data.lead_status === 'spam') return HANDOFF_STATES.SPAM;
+      if (data.lead_ready && data.lead) return HANDOFF_STATES.HANDOFF_READY;
+      if (data.lead_status === 'real') return HANDOFF_STATES.INTERESTED;
+      if (data.lead_status === 'uncertain') return HANDOFF_STATES.QUALIFYING;
+      return HANDOFF_STATES.NOT_A_LEAD;
+    }
+
     const state = {
       history: [],
       open: false,
       leadSubmitted: false,
       selectedImages: [],
       sending: false,
-      pendingLead: null
+      pendingLead: null,
+      handoffState: HANDOFF_STATES.NOT_A_LEAD,
+      conversationId: createConversationId()
     };
 
     function addMessage(text, role, imageParts = []) {
@@ -1135,8 +1173,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const phone = (lead.phone || '').trim();
       const email = (lead.email || '').trim();
 
-      if (!name || (!phone && !email)) return false;
-      if (lead.lead_status === 'spam' || lead.lead_status === 'uncertain') return false;
+      if (!name || (!phone && !email)) {
+        setHandoffState(HANDOFF_STATES.HANDOFF_FAILED);
+        return { ok: false, state: HANDOFF_STATES.HANDOFF_FAILED, error: 'Missing contact information' };
+      }
+      if (lead.lead_status === 'spam' || lead.lead_status === 'uncertain') {
+        setHandoffState(lead.lead_status === 'spam' ? HANDOFF_STATES.SPAM : HANDOFF_STATES.PARTIALLY_QUALIFIED);
+        return { ok: false, state: state.handoffState, error: 'Lead is not ready for handoff' };
+      }
+
+      setHandoffState(HANDOFF_STATES.SUBMITTING);
+
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 12000);
 
       try {
         const response = await fetch('/api/lead', {
@@ -1145,35 +1194,50 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({
             lead,
             lead_token: lead.lead_token || '',
+            conversation_id: state.conversationId,
             messages: state.history.slice(-32)
-          })
+          }),
+          signal: controller.signal
         });
 
-        // The customer-facing handoff should not be blocked by a provider/API
-        // response after the request has already reached our lead endpoint.
-        // Keep the actual response in the console for debugging, but always
-        // complete the customer flow when the endpoint responds.
         let result = null;
         try {
           result = await response.json();
         } catch {}
+
+        if (result?.handoff_state) {
+          setHandoffState(result.handoff_state);
+        } else if (!response.ok || result?.sent !== true) {
+          setHandoffState(HANDOFF_STATES.HANDOFF_FAILED);
+        }
 
         if (!response.ok || result?.sent !== true) {
           console.warn('Lucy lead endpoint returned a non-success response', {
             status: response.status,
             response: result
           });
-          return { ok: false, error: result?.error || 'Lead handoff failed' };
+          return {
+            ok: false,
+            state: state.handoffState,
+            error: result?.error || 'Lead handoff failed'
+          };
         }
 
-        console.info('Lucy lead email sent successfully', result);
+        setHandoffState(HANDOFF_STATES.HANDED_OFF);
         state.leadSubmitted = true;
-        return true;
+        console.info('Lucy lead handoff confirmed', result);
+        return { ok: true, state: HANDOFF_STATES.HANDED_OFF };
       } catch (error) {
-        // A real network failure means the request never received a response.
-        // Keep the fallback message for that case only.
-        console.warn('Lucy lead handoff could not reach the endpoint', error);
-        return { ok: false, error: error?.message || 'Network error' };
+        const unknown = error?.name === 'AbortError' || !navigator.onLine;
+        setHandoffState(unknown ? HANDOFF_STATES.HANDOFF_UNKNOWN : HANDOFF_STATES.HANDOFF_FAILED);
+        console.warn('Lucy lead handoff could not be confirmed', error);
+        return {
+          ok: false,
+          state: state.handoffState,
+          error: unknown ? 'Handoff could not be confirmed' : (error?.message || 'Network error')
+        };
+      } finally {
+        window.clearTimeout(timeout);
       }
     }
 
@@ -1204,7 +1268,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const leadToSend = state.pendingLead;
             state.pendingLead = null;
             const result = await submitLead(leadToSend);
-            const sent = result === true;
+            const sent = result?.ok === true && result?.state === HANDOFF_STATES.HANDED_OFF;
 
             if (sent) {
               const success = "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly.";
@@ -1213,7 +1277,9 @@ document.addEventListener('DOMContentLoaded', () => {
               setQuick(['Ask another question', 'Book a time']);
             } else {
               state.pendingLead = leadToSend;
-              const failure = "I couldn’t complete the handoff just yet. Please try again, or call/text PEEK PRESSURE at 415-689-8377.";
+              const failure = state.handoffState === HANDOFF_STATES.HANDOFF_UNKNOWN
+                ? "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com."
+                : "I couldn’t complete the handoff just yet. Please try again, or call/text PEEK PRESSURE at 415-689-8377.";
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
               setQuick(['TRY AGAIN', 'Book a time']);
@@ -1301,6 +1367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         typing.remove();
 
         const reply = data.reply || "Got it. What’s the one detail you think I should know about the job?";
+        setHandoffState(deriveHandoffState(data));
         addMessage(reply, 'assistant');
         state.history.push({ role: 'assistant', content: reply });
 
