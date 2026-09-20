@@ -422,3 +422,14 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
 .booking-cta-button{
   border-radius:4px!important;
 }
+
+/* Interactive before/after reveal */
+.before-after-media{position:relative;overflow:hidden;aspect-ratio:16/10;background:#eee;isolation:isolate}
+.before-after-layer{position:absolute;inset:0;overflow:hidden}
+.before-after-layer .proof-placeholder{position:absolute;inset:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.before-after-before .proof-placeholder{background:linear-gradient(135deg,#4d4d4d 0%,#777 42%,#414141 100%);color:#fff}
+.before-after-after{z-index:2;clip-path:inset(0 0 0 50%);background:#ddd}
+.before-after-after .proof-placeholder{background:linear-gradient(135deg,#d7d7d7 0%,#f1f1f1 42%,#c9c9c9 100%);color:#111}
+.before-after-range{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;z-index:10}
+.before-after-divider{position:absolute;top:0;bottom:0;left:50%;z-index:8;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.12),0 0 18px rgba(0,0,0,.18);transform:translateX(-50%);pointer-events:none}
+.before-after-divider span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:38px;height:38px;border:1px solid rgba(0,0,0,.12);border-radius:50%;background:#fff;color:#111;font-size:16px;box-shadow:0 8px 24px rgba(0,0,0,.16)}
