@@ -709,3 +709,37 @@ main>h2{
     font-size:clamp(2rem,8vw,3.25rem)!important;
   }
 }
+
+/* Refined footer credit */
+.footer-credit{
+  margin-top:2.25rem;
+  padding-top:1.25rem;
+  border-top:1px solid rgba(255,255,255,.11);
+  color:rgba(255,255,255,.52);
+  font-size:.56rem;
+  font-weight:500;
+  letter-spacing:.2em;
+  line-height:1;
+  text-transform:uppercase;
+}
+.footer-credit span{
+  display:inline-block;
+  margin-inline:.18rem;
+  color:#e53935;
+  font-size:.82rem;
+  line-height:0;
+  text-shadow:0 0 14px rgba(229,57,53,.22);
+  transition:transform .25s ease,text-shadow .25s ease;
+}
+.footer-credit:hover span{
+  transform:scale(1.18);
+  text-shadow:0 0 18px rgba(229,57,53,.38);
+}
+@media(max-width:700px){
+  .footer-credit{
+    margin-top:1.75rem;
+    padding-top:1rem;
+    font-size:.5rem;
+    letter-spacing:.17em;
+  }
+}
