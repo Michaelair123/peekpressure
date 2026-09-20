@@ -156,10 +156,7 @@
   .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 </style>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="style.css?v=20260919-4">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20260919-5">
 </head>
 <body>
 
@@ -827,9 +824,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<div class="peek-signature" aria-label="Made with heart">
-  <span>MADE WITH</span> <span class="peek-heart" aria-hidden="true">♥</span> <span>BY PEEK</span>
-</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -1169,10 +1163,10 @@ document.addEventListener('DOMContentLoaded', () => {
             status: response.status,
             response: result
           });
-        } else {
-          console.info('Lucy lead email sent successfully', result);
+          return { ok: false, error: result?.error || 'Lead handoff failed' };
         }
 
+        console.info('Lucy lead email sent successfully', result);
         state.leadSubmitted = true;
         return true;
       } catch (error) {
