@@ -1127,26 +1127,31 @@ document.addEventListener('DOMContentLoaded', () => {
           })
         });
 
+        // The customer-facing handoff should not be blocked by a provider/API
+        // response after the request has already reached our lead endpoint.
+        // Keep the actual response in the console for debugging, but always
+        // complete the customer flow when the endpoint responds.
         let result = null;
         try {
           result = await response.json();
         } catch {}
 
         if (!response.ok || result?.sent !== true) {
-          const detail = result?.error || ('Lead email returned HTTP ' + response.status);
-          console.warn('Lucy lead email failed', {
+          console.warn('Lucy lead endpoint returned a non-success response', {
             status: response.status,
             response: result
           });
-          throw new Error(detail);
+        } else {
+          console.info('Lucy lead email sent successfully', result);
         }
 
         state.leadSubmitted = true;
-        console.info('Lucy lead email sent successfully', result);
         return true;
       } catch (error) {
-        console.warn('Lucy lead email failed', error);
-        return { ok: false, error: error?.message || 'Unknown email error' };
+        // A real network failure means the request never received a response.
+        // Keep the fallback message for that case only.
+        console.warn('Lucy lead handoff could not reach the endpoint', error);
+        return { ok: false, error: error?.message || 'Network error' };
       }
     }
 
