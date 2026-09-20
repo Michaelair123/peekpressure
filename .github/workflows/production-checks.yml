@@ -1,0 +1,64 @@
+name: Production checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            "worker.js"
+            "faq-data.js"
+            "functions/api/[[path]].js"
+            "functions/api/chat.js"
+            "functions/api/faq.js"
+            "functions/api/competitive-review.js"
+            "scripts/lucy-stress-test.mjs"
+          )
+          for file in "${files[@]}"; do
+            echo "Checking $file"
+            cat "$file" | node --input-type=module --check
+          done
+
+      - name: Validate JSON configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require("node:fs");
+          for (const file of ["_routes.json", "competitive-pricing.json"]) {
+            JSON.parse(fs.readFileSync(file, "utf8"));
+            console.log("Valid JSON:", file);
+          }
+          const wrangler = fs.readFileSync("wrangler.jsonc", "utf8")
+            .replace(/\/\/.*$/gm, "");
+          JSON.parse(wrangler);
+          console.log("Valid JSONC:", "wrangler.jsonc");
+          NODE
+
+      - name: Check for obvious insecure source patterns
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RniE '(^|[^[:alnum:]_])eval[[:space:]]*\(|new[[:space:]]+Function[[:space:]]*\(|javascript:'             --exclude-dir=.git --exclude='*.md' .; then
+            echo "Potentially unsafe JavaScript pattern found."
+            exit 1
+          fi
+
+      - name: Check internal production links
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'https://peekpressure.com/sitemap.xml' robots.txt
+          grep -q 'https://peekpressure.com/' sitemap.xml
+          grep -q 'https://peekpressure.com/faq.html' sitemap.xml
