@@ -9,7 +9,6 @@
   <link rel="canonical" href="https://peekpressure.com/">
   <meta name="theme-color" content="#ffffff">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
   <meta name="author" content="PEEK PRESSURE">
   <meta name="application-name" content="PEEK PRESSURE">
@@ -470,8 +469,6 @@
       method="POST"
       enctype="multipart/form-data"
     >
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAE9V2-ADGkP6hRcd"></div>
-
       <div class="quote-intro">
         <span class="label">QUICK QUOTE</span>
         <h3>YOU'RE ALMOST DONE.</h3>
@@ -783,21 +780,6 @@
       });
     }
   </script>
-<script>
-  window.formspree =
-    window.formspree ||
-    function () {
-      (formspree.q = formspree.q || []).push(arguments);
-    };
-
-  formspree('initForm', {
-    formElement: '#quoteForm',
-    formId: 'mdekoerb'
-  });
-</script>
-
-<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
