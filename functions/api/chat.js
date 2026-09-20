@@ -1796,7 +1796,7 @@ SCHEDULING ACTIONS
     const leadToken = (leadReady || leadCapture)
       ? await signLeadToken(env.LEAD_SIGNING_SECRET || env.RESEND_API_KEY, lead)
       : null;
-    const salesIntelligence = buildSalesIntelligence(result, safeMessages);\n    const leadIntelligence = buildLeadIntelligence({
+    const leadIntelligence = buildLeadIntelligence({
       ...result,
       lead_ready: leadReady
     });
