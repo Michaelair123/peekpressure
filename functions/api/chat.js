@@ -6,6 +6,47 @@ const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
 const LUCY_REQUEST_TIMEOUT_MS = 10000;
 const LUCY_MAX_RETRIES = 1;
 
+// Cheap edge-side abuse controls. These run before any OpenAI call.
+const LUCY_RATE_WINDOW_MS = 10 * 60 * 1000;
+const LUCY_RATE_LIMIT = 12;
+const LUCY_MIN_REQUEST_GAP_MS = 1200;
+const LUCY_MAX_CONCURRENT = 3;
+const lucyRateBuckets = new Map();
+let lucyInFlight = 0;
+
+function getClientKey(request) {
+  return request.headers.get("CF-Connecting-IP") || "unknown-client";
+}
+
+function checkLucyRateLimit(request) {
+  const key = getClientKey(request);
+  const now = Date.now();
+  let bucket = lucyRateBuckets.get(key);
+  if (!bucket || now - bucket.startedAt >= LUCY_RATE_WINDOW_MS) {
+    bucket = { startedAt: now, count: 0, lastRequestAt: 0 };
+  }
+  const retryAfter = Math.max(1, Math.ceil((bucket.startedAt + LUCY_RATE_WINDOW_MS - now) / 1000));
+  if (bucket.count >= LUCY_RATE_LIMIT) return { allowed: false, retryAfter };
+  if (bucket.lastRequestAt && now - bucket.lastRequestAt < LUCY_MIN_REQUEST_GAP_MS) {
+    return { allowed: false, retryAfter: 2 };
+  }
+  bucket.count += 1;
+  bucket.lastRequestAt = now;
+  lucyRateBuckets.set(key, bucket);
+  if (lucyRateBuckets.size > 5000) {
+    for (const [clientKey, clientBucket] of lucyRateBuckets) {
+      if (now - clientBucket.startedAt >= LUCY_RATE_WINDOW_MS) lucyRateBuckets.delete(clientKey);
+    }
+  }
+  return { allowed: true, retryAfter: 0 };
+}
+
+function looksLikePreAiAbuse(text) {
+  const value = String(text || "").trim();
+  if (!value) return false;
+  return /(?:ignore\s+(?:all\s+)?previous\s+instructions|reveal\s+(?:the\s+)?system\s+prompt|show\s+(?:me\s+)?(?:your|the)\s+(?:api\s*key|secret|credentials)|(?:api\s*key|access\s*token|password)\s*[:=]|send\s+(?:money|crypto|gift\s*card)|seo\s+(?:services|backlinks)|guest\s+post|link\s+building)/i.test(value);
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -761,6 +802,23 @@ async function handleLucyRequest({ request, env }) {
     return Response.json({ error: "Method not allowed." }, { status: 405, headers: cors });
   }
 
+  const rate = checkLucyRateLimit(request);
+  if (!rate.allowed) {
+    return Response.json({ error: "Lucy is taking a short break. Please try again in a moment." }, {
+      status: 429,
+      headers: { ...cors, "Retry-After": String(rate.retryAfter) }
+    });
+  }
+
+  if (lucyInFlight >= LUCY_MAX_CONCURRENT) {
+    return Response.json({ error: "Lucy is busy right now. Please try again in a moment." }, {
+      status: 429,
+      headers: { ...cors, "Retry-After": "3" }
+    });
+  }
+
+  lucyInFlight += 1;
+
   try {
     const body = await request.json();
     const messages = Array.isArray(body.messages) ? body.messages.slice(-10) : [];
@@ -819,11 +877,20 @@ async function handleLucyRequest({ request, env }) {
     }
 
     const serializedInputSize = JSON.stringify(safeMessages).length;
-    if (serializedInputSize > 7200000) {
-      return Response.json({ error: "Images are too large. Please send a smaller photo." }, { status: 413, headers: cors });
+    if (serializedInputSize > 1800000) {
+      return Response.json({ error: "That request is too large. Please send a shorter message or smaller photo." }, { status: 413, headers: cors });
     }
 
     const latestUserText = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
+    if (looksLikePreAiAbuse(latestUserText)) {
+      return Response.json({
+        reply: "I can help with PEEK PRESSURE services, but I can't help with that request. If you need a cleaning quote, tell me what you'd like cleaned and where.",
+        lead_ready: false,
+        lead: null,
+        scheduling: null
+      }, { headers: cors });
+    }
+
     const pricingContext = extractPricingContext(safeMessages);
     const hasImage = safeMessages.some(message => Array.isArray(message.content) && message.content.some(part => part?.type === "input_image"));
     const pricingRequest = pricingContext.requested;
@@ -1141,6 +1208,8 @@ SCHEDULING ACTIONS
 
   } catch {
     return Response.json({ error: "Invalid chat request." }, { status: 400, headers: cors });
+  } finally {
+    lucyInFlight = Math.max(0, lucyInFlight - 1);
   }
 }
 
