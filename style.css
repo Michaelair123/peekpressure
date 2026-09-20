@@ -675,3 +675,37 @@ main>h2{
     font-size:clamp(2.2rem,9vw,3.8rem)!important;
   }
 }
+
+/* FINAL MODERN TYPE SCALE — restrained contemporary editorial headings */
+.hero-copy h1{
+  font-size:clamp(3rem,5.5vw,5.5rem)!important;
+}
+.about h2,
+.process-header h2,
+main>h2{
+  font-size:clamp(2.4rem,4.5vw,4.5rem)!important;
+}
+.why-peek-intro h2,
+.service-area h2,
+.contact-container>h2,
+.proof-header h2,
+.booking-cta-copy h3{
+  font-size:clamp(2.25rem,4vw,4rem)!important;
+}
+@media(max-width:700px){
+  .hero-copy h1{
+    font-size:clamp(2.35rem,10vw,4rem)!important;
+  }
+  .about h2,
+  .process-header h2,
+  main>h2{
+    font-size:clamp(2.1rem,8.5vw,3.5rem)!important;
+  }
+  .why-peek-intro h2,
+  .service-area h2,
+  .contact-container>h2,
+  .proof-header h2,
+  .booking-cta-copy h3{
+    font-size:clamp(2rem,8vw,3.25rem)!important;
+  }
+}
