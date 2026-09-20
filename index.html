@@ -945,6 +945,7 @@ document.addEventListener('DOMContentLoaded', () => {
       history: [],
       open: false,
       leadSubmitted: false,
+      partialLeadCaptured: false,
       selectedImages: [],
       sending: false,
       pendingLead: null,
@@ -1166,8 +1167,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return prepared;
     }
 
-    async function submitLead(lead) {
-      if (state.leadSubmitted || !lead) return;
+    async function submitLead(lead, handoffKind = 'final') {
+      if (!lead) return;
+      if (handoffKind === 'partial' && state.partialLeadCaptured) return;
+      if (handoffKind === 'final' && state.leadSubmitted) return;
 
       const name = (lead.name || '').trim();
       const phone = (lead.phone || '').trim();
@@ -1239,8 +1242,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         setHandoffState(HANDOFF_STATES.HANDED_OFF);
-        state.leadSubmitted = true;
-        console.info('Lucy lead handoff confirmed', result);
+        if (handoffKind === 'partial') {
+          state.partialLeadCaptured = true;
+          console.info('Lucy partial lead capture confirmed', result);
+        } else {
+          state.leadSubmitted = true;
+          console.info('Lucy final lead handoff confirmed', result);
+        }
         return { ok: true, state: HANDOFF_STATES.HANDED_OFF };
       } catch (error) {
         const unknown = error?.name === 'AbortError' || !navigator.onLine;
@@ -1402,11 +1410,14 @@ document.addEventListener('DOMContentLoaded', () => {
           try {
             const leadToSend = state.pendingLead;
             state.pendingLead = null;
-            const result = await submitLead(leadToSend);
+            const handoffKind = data.lead_ready ? 'final' : 'partial';
+            const result = await submitLead(leadToSend, handoffKind);
             const sent = result?.ok === true && result?.state === HANDOFF_STATES.HANDED_OFF;
 
             if (sent) {
-              const success = "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly.";
+              const success = data.lead_ready
+                ? "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly."
+                : "✅ Got it — I saved your contact information and sent what we have to PEEK PRESSURE. If you disconnect, we’ll still have a way to follow up.";
               addMessage(success, 'assistant');
               state.history.push({ role: 'assistant', content: success });
             } else {
