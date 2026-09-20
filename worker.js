@@ -1,7 +1,5 @@
 import { LUCY_FAQ } from "./functions/api/faq.js";
 import { onRequest as handleLucyRequest } from "./functions/api/chat.js";
-import { onRequestGet as handleAvailability } from "./functions/api/availability.js";
-import { onRequestPost as handleBooking } from "./functions/api/book.js";
 import { onRequestPost as handleLead } from "./functions/api/[[path]].js";
 
 export default {
@@ -13,6 +11,26 @@ export default {
       origin === "https://www.peekpressure.com" || origin === "https://peekpressure.com"
         ? origin
         : "https://www.peekpressure.com";
+
+    const securityHeaders = {
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+      "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+    };
+
+    const withSecurity = (response) => {
+      const headers = new Headers(response.headers);
+      for (const [key, value] of Object.entries(securityHeaders)) {
+        headers.set(key, value);
+      }
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers
+      });
+    };
 
     const cors = {
       "Access-Control-Allow-Origin": allowedOrigin,
@@ -55,10 +73,6 @@ export default {
       return withCors(await handleLucyRequest({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) }));
     }
 
-    if (url.pathname === "/api/availability" && request.method === "GET") {
-      return withCors(await handleAvailability({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) }));
-    }
-
     if (url.pathname === "/api/lead" && request.method === "POST") {
       return withCors(await handleLead({
         request,
@@ -69,14 +83,10 @@ export default {
       }));
     }
 
-    if (url.pathname === "/api/book" && request.method === "POST") {
-      return withCors(await handleBooking({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) }));
-    }
-
     if (env.ASSETS) {
-      return env.ASSETS.fetch(request);
+      return withSecurity(await env.ASSETS.fetch(request));
     }
 
-    return new Response("Not Found", { status: 404 });
+    return withSecurity(new Response("Not Found", { status: 404 }));
   }
 };
