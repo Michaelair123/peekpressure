@@ -242,15 +242,24 @@ async function handleLead(context) {
       })
     });
 
-    const result = await resendResponse.json();
+    // Read the provider response defensively. Resend can accept the email even
+    // if the response body is empty or cannot be parsed as JSON.
+    const responseText = await resendResponse.text();
+    let result = null;
+    try {
+      result = responseText ? JSON.parse(responseText) : null;
+    } catch {
+      result = null;
+    }
 
     if (!resendResponse.ok) {
-      console.error("Resend lead email failed:", resendResponse.status, result);
+      console.error("Resend lead email failed:", resendResponse.status, result || responseText);
       return json({
         error: result?.message || result?.name || "Email provider rejected the lead."
       }, 502);
     }
 
+    // Once Resend has returned a successful HTTP status, the handoff is complete.
     return json({
       sent: true,
       email_id: result?.id || null
