@@ -1419,20 +1419,29 @@ SCHEDULING ACTIONS
       lead_status: result.lead_status
     };
 
-    const leadReady = Boolean(
-      result.lead_ready &&
-      result.lead_status === "real" &&
+    const hasUsableContact = Boolean(
       String(result.name || "").trim() &&
       (String(result.phone || "").trim() || String(result.email || "").trim())
     );
-    const leadToken = leadReady
+    const leadReady = Boolean(
+      result.lead_ready &&
+      result.lead_status === "real" &&
+      hasUsableContact
+    );
+    const leadCapture = Boolean(
+      !leadReady &&
+      result.lead_status !== "spam" &&
+      hasUsableContact
+    );
+    const leadToken = (leadReady || leadCapture)
       ? await signLeadToken(env.LEAD_SIGNING_SECRET || env.RESEND_API_KEY, lead)
       : null;
 
     return Response.json({
       reply,
       lead_ready: leadReady,
-      lead: leadReady ? lead : null,
+      lead_capture: leadCapture,
+      lead: (leadReady || leadCapture) ? lead : null,
       lead_token: leadToken,
       scheduling
     }, { headers: cors });
