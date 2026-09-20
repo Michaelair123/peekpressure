@@ -535,3 +535,29 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
 .before-after-divider span{
   pointer-events:none;
 }
+
+/* Final booking CTA hover override — never invert or fade the label */
+.booking-cta-button,
+.booking-cta-button:link,
+.booking-cta-button:visited{
+  background:#111!important;
+  color:#fff!important;
+  border-color:#111!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+.booking-cta-button:hover,
+.booking-cta-button:focus,
+.booking-cta-button:focus-visible,
+.booking-cta-button:active{
+  background:#111!important;
+  color:#fff!important;
+  border-color:#111!important;
+  opacity:1!important;
+  transform:translateY(-2px) scale(1.035)!important;
+}
+.booking-cta-button:hover span,
+.booking-cta-button:focus-visible span{
+  color:#fff!important;
+  opacity:1!important;
+}
