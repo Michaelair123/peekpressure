@@ -910,6 +910,18 @@ function enforceLeadSafety(result, safeMessages) {
   return result;
 }
 
+function formatSlot(iso, timezone) {
+  const date = new Date(iso);
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone || "America/Los_Angeles",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(date);
+}
+
 function buildFastReply(text) {
   const value = String(text || "").trim().toLowerCase();
   if (/^(do you|can you|do y'all|do you guys).*(driveway|sidewalk|walkway|patio|concrete|pressure wash)/i.test(value) ||
