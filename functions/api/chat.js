@@ -47,6 +47,52 @@ function looksLikePreAiAbuse(text) {
   return /(?:ignore\s+(?:all\s+)?previous\s+instructions|reveal\s+(?:the\s+)?system\s+prompt|show\s+(?:me\s+)?(?:your|the)\s+(?:api\s*key|secret|credentials)|(?:api\s*key|access\s*token|password)\s*[:=]|send\s+(?:money|crypto|gift\s*card)|seo\s+(?:services|backlinks)|guest\s+post|link\s+building)/i.test(value);
 }
 
+function base64UrlEncode(bytes) {
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\\+/g, "-").replace(/\\//g, "_").replace(/=+$/g, "");
+}
+
+function base64UrlDecode(value) {
+  const normalized = String(value || "").replace(/-/g, "+").replace(/_/g, "/");
+  const padded = normalized + "=".repeat((4 - normalized.length % 4) % 4);
+  const binary = atob(padded);
+  return Uint8Array.from(binary, char => char.charCodeAt(0));
+}
+
+async function signLeadToken(secret, lead) {
+  if (!secret) return null;
+
+  const payload = {
+    exp: Date.now() + 10 * 60 * 1000,
+    lead: {
+      name: String(lead.name || "").trim(),
+      phone: String(lead.phone || "").trim(),
+      email: String(lead.email || "").trim(),
+      service: String(lead.service || "").trim(),
+      location: String(lead.location || "").trim(),
+      property_type: String(lead.property_type || "").trim(),
+      size: String(lead.size || "").trim(),
+      surface: String(lead.surface || "").trim(),
+      condition: String(lead.condition || "").trim(),
+      timing: String(lead.timing || "").trim(),
+      question: String(lead.question || "").trim(),
+      lead_status: String(lead.lead_status || "").trim()
+    }
+  };
+
+  const encoded = new TextEncoder().encode(JSON.stringify(payload));
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = new Uint8Array(await crypto.subtle.sign("HMAC", key, encoded));
+  return base64UrlEncode(encoded) + "." + base64UrlEncode(signature);
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -1198,25 +1244,38 @@ SCHEDULING ACTIONS
       }
     }
 
+    const lead = {
+      service: result.service,
+      location: result.location,
+      size: result.size,
+      surface: result.surface,
+      condition: result.condition,
+      timing: result.timing,
+      property_type: result.property_type,
+      name: result.name,
+      phone: result.phone,
+      email: result.email,
+      question: result.question,
+      estimate_low: result.estimate_low,
+      estimate_high: result.estimate_high,
+      lead_status: result.lead_status
+    };
+
+    const leadReady = Boolean(
+      result.lead_ready &&
+      result.lead_status === "real" &&
+      String(result.name || "").trim() &&
+      (String(result.phone || "").trim() || String(result.email || "").trim())
+    );
+    const leadToken = leadReady
+      ? await signLeadToken(env.RESEND_API_KEY, lead)
+      : null;
+
     return Response.json({
       reply,
-      lead_ready: Boolean(result.lead_ready),
-      lead: {
-        service: result.service,
-        location: result.location,
-        size: result.size,
-        surface: result.surface,
-        condition: result.condition,
-        timing: result.timing,
-        property_type: result.property_type,
-        name: result.name,
-        phone: result.phone,
-        email: result.email,
-        question: result.question,
-        estimate_low: result.estimate_low,
-        estimate_high: result.estimate_high,
-        lead_status: result.lead_status
-      },
+      lead_ready: leadReady,
+      lead: leadReady ? lead : null,
+      lead_token: leadToken,
       scheduling
     }, { headers: cors });
 
