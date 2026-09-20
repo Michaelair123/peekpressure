@@ -154,8 +154,12 @@ export default {
 
     if (url.pathname === "/api/chat") {
       if (request.method === "POST") {
-        const allowed = await enforceEdgeLimit(env.LUCY_EDGE_BURST, "chat");
-        if (!allowed) return edgeRateLimitResponse();
+        const stagingToken = env.LUCY_STAGING_TOKEN;
+        const isStaging = Boolean(stagingToken) && request.headers.get("X-Lucy-Staging-Token") === stagingToken;
+        if (!isStaging) {
+          const allowed = await enforceEdgeLimit(env.LUCY_EDGE_BURST, "chat");
+          if (!allowed) return edgeRateLimitResponse();
+        }
       }
       return withCors(await handleLucyRequest({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) }));
     }
