@@ -710,6 +710,28 @@ main>h2{
   }
 }
 
+/* Final type nudge — slightly smaller, subtly heavier */
+.hero-copy h1{font-size:clamp(2.85rem,5.25vw,5.25rem)!important;font-weight:600!important}
+.about h2,
+.process-header h2,
+main>h2{font-size:clamp(2.3rem,4.3vw,4.3rem)!important;font-weight:600!important}
+.why-peek-intro h2,
+.service-area h2,
+.contact-container>h2,
+.proof-header h2,
+.booking-cta-copy h3{font-size:clamp(2.15rem,3.8vw,3.8rem)!important;font-weight:600!important}
+@media(max-width:700px){
+  .hero-copy h1{font-size:clamp(2.25rem,9.5vw,3.8rem)!important}
+  .about h2,
+  .process-header h2,
+  main>h2{font-size:clamp(2rem,8.1vw,3.35rem)!important}
+  .why-peek-intro h2,
+  .service-area h2,
+  .contact-container>h2,
+  .proof-header h2,
+  .booking-cta-copy h3{font-size:clamp(1.95rem,7.7vw,3.1rem)!important}
+}
+
 /* Refined footer credit */
 .footer-credit{
   margin-top:2.25rem;
