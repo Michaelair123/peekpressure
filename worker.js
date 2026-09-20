@@ -57,7 +57,7 @@ export default {
           "frame-ancestors 'none'",
           "script-src 'nonce-" + nonce + "' 'strict-dynamic'",
           "style-src 'self' 'nonce-" + nonce + "'",
-          "img-src 'self' data: blob: https://lirp.cdn-website.com https://cdn.prod.website-files.com https://images.squarespace-cdn.com https://images.unsplash.com https://www.bestpowerwashli.com",
+          "img-src 'self' data: blob: https://lirp.cdn-website.com https://cdn.prod.website-files.com https://images.squarespace-cdn.com https://images.unsplash.com https://images.pexels.com https://www.bestpowerwashli.com",
           "font-src 'self'",
           "connect-src 'self'",
           "frame-src https://www.google.com",
