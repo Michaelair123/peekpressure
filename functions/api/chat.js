@@ -4,7 +4,7 @@ const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
 const LUCY_FAST_MODEL = "gpt-5.6-terra";
 const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
 const LUCY_REQUEST_TIMEOUT_MS = 10000;
-const LUCY_MAX_RETRIES = 0;
+const LUCY_MAX_RETRIES = 1;
 
 // Cheap edge-side abuse controls. These run before any OpenAI call.
 const LUCY_RATE_WINDOW_MS = 10 * 60 * 1000;
@@ -107,7 +107,7 @@ async function callOpenAI(body, requestId) {
   const fallbackModel = body.fallbackModel || LUCY_FALLBACK_MODEL;
 
   for (let attempt = 0; attempt <= LUCY_MAX_RETRIES; attempt++) {
-    const model = attempt === LUCY_MAX_RETRIES ? fallbackModel : primaryModel;
+    const model = attempt === 0 ? primaryModel : fallbackModel;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), LUCY_REQUEST_TIMEOUT_MS);
 
@@ -849,6 +849,37 @@ function isUsablePhone(value) {
   return digits.length >= 7 && digits.length <= 15;
 }
 
+function validateLucyResponseShape(result) {
+  if (!result || typeof result !== "object" || Array.isArray(result)) return false;
+  if (typeof result.reply !== "string") return false;
+  if (typeof result.lead_ready !== "boolean") return false;
+  if (!["real", "uncertain", "spam"].includes(result.lead_status)) return false;
+  if (!["none", "check_availability", "book_appointment"].includes(result.action)) return false;
+
+  const nullableStrings = [
+    "service", "location", "size", "surface", "condition", "timing",
+    "property_type", "name", "phone", "email", "question",
+    "availability_start", "availability_end", "selected_start_time"
+  ];
+  for (const key of nullableStrings) {
+    if (result[key] !== null && typeof result[key] !== "string") return false;
+  }
+
+  if (result.estimate_low !== null && typeof result.estimate_low !== "number") return false;
+  if (result.estimate_high !== null && typeof result.estimate_high !== "number") return false;
+  if (result.estimate_low !== null && !Number.isFinite(result.estimate_low)) return false;
+  if (result.estimate_high !== null && !Number.isFinite(result.estimate_high)) return false;
+  if (result.estimate_low !== null && result.estimate_low < 0) return false;
+  if (result.estimate_high !== null && result.estimate_high < 0) return false;
+  if (
+    result.estimate_low !== null &&
+    result.estimate_high !== null &&
+    result.estimate_low > result.estimate_high
+  ) return false;
+
+  return true;
+}
+
 function enforceLeadSafety(result, safeMessages) {
   const latestUser = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
     const suspicious = [...safeMessages].filter(message => message.role === "user").some(message => containsSuspiciousInstruction(message.content));
@@ -1325,6 +1356,14 @@ SCHEDULING ACTIONS
         error: error?.message || "JSON parse failed"
       }));
       return Response.json({ error: "Lucy response format error.", request_id: requestId }, { status: 502, headers: cors });
+    }
+
+    if (!validateLucyResponseShape(parsed)) {
+      console.error("Lucy structured output schema validation failure", JSON.stringify({ requestId }));
+      return Response.json(
+        { error: "Lucy response format error.", request_id: requestId },
+        { status: 502, headers: cors }
+      );
     }
 
     parsed.reply = enforceRoughPricing(parsed.reply, pricingContext);
