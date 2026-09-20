@@ -1177,8 +1177,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setHandoffState(HANDOFF_STATES.HANDOFF_FAILED);
         return { ok: false, state: HANDOFF_STATES.HANDOFF_FAILED, error: 'Missing contact information' };
       }
-      if (lead.lead_status === 'spam' || lead.lead_status === 'uncertain') {
-        setHandoffState(lead.lead_status === 'spam' ? HANDOFF_STATES.SPAM : HANDOFF_STATES.PARTIALLY_QUALIFIED);
+      if (lead.lead_status === 'spam') {
+        setHandoffState(HANDOFF_STATES.SPAM);
         return { ok: false, state: state.handoffState, error: 'Lead is not ready for handoff' };
       }
 
@@ -1286,7 +1286,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const sent = result?.ok === true && result?.state === HANDOFF_STATES.HANDED_OFF;
 
             if (sent) {
-              const success = "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly.";
+              const success = data.lead_ready
+                ? "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly."
+                : "✅ Got it — I saved your contact information and sent what we have to PEEK PRESSURE. If you disconnect, we’ll still have a way to follow up.";
               addMessage(success, 'assistant');
               state.history.push({ role: 'assistant', content: success });
               setQuick(['Ask another question', 'Book a time']);
@@ -1386,7 +1388,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage(reply, 'assistant');
         state.history.push({ role: 'assistant', content: reply });
 
-        if (data.lead_ready && data.lead) {
+        if ((data.lead_ready || data.lead_capture) && data.lead) {
           // A lead marked complete by the server is ready for immediate handoff.
           // Property-address confirmation has already been enforced server-side.
           state.pendingLead = {
