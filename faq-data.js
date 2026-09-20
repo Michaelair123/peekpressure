@@ -121,7 +121,7 @@ export const LUCY_FAQ = [
     id:"patios",
     question:"Do you clean patios and outdoor living areas?",
     keywords:["patio","patios","pool deck","outdoor","terrace","courtyard"],
-    answer:"Yes, suitable ground-level patios and outdoor hardscape can be evaluated. The material matters because concrete, pavers, stone, painted surfaces, and other finishes may require different methods. We do not currently offer elevated or deck-style patio surfaces."
+    answer:"Yes, suitable ground-level patios and outdoor hardscape can be evaluated. The material matters because concrete, pavers, stone, painted surfaces, and other finishes may require different methods. We do not currently offer elevated or deck-style patio surfaces, or any patio work that requires ladder access."
   },
   {
     id:"surfaces",
@@ -330,8 +330,8 @@ export const LUCY_FAQ = [
   {
     id:"not-everything",
     question:"Are there surfaces or jobs you may decline?",
-    keywords:["decline","don't clean","cannot clean","not service","limitations","roof"],
-    answer:"Yes. Some materials, conditions, heights, access situations, contamination, or requested work may not be appropriate for our available methods or equipment. It is better to decline an unsuitable job than risk damage or promise a result we cannot responsibly deliver."
+    keywords:["decline","don't clean","cannot clean","not service","limitations","roof","ladder","height","elevated"],
+    answer:"Yes. Some materials, conditions, heights, ladder-access situations, contamination, or requested work may not be appropriate for our available methods or equipment. PEEK PRESSURE does not currently offer work that requires ladder access. It is better to decline an unsuitable job than risk damage or promise a result we cannot responsibly deliver."
   },
   {
     id:"satisfaction",
