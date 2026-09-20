@@ -490,3 +490,11 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
 .before-after-after .proof-placeholder::after{
   background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0) 55%,rgba(0,0,0,.12));
 }
+/* Typography: slightly open large headings for easier reading. */
+.hero-copy h1{letter-spacing:-.085em!important}
+.about h2,.process-header h2,main>h2{letter-spacing:-.075em!important}
+.why-peek-intro h2,.service-area h2,.contact-container>h2,.proof-header h2{letter-spacing:-.08em!important}
+@media(max-width:700px){
+  .hero-copy h1{letter-spacing:-.085em!important}
+  .about-grid h2,.process-header h2,.why-peek-intro h2,.service-area h2,.contact-container>h2,.proof-header h2,main>h2,.booking-cta-copy h3{letter-spacing:-.075em!important}
+}
