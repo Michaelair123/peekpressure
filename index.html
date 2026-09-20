@@ -1213,6 +1213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const handoffConfirmed =
           response.ok === true &&
+          result?.success === true &&
           result?.sent === true &&
           result?.handoff_state === HANDOFF_STATES.HANDED_OFF;
 
