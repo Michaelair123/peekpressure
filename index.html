@@ -949,6 +949,7 @@ document.addEventListener('DOMContentLoaded', () => {
       selectedImages: [],
       sending: false,
       pendingLead: null,
+      pendingLeadKind: null,
       handoffState: HANDOFF_STATES.NOT_A_LEAD,
       conversationId: createConversationId()
     };
@@ -1289,12 +1290,14 @@ document.addEventListener('DOMContentLoaded', () => {
           state.sending = true;
           try {
             const leadToSend = state.pendingLead;
+            const leadKind = state.pendingLeadKind || 'final';
             state.pendingLead = null;
-            const result = await submitLead(leadToSend);
+            state.pendingLeadKind = null;
+            const result = await submitLead(leadToSend, leadKind);
             const sent = result?.ok === true && result?.state === HANDOFF_STATES.HANDED_OFF;
 
             if (sent) {
-              const success = data.lead_ready
+              const success = leadKind === 'final'
                 ? "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly."
                 : "✅ Got it — I saved your contact information and sent what we have to PEEK PRESSURE. If you disconnect, we’ll still have a way to follow up.";
               addMessage(success, 'assistant');
@@ -1302,6 +1305,7 @@ document.addEventListener('DOMContentLoaded', () => {
               setQuick(['Ask another question', 'Book a time']);
             } else {
               state.pendingLead = leadToSend;
+              state.pendingLeadKind = leadKind;
               const failure = state.handoffState === HANDOFF_STATES.HANDOFF_UNKNOWN
                 ? "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com."
                 : "I couldn’t complete the handoff just yet. Please try again, or call/text PEEK PRESSURE at 415-689-8377.";
@@ -1318,6 +1322,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (correction) {
           state.pendingLead = null;
+          state.pendingLeadKind = null;
           const changeReply = "No problem. Tell me the correct name, phone number, email, or other detail and I’ll update it before anything is sent.";
           addMessage(changeReply, 'assistant');
           state.history.push({ role: 'assistant', content: changeReply });
@@ -1387,6 +1392,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const errorData = await response.json();
             detail = errorData?.error || '';
           } catch {}
+          if (response.status === 429) {
+            throw new Error(detail || 'Lucy is taking a short break. Please try again in a moment.');
+          }
+          if (response.status >= 500) {
+            throw new Error(detail || 'Lucy is temporarily unavailable. Please try again in a moment.');
+          }
           throw new Error(detail || 'Chat service unavailable');
         }
 
@@ -1405,12 +1416,14 @@ document.addEventListener('DOMContentLoaded', () => {
             ...data.lead,
             lead_token: data.lead_token || ''
           };
+          state.pendingLeadKind = data.lead_ready ? 'final' : 'partial';
 
           state.sending = true;
           try {
             const leadToSend = state.pendingLead;
+            const handoffKind = state.pendingLeadKind || (data.lead_ready ? 'final' : 'partial');
             state.pendingLead = null;
-            const handoffKind = data.lead_ready ? 'final' : 'partial';
+            state.pendingLeadKind = null;
             const result = await submitLead(leadToSend, handoffKind);
             const sent = result?.ok === true && result?.state === HANDOFF_STATES.HANDED_OFF;
 
@@ -1422,6 +1435,7 @@ document.addEventListener('DOMContentLoaded', () => {
               state.history.push({ role: 'assistant', content: success });
             } else {
               state.pendingLead = leadToSend;
+              state.pendingLeadKind = handoffKind;
               const failure = state.handoffState === HANDOFF_STATES.HANDOFF_UNKNOWN
                 ? "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com."
                 : "I couldn’t complete the handoff just yet. Please try again, or call/text PEEK PRESSURE at 415-689-8377.";
@@ -1453,7 +1467,9 @@ document.addEventListener('DOMContentLoaded', () => {
             ? 'That photo is too large. Try a smaller image and I’ll take a look.'
             : error?.message === 'Please choose a JPG, PNG, or WebP image under 1.8 MB.'
               ? 'I can read JPG, PNG, and WebP photos. Please choose one of those formats.'
-              : "I hit a hiccup connecting to my brain. 😅 You can still call or text PEEK PRESSURE at 415-689-8377.",
+              : /short break|temporarily unavailable|busy right now/i.test(error?.message || '')
+                ? error.message
+                : "I hit a hiccup connecting to my brain. 😅 You can still call or text PEEK PRESSURE at 415-689-8377.",
           'assistant'
         );
         setQuick(['Get a quote', 'Book a time']);
