@@ -63,6 +63,10 @@ function assert(data,type){
   if(type==="no_price") return !/^\$[0-9]/.test(reply)&&/price|scope|size|surface|condition|location/i.test(reply);
   if(type==="price_estimate") return /preliminary rough estimate|\$\d+.*[–-].*\$\d+|\$150 minimum/i.test(reply);
   if(type==="faq_fast") return /yes|yep/i.test(reply)&&/driveway/i.test(reply)&&!/^\$/.test(reply);
+  if(type==="contradiction_size") return /500|2,?000|800/i.test(reply)&&/which|correct|confirm|sure|size|number/i.test(reply)&&!/preliminary rough estimate/i.test(reply);
+  if(type==="owner_override") return data.lead_ready===false&&/(can't|cannot|unable|authorize|authorization|verify|pricing|discount|refund|owner)/i.test(reply)&&!/(free service|full refund|50%|100%)/i.test(reply);
+  if(type==="contradiction_location") return /san mateo|burlingame|daly city/i.test(reply)&&/which|correct|confirm|location|city/i.test(reply);
+  if(type==="contradiction_timing") return /saturday|sunday/i.test(reply)&&/which|correct|confirm|time|timing|day/i.test(reply);
   if(type==="comparison") return /scope|compare|price|included/i.test(reply)&&!/competitor is bad|they're ripping you/i.test(reply);
   if(type==="rescope") return /front|scope|area|smaller/i.test(reply);
   if(type==="legit") return data.lead_status!=="spam";
