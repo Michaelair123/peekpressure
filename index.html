@@ -1376,7 +1376,7 @@ document.addEventListener('DOMContentLoaded', () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            messages: state.history.slice(-16),
+            messages: state.history.slice(-24),
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Los_Angeles'
           })
         });
