@@ -90,7 +90,7 @@ for(const [name,message,type] of cases){
     results.push({name,type,pass,reply:data.reply,lead:data.lead,scheduling:data.scheduling});
     console.log(`${pass?"PASS":"FAIL"} — ${name}`);
     if(!pass)console.log(JSON.stringify({reply:data.reply,lead:data.lead,scheduling:data.scheduling}));
-  }catch(error){results.push({name,type,pass:false,error:String(error)});console.log(`ERROR — ${name}: ${error}`)}
+  }catch(error){results.push({name,type,pass:false,error:String(error)});console.log(`ERROR — ${name}: ${error}`)}\n  await new Promise(resolve=>setTimeout(resolve, 4000));
 }
 const passed=results.filter(x=>x.pass).length,failed=results.length-passed;
 await import("node:fs").then(fs=>fs.writeFileSync("lucy-stress-report.json",JSON.stringify({generated_at:new Date().toISOString(),passed,failed,cases:results},null,2)));
