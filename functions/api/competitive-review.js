@@ -28,7 +28,7 @@ const cors = {
 
 function unauthorized(request, env) {
   const expected = env.COMPETITIVE_REVIEW_TOKEN;
-  if (!expected) return false;
+  if (!expected) return true;
   const auth = request.headers.get("Authorization") || "";
   const supplied = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
   return supplied !== expected;
@@ -64,7 +64,8 @@ export async function onRequestPost({ request, env }) {
 
     if (!response.ok) {
       const text = await response.text();
-      return Response.json({ error: "AI provider request failed.", detail: text.slice(0, 500) }, { status: 502, headers: cors });
+      console.error("Competitive review provider failure:", response.status, text.slice(0, 500));
+      return Response.json({ error: "AI provider request failed." }, { status: 502, headers: cors });
     }
 
     const data = await response.json();
@@ -74,6 +75,7 @@ export async function onRequestPost({ request, env }) {
     const review = JSON.parse(raw);
     return Response.json({ generated_at: new Date().toISOString(), review }, { headers: { ...cors, "Cache-Control": "no-store" } });
   } catch (error) {
-    return Response.json({ error: "Competitive review failed.", detail: error?.message || "Unknown error" }, { status: 500, headers: cors });
+    console.error("Competitive review handler error:", error);
+    return Response.json({ error: "Competitive review failed." }, { status: 500, headers: cors });
   }
 }
