@@ -1,38 +1,49 @@
-// PEEK PRESSURE FAQ — edit these answers as the business changes.
-// Single customer-facing FAQ source used by Lucy and the FAQ page.
-// Answers are written to be useful without promising a result, price, or service
-// that has not been confirmed by PEEK PRESSURE.
+// PEEK PRESSURE FAQ — single customer-facing knowledge source for Lucy + FAQ page.
+// Keep claims accurate. Do not add licensing, insurance, guarantees, equipment,
+// turnaround times, or certifications unless PEEK PRESSURE has actually confirmed them.
 
 export const LUCY_FAQ = [
+  {
+    id:"positioning",
+    question:"What is PEEK PRESSURE?",
+    keywords:["peek pressure","about","company","what is peek","pressure washing company"],
+    answer:"PEEK PRESSURE is a specialized exterior surface-cleaning service focused on professional pressure washing and hardscape care across the San Francisco Bay Area. Our approach is scope-first: identify the surface, condition, access, and desired result before recommending a cleaning method."
+  },
+  {
+    id:"specialization",
+    question:"What makes PEEK PRESSURE different?",
+    keywords:["different","why peek","why choose","specialized","professional","premium"],
+    answer:"PEEK PRESSURE is built around specialized exterior cleaning rather than treating pressure washing as a one-size-fits-all chore. We focus on surface-appropriate methods, clear scope, careful expectations, responsive communication, and clean handoffs from estimate to completed work."
+  },
   {
     id:"services",
     question:"What services do you offer?",
     keywords:["services","what do you clean","what do you offer","cleaning services","pressure washing","exterior cleaning"],
-    answer:"PEEK PRESSURE focuses on exterior pressure washing and hard-surface cleaning, including driveways, sidewalks, walkways, patios, concrete and commercial flatwork. If you're not sure whether we handle a surface, send Lucy a photo and she can help."
+    answer:"We focus on exterior hard-surface cleaning such as concrete driveways, sidewalks, walkways, patios, entrances, and commercial flatwork. Other surfaces can be evaluated case by case. Send Lucy a photo if you are unsure."
   },
   {
-    id:"driveways",
-    question:"Do you clean driveways?",
-    keywords:["driveway","driveways","driveway cleaning","clean my driveway"],
-    answer:"Yes. We clean suitable concrete and other hard-surface driveways. Send the approximate size, city, and a few photos for a preliminary estimate."
-  },
-  {
-    id:"sidewalks",
-    question:"Do you clean sidewalks and walkways?",
-    keywords:["sidewalk","sidewalks","walkway","walkways","concrete walkway","entrance"],
-    answer:"Yes. Sidewalks, walkways, entrances, steps, and other suitable hardscape can be cleaned depending on the surface and site conditions."
+    id:"residential",
+    question:"Do you clean residential properties?",
+    keywords:["residential","home","house","homeowner","residential pressure washing"],
+    answer:"Yes. We evaluate residential driveways, walkways, patios, entrances, and other suitable exterior hard surfaces based on the material, condition, access, and requested scope."
   },
   {
     id:"commercial",
     question:"Do you do commercial cleaning?",
-    keywords:["commercial","commercial cleaning","business property","flatwork","property manager","office","retail","apartment"],
-    answer:"Yes. PEEK PRESSURE handles commercial exterior surface cleaning and flatwork. We can discuss one-time or recurring service for properties such as offices, retail properties, apartment communities, and other commercial sites."
+    keywords:["commercial","commercial cleaning","business property","flatwork","office","retail"],
+    answer:"Yes. Commercial exterior cleaning is an important part of PEEK PRESSURE's service. We can evaluate storefronts, office properties, apartment communities, managed properties, walkways, entrances, and other suitable flatwork."
+  },
+  {
+    id:"property-managers",
+    question:"Do you work with property managers and facilities teams?",
+    keywords:["property managers","property management","facilities","facility manager","vendor","apm","pm"],
+    answer:"Yes. PEEK PRESSURE can work with property managers, owners, and facilities teams. Lucy can collect the property, scope, timing, access, and contact information needed to start a service request."
   },
   {
     id:"recurring",
-    question:"Do you offer recurring service?",
-    keywords:["recurring","recurring service","monthly","quarterly","maintenance","repeat","schedule"],
-    answer:"Yes. Recurring cleaning can be discussed for commercial properties and other suitable sites. Frequency depends on traffic, buildup, property needs, and scope."
+    question:"Do you offer recurring cleaning?",
+    keywords:["recurring","maintenance","monthly","quarterly","weekly","repeat service"],
+    answer:"Yes. Recurring service can be evaluated for properties that benefit from scheduled exterior maintenance. Frequency should be based on traffic, buildup, appearance standards, property conditions, and budget."
   },
   {
     id:"minimum",
@@ -43,158 +54,254 @@ export const LUCY_FAQ = [
   {
     id:"pricing",
     question:"How much does pressure washing cost?",
-    keywords:["cost","price","pricing","how much","rate","rates","expensive"],
-    answer:"There isn't one flat price for every property. Size, surface type, condition, access, water availability, runoff requirements, stain treatment, and the amount of detail work can all affect pricing. PEEK PRESSURE currently has a $150 minimum, and Lucy can collect the details needed for a preliminary estimate."
+    keywords:["cost","price","pricing","how much","rate","rates"],
+    answer:"There is no single price that fits every property. Pricing can depend on surface area, material, condition, buildup, access, water availability, runoff requirements, treatment needs, and the amount of detail work. Our current minimum is $150. Lucy can collect the information needed for a preliminary estimate."
+  },
+  {
+    id:"premium-pricing",
+    question:"Why might a professional cleaning cost more than a basic pressure-washing service?",
+    keywords:["expensive","cheap","cheaper","premium price","professional price","cost more"],
+    answer:"A professional job is more than putting a pressure washer on a surface. The scope can involve surface identification, appropriate pressure and chemistry, protection of surrounding areas, runoff considerations, access planning, detailed cleaning, and clear communication. PEEK PRESSURE prices the actual scope rather than promising the lowest bid."
   },
   {
     id:"estimate",
     question:"Can I get a quote?",
     keywords:["quote","rough estimate","preliminary estimate","estimate","pricing estimate","free quote"],
-    answer:"Absolutely. Lucy can collect the property details and photos needed for a preliminary estimate. Final pricing is confirmed by PEEK PRESSURE after the scope is reviewed."
+    answer:"Absolutely. Lucy can collect the property details and photos needed for a preliminary estimate. Final pricing is confirmed by PEEK PRESSURE after the scope and conditions are reviewed."
   },
   {
-    id:"photos",
-    question:"Can I send photos?",
-    keywords:["photos","photo","send a photo","send photos","picture","pictures"],
-    answer:"Yes. A few clear photos are one of the fastest ways to help us understand the surface, condition, access, and approximate scope. Photos help with preliminary pricing but may not reveal exact square footage or hidden conditions."
-  },
-  {
-    id:"what-to-photograph",
-    question:"What photos should I send?",
-    keywords:["photo tips","pictures","photos needed","what photos","photograph","camera"],
-    answer:"For the best estimate, send one wider photo showing the whole area, a couple closer photos showing stains or buildup, and a photo showing access or nearby drains when relevant. Include the city and approximate dimensions if you know them."
+    id:"quote-process",
+    question:"How does the PEEK PRESSURE estimate process work?",
+    keywords:["estimate process","quote process","how quote works","pricing process"],
+    answer:"Start with the location, surface or areas to be cleaned, approximate size, condition, access, desired timing, and photos when possible. Lucy organizes those details so PEEK PRESSURE can evaluate the scope and determine the appropriate next step."
   },
   {
     id:"final-price",
     question:"Is Lucy's estimate the final price?",
     keywords:["final price","final estimate","is that final","final quote","guaranteed price"],
-    answer:"No. Lucy's number is a preliminary estimate only. PEEK PRESSURE reviews the actual job conditions and confirms the final price before the work is scheduled."
+    answer:"No. Lucy's number is a preliminary estimate only. PEEK PRESSURE confirms the final scope and price before the work is scheduled or performed."
   },
   {
-    id:"what-affects-price",
-    question:"What can make a job cost more?",
-    keywords:["price factors","pricing factors","access","condition","stains","water","runoff","size"],
-    answer:"The biggest factors are surface area, surface type, condition, heavy staining or buildup, difficult access, water availability, runoff or wastewater requirements, and any extra preparation or detail work."
+    id:"quote-free",
+    question:"Is the quote free?",
+    keywords:["free estimate","free quote","quote cost","estimate cost"],
+    answer:"Lucy can collect information for a preliminary estimate at no charge. If a particular project requires an on-site assessment or additional scope review, PEEK PRESSURE will explain that before proceeding."
   },
   {
-    id:"stains",
-    question:"Can you remove oil, grease, rust, algae, mildew, or other stains?",
-    keywords:["oil","grease","rust","stain","stains","algae","mildew","moss","buildup"],
-    answer:"We can treat many types of staining and buildup, but results depend on the surface and how deeply the stain has penetrated. We do not promise complete removal of every stain, especially old or chemically set-in stains."
+    id:"photos",
+    question:"Can I send photos?",
+    keywords:["photos","photo","send a photo","send photos","picture","pictures"],
+    answer:"Yes. Photos are one of the fastest ways to understand the surface, condition, access, and approximate scope. They help with preliminary pricing but cannot always reveal exact square footage or hidden conditions."
   },
   {
-    id:"surface-safety",
-    question:"Can pressure washing damage concrete or other surfaces?",
-    keywords:["damage","safe","concrete damage","surface damage","etching","pressure"],
-    answer:"Improper pressure, technique, chemicals, or equipment can damage some surfaces. We evaluate the material and condition and choose an appropriate cleaning method rather than treating every surface the same way."
+    id:"what-to-photograph",
+    question:"What photos should I send for the best estimate?",
+    keywords:["photo tips","photos needed","what photos","photograph","pictures for quote"],
+    answer:"Send one wide photo showing the whole area, a few closer photos of stains or buildup, and a photo showing access or nearby drains when relevant. Include the city and approximate dimensions if you know them."
   },
   {
-    id:"soft-wash",
-    question:"Do you use soft washing?",
-    keywords:["soft wash","soft washing","low pressure","delicate surface"],
-    answer:"The appropriate method depends on the material and condition. Some surfaces are better suited to lower-pressure or chemical-assisted cleaning rather than aggressive pressure. Lucy can collect photos so PEEK PRESSURE can determine the appropriate approach."
+    id:"measurements",
+    question:"Do I need exact square footage?",
+    keywords:["square feet","sq ft","square footage","measure","measurement","dimensions"],
+    answer:"No. An approximate size is helpful, but you do not need professional measurements to start. Photos and rough dimensions can help PEEK PRESSURE determine the next step."
+  },
+  {
+    id:"driveways",
+    question:"Do you clean driveways?",
+    keywords:["driveway","driveways","driveway cleaning","clean my driveway"],
+    answer:"Yes. We clean suitable concrete and other hard-surface driveways. Pricing depends on size, condition, access, staining, and treatment requirements."
+  },
+  {
+    id:"sidewalks",
+    question:"Do you clean sidewalks and walkways?",
+    keywords:["sidewalk","sidewalks","walkway","walkways","concrete walkway","entrance"],
+    answer:"Yes. Sidewalks, walkways, entrances, steps, and other suitable hardscape can be evaluated for cleaning based on the material and site conditions."
+  },
+  {
+    id:"patios",
+    question:"Do you clean patios and outdoor living areas?",
+    keywords:["patio","patios","pool deck","outdoor","terrace","courtyard"],
+    answer:"Yes, suitable patios and outdoor hardscape can be evaluated. The material matters because concrete, pavers, stone, painted surfaces, and other finishes may require different methods."
   },
   {
     id:"surfaces",
     question:"What surfaces can you clean?",
     keywords:["surface","surfaces","concrete","pavers","brick","stone","patio","hardscape"],
-    answer:"Common suitable surfaces include concrete driveways, sidewalks, walkways, patios, and other hardscape. Pavers, brick, stone, painted surfaces, wood, and delicate materials require case-by-case evaluation before a method is chosen."
+    answer:"Common suitable surfaces include concrete driveways, sidewalks, walkways, patios, entrances, and commercial flatwork. Pavers, brick, natural stone, painted surfaces, wood, stucco, siding, roofs, and other delicate materials require case-by-case evaluation."
   },
   {
-    id:"water",
-    question:"Do I need to provide water?",
-    keywords:["water","water hookup","hose","spigot","water source"],
-    answer:"A usable water source is normally helpful for pressure-washing work. Let Lucy know if water access is limited or unavailable so the job can be evaluated correctly."
+    id:"surface-safety",
+    question:"Can pressure washing damage a surface?",
+    keywords:["damage","safe","concrete damage","surface damage","etching","pressure damage"],
+    answer:"Yes, improper pressure, technique, chemistry, or equipment can damage some surfaces. PEEK PRESSURE evaluates the material and condition and chooses an appropriate cleaning approach rather than treating every surface identically."
   },
   {
-    id:"runoff",
-    question:"What do you do about dirty water and storm drains?",
-    keywords:["runoff","storm drain","stormwater","dirty water","wastewater","drain","water recovery"],
-    answer:"Runoff matters, especially for commercial and street-facing hardscape. PEEK PRESSURE evaluates the site and uses appropriate best-management practices to keep polluted wash water from entering storm drains. Disposal or recovery requirements can affect the scope and price."
+    id:"method",
+    question:"How do you decide what cleaning method to use?",
+    keywords:["method","cleaning method","technique","pressure level","process","how clean"],
+    answer:"The method depends on the material, condition, type of buildup, surrounding areas, access, and desired result. Durable concrete may tolerate a different approach than painted, delicate, porous, or weathered surfaces."
   },
   {
-    id:"san-francisco-runoff",
-    question:"Can you pressure wash sidewalks in San Francisco?",
-    keywords:["san francisco","sf","sidewalk washing","san francisco sidewalk","storm drain"],
-    answer:"Yes, subject to the site's conditions and applicable requirements. San Francisco and the wider Bay Area have water-quality rules around outdoor hardscape washing and polluted runoff, so the job may require water-efficient practices and runoff controls."
+    id:"soft-wash",
+    question:"Do you use soft washing or lower-pressure methods?",
+    keywords:["soft wash","soft washing","low pressure","delicate surface"],
+    answer:"When a surface calls for a gentler approach, lower-pressure or chemical-assisted cleaning may be more appropriate than aggressive pressure. The right method is determined from the material and condition."
   },
   {
-    id:"commercial-runoff",
-    question:"Can you handle commercial properties with runoff requirements?",
-    keywords:["commercial runoff","commercial storm drain","property manager","wash water","compliance"],
-    answer:"We can evaluate commercial sites with runoff-control or wastewater requirements. Tell Lucy about the property, drains, access, and requested scope so PEEK PRESSURE can determine the appropriate setup."
+    id:"chemicals",
+    question:"Do you use cleaning chemicals?",
+    keywords:["chemical","chemicals","detergent","cleaner","bleach","soap","chemistry"],
+    answer:"Some cleaning conditions benefit from appropriate cleaning agents or treatments, while others may not. Chemistry is selected based on the surface, buildup, surrounding materials, and desired result. Lucy can collect photos so the job can be evaluated before a method is chosen."
   },
   {
-    id:"booking",
-    question:"How do I book?",
-    keywords:["book","booking","schedule","appointment","calendly"],
-    answer:"You can use the scheduling link on the PEEK PRESSURE website, or ask Lucy to help you get started. For a quote first, Lucy can collect your job details and photos."
-  },
-  {
-    id:"timing",
-    question:"How quickly can you schedule me?",
-    keywords:["when","how soon","availability","same day","next day","schedule time","turnaround"],
-    answer:"Scheduling depends on the current route, job size, weather, and site requirements. Lucy can collect your information and you can use the booking link to request an available time."
-  },
-  {
-    id:"weather",
-    question:"What happens if it rains?",
-    keywords:["rain","weather","storm","bad weather","reschedule"],
-    answer:"Weather can affect scheduling and cleaning conditions. If conditions make the job impractical or unsafe, PEEK PRESSURE may reschedule the work for a better window."
-  },
-  {
-    id:"prep",
-    question:"Do I need to prepare the area before you arrive?",
-    keywords:["prepare","preparation","prep","move furniture","before service","before you arrive"],
-    answer:"If possible, clear vehicles, furniture, loose items, and personal belongings from the cleaning area before arrival. Let us know about anything that cannot be moved so it can be considered during the estimate."
+    id:"stains",
+    question:"Can you remove oil, grease, rust, algae, mildew, or other stains?",
+    keywords:["oil","grease","rust","stain","stains","algae","mildew","moss","buildup"],
+    answer:"We can treat many types of staining and buildup, but results depend on the surface, stain type, age, depth, and previous treatments. We do not promise complete removal of every stain."
   },
   {
     id:"oil",
-    question:"Can you remove oil from a driveway?",
-    keywords:["oil stain","oil stains","driveway oil","garage oil","grease"],
-    answer:"We can treat many oil and grease stains, but older stains may be deeply absorbed and may only lighten rather than disappear. Photos help us judge the condition before quoting."
+    question:"Can you remove oil from a driveway or parking area?",
+    keywords:["oil stain","oil stains","driveway oil","parking oil","grease"],
+    answer:"We can evaluate and treat many oil and grease stains. Older or deeply absorbed stains may only lighten rather than disappear completely. Photos help us judge the condition before quoting."
   },
   {
     id:"gum",
-    question:"Can you remove gum or heavy buildup?",
+    question:"Can you remove gum or heavy spot buildup?",
     keywords:["gum","chewing gum","heavy buildup","sticky","spot cleaning"],
-    answer:"Some heavy spot buildup may require additional treatment or equipment. Send Lucy a photo and describe the area so PEEK PRESSURE can determine whether it is within the requested scope."
+    answer:"Some heavy spot buildup may require additional treatment or a different cleaning approach. Send Lucy a photo and describe the area so PEEK PRESSURE can determine whether it fits the requested scope."
   },
   {
-    id:"photos-before-after",
-    question:"Do you provide before-and-after photos?",
-    keywords:["before and after","before after","photos after","job photos","completion photos"],
-    answer:"Before-and-after photos may be provided when practical and useful for the job, especially for commercial or property-management work."
+    id:"no-guarantees",
+    question:"Can you guarantee a stain will come out?",
+    keywords:["guarantee","guaranteed stain","stain guarantee","promise"],
+    answer:"No. Cleaning results depend on the surface, stain type, age, depth, and previous treatments. We set realistic expectations rather than guaranteeing complete removal when the result cannot be known in advance."
+  },
+  {
+    id:"mildew",
+    question:"Can you remove algae, mildew, moss, or organic buildup?",
+    keywords:["algae","mildew","moss","organic growth","green","black buildup"],
+    answer:"Many types of organic buildup can be treated, but the appropriate method depends on the surface and severity. Send photos so PEEK PRESSURE can evaluate the condition and recommend an appropriate approach."
   },
   {
     id:"commercial-types",
     question:"What commercial properties do you clean?",
     keywords:["commercial properties","office","retail","apartments","hoa","property management","storefront"],
-    answer:"We can evaluate offices, retail properties, apartment communities, multi-unit properties, storefront areas, and other commercial hardscape. Send the property type, location, approximate area, and photos for a preliminary review."
-  },
-  {
-    id:"property-managers",
-    question:"Do you work with property managers?",
-    keywords:["property managers","property management","manager","vendor","apm","facilities"],
-    answer:"Yes. PEEK PRESSURE is set up to work with property managers and owners who need clear scope, responsive communication, straightforward pricing, and one-time or recurring exterior cleaning."
+    answer:"We can evaluate offices, retail properties, apartment communities, multi-unit properties, storefront areas, managed properties, and other commercial sites with suitable exterior surfaces."
   },
   {
     id:"large-jobs",
-    question:"Do you handle large commercial jobs?",
+    question:"Do you handle larger commercial jobs?",
     keywords:["large job","large jobs","big property","parking lot","shopping center","portfolio"],
-    answer:"Larger commercial jobs can be evaluated case by case. Send the property address or city, approximate square footage, photos, access information, and the areas you want cleaned so we can determine the appropriate scope."
+    answer:"Larger commercial projects can be evaluated case by case. Send the property location, approximate area, photos, access information, and requested scope so PEEK PRESSURE can determine the appropriate next step."
   },
   {
-    id:"payment",
-    question:"How do I pay?",
-    keywords:["payment","pay","credit card","card","cash","invoice","billing"],
-    answer:"Payment options and invoicing depend on the job and customer type. PEEK PRESSURE will confirm the payment process when the job is scheduled."
+    id:"commercial-scope",
+    question:"What information do you need for a commercial proposal?",
+    keywords:["commercial quote","commercial proposal","property proposal","rfp","scope of work","bid"],
+    answer:"Helpful information includes the property location, property type, areas to be cleaned, approximate square footage, photos, access restrictions, preferred service window, water availability, drain locations, and whether the work is one-time or recurring."
+  },
+  {
+    id:"property-manager-workflow",
+    question:"How does PEEK PRESSURE work with property managers?",
+    keywords:["property manager workflow","vendor process","management company","approval","purchase order"],
+    answer:"We start by defining the scope, property access, timing, and communication requirements. For managed properties, tell Lucy who the property contact is and any site-specific requirements so the request can be organized correctly."
+  },
+  {
+    id:"recurring-frequency",
+    question:"How often should a commercial property be cleaned?",
+    keywords:["how often","frequency","quarterly","monthly","maintenance schedule"],
+    answer:"There is no universal schedule. High-traffic, food-service, waste-area, or highly visible properties may need more frequent attention, while lower-traffic sites may need less. PEEK PRESSURE can help build a recurring scope around the property's actual conditions."
+  },
+  {
+    id:"after-hours",
+    question:"Can commercial cleaning be scheduled around business hours?",
+    keywords:["after hours","early morning","weekend","business hours","tenant hours","off hours"],
+    answer:"Scheduling can be coordinated around the property's operating needs when availability permits. Include the preferred service window and any tenant or customer restrictions when requesting a commercial estimate."
+  },
+  {
+    id:"documentation",
+    question:"Can you provide job documentation?",
+    keywords:["documentation","service report","completion report","before after","photos","records"],
+    answer:"Documentation needs can be discussed for commercial and property-management work. Tell Lucy if you need before-and-after photos, scope notes, completion confirmation, or other service records."
+  },
+  {
+    id:"coi",
+    question:"Can you provide insurance or vendor documents?",
+    keywords:["coi","certificate of insurance","insurance","vendor packet","w9","vendor documents"],
+    answer:"Vendor documentation requirements should be discussed before scheduling. Tell Lucy what your property or management company requires so PEEK PRESSURE can confirm what can be provided."
+  },
+  {
+    id:"runoff",
+    question:"What do you do about dirty water and storm drains?",
+    keywords:["runoff","storm drain","stormwater","dirty water","wastewater","drain","water recovery"],
+    answer:"Runoff is an important part of exterior hardscape cleaning. PEEK PRESSURE evaluates the site and uses appropriate practices to help prevent polluted wash water from entering storm drains. Site-specific recovery, containment, or disposal requirements can affect the scope."
+  },
+  {
+    id:"san-francisco-runoff",
+    question:"Can you pressure wash sidewalks in San Francisco?",
+    keywords:["san francisco","sf","sidewalk washing","san francisco sidewalk","storm drain"],
+    answer:"Yes, subject to site conditions and applicable requirements. San Francisco has water-conservation and stormwater considerations for outdoor hardscape washing, so the cleaning approach and runoff controls need to fit the site."
+  },
+  {
+    id:"water",
+    question:"Do I need to provide water?",
+    keywords:["water","water hookup","hose","spigot","water source"],
+    answer:"A usable water source is normally helpful for pressure-washing work. Let Lucy know if water access is limited or unavailable so PEEK PRESSURE can evaluate the job correctly."
+  },
+  {
+    id:"runoff-commercial",
+    question:"Can you evaluate commercial sites with special runoff requirements?",
+    keywords:["commercial runoff","commercial storm drain","wash water","compliance","wastewater"],
+    answer:"Yes. Tell Lucy about drains, access, the surface area, and any property-specific wash-water requirements. PEEK PRESSURE can then determine what the project needs before pricing is finalized."
+  },
+  {
+    id:"prep",
+    question:"How should I prepare before service?",
+    keywords:["prepare","preparation","prep","move furniture","before service","before you arrive"],
+    answer:"When possible, move vehicles, furniture, loose items, planters, and personal belongings away from the cleaning area. Let us know about anything that cannot be moved so it can be considered during the estimate."
+  },
+  {
+    id:"access",
+    question:"What access do you need?",
+    keywords:["access","gate","driveway access","equipment access","parking","hose access"],
+    answer:"Access depends on the property and scope. Tell Lucy about gates, locked areas, stairs, long hose runs, limited parking, restricted loading zones, or other obstacles that could affect setup."
+  },
+  {
+    id:"neighbors",
+    question:"What if the area is shared with neighbors or tenants?",
+    keywords:["neighbor","neighbors","tenant","shared driveway","shared sidewalk","hoa"],
+    answer:"Let PEEK PRESSURE know about shared areas, tenants, neighboring vehicles, or access restrictions before service. Clear communication helps avoid surprises during setup and cleaning."
+  },
+  {
+    id:"weather",
+    question:"What happens if it rains or weather changes?",
+    keywords:["rain","weather","storm","bad weather","reschedule"],
+    answer:"Weather can affect cleaning conditions and scheduling. If conditions make the work impractical or unsafe, PEEK PRESSURE may reschedule for a better window."
+  },
+  {
+    id:"timing",
+    question:"How quickly can you schedule me?",
+    keywords:["when","how soon","availability","same day","next day","schedule time","turnaround"],
+    answer:"Scheduling depends on the current route, job size, weather, and site requirements. Lucy can collect your request, and the booking link can be used to request an available time."
+  },
+  {
+    id:"booking",
+    question:"How do I book?",
+    keywords:["book","booking","schedule","appointment","calendly"],
+    answer:"You can use the scheduling link on the PEEK PRESSURE website, or ask Lucy to help you get started. If you need pricing first, Lucy can collect the job details and photos."
   },
   {
     id:"service-area",
     question:"What areas do you serve?",
     keywords:["service area","where","cities","bay area","san francisco","peninsula","east bay","south bay"],
-    answer:"PEEK PRESSURE serves communities throughout the San Francisco Bay Area, including San Francisco, the Peninsula, the East Bay, and parts of the South Bay. If you're unsure whether your property is in range, give Lucy the city or ZIP code."
+    answer:"PEEK PRESSURE serves communities throughout the San Francisco Bay Area, including San Francisco, the Peninsula, the East Bay, and parts of the South Bay. Give Lucy your city or ZIP code if you want to confirm whether the property is in range."
+  },
+  {
+    id:"payment",
+    question:"How do I pay?",
+    keywords:["payment","pay","credit card","card","cash","invoice","billing"],
+    answer:"Payment options and invoicing depend on the job and customer type. PEEK PRESSURE will confirm the payment process when the work is scheduled."
   },
   {
     id:"contact",
@@ -206,18 +313,54 @@ export const LUCY_FAQ = [
     id:"estimate-process",
     question:"What information does Lucy need for a quote?",
     keywords:["quote information","what do you need","quote details","lead","estimate details"],
-    answer:"The most useful details are your name, phone or email, city or location, service requested, approximate size, surface type, condition, timing, and a few photos when possible."
+    answer:"The most useful details are your name, phone or email, city or property location, service requested, approximate size, surface type, condition, access, timing, and a few photos when possible."
   },
   {
-    id:"no-guarantees",
-    question:"Can you guarantee a stain will come out?",
-    keywords:["guarantee","guaranteed stain","stain guarantee","promise"],
-    answer:"No. Cleaning results depend on the surface, stain type, age, and prior treatments. We can explain what is reasonably achievable, but we do not guarantee complete removal of every stain."
+    id:"quote-changes",
+    question:"What if the job is different from what I described?",
+    keywords:["scope change","different than quote","more work","extra work","additional area"],
+    answer:"If the actual site conditions or requested scope differ materially from the original request, the price may need to be updated. PEEK PRESSURE will clarify scope changes rather than silently adding work."
   },
   {
-    id:"quote-free",
-    question:"Is the quote free?",
-    keywords:["free estimate","free quote","quote cost","estimate cost"],
-    answer:"Lucy can help collect information for a preliminary estimate at no charge. If an on-site assessment or special scope requires additional work, PEEK PRESSURE will explain that before proceeding."
+    id:"quality",
+    question:"How do you approach quality?",
+    keywords:["quality","quality control","professional results","inspection","detail"],
+    answer:"The goal is a consistent, surface-appropriate clean rather than simply using maximum pressure. Scope, surface condition, surrounding areas, access, and the desired result are considered before and during the work."
+  },
+  {
+    id:"not-everything",
+    question:"Are there surfaces or jobs you may decline?",
+    keywords:["decline","don't clean","cannot clean","not service","limitations","roof"],
+    answer:"Yes. Some materials, conditions, heights, access situations, contamination, or requested work may not be appropriate for our available methods or equipment. It is better to decline an unsuitable job than risk damage or promise a result we cannot responsibly deliver."
+  },
+  {
+    id:"satisfaction",
+    question:"What if I am not satisfied with the result?",
+    keywords:["satisfaction","complaint","not satisfied","problem","issue","redo"],
+    answer:"Tell PEEK PRESSURE promptly if something does not look right so the scope and result can be reviewed. Cleaning expectations are based on the agreed scope and the limitations of the surface and stains."
+  },
+  {
+    id:"before-after",
+    question:"Do you provide before-and-after photos?",
+    keywords:["before and after","before after","photos after","job photos","completion photos"],
+    answer:"Before-and-after photos can be discussed when practical and useful, especially for commercial or property-management work."
+  },
+  {
+    id:"quote-photos",
+    question:"Can Lucy look at my photos and tell me what I need?",
+    keywords:["analyze photo","look at photo","what do I need","photo estimate","lucy photo"],
+    answer:"Yes. Lucy can use the information you provide to help identify the likely service and collect estimating details. A photo-based recommendation is preliminary; unusual or hidden conditions may require further review."
+  },
+  {
+    id:"emergency",
+    question:"Do you offer emergency or same-day cleaning?",
+    keywords:["emergency","same day","urgent","rush","immediate"],
+    answer:"Urgent requests can be submitted, but availability depends on the current route, job requirements, weather, and timing. Lucy can collect the request and note that it is time-sensitive."
+  },
+  {
+    id:"faq-not-quote",
+    question:"Can Lucy give me an exact price without seeing the property?",
+    keywords:["exact price","exact quote","instant price","price without photo","guaranteed estimate"],
+    answer:"Not reliably for every job. Lucy can provide a preliminary estimate when enough information is available, but exact scope and site conditions can require further review before a final price is confirmed."
   }
 ];
