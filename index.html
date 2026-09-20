@@ -342,16 +342,15 @@
 
         <div class="proof-grid">
           <div class="before-after-card">
-            <div class="before-after-media">
-              <div class="proof-placeholder before">
-                <span>BEFORE</span>
-                <small>COMING SOON</small>
+            <div class="before-after-media" aria-label="Interactive before and after driveway slider">
+              <div class="before-after-layer before-after-before">
+                <div class="proof-placeholder before"><span>BEFORE</span><small>DIRTY DRIVEWAY</small></div>
               </div>
-              <div class="before-after-divider" aria-hidden="true"></div>
-              <div class="proof-placeholder after">
-                <span>AFTER</span>
-                <small>COMING SOON</small>
+              <div class="before-after-layer before-after-after">
+                <div class="proof-placeholder after"><span>AFTER</span><small>CLEAN DRIVEWAY</small></div>
               </div>
+              <input class="before-after-range" type="range" min="0" max="100" value="50" aria-label="Reveal clean driveway">
+              <div class="before-after-divider" aria-hidden="true"><span>↔</span></div>
             </div>
             <div class="before-after-meta">
               <span class="label">PROJECT 001</span>
@@ -1399,5 +1398,22 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
   </script>
 
+<script>
+(() => {
+  document.querySelectorAll('.before-after-media').forEach(media => {
+    const range = media.querySelector('.before-after-range');
+    const after = media.querySelector('.before-after-after');
+    const divider = media.querySelector('.before-after-divider');
+    if (!range || !after || !divider) return;
+    const update = () => {
+      const value = Number(range.value);
+      after.style.clipPath = 'inset(0 0 0 ' + (100 - value) + '%)';
+      divider.style.left = value + '%';
+    };
+    range.addEventListener('input', update);
+    update();
+  });
+})();
+</script>
 </body>
 </html>
