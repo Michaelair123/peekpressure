@@ -119,6 +119,54 @@ function normalizeMessage(message) {
   return content.trim() ? role + ": " + content.trim() : "";
 }
 
+async function createHandoffIdempotencyKey(conversationId, handoffKind, lead) {
+  const canonical = JSON.stringify({
+    conversation_id: conversationId || "no-conversation",
+    handoff_kind: handoffKind,
+    lead: {
+      name: String(lead.name || "").trim(),
+      phone: String(lead.phone || "").trim(),
+      email: String(lead.email || "").trim(),
+      service: String(lead.service || "").trim(),
+      location: String(lead.location || "").trim(),
+      property_type: String(lead.property_type || "").trim(),
+      size: String(lead.size || "").trim(),
+      surface: String(lead.surface || "").trim(),
+      condition: String(lead.condition || "").trim(),
+      timing: String(lead.timing || "").trim(),
+      question: String(lead.question || "").trim()
+    }
+  });
+  const bytes = new TextEncoder().encode(canonical);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  const hex = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+  return "lucy/" + (conversationId || "no-conversation") + "/" + handoffKind.toLowerCase().replace(/[^a-z0-9_-]/g, "-") + "/" + hex.slice(0, 32);
+}
+
+function buildStableHandoffTranscript(messages, lead) {
+  const normalized = messages.map(normalizeMessage).filter(Boolean);
+  if (!normalized.length) return "";
+
+  const contactNeedles = [
+    String(lead.name || "").trim(),
+    String(lead.phone || "").trim(),
+    String(lead.email || "").trim()
+  ].filter(Boolean);
+
+  if (!contactNeedles.length) return normalized.join("\n\n");
+
+  let cutoff = normalized.length;
+  for (let index = 0; index < normalized.length; index += 1) {
+    const value = normalized[index].toLowerCase();
+    if (contactNeedles.some(needle => value.includes(needle.toLowerCase()))) {
+      cutoff = Math.min(normalized.length, index + 1);
+      break;
+    }
+  }
+
+  return normalized.slice(0, cutoff).join("\n\n");
+}
+
 async function handleLead(context) {
   const rate = checkLeadRateLimit(context.request);
   if (!rate.allowed) {
@@ -172,13 +220,13 @@ async function handleLead(context) {
       return json({ error: "This lead handoff is no longer valid. Please start the quote conversation again.", handoff_state: "HANDOFF_FAILED" }, 403);
     }
 
-    const transcript = messages
-      .map(normalizeMessage)
-      .filter(Boolean)
-      .join("\n\n");
-
     const isPartial = lead.lead_status === "uncertain";
     const handoffKind = isPartial ? "PARTIAL CAPTURE" : "QUALIFIED HANDOFF";
+    const idempotencyKey = await createHandoffIdempotencyKey(conversationId, handoffKind, lead);
+    // Keep the email payload stable across retries. Messages added after the
+    // first contact/handoff attempt (TRY AGAIN, failure notices, etc.) should
+    // not change the transactional email body or its idempotency key.
+    const transcript = buildStableHandoffTranscript(messages, lead);
     const details = [
       ["Handoff type", handoffKind],
       ["Name", name],
@@ -245,7 +293,8 @@ async function handleLead(context) {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${RESEND_API_KEY}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Idempotency-Key": idempotencyKey
       },
       body: JSON.stringify({
         from: FROM_EMAIL,
@@ -282,7 +331,8 @@ async function handleLead(context) {
       handoff_state: "HANDED_OFF",
       status: "submitted",
       email_id: result?.id || null,
-      conversation_id: conversationId || null
+      conversation_id: conversationId || null,
+      idempotency_key: idempotencyKey
     });
   } catch (error) {
     console.error("Lucy lead email handler error:", error);
