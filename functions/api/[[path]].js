@@ -367,6 +367,44 @@ async function handleAvailability(context) {
   }
 }
 
+const LEAD_RATE_WINDOW_MS = 10 * 60 * 1000;
+const LEAD_RATE_LIMIT = 3;
+const leadRateBuckets = new Map();
+
+function getClientKey(request) {
+  return request.headers.get("CF-Connecting-IP") || "unknown-client";
+}
+
+function checkLeadRateLimit(request) {
+  const key = getClientKey(request);
+  const now = Date.now();
+  let bucket = leadRateBuckets.get(key);
+
+  if (!bucket || now - bucket.startedAt >= LEAD_RATE_WINDOW_MS) {
+    bucket = { startedAt: now, count: 0 };
+  }
+
+  if (bucket.count >= LEAD_RATE_LIMIT) {
+    return {
+      allowed: false,
+      retryAfter: Math.max(1, Math.ceil((bucket.startedAt + LEAD_RATE_WINDOW_MS - now) / 1000))
+    };
+  }
+
+  bucket.count += 1;
+  leadRateBuckets.set(key, bucket);
+
+  if (leadRateBuckets.size > 5000) {
+    for (const [clientKey, clientBucket] of leadRateBuckets) {
+      if (now - clientBucket.startedAt >= LEAD_RATE_WINDOW_MS) {
+        leadRateBuckets.delete(clientKey);
+      }
+    }
+  }
+
+  return { allowed: true, retryAfter: 0 };
+}
+
 const TO_EMAIL = "look@peekpressure.com";
 const FROM_EMAIL = "PEEK PRESSURE <look@peekpressure.com>";
 
@@ -397,6 +435,19 @@ function normalizeMessage(message) {
 }
 
 async function handleLead(context) {
+  const rate = checkLeadRateLimit(context.request);
+  if (!rate.allowed) {
+    return new Response(JSON.stringify({
+      error: "Too many quote requests. Please try again later."
+    }), {
+      status: 429,
+      headers: {
+        "Content-Type": "application/json",
+        "Retry-After": String(rate.retryAfter)
+      }
+    });
+  }
+
   const RESEND_API_KEY = context.env.RESEND_API_KEY;
 
   if (!RESEND_API_KEY) {
