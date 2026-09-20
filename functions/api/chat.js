@@ -8,7 +8,7 @@ const LUCY_MAX_RETRIES = 1;
 
 // Cheap edge-side abuse controls. These run before any OpenAI call.
 const LUCY_RATE_WINDOW_MS = 10 * 60 * 1000;
-const LUCY_RATE_LIMIT = 12;
+const LUCY_RATE_LIMIT = 24;
 const LUCY_MIN_REQUEST_GAP_MS = 1200;
 const LUCY_MAX_CONCURRENT = 3;
 const lucyRateBuckets = new Map();
