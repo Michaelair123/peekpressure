@@ -765,3 +765,9 @@ main>h2{font-size:clamp(2.3rem,4.3vw,4.3rem)!important;font-weight:600!important
     letter-spacing:.17em;
   }
 }
+
+/* Mobile header contact spacing — evenly balanced */
+@media(max-width:700px){
+  .header-contact{gap:.55rem!important}
+  .header-email{margin-left:.27rem!important}
+}
