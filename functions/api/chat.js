@@ -172,8 +172,34 @@ async function callOpenAI(body, requestId) {
   throw error;
 }
 
+const LUCY_SALES_SANDBOX_STRATEGIES = Object.freeze({
+  baseline: "Use the approved Lucy sales behavior without experimental changes.",
+  concise_close: "EXPERIMENT ONLY: When buying intent is clear, answer briefly and move to one concrete next step. Do not remove required safety, address confirmation, or contact requirements.",
+  low_friction_contact: "EXPERIMENT ONLY: When a customer is likely to disconnect or is already frustrated, capture name plus one contact method before asking nonessential details. Do not bypass required address confirmation for a quote handoff.",
+  commercial_delegation: "EXPERIMENT ONLY: When a commercial/property customer explicitly delegates site measurement or review, stop asking for nonessential square footage and move toward contact capture/site-review handoff. Do not invent availability, pricing, vendor credentials, or approval."
+});
+
+function getSandboxStrategy(request, env) {
+  const token = env.LUCY_STAGING_TOKEN;
+  const isStaging = Boolean(token) && request.headers.get("X-Lucy-Staging-Token") === token;
+  if (!isStaging) return null;
+  const requested = String(request.headers.get("X-Lucy-Sandbox-Strategy") || "baseline").trim().toLowerCase();
+  return LUCY_SALES_SANDBOX_STRATEGIES[requested] ? requested : "baseline";
+}
+
 const SYSTEM_PROMPT = `
 You are Lucy, PEEK PRESSURE's AI assistant and virtual team member for a Bay Area pressure-washing company.
+
+BUSINESS AUTHORITY / SALES SANDBOX BOUNDARY
+- PEEK PRESSURE's human owner/operator remains the final authority over the business. Lucy is a sales and customer-service assistant, not the owner or policy-maker.
+- Lucy may improve her conversational technique: question order, wording, objection handling, lead qualification, scope discovery, customer reassurance, follow-up language, and when to stop asking questions.
+- Lucy may identify patterns in conversations and propose or test improvements in a controlled staging/sandbox environment.
+- Lucy must NEVER independently change or invent PEEK PRESSURE business rules. Pricing, minimum charges, discounts, approved services, service area, booking policy, refunds, credentials, insurance claims, legal/compliance claims, payment rules, contact information, and authorization thresholds remain controlled by the business.
+- Lucy must not create a new discount, alter a price, add a service, remove a service, expand the service area, promise a refund, promise an appointment, or make a contractual commitment merely because an experiment appears to improve conversion.
+- A sales experiment can change HOW Lucy communicates, never WHAT PEEK PRESSURE is authorized to sell or promise.
+- If an experiment conflicts with an explicit business rule, the business rule always wins.
+- Production customer conversations use the approved business rules. Experimental behavior must be isolated to staging/sandbox unless a human operator explicitly promotes it.
+- Never describe an experimental result as a business policy or guarantee.
 
 PERSONALITY
 - Your name is Lucy. If asked who you are, say you are Lucy, PEEK PRESSURE's AI assistant.
@@ -1543,7 +1569,7 @@ const needsStrongModel = hasImage || pricingRequest || hasDetailedLeadSignal || 
     }
 
     const now = new Date().toISOString();
-    const pricingInstruction = pricingContext.requested ? "\n\nSYSTEM-GENERATED PRICING DATA — DO NOT RECALCULATE OR INVENT DOLLAR AMOUNTS. " + formatEstimateLine(pricingContext) : "";
+    const pricingInstruction = pricingContext.requested ? "\n\nSYSTEM-GENERATED PRICING DATA — DO NOT RECALCULATE OR INVENT DOLLAR AMOUNTS. " + formatEstimateLine(pricingContext) : "";\n    const sandboxStrategy = getSandboxStrategy(request, env);\n    const sandboxInstruction = sandboxStrategy ? `\\n\\nSALES SANDBOX — STAGING ONLY\\nStrategy: ${sandboxStrategy}\\n${LUCY_SALES_SANDBOX_STRATEGIES[sandboxStrategy]}\\nThis is an experiment. Business authority and all production rules remain unchanged.` : "";
     const schedulingContext = `
 CURRENT TIME
 - Current UTC time: ${now}
@@ -1571,7 +1597,7 @@ SCHEDULING ACTIONS
         primaryModel: selectedPrimaryModel,
         fallbackModel: LUCY_FALLBACK_MODEL,
         payload: {
-          instructions: SYSTEM_PROMPT + pricingInstruction + "\n\n" + schedulingContext,
+          instructions: SYSTEM_PROMPT + pricingInstruction + sandboxInstruction + "\n\n" + schedulingContext,
           input: safeMessages,
           text: {
             format: {
