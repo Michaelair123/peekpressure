@@ -396,3 +396,9 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
 /* Final booking CTA cleanup: remove all circular decoration */
 .booking-cta-inner{background:#f3f3f3!important}
 .booking-cta-inner::before,.booking-cta-inner::after{content:none!important;display:none!important}
+
+/* Final booking CTA layout cleanup */
+.booking-cta-action{align-items:flex-start!important}
+.booking-cta-button{order:1!important;border-radius:4px!important}
+.booking-action-label{order:2!important;padding-left:0!important;margin-top:2px!important}
+.booking-cta-inner::before,.booking-cta-inner::after{display:none!important;content:none!important}
