@@ -772,11 +772,43 @@
     const photoUpload = document.querySelector('.photo-upload');
     if (photoInput && photoUpload) {
       const photoText = photoUpload.querySelector('span');
+      const preview = document.createElement('div');
+      preview.className = 'photo-upload-preview';
+      preview.setAttribute('aria-hidden', 'true');
+      photoUpload.appendChild(preview);
+
+      const clearPreviewUrls = () => {
+        preview.querySelectorAll('img[data-object-url]').forEach(img => {
+          URL.revokeObjectURL(img.dataset.objectUrl);
+        });
+      };
+
       photoInput.addEventListener('change', () => {
-        const count = photoInput.files.length;
+        clearPreviewUrls();
+        preview.innerHTML = '';
+        const files = [...photoInput.files];
+        const count = files.length;
+
         photoText.textContent = count
-          ? `${count} photo${count === 1 ? '' : 's'} selected — tap to change`
+          ? count + ' photo' + (count === 1 ? '' : 's') + ' selected — tap to change'
           : 'Photos help us quote faster.';
+
+        files.slice(0, 4).forEach(file => {
+          if (!file.type.startsWith('image/')) return;
+          const img = document.createElement('img');
+          const objectUrl = URL.createObjectURL(file);
+          img.src = objectUrl;
+          img.alt = '';
+          img.dataset.objectUrl = objectUrl;
+          preview.appendChild(img);
+        });
+
+        if (count > 4) {
+          const more = document.createElement('span');
+          more.className = 'photo-upload-more';
+          more.textContent = '+' + (count - 4);
+          preview.appendChild(more);
+        }
       });
     }
   </script>
