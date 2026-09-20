@@ -162,9 +162,13 @@ async function handleLead(context) {
       }, 400);
     }
 
-    if (lead.lead_status === "spam" || lead.lead_status === "uncertain") {
-      return json({ error: "This lead was not eligible for email handoff.", handoff_state: lead.lead_status === "spam" ? "SPAM" : "PARTIALLY_QUALIFIED" }, 400);
+    if (lead.lead_status === "spam") {
+      return json({ error: "This lead was not eligible for email handoff.", handoff_state: "SPAM" }, 400);
     }
+    // Partial leads are intentionally capturable when we have a real customer
+    // name plus phone or email. This protects against customers disconnecting
+    // before qualification is complete.
+    const partialLead = lead.lead_status === "uncertain";
 
     if (!(await verifyLeadToken(LEAD_SIGNING_SECRET, leadToken, lead))) {
       return json({ error: "This lead handoff is no longer valid. Please start the quote conversation again.", handoff_state: "HANDOFF_FAILED" }, 403);
