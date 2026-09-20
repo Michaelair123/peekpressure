@@ -1107,7 +1107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function submitLead(lead) {
-      if (state.leadSubmitted || !lead || !lead.lead_ready) return;
+      if (state.leadSubmitted || !lead) return;
 
       const name = (lead.name || '').trim();
       const phone = (lead.phone || '').trim();
