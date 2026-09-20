@@ -498,3 +498,141 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
   .hero-copy h1{letter-spacing:-.085em!important}
   .about-grid h2,.process-header h2,.why-peek-intro h2,.service-area h2,.contact-container>h2,.proof-header h2,main>h2,.booking-cta-copy h3{letter-spacing:-.075em!important}
 }
+
+
+/* FEAR-OF-GOD-INSPIRED TYPE REVAMP — typography only, no HTML changes */
+:root{
+  --peek-font-sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+html{
+  font-family:var(--peek-font-sans);
+}
+body,
+button,
+input,
+textarea,
+select{
+  font-family:var(--peek-font-sans)!important;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* Quiet, editorial grotesk: less techy, more luxury/minimal. */
+h1,h2,h3,h4,h5,h6,
+.logo,
+.button,
+.header-cta,
+.label,
+.eyebrow,
+.service-cta,
+.booking-cta-button,
+.booking-action-label,
+.step-number,
+.number{
+  font-family:var(--peek-font-sans)!important;
+  font-weight:500!important;
+  text-transform:uppercase;
+}
+
+/* Hero: oversized, restrained, fashion-editorial proportions. */
+.hero-copy h1{
+  font-weight:500!important;
+  letter-spacing:-.065em!important;
+  line-height:.86!important;
+  text-transform:uppercase;
+  text-wrap:balance;
+}
+
+/* Section headings: lighter weight + generous tracking. */
+.about h2,
+.process-header h2,
+.why-peek-intro h2,
+.service-area h2,
+.contact-container>h2,
+.proof-header h2,
+.booking-cta-copy h3{
+  font-weight:500!important;
+  letter-spacing:-.055em!important;
+  line-height:.9!important;
+  text-transform:uppercase;
+  text-wrap:balance;
+}
+
+/* Small labels become understated luxury-style metadata. */
+.label,
+.eyebrow,
+.booking-action-label{
+  font-weight:500!important;
+  letter-spacing:.18em!important;
+  line-height:1.2;
+}
+
+/* Body copy: cleaner and more relaxed. */
+body,
+p,
+.service-body p,
+.process-step p,
+.why-peek-point p,
+.proof-header p,
+.contact-container>p,
+.booking-cta-copy p{
+  font-weight:400;
+  letter-spacing:-.005em;
+}
+
+/* Navigation + controls: compact, premium, never overly bold. */
+.header nav a,
+.header-cta,
+.button,
+.service-cta,
+.proof-review-cta,
+.booking-cta-button{
+  font-weight:500!important;
+  letter-spacing:.11em!important;
+}
+
+/* Number markers stay tiny and quiet rather than competing with headings. */
+.number,
+.step-number,
+.why-peek-point>span{
+  font-weight:500!important;
+  letter-spacing:.08em!important;
+}
+
+/* Logo: clean wordmark treatment. */
+.logo{
+  font-weight:600!important;
+  letter-spacing:-.045em!important;
+}
+.logo span{
+  font-weight:400!important;
+}
+
+/* Form typography follows the same system. */
+input,
+textarea,
+select,
+.form-field label,
+.photo-upload strong,
+.photo-upload span{
+  font-family:var(--peek-font-sans)!important;
+}
+
+/* Mobile: preserve hierarchy without oversized heavy type. */
+@media(max-width:700px){
+  .hero-copy h1{
+    font-size:clamp(3.2rem,15.5vw,6rem)!important;
+    letter-spacing:-.065em!important;
+    line-height:.88!important;
+  }
+  .about-grid h2,
+  .process-header h2,
+  .why-peek-intro h2,
+  .service-area h2,
+  .contact-container>h2,
+  .proof-header h2,
+  .booking-cta-copy h3{
+    letter-spacing:-.055em!important;
+    line-height:.91!important;
+  }
+}
