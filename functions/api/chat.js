@@ -187,6 +187,41 @@ function getSandboxStrategy(request, env) {
   return LUCY_SALES_SANDBOX_STRATEGIES[requested] ? requested : "baseline";
 }
 
+const LUCY_SALES_PLAYBOOK = Object.freeze({
+  goals: {
+    answer: "Answer the customer's actual question accurately before selling.",
+    discover: "Discover only the next material fact needed to move the job forward.",
+    qualify: "Determine whether the request is a genuine PEEK PRESSURE opportunity and capture usable contact information.",
+    convert: "When buying intent is clear, reduce friction and move to one concrete next step.",
+    handoff: "When the lead is ready, stop discovery and hand off with a concise, useful summary."
+  },
+  principles: [
+    "Follow the conversation, not a rigid questionnaire.",
+    "Never ask for information the customer already provided.",
+    "Ask one material question at a time when possible.",
+    "Answer first, then advance the conversation.",
+    "Use customer language and property context instead of generic sales jargon.",
+    "If the customer is rushed, frustrated, or delegates site review, shorten discovery rather than increasing it.",
+    "A lower-friction partial contact capture is better than losing a real lead, but required safety and address-confirmation rules still apply.",
+    "When a customer objects on price, compare scope and inclusions rather than attacking another provider or racing to the bottom.",
+    "When a customer is ready to act, make the next step obvious.",
+    "End with a concrete next action rather than a vague invitation."
+  ]
+});
+
+function buildSalesIntelligence(result, safeMessages) {
+  const latest = getLatestUserText(safeMessages);
+  const all = safeMessages.map(message => String(message.content || "")).join(" ");
+  const buyingIntent = /\b(let's do it|lets do it|book|schedule|ready|sign me up|go ahead|how do i get started|send someone|send somebody|give me a proposal|send me a proposal|quote me|i want to use you|sounds good)\b/i.test(all);
+  const priceObjection = /\b(too expensive|expensive|cheaper|less expensive|price|cost|budget|another company|competitor|quote.*lower|lower.*quote)\b/i.test(latest);
+  const urgency = /\b(asap|today|tomorrow|urgent|rush|soon|this week|right away)\b/i.test(latest);
+  const customerIsRushed = /\b(in a hurry|gotta go|have to go|busy|quick|just tell me|keep it simple|short version)\b/i.test(latest);
+  const contactKnown = Boolean(result.name && (result.phone || result.email));
+  const scopeKnown = Boolean(result.service && result.location);
+  const goal = result.lead_ready ? LUCY_SALES_PLAYBOOK.goals.handoff : buyingIntent ? LUCY_SALES_PLAYBOOK.goals.convert : !scopeKnown ? LUCY_SALES_PLAYBOOK.goals.discover : !contactKnown ? LUCY_SALES_PLAYBOOK.goals.qualify : LUCY_SALES_PLAYBOOK.goals.discover;
+  const nextBestAction = result.lead_ready ? "handoff_now" : customerIsRushed ? "ask_one_material_question" : buyingIntent && !contactKnown ? "capture_contact" : priceObjection ? "clarify_scope_or_value" : urgency ? "capture_timing_and_contact" : !scopeKnown ? "discover_scope" : !contactKnown ? "capture_contact" : "answer_and_advance";
+  return { goal, next_best_action: nextBestAction, buying_intent: buyingIntent, price_objection: priceObjection, urgency, customer_rushed: customerIsRushed, scope_known: scopeKnown, contact_known: contactKnown };
+}
 const SYSTEM_PROMPT = `
 You are Lucy, PEEK PRESSURE's AI assistant and virtual team member for a Bay Area pressure-washing company.
 
@@ -1570,6 +1605,19 @@ const needsStrongModel = hasImage || pricingRequest || hasDetailedLeadSignal || 
 
     const now = new Date().toISOString();
     const pricingInstruction = pricingContext.requested ? "\n\nSYSTEM-GENERATED PRICING DATA — DO NOT RECALCULATE OR INVENT DOLLAR AMOUNTS. " + formatEstimateLine(pricingContext) : "";\n    const sandboxStrategy = getSandboxStrategy(request, env);\n    const sandboxInstruction = sandboxStrategy ? `\\n\\nSALES SANDBOX — STAGING ONLY\\nStrategy: ${sandboxStrategy}\\n${LUCY_SALES_SANDBOX_STRATEGIES[sandboxStrategy]}\\nThis is an experiment. Business authority and all production rules remain unchanged.` : "";
+    const salesIntelligence = buildSalesIntelligence(result, safeMessages);
+
+const salesPlaybookContext = `
+SALES PLAYBOOK — NEXT BEST ACTION
+- Primary goal: ${salesIntelligence.goal}
+- Next best action: ${salesIntelligence.next_best_action}
+- Buying intent: ${salesIntelligence.buying_intent ? "high/active" : "not yet clear"}
+- Price objection: ${salesIntelligence.price_objection ? "present" : "not present"}
+- Customer rushed: ${salesIntelligence.customer_rushed ? "yes" : "no"}
+- Do not turn this into a checklist. Use the signal to make the next reply shorter, more relevant, and easier to act on.
+- If the customer has clearly delegated site review, do not keep asking for measurements that can reasonably be reviewed on site.
+- If buying intent is clear, do not reopen discovery unless a required field is genuinely missing.
+`;
     const schedulingContext = `
 CURRENT TIME
 - Current UTC time: ${now}
@@ -1597,7 +1645,7 @@ SCHEDULING ACTIONS
         primaryModel: selectedPrimaryModel,
         fallbackModel: LUCY_FALLBACK_MODEL,
         payload: {
-          instructions: SYSTEM_PROMPT + pricingInstruction + sandboxInstruction + "\n\n" + schedulingContext,
+          instructions: SYSTEM_PROMPT + pricingInstruction + sandboxInstruction + "\n\n" + salesPlaybookContext + "\n\n" + schedulingContext,
           input: safeMessages,
           text: {
             format: {
@@ -1748,7 +1796,7 @@ SCHEDULING ACTIONS
     const leadToken = (leadReady || leadCapture)
       ? await signLeadToken(env.LEAD_SIGNING_SECRET || env.RESEND_API_KEY, lead)
       : null;
-    const leadIntelligence = buildLeadIntelligence({
+    const salesIntelligence = buildSalesIntelligence(result, safeMessages);\n    const leadIntelligence = buildLeadIntelligence({
       ...result,
       lead_ready: leadReady
     });
