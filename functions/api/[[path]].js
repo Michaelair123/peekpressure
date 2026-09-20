@@ -134,6 +134,7 @@ async function handleLead(context) {
   }
 
   const RESEND_API_KEY = context.env.RESEND_API_KEY;
+  const LEAD_SIGNING_SECRET = context.env.LEAD_SIGNING_SECRET || RESEND_API_KEY;
 
   if (!RESEND_API_KEY) {
     return json({
@@ -161,7 +162,7 @@ async function handleLead(context) {
       return json({ error: "This lead was not eligible for email handoff." }, 400);
     }
 
-    if (!(await verifyLeadToken(RESEND_API_KEY, leadToken, lead))) {
+    if (!(await verifyLeadToken(LEAD_SIGNING_SECRET, leadToken, lead))) {
       return json({ error: "This lead handoff is no longer valid. Please start the quote conversation again." }, 403);
     }
 
