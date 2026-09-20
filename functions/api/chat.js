@@ -1600,6 +1600,7 @@ SCHEDULING ACTIONS
       reply,
       lead_ready: leadReady,
       lead_capture: leadCapture,
+      lead_status: result.lead_status,
       lead: (leadReady || leadCapture) ? lead : null,
       lead_token: leadToken,
       lead_intelligence: leadIntelligence,
