@@ -4,7 +4,7 @@ const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
 const LUCY_FAST_MODEL = "gpt-5.6-terra";
 const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
 const LUCY_REQUEST_TIMEOUT_MS = 10000;
-const LUCY_MAX_RETRIES = 1;
+const LUCY_MAX_RETRIES = 0;
 
 // Cheap edge-side abuse controls. These run before any OpenAI call.
 const LUCY_RATE_WINDOW_MS = 10 * 60 * 1000;
@@ -881,7 +881,14 @@ async function handleLucyRequest({ request, env }) {
       return Response.json({ error: "That request is too large. Please send a shorter message or smaller photo." }, { status: 413, headers: cors });
     }
 
-    const latestUserText = [...safeMessages].reverse().find(message => message.role === "user")?.content || "";
+    const latestUserMessage = [...safeMessages].reverse().find(message => message.role === "user");
+    const latestUserText = Array.isArray(latestUserMessage?.content)
+      ? latestUserMessage.content
+          .filter(part => part?.type === "input_text" && typeof part.text === "string")
+          .map(part => part.text)
+          .join(" ")
+          .trim()
+      : String(latestUserMessage?.content || "").trim();
     if (looksLikePreAiAbuse(latestUserText)) {
       return Response.json({
         reply: "I can help with PEEK PRESSURE services, but I can't help with that request. If you need a cleaning quote, tell me what you'd like cleaned and where.",
@@ -1082,6 +1089,13 @@ SCHEDULING ACTIONS
       }
     }
 
+
+    // Calendly is intentionally handled by the public booking link now.
+    // Never spend an API call checking or creating appointments from Lucy.
+    if (result.action === "check_availability" || result.action === "book_appointment") {
+      reply = "Absolutely 📅 You can pick a time that works for you here: https://calendly.com/look-peekpressure/pressure-wash";
+      result.action = "none";
+    }
 
     if (!staging && result.action === "check_availability") {
       try {
