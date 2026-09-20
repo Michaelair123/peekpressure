@@ -45,6 +45,9 @@ export default {
 
     const withCors = (response) => {
       const headers = new Headers(response.headers);
+      for (const [key, value] of Object.entries(securityHeaders)) {
+        headers.set(key, value);
+      }
       for (const [key, value] of Object.entries(cors)) {
         headers.set(key, value);
       }
@@ -55,25 +58,56 @@ export default {
       });
     };
 
+    const edgeClientKey = request.headers.get("CF-Connecting-IP") || "unknown-client";
+
+    const enforceEdgeLimit = async (limiter, route) => {
+      if (!limiter) return true;
+      const result = await limiter.limit({
+        key: route + ":" + edgeClientKey
+      });
+      return result.success;
+    };
+
+    const edgeRateLimitResponse = () => new Response(
+      JSON.stringify({ error: "Too many requests. Please try again shortly." }),
+      {
+        status: 429,
+        headers: {
+          ...cors,
+          ...securityHeaders,
+          "Content-Type": "application/json",
+          "Retry-After": "10",
+          "Cache-Control": "no-store"
+        }
+      }
+    );
+
     if (url.pathname === "/api/health") {
       return Response.json({
         ok: true,
         worker: "peekpressure",
-        build: "2026-09-19-cors-fix"
-      }, { headers: cors });
+        build: "2026-09-19-security-hardening"
+      }, { headers: { ...cors, ...securityHeaders, "Cache-Control": "no-store" } });
     }
 
     if (url.pathname === "/api/faq") {
       return Response.json({ faq: LUCY_FAQ }, {
-        headers: { ...cors, "Cache-Control": "public, max-age=300" }
+        headers: { ...cors, ...securityHeaders, "Cache-Control": "public, max-age=300" }
       });
     }
 
     if (url.pathname === "/api/chat") {
+      if (request.method === "POST") {
+        const allowed = await enforceEdgeLimit(env.LUCY_EDGE_BURST, "chat");
+        if (!allowed) return edgeRateLimitResponse();
+      }
       return withCors(await handleLucyRequest({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) }));
     }
 
     if (url.pathname === "/api/lead" && request.method === "POST") {
+      const allowed = await enforceEdgeLimit(env.LEAD_EDGE_BURST, "lead");
+      if (!allowed) return edgeRateLimitResponse();
+
       return withCors(await handleLead({
         request,
         env,
