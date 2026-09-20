@@ -835,13 +835,7 @@ async function handleLucyRequest({ request, env }) {
   }
 
   if (request.method === "GET") {
-    return Response.json({
-      ok: Boolean(env.OPENAI_API_KEY),
-      service: "lucy",
-      api_key_configured: Boolean(env.OPENAI_API_KEY),
-      staging_configured: Boolean(env.LUCY_STAGING_TOKEN),
-      calendly_configured: Boolean(env.CALENDLY_ACCESS_TOKEN)
-    }, { headers: cors });
+    return Response.json({ error: "Method not allowed." }, { status: 405, headers: cors });
   }
 
   if (request.method !== "POST") {
