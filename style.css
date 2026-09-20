@@ -389,3 +389,6 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
     min-width:0;
   }
 }
+
+/* Final booking CTA cleanup: remove decorative circle */
+.booking-cta-inner::before{display:none!important}
