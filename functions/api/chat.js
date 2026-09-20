@@ -910,70 +910,6 @@ function enforceLeadSafety(result, safeMessages) {
   return result;
 }
 
-async function calendlyRequest(path, env, options = {}) {
-  if (!env.CALENDLY_ACCESS_TOKEN) throw new Error("Calendly is not configured.");
-  const response = await fetch("https://api.calendly.com" + path, {
-    ...options,
-    headers: {
-      "Authorization": `Bearer ${env.CALENDLY_ACCESS_TOKEN}`,
-      "Content-Type": "application/json",
-      ...(options.headers || {})
-    }
-  });
-  const text = await response.text();
-  let data = {};
-  try { data = text ? JSON.parse(text) : {}; } catch {}
-  if (!response.ok) {
-    const error = new Error(data?.message || `Calendly request failed: ${response.status}`);
-    error.status = response.status;
-    error.data = data;
-    throw error;
-  }
-  return data;
-}
-
-async function getPressureWashEventType(env) {
-  const me = await calendlyRequest("/users/me", env);
-  const userUri = me?.resource?.uri;
-  if (!userUri) throw new Error("Calendly user could not be resolved.");
-
-  const params = new URLSearchParams({
-    user: userUri,
-    active: "true",
-    count: "100"
-  });
-  const events = await calendlyRequest("/event_types?" + params.toString(), env);
-  const match = (events?.collection || []).find(event =>
-    event.scheduling_url === "https://calendly.com/look-peekpressure/pressure-wash"
-  );
-
-  if (!match?.uri) throw new Error("Pressure Wash event type could not be found.");
-  return match;
-}
-
-function formatSlot(iso, timezone) {
-  const date = new Date(iso);
-  return new Intl.DateTimeFormat("en-US", {
-    timeZone: timezone || "America/Los_Angeles",
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit"
-  }).format(date);
-}
-
-async function getAvailability(eventTypeUri, startTime, endTime, env) {
-  const params = new URLSearchParams({
-    event_type: eventTypeUri,
-    start_time: startTime,
-    end_time: endTime
-  });
-  const data = await calendlyRequest("/event_type_available_times?" + params.toString(), env);
-  return data?.collection || [];
-}
-
-
 function buildFastReply(text) {
   const value = String(text || "").trim().toLowerCase();
   if (/^(do you|can you|do y'all|do you guys).*(driveway|sidewalk|walkway|patio|concrete|pressure wash)/i.test(value) ||
@@ -1424,107 +1360,6 @@ SCHEDULING ACTIONS
       result.action = "none";
     }
 
-    if (!staging && result.action === "check_availability") {
-      try {
-        const eventType = await getPressureWashEventType(env);
-        let start = new Date(result.availability_start || now);
-        let end = new Date(result.availability_end || (Date.now() + 7 * 86400000));
-
-        if (!Number.isFinite(start.getTime()) || start.getTime() <= Date.now()) {
-          start = new Date(Date.now() + 15 * 60000);
-        }
-        if (!Number.isFinite(end.getTime()) || end <= start) {
-          end = new Date(start.getTime() + 7 * 86400000);
-        }
-        if (end.getTime() - start.getTime() > 31 * 86400000) {
-          end = new Date(start.getTime() + 31 * 86400000);
-        }
-
-        const slots = await getAvailability(eventType.uri, start.toISOString(), end.toISOString(), env);
-        const usable = slots
-          .filter(slot => slot?.status === "available" && slot?.start_time)
-          .slice(0, 5);
-
-        scheduling = {
-          action: "availability",
-          slots: usable.map(slot => ({
-            start_time: slot.start_time,
-            formatted: formatSlot(slot.start_time, customerTimezone)
-          }))
-        };
-
-        if (usable.length) {
-          reply = `Absolutely 📅 I have these times available: ${usable.map((slot, i) => `${i + 1}. ${formatSlot(slot.start_time, customerTimezone)}`).join(" · ")}. Which one works best?`;
-        } else {
-          reply = "I’m not seeing an opening in that window. 📅 If you give me another day or time range, I can check again.";
-        }
-      } catch (error) {
-        reply = "I can still get you booked through Calendly, but I’m having trouble checking live availability right now. 📅 Please use the booking link: https://calendly.com/look-peekpressure/pressure-wash";
-      }
-    }
-
-    if (!staging && result.action === "book_appointment") {
-      const name = (result.name || "").trim();
-      const email = (result.email || "").trim();
-      const selected = result.selected_start_time;
-
-      if (!name || !email || !selected) {
-        reply = "I just need your name and email before I can book that for you.";
-      } else {
-        try {
-          const eventType = await getPressureWashEventType(env);
-          const selectedDate = new Date(selected);
-          if (!Number.isFinite(selectedDate.getTime()) || selectedDate.getTime() <= Date.now()) {
-            throw new Error("Invalid booking time.");
-          }
-
-          const verificationStart = new Date(selectedDate.getTime() - 60000);
-          const verificationEnd = new Date(selectedDate.getTime() + 60000);
-          const slots = await getAvailability(
-            eventType.uri,
-            verificationStart.toISOString(),
-            verificationEnd.toISOString(),
-            env
-          );
-          const exactSlot = slots.find(slot => slot?.status === "available" && slot?.start_time === selectedDate.toISOString());
-
-          if (!exactSlot) {
-            reply = "That time was just taken. 😅 Give me another time and I’ll check what’s open.";
-          } else {
-            const booking = await calendlyRequest("/invitees", env, {
-              method: "POST",
-              body: JSON.stringify({
-                event_type: eventType.uri,
-                start_time: selectedDate.toISOString(),
-                invitee: {
-                  email,
-                  name,
-                  timezone: customerTimezone
-                }
-              })
-            });
-
-            const invitee = booking?.resource;
-            scheduling = {
-              action: "booked",
-              start_time: selectedDate.toISOString(),
-              formatted: formatSlot(selectedDate.toISOString(), customerTimezone),
-              reschedule_url: invitee?.reschedule_url || null,
-              cancel_url: invitee?.cancel_url || null
-            };
-
-            reply = `You’re all set, ${name.split(/\\s+/)[0]}! 📅 I booked you for ${formatSlot(selectedDate.toISOString(), customerTimezone)}. Calendly will send your confirmation shortly.`;
-          }
-        } catch (error) {
-          if (error?.status === 403) {
-            reply = "I’m not able to complete the booking directly from here yet. 📅 You can book the appointment securely through Calendly: https://calendly.com/look-peekpressure/pressure-wash";
-          } else {
-            reply = "I hit a snag while booking that time. 😅 Nothing was confirmed. Please try another time or use the Calendly booking link: https://calendly.com/look-peekpressure/pressure-wash";
-          }
-        }
-      }
-    }
-
     const lead = {
       service: result.service,
       location: result.location,
@@ -1549,7 +1384,7 @@ SCHEDULING ACTIONS
       (String(result.phone || "").trim() || String(result.email || "").trim())
     );
     const leadToken = leadReady
-      ? await signLeadToken(env.RESEND_API_KEY, lead)
+      ? await signLeadToken(env.LEAD_SIGNING_SECRET || env.RESEND_API_KEY, lead)
       : null;
 
     return Response.json({
