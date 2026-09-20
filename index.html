@@ -1387,26 +1387,35 @@ document.addEventListener('DOMContentLoaded', () => {
         state.history.push({ role: 'assistant', content: reply });
 
         if (data.lead_ready && data.lead) {
+          // A lead marked complete by the server is ready for immediate handoff.
+          // Property-address confirmation has already been enforced server-side.
           state.pendingLead = {
             ...data.lead,
             lead_token: data.lead_token || ''
           };
 
-          const pending = state.pendingLead;
-          const confirmationParts = [
-            pending.name && "Name: " + pending.name,
-            pending.email && "Email: " + pending.email,
-            pending.phone && "Phone: " + pending.phone,
-            pending.service && "Service: " + pending.service,
-            pending.location && "Location: " + pending.location
-          ].filter(Boolean);
+          state.sending = true;
+          try {
+            const leadToSend = state.pendingLead;
+            state.pendingLead = null;
+            const result = await submitLead(leadToSend);
+            const sent = result?.ok === true && result?.state === HANDOFF_STATES.HANDED_OFF;
 
-          const confirmation = "Before I send this to PEEK PRESSURE, please confirm these details are correct:\n\n" +
-            confirmationParts.join("\n") +
-            "\n\nReply YES to send it, or tell me what you’d like to change.";
-          addMessage(confirmation, 'assistant');
-          state.history.push({ role: 'assistant', content: confirmation });
-          setQuick(['YES — SEND IT', 'I NEED TO CHANGE SOMETHING']);
+            if (sent) {
+              const success = "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly.";
+              addMessage(success, 'assistant');
+              state.history.push({ role: 'assistant', content: success });
+            } else {
+              state.pendingLead = leadToSend;
+              const failure = state.handoffState === HANDOFF_STATES.HANDOFF_UNKNOWN
+                ? "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com."
+                : "I couldn’t complete the handoff just yet. Please try again, or call/text PEEK PRESSURE at 415-689-8377.";
+              addMessage(failure, 'assistant');
+              state.history.push({ role: 'assistant', content: failure });
+            }
+          } finally {
+            state.sending = false;
+          }
         }
 
         const bookingIntent = /\b(book|schedule|appointment|availability|available times?)\b/i.test(clean);
