@@ -405,6 +405,60 @@ function checkLeadRateLimit(request) {
   return { allowed: true, retryAfter: 0 };
 }
 
+function base64UrlDecode(value) {
+  const normalized = String(value || "").replace(/-/g, "+").replace(/_/g, "/");
+  const padded = normalized + "=".repeat((4 - normalized.length % 4) % 4);
+  const binary = atob(padded);
+  return Uint8Array.from(binary, char => char.charCodeAt(0));
+}
+
+async function verifyLeadToken(secret, token, lead) {
+  if (!secret || typeof token !== "string" || !token.includes(".")) return false;
+
+  try {
+    const [encodedPayload, encodedSignature] = token.split(".");
+    const payloadBytes = base64UrlDecode(encodedPayload);
+    const signatureBytes = base64UrlDecode(encodedSignature);
+    const payload = JSON.parse(new TextDecoder().decode(payloadBytes));
+
+    if (!payload?.exp || payload.exp < Date.now() || !payload?.lead) return false;
+
+    const canonicalLead = {
+      name: String(lead.name || "").trim(),
+      phone: String(lead.phone || "").trim(),
+      email: String(lead.email || "").trim(),
+      service: String(lead.service || "").trim(),
+      location: String(lead.location || "").trim(),
+      property_type: String(lead.property_type || "").trim(),
+      size: String(lead.size || "").trim(),
+      surface: String(lead.surface || "").trim(),
+      condition: String(lead.condition || "").trim(),
+      timing: String(lead.timing || "").trim(),
+      question: String(lead.question || "").trim(),
+      lead_status: String(lead.lead_status || "").trim()
+    };
+
+    if (JSON.stringify(payload.lead) !== JSON.stringify(canonicalLead)) return false;
+
+    const key = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["verify"]
+    );
+
+    return await crypto.subtle.verify(
+      "HMAC",
+      key,
+      signatureBytes,
+      payloadBytes
+    );
+  } catch {
+    return false;
+  }
+}
+
 const TO_EMAIL = "look@peekpressure.com";
 const FROM_EMAIL = "PEEK PRESSURE <look@peekpressure.com>";
 
@@ -459,6 +513,7 @@ async function handleLead(context) {
   try {
     const body = await context.request.json();
     const lead = body.lead || {};
+    const leadToken = String(body.lead_token || "").trim();
     const messages = Array.isArray(body.messages) ? body.messages.slice(-32) : [];
 
     const name = String(lead.name || "").trim();
@@ -473,6 +528,10 @@ async function handleLead(context) {
 
     if (lead.lead_status === "spam" || lead.lead_status === "uncertain") {
       return json({ error: "This lead was not eligible for email handoff." }, 400);
+    }
+
+    if (!(await verifyLeadToken(RESEND_API_KEY, leadToken, lead))) {
+      return json({ error: "This lead handoff is no longer valid. Please start the quote conversation again." }, 403);
     }
 
     const transcript = messages
