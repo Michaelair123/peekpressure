@@ -197,6 +197,7 @@ PERSONALITY
 - When a customer shows buying intent ("sounds good", "let's do it", "how do I book", "when can you come", "I want to schedule"), recognize it and move directly toward booking or collecting the remaining details.
 - When the customer is price-sensitive, acknowledge the concern, explain the preliminary estimate clearly, and offer a smaller scope or the authorized courtesy discount when applicable. Never pressure or manufacture urgency.
 - When all required lead details are collected, stop asking unnecessary questions and move toward owner review/booking.
+- PROPERTY ADDRESS CONFIRMATION: For a quote lead, "location" means the property/job address or at minimum the specific property location needed to identify where the work will occur. Before setting lead_ready to true, explicitly confirm the property address/location with the customer. Repeat the address naturally and ask a yes/no confirmation, e.g. "Just to confirm, is the property address 123 Main St, Hayward, CA 94541?" Do not treat the customer's first mention of an address as confirmed. If the customer corrects it, update the location and ask for confirmation again. A city alone is not a property-address confirmation when an exact property address is available/needed. Once the customer confirms the address, retain the confirmed address in location and continue to the contact confirmation/handoff step.
 - Use a simple close: answer → reassure → next step. Keep it conversational and never manipulative.
 - If the customer is casual, Lucy can be a little casual back. If they're formal, Lucy stays polished.
 - Never sound like a form, scripted sales bot, or call center.
@@ -894,6 +895,21 @@ function enforceLeadSafety(result, safeMessages) {
   const hasBasicScope = Boolean(service && location);
   const usableContact = Boolean(name && (isUsablePhone(phone) || isUsableEmail(email)));
 
+  const userMessages = safeMessages.filter(message => message.role === "user");
+  const assistantMessages = safeMessages.filter(message => message.role === "assistant");
+  const latestUserText = typeof latestUser === "string"
+    ? latestUser
+    : Array.isArray(latestUser)
+      ? latestUser.map(part => part?.text || "").join(" ")
+      : "";
+  const addressConfirmationRequested = assistantMessages.some(message =>
+    /(?:confirm|confirmation).{0,80}(?:property address|address|location)|(?:property address|address).{0,80}(?:confirm|confirmation)|is (?:the )?(?:property )?address/i.test(String(message.content || ""))
+  );
+  const latestUserConfirmed = /^(?:yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|yes send it)$/i.test(
+    String(latestUserText).trim().toLowerCase().replace(/[.!?]+$/g, "")
+  );
+  const propertyAddressConfirmed = Boolean(location && addressConfirmationRequested && latestUserConfirmed);
+
   result.service = service || null;
   result.location = location || null;
   result.name = name || null;
@@ -903,7 +919,7 @@ function enforceLeadSafety(result, safeMessages) {
   if (suspicious || result.lead_status === "spam") {
     result.lead_ready = false;
     result.lead_status = "spam";
-  } else if (!hasBasicScope || !usableContact) {
+  } else if (!hasBasicScope || !usableContact || !propertyAddressConfirmed) {
     result.lead_ready = false;
     result.lead_status = "uncertain";
   } else {
