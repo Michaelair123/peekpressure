@@ -12,7 +12,7 @@ body{margin:0;padding:40px 20px}.wrap{max-width:1000px;margin:auto}.top{display:
 <body>
 <div class="wrap">
   <div class="top">
-    <div><div class="eyebrow">PEEK PRESSURE · INTERNAL</div><div class="title">LUCY STRESS TEST</div><div class="sub">Run the 50-case regression suite against Lucy. The suite spaces requests 4 seconds apart to respect the staging rate limit, so a full run takes about 3–4 minutes. Enter the staging token you already use for the test endpoint. The token is kept in this page session only.</div></div>
+    <div><div class="eyebrow">PEEK PRESSURE · INTERNAL</div><div class="title">LUCY STRESS TEST</div><div class="sub">Run the 50-case regression suite against Lucy. The suite spaces requests 12 seconds apart to stay comfortably under the staging rate limit, so a full run takes about 10 minutes. Enter the staging token you already use for the test endpoint. The token is kept in this page session only.</div></div>
   </div>
   <div class="panel">
     <div class="row"><input id="token" type="password" autocomplete="off" placeholder="LUCY_STAGING_TOKEN"><button id="run">RUN 50 TESTS</button></div>
@@ -130,8 +130,8 @@ $("run").onclick=async()=>{
   }catch(e){failed++;const row=document.createElement("div");row.className="case";row.innerHTML="<div class='casehead'><strong class='fail'>ERROR — "+name+"</strong></div><div class='reply'></div>";row.querySelector(".reply").textContent=String(e);$("results").append(row)}
   $("total").textContent=passed+failed;$("passed").textContent=passed;$("failed").textContent=failed;$("rate").textContent=Math.round(passed/(passed+failed)*100)+"%";
   if(passed+failed<cases.length){
-   $("status").textContent="Completed "+(passed+failed)+"/"+cases.length+". Waiting 4 seconds to respect the staging rate limit…";
-   await new Promise(resolve=>setTimeout(resolve,4000));
+   $("status").textContent="Completed "+(passed+failed)+"/"+cases.length+". Waiting 12 seconds to respect the staging rate limit…";
+   await new Promise(resolve=>setTimeout(resolve,12000));
   }
  }
  $("status").textContent="Complete. "+passed+"/"+cases.length+" passed.";
