@@ -32,6 +32,59 @@ export default {
       });
     };
 
+    const withHtmlSecurity = (response) => {
+      const headers = new Headers(response.headers);
+      for (const [key, value] of Object.entries(securityHeaders)) {
+        headers.set(key, value);
+      }
+
+      const contentType = headers.get("content-type") || "";
+      if (!contentType.includes("text/html")) {
+        return new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers
+        });
+      }
+
+      const nonce = crypto.randomUUID();
+      headers.set(
+        "Content-Security-Policy",
+        [
+          "default-src 'self'",
+          "base-uri 'self'",
+          "object-src 'none'",
+          "frame-ancestors 'none'",
+          "script-src 'nonce-" + nonce + "' 'strict-dynamic'",
+          "style-src 'self' 'nonce-" + nonce + "'",
+          "img-src 'self' data: blob: https://lirp.cdn-website.com https://cdn.prod.website-files.com https://images.squarespace-cdn.com https://images.unsplash.com https://www.bestpowerwashli.com",
+          "font-src 'self'",
+          "connect-src 'self'",
+          "frame-src https://www.google.com",
+          "form-action 'self' https://formspree.io",
+          "manifest-src 'self'",
+          "upgrade-insecure-requests"
+        ].join("; ")
+      );
+
+      return new HTMLRewriter()
+        .on("script", {
+          element(element) {
+            element.setAttribute("nonce", nonce);
+          }
+        })
+        .on("style", {
+          element(element) {
+            element.setAttribute("nonce", nonce);
+          }
+        })
+        .transform(new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers
+        }));
+    };
+
     const cors = {
       "Access-Control-Allow-Origin": allowedOrigin,
       "Access-Control-Allow-Headers": "Content-Type, X-Lucy-Staging-Token",
@@ -40,7 +93,10 @@ export default {
     };
 
     if (request.method === "OPTIONS" && url.pathname.startsWith("/api/")) {
-      return new Response(null, { status: 204, headers: cors });
+      return new Response(null, {
+        status: 204,
+        headers: { ...cors, ...securityHeaders }
+      });
     }
 
     const withCors = (response) => {
@@ -118,7 +174,7 @@ export default {
     }
 
     if (env.ASSETS) {
-      return withSecurity(await env.ASSETS.fetch(request));
+      return withHtmlSecurity(await env.ASSETS.fetch(request));
     }
 
     return withSecurity(new Response("Not Found", { status: 404 }));
