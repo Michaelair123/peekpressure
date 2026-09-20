@@ -268,9 +268,12 @@ async function handleLead(context) {
 
     // Once Resend has returned a successful HTTP status, the handoff is complete.
     return json({
+      success: true,
       sent: true,
       handoff_state: "HANDED_OFF",
-      email_id: result?.id || null
+      status: "submitted",
+      email_id: result?.id || null,
+      conversation_id: conversationId || null
     });
   } catch (error) {
     console.error("Lucy lead email handler error:", error);
