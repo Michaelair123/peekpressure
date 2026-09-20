@@ -9,6 +9,24 @@
   "vars": {
     "OPENAI_MODEL": "gpt-5.6-luna"
   },
+  "ratelimits": [
+    {
+      "name": "LUCY_EDGE_BURST",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 3,
+        "period": 10
+      }
+    },
+    {
+      "name": "LEAD_EDGE_BURST",
+      "namespace_id": "1002",
+      "simple": {
+        "limit": 3,
+        "period": 60
+      }
+    }
+  ],
   "assets": {
     "directory": ".",
     "binding": "ASSETS"
