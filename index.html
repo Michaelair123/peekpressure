@@ -1405,13 +1405,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const after = media.querySelector('.before-after-after');
     const divider = media.querySelector('.before-after-divider');
     if (!range || !after || !divider) return;
-    const update = () => {
-      const value = Number(range.value);
-      after.style.clipPath = 'inset(0 0 0 ' + (100 - value) + '%)';
-      divider.style.left = value + '%';
+
+    const update = value => {
+      const position = Math.min(100, Math.max(0, Number(value)));
+      media.style.setProperty('--before-after-position', position + '%');
+      range.value = position;
     };
-    range.addEventListener('input', update);
-    update();
+
+    range.addEventListener('input', event => update(event.target.value));
+    range.addEventListener('change', event => update(event.target.value));
+    update(range.value);
   });
 })();
 </script>
