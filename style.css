@@ -238,3 +238,8 @@ footer .footer-inner p,
 footer .footer-bottom{font-size:inherit;}
 footer .footer-inner p{font-size:.65rem;line-height:1.6;}
 
+
+/* Audit fixes: the process has three steps, so keep a three-column desktop grid. */
+@media (min-width:901px){
+  .process-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
