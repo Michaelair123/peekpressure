@@ -636,3 +636,42 @@ select,
     line-height:.91!important;
   }
 }
+
+
+/* FINAL TYPE SCALE — smaller editorial headings */
+.hero-copy h1{
+  font-size:clamp(3.5rem,6.5vw,6.5rem)!important;
+}
+.about h2{
+  font-size:clamp(2.8rem,5.5vw,5.5rem)!important;
+}
+.process-header h2,
+main>h2{
+  font-size:clamp(2.8rem,5.5vw,5.5rem)!important;
+}
+.why-peek-intro h2,
+.service-area h2,
+.contact-container>h2,
+.proof-header h2{
+  font-size:clamp(2.6rem,5vw,5rem)!important;
+}
+.booking-cta-copy h3{
+  font-size:clamp(2.4rem,5vw,5rem)!important;
+}
+@media(max-width:700px){
+  .hero-copy h1{
+    font-size:clamp(2.7rem,12vw,4.75rem)!important;
+  }
+  .about h2,
+  .process-header h2,
+  main>h2{
+    font-size:clamp(2.4rem,10vw,4.25rem)!important;
+  }
+  .why-peek-intro h2,
+  .service-area h2,
+  .contact-container>h2,
+  .proof-header h2,
+  .booking-cta-copy h3{
+    font-size:clamp(2.2rem,9vw,3.8rem)!important;
+  }
+}
