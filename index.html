@@ -870,6 +870,30 @@ document.addEventListener('DOMContentLoaded', () => {
   </aside>
 
   <script>
+  // Booking easter egg — only appears after Calendly confirms a real booking.
+  window.addEventListener('message', event => {
+    if (event.origin !== 'https://calendly.com') return;
+    const data = event.data || {};
+    if (data.event !== 'calendly.event_scheduled') return;
+
+    let egg = document.getElementById('peekBookingEgg');
+    if (!egg) {
+      egg = document.createElement('div');
+      egg.id = 'peekBookingEgg';
+      egg.className = 'peek-booking-egg';
+      egg.setAttribute('role', 'status');
+      egg.setAttribute('aria-live', 'polite');
+      egg.innerHTML = '<span aria-hidden="true">👀</span><span>PEEK. YOU\'RE BOOKED.</span>';
+      document.body.appendChild(egg);
+    }
+
+    egg.classList.remove('is-visible');
+    requestAnimationFrame(() => egg.classList.add('is-visible'));
+    window.setTimeout(() => egg.classList.remove('is-visible'), 4200);
+  });
+  </script>
+
+  <script>
   (() => {
     const launcher = document.getElementById('peekChatLauncher');
     const panel = document.getElementById('peekChat');
