@@ -1,0 +1,64 @@
+name: Competitive Market Pricing Survey
+
+on:
+  schedule:
+    - cron: "23 15 * * 1"
+  workflow_dispatch:
+    inputs:
+      extra_urls:
+        description: "Optional comma-separated competitor URLs"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  survey:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run public competitor survey
+        env:
+          EXTRA_URLS: ${{ github.event.inputs.extra_urls }}
+        run: |
+          set -euo pipefail
+          if [ -n "${EXTRA_URLS:-}" ]; then
+            python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path("competitive-market.json")
+          data=json.loads(p.read_text())
+          data["additional_urls"]=[u.strip() for u in os.environ["EXTRA_URLS"].split(",") if u.strip()]
+          p.write_text(json.dumps(data,indent=2)+"\n")
+          PY
+          fi
+          node scripts/competitive-market-survey.mjs
+
+      - name: Upload survey artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: competitive-market-survey
+          path: |
+            competitive-market-survey.json
+            competitive-market-survey.md
+
+      - name: Publish GitHub issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh issue create --title "Bay Area competitive pricing survey — $(date -u +%Y-%m-%d)" --body-file competitive-market-survey.md --label pricing || gh issue create --title "Bay Area competitive pricing survey — $(date -u +%Y-%m-%d)" --body-file competitive-market-survey.md
