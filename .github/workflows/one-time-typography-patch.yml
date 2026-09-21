@@ -57,7 +57,7 @@ main>.form-success,main>.form-error{font-size:.9rem}
 }
 CSS
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+users.noreply.github.com"
           git add style.css
           git commit -m "fix: improve site typography readability [typography-patched]"
           git push
