@@ -373,6 +373,19 @@
         <span class="label">SERVICE AREA</span>
         <h2 id="service-area-title">SERVING THE<br>BAY AREA.</h2>
         <p>PEEK PRESSURE provides residential and commercial exterior cleaning across the San Francisco Bay Area, with a focus on the Peninsula and nearby communities.</p>
+        <div class="service-zip-check" aria-labelledby="service-zip-title">
+          <div class="service-zip-copy">
+            <span class="label">CHECK YOUR ZIP</span>
+            <h3 id="service-zip-title">Not sure if we come to you?</h3>
+            <p>Enter your ZIP code and we'll tell you whether it's within our current service area.</p>
+          </div>
+          <form class="service-zip-form" id="serviceZipForm" novalidate>
+            <label class="sr-only" for="serviceZip">ZIP code</label>
+            <input id="serviceZip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="Enter ZIP code" aria-describedby="serviceZipResult">
+            <button type="submit">CHECK AREA <span>→</span></button>
+          </form>
+          <div class="service-zip-result" id="serviceZipResult" role="status" aria-live="polite"></div>
+        </div>
         <div class="service-map-wrap">
           <div class="service-map" aria-label="Map showing PEEK PRESSURE service area across the San Francisco Bay Area">
             <iframe
@@ -739,6 +752,49 @@
 
       drawServiceArea();
       window.addEventListener('resize', drawServiceArea, { passive: true });
+    }
+
+    // ZIP service-area checker — local lookup, no third-party request required.
+    const serviceZipForm = document.getElementById('serviceZipForm');
+    const serviceZip = document.getElementById('serviceZip');
+    const serviceZipResult = document.getElementById('serviceZipResult');
+
+    if (serviceZipForm && serviceZip && serviceZipResult) {
+      const serviceZips = new Set([
+        '94002','94005','94010','94011','94014','94015','94016','94019','94020','94021','94025',
+        '94027','94028','94030','94035','94037','94038','94040','94041','94042','94043','94044',
+        '94061','94062','94063','94064','94065','94066','94070','94074','94080','94083','94087',
+        '94089','94094','94096','94102','94103','94104','94105','94107','94108','94109','94110',
+        '94111','94112','94114','94115','94116','94117','94118','94121','94122','94123','94124',
+        '94127','94128','94129','94130','94131','94132','94133','94134','94158','94301','94302',
+        '94303','94304','94305','94306','94401','94402','94403','94404','94405','94536','94537',
+        '94538','94539','94541','94542','94543','94544','94545','94546','94550','94551','94552',
+        '94555','94560','94566','94568','94577','94578','94579','94580','94583','94586','94587',
+        '94588','94601','94602','94603','94605','94606','94607','94608','94609','94610','94611',
+        '94612','94613','94618','94619','94621','94622','94623','94624','94649','94662','94666'
+      ]);
+
+      serviceZipForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const zip = serviceZip.value.trim();
+
+        serviceZipResult.className = 'service-zip-result';
+
+        if (!/^\d{5}$/.test(zip)) {
+          serviceZipResult.textContent = 'Please enter a valid 5-digit ZIP code.';
+          serviceZipResult.classList.add('is-error');
+          serviceZip.focus();
+          return;
+        }
+
+        if (serviceZips.has(zip)) {
+          serviceZipResult.innerHTML = '<strong>YES — WE SERVICE YOUR AREA.</strong> <a href="#quoteForm">Get a quote →</a>';
+          serviceZipResult.classList.add('is-success');
+        } else {
+          serviceZipResult.innerHTML = '<strong>Not currently on our ZIP list.</strong> <a href="tel:14156898377">Call us</a> and we\'ll confirm coverage.';
+          serviceZipResult.classList.add('is-neutral');
+        }
+      });
     }
 
     const sections = document.querySelectorAll('section[id]');
