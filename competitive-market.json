@@ -3,12 +3,45 @@
   "market": "San Francisco Bay Area",
   "currency": "USD",
   "competitors": [
-    {"name":"Bull Run Exterior Wash","url":"https://www.bullrunexteriorwash.com/","type":"local_operator"},
-    {"name":"Bay Area Exterior Cleaning","url":"https://www.bayareaexteriorcleaning.com/blog/pressure-washing-cost-san-jose-bay-area","type":"local_operator_pricing_guide"},
-    {"name":"PressureWashProfessionals","url":"https://www.pressurewashprofessionals.com/pressure-washing-cost/california/san-francisco","type":"pricing_guide"},
-    {"name":"Angi San Francisco","url":"https://www.angi.com/articles/how-much-does-it-cost-pressure-wash-house/ca/san-francisco","type":"marketplace_guide"}
+    {
+      "name": "Bull Run Exterior Wash",
+      "url": "https://www.bullrunexteriorwash.com/",
+      "type": "local_operator"
+    },
+    {
+      "name": "Bay Area Exterior Cleaning",
+      "url": "https://www.bayareaexteriorcleaning.com/blog/pressure-washing-cost-san-jose-bay-area",
+      "type": "local_operator_pricing_guide"
+    },
+    {
+      "name": "PressureWashProfessionals",
+      "url": "https://www.pressurewashprofessionals.com/pressure-washing-cost/california/san-francisco",
+      "type": "pricing_guide"
+    },
+    {
+      "name": "Angi San Francisco",
+      "url": "https://www.angi.com/articles/how-much-does-it-cost-pressure-wash-house/ca/san-francisco",
+      "type": "marketplace_guide"
+    }
   ],
   "additional_urls": [],
-  "services": ["driveway","sidewalk","walkway","patio","commercial","house exterior","flatwork"],
-  "notes": "Research-only. Never calls Lucy/OpenAI APIs and never changes PEEK PRESSURE pricing."
+  "services": [
+    "driveway",
+    "sidewalk",
+    "walkway",
+    "patio",
+    "commercial",
+    "house exterior",
+    "flatwork"
+  ],
+  "notes": "Research-only. Never calls Lucy/OpenAI APIs and never changes PEEK PRESSURE pricing.",
+  "marketplaces": {
+    "craigslist": [
+      "https://sfbay.craigslist.org/search/hss?query=pressure%20washing",
+      "https://sfbay.craigslist.org/search/hss?query=power%20washing",
+      "https://sfbay.craigslist.org/search/hss?query=driveway%20cleaning"
+    ],
+    "facebook_public_urls": [],
+    "note": "Facebook Marketplace is included as a public-source target only when a publicly accessible URL is supplied. The agent does not log in, bypass access controls, CAPTCHA, robots restrictions, or scrape private/group-only content."
+  }
 }
