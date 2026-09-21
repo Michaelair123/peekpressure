@@ -49,7 +49,7 @@ export const LUCY_FAQ = [
     id:"minimum",
     question:"What is your minimum charge?",
     keywords:["minimum charge","minimum price","minimum","minimum job","small job"],
-    answer:"PEEK PRESSURE currently has a $150 minimum job charge. Larger jobs are priced from the actual scope, size, condition, access, and site requirements."
+    answer:"PEEK PRESSURE currently has a $200 minimum job charge. Larger jobs are priced from the actual scope, size, condition, access, and site requirements."
   },
   {
     id:"travel-pricing",
@@ -61,7 +61,7 @@ export const LUCY_FAQ = [
     id:"pricing",
     question:"How much does pressure washing cost?",
     keywords:["cost","price","pricing","how much","rate","rates"],
-    answer:"There’s no single price that fits every property. Pricing can depend on surface area, material, condition, buildup, access, water availability, runoff requirements, treatment needs, and detail work. Our current minimum is $150. Lucy can collect the information needed for a preliminary estimate."
+    answer:"There’s no single price that fits every property. Pricing can depend on surface area, material, condition, buildup, access, water availability, runoff requirements, treatment needs, and detail work. Our current minimum is $200. Lucy can collect the information needed for a preliminary estimate."
   },
   {
     id:"premium-pricing",
