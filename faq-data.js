@@ -52,6 +52,12 @@ export const LUCY_FAQ = [
     answer:"PEEK PRESSURE currently has a $150 minimum job charge. Larger jobs are priced from the actual scope, size, condition, access, and site requirements."
   },
   {
+    id:"travel-pricing",
+    question:"Does distance affect the price?",
+    keywords:["travel fee","travel charge","distance fee","distance pricing","far away","how far","travel","mobilization"],
+    answer:"It can. PEEK PRESSURE prices from the nearest operating area around San Francisco or Hayward, so longer-distance jobs may include a travel or mobilization factor. The adjustment depends on the actual property location and overall job scope, and larger projects are reviewed as a whole rather than using a one-size-fits-all fee."
+  },
+  {
     id:"pricing",
     question:"How much does pressure washing cost?",
     keywords:["cost","price","pricing","how much","rate","rates"],
