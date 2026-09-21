@@ -7,7 +7,7 @@
   <meta name="description" content="PEEK PRESSURE provides professional pressure washing for driveways, sidewalks, walkways, and commercial properties throughout the Bay Area. Request a quote today.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://peekpressure.com/">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">\n  <link rel="preconnect" href="https://images.pexels.com">\n  <link rel="preconnect" href="https://images.unsplash.com">\n  <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
   <meta name="author" content="PEEK PRESSURE">
@@ -794,12 +794,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-  <button class="peek-chat-launcher" id="peekChatLauncher" type="button" aria-label="Chat with Lucy, PEEK PRESSURE's AI assistant">
+  <button class="peek-chat-launcher" id="peekChatLauncher" type="button" aria-controls="peekChat" aria-expanded="false" aria-label="Chat with Lucy, PEEK PRESSURE's AI assistant">
     <span class="peek-chat-launcher-wave" aria-hidden="true">👋</span>
     <span class="peek-chat-launcher-copy"><strong>HI, I'M LUCY</strong><small>ASK ME ANYTHING</small></span>
   </button>
 
-  <aside class="peek-chat" id="peekChat" aria-label="Lucy, PEEK PRESSURE's AI assistant" aria-hidden="true">
+  <aside class="peek-chat" id="peekChat" role="dialog" aria-modal="false" aria-label="Lucy, PEEK PRESSURE's AI assistant" aria-hidden="true">
     <div class="peek-chat-head">
       <div>
         <span class="peek-chat-kicker">PEEK PRESSURE</span>
@@ -1017,6 +1017,8 @@ document.addEventListener('DOMContentLoaded', () => {
       state.open = true;
       panel.classList.add('is-open');
       panel.setAttribute('aria-hidden', 'false');
+      panel.setAttribute('aria-modal', 'true');
+      launcher.setAttribute('aria-expanded', 'true');
       launcher.classList.add('is-hidden');
 
       if (!messages.children.length) {
@@ -1033,6 +1035,8 @@ document.addEventListener('DOMContentLoaded', () => {
       state.open = false;
       panel.classList.remove('is-open');
       panel.setAttribute('aria-hidden', 'true');
+      panel.setAttribute('aria-modal', 'false');
+      launcher.setAttribute('aria-expanded', 'false');
       launcher.classList.remove('is-hidden');
     }
 
