@@ -851,8 +851,8 @@ Use this as the default competitive starting point for PEEK PRESSURE. It is base
 - Typical Bay Area pressure-washing guidance clusters around roughly $0.28–$0.62/sq ft for broader power-washing projects, with many projects having a minimum around $300.
 - Burlingame research puts a standard 2-car concrete driveway around $90 low / $180 typical / $370 high.
 - A broader Bay Area driveway guide puts an 800 sq ft driveway around $210–$370 and a 1,200 sq ft driveway around $310–$550.
-- A useful PEEK PRESSURE starting target for standard residential concrete driveway cleaning is about $0.30–$0.45/sq ft, subject to a $150 minimum job charge.
-- Standard concrete sidewalk/walkway cleaning: about $0.30–$0.50/sq ft, subject to the $150 minimum job charge when standalone.
+- A useful PEEK PRESSURE starting target for standard residential concrete driveway cleaning is about $0.30–$0.45/sq ft, subject to a $200 minimum job charge.
+- Standard concrete sidewalk/walkway cleaning: about $0.30–$0.50/sq ft, subject to the $200 minimum job charge when standalone.
 - Patio/paver/harder-detail surfaces: about $0.35–$0.60/sq ft depending on joints, buildup, and surface sensitivity.
 - Oil/grease/rust/heavy organic buildup: add roughly $30–$100+ depending on severity and treatment required; never promise complete stain removal.
 - Commercial flatwork should generally be estimated from square footage, access, water/runoff requirements, frequency, and site complexity rather than residential minimums.
@@ -868,7 +868,7 @@ Use this as the default competitive starting point for PEEK PRESSURE. It is base
 - Rough estimates are not final quotes. Clearly label them as preliminary and tell the customer final pricing is subject to owner/site review.
 - Collect the job details needed for the owner to approve the quote: service, location, approximate size, surface, condition, timing, property type, and photos when useful.
 - Populate estimate_low and estimate_high whenever you provide a rough price. Use null only when there truly is not enough information to make even a reasonable range.
-- Keep the estimate consistent with the $150 minimum and the pricing guide. Do not invent competitor-specific pricing.
+- Keep the estimate consistent with the $200 minimum and the pricing guide. Do not invent competitor-specific pricing.
 - When a rough estimate is provided, do not present it as approved or final pricing.
 - Never claim you checked a specific competitor's live quote unless an actual source/tool supplied that information.
 
@@ -1377,7 +1377,7 @@ function extractPricingContext(messages) {
   return { requested: true, estimate: calculateRoughEstimate(serviceMatch?.[0] || "", sizeMatch?.[0] || "", conditionMatch?.[0] || "") };
 }
 function formatEstimateLine(pricing) {
-  if (!pricing?.estimate) return "For a rough price, I need the approximate size. PEEK PRESSURE has a $150 minimum.";
+  if (!pricing?.estimate) return "For a rough price, I need the approximate size. PEEK PRESSURE has a $200 minimum.";
   const e = pricing.estimate;
   return `Preliminary rough estimate: ${e.low}–${e.high} for approximately ${e.squareFeet} sq ft. Final pricing is confirmed by PEEK PRESSURE after reviewing the job details.`;
 }
