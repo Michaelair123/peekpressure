@@ -844,7 +844,7 @@ BUSINESS FACTS
 - Website: https://peekpressure.com/
 - Phone: 415-689-8377
 - Email: look@peekpressure.com
-- Booking: https://calendly.com/look-peekpressure/pressure-wash
+- Booking: https://calendly.com/michaelair123/30min
 
 PRICING RESEARCH + ESTIMATE GUIDE (BAY AREA, 2026)
 Use this as the default competitive starting point for PEEK PRESSURE. It is based on current 2026 Bay Area/Burlingame market research, not a promise of competitor pricing.
@@ -1309,7 +1309,7 @@ function buildFastReply(text) {
     return "We serve the Bay Area, with a focus on the Peninsula and nearby areas. Tell me the city and what you need cleaned and I’ll let you know if we cover it.";
   }
   if (/\b(book|booking|schedule|scheduled|appointment|appointments|calendly|available|availability)\b/i.test(value)) {
-    return "Absolutely — you can pick a time that works for you here: https://calendly.com/look-peekpressure/pressure-wash";
+    return "Absolutely — you can pick a time that works for you here: https://calendly.com/michaelair123/30min";
   }
   return null;
 }
@@ -1762,7 +1762,7 @@ SCHEDULING ACTIONS
     // Calendly is intentionally handled by the public booking link now.
     // Never spend an API call checking or creating appointments from Lucy.
     if (result.action === "check_availability" || result.action === "book_appointment") {
-      reply = "Absolutely 📅 You can pick a time that works for you here: https://calendly.com/look-peekpressure/pressure-wash";
+      reply = "Absolutely 📅 You can pick a time that works for you here: https://calendly.com/michaelair123/30min";
       result.action = "none";
     }
 
