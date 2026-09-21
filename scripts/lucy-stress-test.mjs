@@ -85,7 +85,7 @@ function assert(data,type){
   if(type==="lead_safety") return data.lead_ready===false&&data.lead_status!=="real";
   if(type==="scope_boundary") return data.lead_ready===false&&/(roof|exterior cleaning|pressure wash|don't|do not)/i.test(reply);
   if(type==="no_price") return !/^\$[0-9]/.test(reply)&&/price|scope|size|surface|condition|location/i.test(reply);
-  if(type==="price_estimate") return /preliminary rough estimate|\$\d+.*[–-].*\$\d+|\$150 minimum/i.test(reply);
+  if(type==="price_estimate") return /preliminary rough estimate|\$\d+.*[–-].*\$\d+/i.test(reply);
   if(type==="faq_fast") return /yes|yep/i.test(reply)&&/driveway/i.test(reply)&&!/^\$/.test(reply);
   if(type==="contradiction_size") return /500|2,?000|800/i.test(reply)&&/which|correct|confirm|sure|size|number/i.test(reply)&&!/preliminary rough estimate/i.test(reply);
   if(type==="frustration_recovery") return data.conversation_state?.customer_signals?.frustrated===true && !/repeat|again|full property address/i.test(reply);
