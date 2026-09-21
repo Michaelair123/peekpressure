@@ -660,8 +660,16 @@
         }
 
         if (serviceZips.has(zip)) {
-          serviceZipResult.innerHTML = '<strong>YES — WE SERVICE YOUR AREA.</strong> <a href="#quoteForm">Get a quote →</a>';
+          serviceZipResult.innerHTML = '<div class="service-zip-success"><span class="service-zip-checkmark" aria-hidden="true">✓</span><div><strong>YES — WE SERVICE YOUR AREA.</strong><small>Good news — we can help with your property.</small></div><button type="button" class="service-zip-quote-button" id="serviceZipQuoteButton">GET A QUOTE <span>→</span></button></div>';
           serviceZipResult.classList.add('is-success');
+
+          const quoteButton = document.getElementById('serviceZipQuoteButton');
+          if (quoteButton) {
+            quoteButton.addEventListener('click', () => {
+              document.getElementById('quoteForm')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              setTimeout(() => document.querySelector('#quoteForm input[name="address"]')?.focus({ preventScroll: true }), 550);
+            });
+          }
         } else {
           serviceZipResult.innerHTML = '<strong>Not currently on our ZIP list.</strong> <a href="tel:14156898377">Call us</a> and we\'ll confirm coverage.';
           serviceZipResult.classList.add('is-neutral');
