@@ -636,23 +636,23 @@
       }
     }
 
-    // Coordinates are projected onto the fixed Google Maps viewport so dots/boundary
-    // stay geographically aligned without requiring a Google Maps API key.
+    // Draw the actual incorporated-city boundaries from California's current GIS service.
     const serviceMap = document.querySelector('.service-map');
     const serviceDots = document.querySelector('.service-map-dots');
 
-    if (serviceMap && serviceDots) {
-      const serviceCities = {
-        sf:{lat:37.7599,lng:-122.4350}, dalycity:{lat:37.6879,lng:-122.4702}, pacifica:{lat:37.6138,lng:-122.4869},
-        southsf:{lat:37.6547,lng:-122.4077}, sanbruno:{lat:37.6305,lng:-122.4111}, millbrae:{lat:37.5985,lng:-122.3872},
-        burlingame:{lat:37.5840,lng:-122.3660}, sanmateo:{lat:37.5569,lng:-122.3131}, foster:{lat:37.5585,lng:-122.2711},
-        belmont:{lat:37.5202,lng:-122.2758}, redwood:{lat:37.4852,lng:-122.2364}, menlopark:{lat:37.4530,lng:-122.1817},
-        paloalto:{lat:37.4419,lng:-122.1430}, mountainview:{lat:37.3861,lng:-122.0839}, sunnyvale:{lat:37.3688,lng:-122.0363},
-        "santa-clara":{lat:37.3541,lng:-121.9552}, sanjose:{lat:37.3382,lng:-121.8863}, milpitas:{lat:37.4323,lng:-121.8996},
-        fremont:{lat:37.5485,lng:-121.9886}, newark:{lat:37.5297,lng:-122.0402}, unioncity:{lat:37.5934,lng:-122.0438},
-        hayward:{lat:37.6688,lng:-122.0808}, sanleandro:{lat:37.7249,lng:-122.1561}, oakland:{lat:37.8044,lng:-122.2711},
-        alameda:{lat:37.7799,lng:-122.2822}
-      };
+    if (serviceMap) {
+      const serviceCities = [
+        'San Francisco',
+        'Daly City',
+        'South San Francisco',
+        'Burlingame',
+        'San Mateo',
+        'Oakland',
+        'San Leandro',
+        'Hayward',
+        'Fremont',
+        'San Jose'
+      ];
 
       const mapCenter = { lat: 37.65, lng: -122.25 };
       const mapZoom = 9;
@@ -671,61 +671,70 @@
         };
       };
 
-      const drawServiceArea = () => {
+      const ringPath = (ring, width, height) =>
+        ring.map(([lng, lat], i) => {
+          const p = project(lat, lng, width, height);
+          return `${i ? 'L' : 'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`;
+        }).join(' ') + ' Z';
+
+      const geometryPath = (geometry, width, height) => {
+        if (!geometry) return '';
+        if (geometry.type === 'Polygon') {
+          return geometry.coordinates.map(ring => ringPath(ring, width, height)).join(' ');
+        }
+        if (geometry.type === 'MultiPolygon') {
+          return geometry.coordinates
+            .flatMap(polygon => polygon.map(ring => ringPath(ring, width, height)))
+            .join(' ');
+        }
+        return '';
+      };
+
+      const drawServiceArea = async () => {
         const rect = serviceMap.getBoundingClientRect();
         const width = rect.width;
         const height = rect.height;
         if (!width || !height) return;
-
-        const points = Object.entries(serviceCities).map(([key, city]) => {
-          const p = project(city.lat, city.lng, width, height);
-          return { key, ...p };
-        });
 
         let svg = serviceMap.querySelector('.service-area-overlay');
         if (!svg) {
           svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
           svg.classList.add('service-area-overlay');
           svg.setAttribute('aria-hidden', 'true');
-          serviceMap.insertBefore(svg, serviceDots);
+          if (serviceDots) serviceDots.style.display = 'none';
+          serviceMap.insertBefore(svg, serviceDots || null);
         }
 
         svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
         svg.setAttribute('width', width);
         svg.setAttribute('height', height);
 
-        // Coverage boundary follows the outer service-city footprint.
-        const boundaryKeys = ['dalycity','sf','oakland','sanleandro','hayward','fremont','sanjose','burlingame'];
-        const boundary = boundaryKeys
-          .map(key => points.find(p => p.key === key))
-          .filter(Boolean);
+        try {
+          const where = serviceCities
+            .map(city => `'${city.replace(/'/g, "''")}'`)
+            .join(',');
+          const url = 'https://services3.arcgis.com/uknczv4rpevve42E/arcgis/rest/services/California_Cities_and_Identifiers_Blue_Version_view/FeatureServer/2/query'
+            + `?where=CDT_NAME_SHORT%20IN%20(${encodeURIComponent(where)})%20AND%20OFFSHORE%20IS%20NULL`
+            + '&outFields=CDT_NAME_SHORT&returnGeometry=true&outSR=4326&f=geojson';
 
-        // Order the footprint around the perimeter for a clean service-area shape.
-        const ordered = [
-          points.find(p => p.key === 'dalycity'),
-          points.find(p => p.key === 'sf'),
-          points.find(p => p.key === 'oakland'),
-          points.find(p => p.key === 'sanleandro'),
-          points.find(p => p.key === 'hayward'),
-          points.find(p => p.key === 'fremont'),
-          points.find(p => p.key === 'sanjose'),
-          points.find(p => p.key === 'burlingame')
-        ].filter(Boolean);
+          const response = await fetch(url);
+          if (!response.ok) throw new Error('Boundary service unavailable');
+          const data = await response.json();
 
-        const path = ordered.map((p, i) => `${i ? 'L' : 'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ') + ' Z';
+          const paths = (data.features || [])
+            .map(feature => geometryPath(feature.geometry, width, height))
+            .filter(Boolean);
 
-        svg.innerHTML = `
-          <path class="service-area-fill" d="${path}"></path>
-          <path class="service-area-stroke" d="${path}"></path>
-        `;
-
-        points.forEach(p => {
-          const dot = serviceDots.querySelector('.' + p.key);
-          if (dot) {
-            dot.style.left = p.x + 'px';
-            dot.style.top = p.y + 'px';
-          }
-        });
+          svg.innerHTML = paths.length
+            ? paths.map(path => `
+                <path class="service-area-fill" d="${path}" fill-rule="evenodd"></path>
+                <path class="service-area-stroke" d="${path}" fill-rule="evenodd"></path>
+              `).join('')
+            : '';
+        } catch (error) {
+          console.warn('PEEK PRESSURE service-area boundaries could not be loaded.', error);
+          svg.innerHTML = '';
+        }
       };
 
       drawServiceArea();
