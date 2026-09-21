@@ -662,6 +662,46 @@
       });
     }
 
+    // Interactive Leaflet service map — pins are real map markers, so they move with the map.
+    (() => {
+      const mapEl = document.getElementById('peekServiceMap');
+      if (!mapEl || typeof L === 'undefined') return;
+
+      const cities = [
+        ['San Francisco',37.7749,-122.4194],['Daly City',37.6879,-122.4702],['Pacifica',37.6138,-122.4869],
+        ['South San Francisco',37.6547,-122.4077],['San Bruno',37.6305,-122.4111],['Millbrae',37.5985,-122.3870],
+        ['Burlingame',37.5779,-122.3481],['San Mateo',37.5630,-122.3255],['Foster City',37.5585,-122.2711],
+        ['Belmont',37.5202,-122.2758],['Redwood City',37.4852,-122.2364],['Menlo Park',37.4530,-122.1817],
+        ['Palo Alto',37.4419,-122.1430],['Mountain View',37.3861,-122.0839],['Sunnyvale',37.3688,-122.0363],
+        ['Santa Clara',37.3541,-121.9552],['San Jose',37.3382,-121.8863],['Milpitas',37.4323,-121.8996],
+        ['Fremont',37.5485,-121.9886],['Newark',37.5297,-122.0402],['Union City',37.5934,-122.0438],
+        ['Hayward',37.6688,-122.0808],['San Leandro',37.7249,-122.1561],['Oakland',37.8044,-122.2712],['Alameda',37.7799,-122.2822]
+      ];
+
+      const map = L.map(mapEl, { scrollWheelZoom:false, zoomControl:true, attributionControl:true });
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom:19,
+        attribution:'&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      const bounds = [];
+      cities.forEach(([name, lat, lng]) => {
+        const marker = L.marker([lat,lng], {
+          icon: L.divIcon({ className:'peek-map-pin', html:'<span aria-hidden="true"></span>', iconSize:[14,14], iconAnchor:[7,7] })
+        }).addTo(map);
+        marker.bindTooltip(name, {direction:'top', offset:[0,-8], opacity:.96});
+        bounds.push([lat,lng]);
+      });
+
+      const fit = () => {
+        map.invalidateSize({animate:false});
+        if (bounds.length) map.fitBounds(bounds, {padding:[28,28], maxZoom:10, animate:false});
+      };
+      requestAnimationFrame(fit);
+      window.addEventListener('load', fit, {once:true});
+      if ('ResizeObserver' in window) new ResizeObserver(() => map.invalidateSize({animate:false})).observe(mapEl);
+    })();
+
     document.querySelectorAll(
       '.services-grid, .about-grid, .process-header, .process-grid, .service, .process-step, .why-peek-grid, .why-peek-point, .service-area-container, .contact-container, .booking-cta-inner'
     ).forEach((el, i) => {
