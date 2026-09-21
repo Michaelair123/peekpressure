@@ -38,6 +38,8 @@ check("$200 minimum only", !/\$150\b/.test(chat + "\n" + faq + "\n" + index), "P
 check("Ladder work boundary", /does not currently offer work that requires ladder access/i.test(faq) && /ladder/i.test(chat), "Lucy and FAQ must preserve the ladder-work limitation.");
 check("Ground-level patio boundary", /ground-level patios/i.test(faq) && /ground-level patios/i.test(chat), "Patio scope must remain ground-level.");
 check("No literal escaped newline syntax bug", !/\\n\s+(?:const|let|var)\b/.test(chat), "chat.js must not contain literal \n text before JavaScript statements.");
+check("No literal escaped newline artifacts", !/\\\\n/.test(index), "index.html must not contain literal escaped newline text.");
+check("Three-step process layout", /class=["\']process-grid["\']/.test(index) && /\\.process-grid\\{[^}]*grid-template-columns:repeat\\(3,minmax\\(0,1fr\\)\\)/.test(css), "The process section contains three steps and should use a three-column desktop grid.");
 check("CSP allows Calendly", /frame-src[^;]*https:\/\/calendly\.com/i.test(worker), "CSP frame-src must allow the embedded Calendly origin.");
 check("CSP allows Leaflet CSS", /style-src[^;]*https:\/\/cdn\.jsdelivr\.net/i.test(worker), "CSP style-src must allow the Leaflet stylesheet origin.");
 check("CSP allows map tiles", /img-src[^;]*https:\/\/tile\.openstreetmap\.org/i.test(worker), "CSP img-src must allow OpenStreetMap tiles.");
