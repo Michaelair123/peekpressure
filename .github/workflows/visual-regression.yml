@@ -1,0 +1,44 @@
+name: Visual regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run visual smoke regression
+        env:
+          CRAWL_URL: https://peekpressure.com/
+          TIMEOUT_MS: "20000"
+        run: node scripts/visual-regression.mjs
+
+      - name: Upload visual artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: peekpressure-visual-regression
+          path: |
+            visual-*.png
+            visual-regression-report.json
+          if-no-files-found: warn
