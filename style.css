@@ -456,40 +456,6 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
   opacity:1!important;
 }
 
-/* Before/after sample-photo demo — replace with PEEK PRESSURE project photos when ready */
-.before-after-before .proof-placeholder{
-  background-image:url("https://www.bestpowerwashli.com/images/gallery/premium_driveway_ba.jpg")!important;
-  background-size:200% 100%!important;
-  background-position:left center!important;
-  background-repeat:no-repeat!important;
-}
-.before-after-after .proof-placeholder{
-  background-image:url("https://www.bestpowerwashli.com/images/gallery/premium_driveway_ba.jpg")!important;
-  background-size:200% 100%!important;
-  background-position:right center!important;
-  background-repeat:no-repeat!important;
-}
-.before-after-before .proof-placeholder span,
-.before-after-after .proof-placeholder span,
-.before-after-before .proof-placeholder small,
-.before-after-after .proof-placeholder small{
-  position:relative;
-  z-index:2;
-  text-shadow:0 2px 10px rgba(0,0,0,.45);
-}
-.before-after-before .proof-placeholder::after,
-.before-after-after .proof-placeholder::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
-.before-after-before .proof-placeholder::after{
-  background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.05) 45%,rgba(0,0,0,.28));
-}
-.before-after-after .proof-placeholder::after{
-  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0) 55%,rgba(0,0,0,.12));
-}
 /* Typography: slightly open large headings for easier reading. */
 .hero-copy h1{letter-spacing:-.085em!important}
 .about h2,.process-header h2,main>h2{letter-spacing:-.075em!important}
@@ -748,35 +714,6 @@ main>h2{font-size:clamp(2.3rem,4.3vw,4.3rem)!important;font-weight:600!important
   .service-zip-form{grid-template-columns:1fr}
   .service-zip-form button{width:100%}
 }
-
-
-/* Service map pin alignment — all listed service locations get explicit map coordinates. */
-.service-map-dots .map-dot{position:absolute!important;z-index:3!important;}
-.service-map-dots .sf{left:29%!important;top:48%!important}
-.service-map-dots .dalycity{left:27%!important;top:53%!important}
-.service-map-dots .pacifica{left:25.9%!important;top:52.3%!important}
-.service-map-dots .southsf{left:31%!important;top:39%!important}
-.service-map-dots .sanbruno{left:29.3%!important;top:53.3%!important}
-.service-map-dots .millbrae{left:30%!important;top:56.3%!important}
-.service-map-dots .burlingame{left:31%!important;top:64%!important}
-.service-map-dots .sanmateo{left:32%!important;top:57%!important}
-.service-map-dots .foster{left:34.5%!important;top:62.6%!important}
-.service-map-dots .belmont{left:33.9%!important;top:65.3%!important}
-.service-map-dots .redwood{left:35.2%!important;top:69%!important}
-.service-map-dots .menlopark{left:37.2%!important;top:73%!important}
-.service-map-dots .paloalto{left:38.7%!important;top:74.9%!important}
-.service-map-dots .mountainview{left:40.6%!important;top:80.7%!important}
-.service-map-dots .sunnyvale{left:42.5%!important;top:83.4%!important}
-.service-map-dots .santa-clara{left:45.8%!important;top:86.8%!important}
-.service-map-dots .sanjose{left:48%!important;top:91%!important}
-.service-map-dots .milpitas{left:49%!important;top:82.7%!important}
-.service-map-dots .fremont{left:48%!important;top:72%!important}
-.service-map-dots .newark{left:44.1%!important;top:71.4%!important}
-.service-map-dots .unioncity{left:44.6%!important;top:66.6%!important}
-.service-map-dots .hayward{left:43%!important;top:62%!important}
-.service-map-dots .sanleandro{left:40%!important;top:51%!important}
-.service-map-dots .oakland{left:39%!important;top:43%!important}
-.service-map-dots .alameda{left:38%!important;top:48.3%!important}
 
 
 /* Interactive service map: pins and map now share the same geographic coordinate system. */
