@@ -847,23 +847,3 @@ html{scroll-padding-top:96px;scroll-padding-bottom:96px}
   }
 }
 
-/* Tiny hidden PEEK — a little wink at the bottom of the page. */
-.footer-peek{
-  display:block;
-  width:max-content;
-  margin:22px auto 0;
-  color:inherit;
-  opacity:.10;
-  font:700 15px/1 Inter,Arial,sans-serif;
-  letter-spacing:.04em;
-  text-decoration:none;
-  transition:opacity .25s ease,transform .25s ease;
-  user-select:none;
-}
-.footer-peek:hover,.footer-peek:focus-visible{
-  opacity:.55;
-  transform:translateY(-1px);
-}
-@media (prefers-reduced-motion:reduce){
-  .footer-peek{transition:none}
-}
