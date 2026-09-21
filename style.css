@@ -863,3 +863,60 @@ main>h2{font-size:clamp(2.3rem,4.3vw,4.3rem)!important;font-weight:600!important
 .service-zip-quote-button:hover{background:#27683e;box-shadow:0 8px 18px rgba(47,125,74,.18);transform:translateY(-1px)}
 .service-zip-quote-button:active{transform:translateY(0)}
 @media(max-width:700px){.service-zip-success{align-items:flex-start}.service-zip-quote-button{margin-left:36px;width:calc(100% - 36px)}}
+
+/* Typography system — premium sales-page scale
+   Prioritizes readable body copy, strong hierarchy, and responsive display type.
+   Keep this block last so it safely overrides legacy micro-type without restructuring HTML. */
+body{font-size:16px}
+.eyebrow,.label{font-size:clamp(.68rem,.7vw,.75rem);line-height:1.3;letter-spacing:.15em}
+.header nav a{font-size:.72rem;line-height:1.2;letter-spacing:.1em}
+.header-phone{font-size:.76rem;line-height:1.3}
+.logo{font-size:clamp(.95rem,1.1vw,1.05rem)}
+.header-cta,.button{font-size:.72rem;line-height:1.2;letter-spacing:.1em}
+.hero-copy h1{font-size:clamp(4rem,7.4vw,7.5rem);line-height:.86;letter-spacing:-.085em}
+.hero-copy>p{font-size:clamp(1rem,1.15vw,1.125rem);line-height:1.65;max-width:700px}
+.hero-buttons{gap:.85rem}
+.button{min-height:3.1rem;padding-inline:1.4rem}
+.service h2{font-size:clamp(1.35rem,1.7vw,1.75rem);line-height:1;letter-spacing:-.04em}
+.service p{font-size:1rem;line-height:1.6}
+.number,.step-number{font-size:.7rem;line-height:1.3}
+.about h2,.process-header h2,main>h2{font-size:clamp(3.5rem,6.4vw,6.5rem);line-height:.86;letter-spacing:-.075em}
+.about p,.process-header p{font-size:1rem;line-height:1.7}
+.process-step h3{font-size:.82rem;line-height:1.3;letter-spacing:.07em}
+.process-step p{font-size:1rem;line-height:1.65}
+main>h2+p{font-size:1rem;line-height:1.7}
+.form-field label{font-size:.72rem;line-height:1.3;letter-spacing:.1em}
+main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textarea,
+.form-field input,.form-field select,.form-field textarea{font-size:1rem;line-height:1.5}
+#quoteForm button{font-size:.78rem;letter-spacing:.12em}
+.booking-cta-copy h3{font-size:clamp(2.75rem,5vw,4.75rem);line-height:.9;letter-spacing:-.06em}
+.booking-cta-copy p{font-size:1rem;line-height:1.7}
+.booking-cta-copy .label,.booking-action-label{font-size:.72rem;line-height:1.3}
+.booking-cta-button{font-size:.78rem;letter-spacing:.1em}
+.contact-container>h2{font-size:clamp(3.5rem,6.8vw,7rem);line-height:.86;letter-spacing:-.08em}
+.contact-container>h2+p{font-size:1rem;line-height:1.7}
+.form-note{font-size:.7rem!important;line-height:1.5!important}
+.footer-inner p{font-size:.78rem;line-height:1.65}
+@media(max-width:700px){
+  .eyebrow,.label{font-size:.68rem}
+  .header nav a{font-size:.68rem}
+  .header-phone{font-size:.68rem}
+  .header-cta,.button{font-size:.7rem}
+  .hero-copy h1{font-size:clamp(3.15rem,13vw,4.5rem);line-height:.88;letter-spacing:-.08em}
+  .hero-copy>p{font-size:1rem;line-height:1.65}
+  .hero-buttons .button{font-size:.72rem;min-height:54px}
+  .service h2{font-size:1.45rem}
+  .service p{font-size:.98rem;line-height:1.6}
+  .about-grid h2,.process-header h2,.why-peek-intro h2,.service-area h2,.contact-container>h2,.booking-cta-copy h3,.proof-header h2{font-size:clamp(3rem,12.5vw,4.35rem);line-height:.88;letter-spacing:-.075em}
+  .about p,.process-header p,.proof-header p,.contact-container>h2+p,.booking-cta-copy p{font-size:1rem;line-height:1.65}
+  .process-step h3{font-size:.8rem}
+  .process-step p{font-size:.98rem;line-height:1.65}
+  .faq-list summary{font-size:1rem}
+  .faq-list details p{font-size:.95rem;line-height:1.65}
+  .booking-cta-button{font-size:.75rem}
+}
+@media(max-width:375px){
+  .hero-copy h1{font-size:clamp(2.9rem,12.5vw,3.5rem)}
+  .hero-copy>p{font-size:.98rem}
+  .about-grid h2,.process-header h2,.why-peek-intro h2,.service-area h2,.contact-container>h2,.booking-cta-copy h3,.proof-header h2{font-size:clamp(2.75rem,12vw,3.2rem)}
+}
