@@ -157,6 +157,7 @@
 </style>
 
   <link rel="stylesheet" href="style.css?v=20260919-5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3J8d6qQJw1mL0Qkz5Xx9w5K5Yw0=" crossorigin=""/>
 </head>
 <body>
 
@@ -387,40 +388,9 @@
           <div class="service-zip-result" id="serviceZipResult" role="status" aria-live="polite"></div>
         </div>
         <div class="service-map-wrap">
-          <div class="service-map" aria-label="Map showing PEEK PRESSURE service area across the San Francisco Bay Area">
-            <iframe
-              title="San Francisco Bay Area service map"
-              src="https://www.google.com/maps?q=37.65,-122.25&z=9&output=embed"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <div class="service-map-dots" aria-label="PEEK PRESSURE service locations">
-              <span class="map-dot sf" title="San Francisco" aria-label="San Francisco"></span>
-              <span class="map-dot dalycity" title="Daly City" aria-label="Daly City"></span>
-              <span class="map-dot pacifica" title="Pacifica" aria-label="Pacifica"></span>
-              <span class="map-dot southsf" title="South San Francisco" aria-label="South San Francisco"></span>
-              <span class="map-dot sanbruno" title="San Bruno" aria-label="San Bruno"></span>
-              <span class="map-dot millbrae" title="Millbrae" aria-label="Millbrae"></span>
-              <span class="map-dot burlingame" title="Burlingame" aria-label="Burlingame"></span>
-              <span class="map-dot sanmateo" title="San Mateo" aria-label="San Mateo"></span>
-              <span class="map-dot foster" title="Foster City" aria-label="Foster City"></span>
-              <span class="map-dot belmont" title="Belmont" aria-label="Belmont"></span>
-              <span class="map-dot redwood" title="Redwood City" aria-label="Redwood City"></span>
-              <span class="map-dot menlopark" title="Menlo Park" aria-label="Menlo Park"></span>
-              <span class="map-dot paloalto" title="Palo Alto" aria-label="Palo Alto"></span>
-              <span class="map-dot mountainview" title="Mountain View" aria-label="Mountain View"></span>
-              <span class="map-dot sunnyvale" title="Sunnyvale" aria-label="Sunnyvale"></span>
-              <span class="map-dot santa-clara" title="Santa Clara" aria-label="Santa Clara"></span>
-              <span class="map-dot sanjose" title="San Jose" aria-label="San Jose"></span>
-              <span class="map-dot milpitas" title="Milpitas" aria-label="Milpitas"></span>
-              <span class="map-dot fremont" title="Fremont" aria-label="Fremont"></span>
-              <span class="map-dot newark" title="Newark" aria-label="Newark"></span>
-              <span class="map-dot unioncity" title="Union City" aria-label="Union City"></span>
-              <span class="map-dot hayward" title="Hayward" aria-label="Hayward"></span>
-              <span class="map-dot sanleandro" title="San Leandro" aria-label="San Leandro"></span>
-              <span class="map-dot oakland" title="Oakland" aria-label="Oakland"></span>
-              <span class="map-dot alameda" title="Alameda" aria-label="Alameda"></span></div>
-          </div>
-          <div class="service-map-key">
+          <div class="service-map" id="serviceMap" aria-label="Interactive map showing PEEK PRESSURE service area across the San Francisco Bay Area">
+            <div id="peekServiceMap" class="peek-service-leaflet" aria-label="PEEK PRESSURE service locations"></div>
+          </div>         <div class="service-map-key">
             <span class="map-key-dot"></span>
             <span>SERVICE AREA</span>
           </div>
