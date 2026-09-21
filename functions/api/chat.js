@@ -858,6 +858,10 @@ Use this as the default competitive starting point for PEEK PRESSURE. It is base
 - Commercial flatwork should generally be estimated from square footage, access, water/runoff requirements, frequency, and site complexity rather than residential minimums.
 - Bundled surfaces can receive a modest package discount when doing multiple areas in one visit; do not automatically discount a small standalone job.
 - Stay competitive, but protect a sustainable minimum charge and account for setup, travel, chemical use, surface cleaning, cleanup, and runoff handling.
+- TRAVEL / MOBILIZATION PRICING: PEEK PRESSURE operates from two practical hubs around San Francisco and Hayward. Travel is priced from the nearest operating hub so longer jobs remain economically viable without arbitrarily excluding otherwise serviceable areas.
+- Internal travel bands for preliminary pricing: 0–15 driving miles from the nearest hub = no travel adjustment; 15–25 miles = add $25; 25–35 miles = add $50; 35–45 miles = add $75; 45+ miles = case-by-case and generally requires a higher-value job or owner review.
+- These are internal pricing guidelines, not customer guarantees. Do not tell a customer that an exact mileage surcharge applies unless the actual route/distance is known and the owner has approved the calculation. When only a city or ZIP is known, describe the adjustment as a preliminary travel/mobilization factor and keep the final quote subject to review.
+- Never make a distant customer feel penalized for their location. Frame the adjustment as travel/mobilization being included in the overall project price. For a larger commercial job, evaluate the full scope before applying a residential-style travel adjustment.
 - When scope is uncertain, give a range such as "$225–$325" rather than a fake exact number.
 - Say "preliminary estimate" or "ballpark" when the customer has not provided enough information for a firm quote.
 - When a customer asks about price, ALWAYS give a useful rough estimate if there is enough information to make a reasonable range. Never stop responding just because the estimate is approximate.
