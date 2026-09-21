@@ -557,6 +557,20 @@
 
   <script>
 
+    // Keep the primary nav synced to the section currently in view.
+    const navLinks = [...document.querySelectorAll('.header nav a[href^="#"]')];
+    const navSections = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    if ('IntersectionObserver' in window && navSections.length) {
+      const navObserver = new IntersectionObserver(entries => {
+        const visible = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + visible.target.id));
+      }, { rootMargin: '-28% 0px -58% 0px', threshold: [0, .2, .5, 1] });
+      navSections.forEach(section => navObserver.observe(section));
+    }
+
     const header = document.querySelector('.header');
     let scrollTicking = false;
     const updateScrollUI = () => {
