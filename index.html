@@ -1497,10 +1497,13 @@ document.addEventListener('DOMContentLoaded', () => {
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (() => {
-  const mapEl = document.getElementById('peekServiceMap');
-  if (!mapEl || typeof L === 'undefined') return;
+  const initPeekServiceMap = () => {
+    const mapEl = document.getElementById('peekServiceMap');
+    if (!mapEl || typeof L === 'undefined' || mapEl.dataset.mapReady === 'true') return;
 
-  const cities = [
+    mapEl.dataset.mapReady = 'true';
+
+    const cities = [
     ['San Francisco', 37.7749, -122.4194],
     ['Daly City', 37.6879, -122.4702],
     ['Pacifica', 37.6138, -122.4869],
@@ -1529,34 +1532,70 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   const map = L.map(mapEl, {
-    scrollWheelZoom: false,
-    zoomControl: true,
-    attributionControl: true
-  }).setView([37.57, -122.15], 10);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
-  const bounds = L.latLngBounds(cities.map(city => [city[1], city[2]]));
-
-  cities.forEach(([name, lat, lng]) => {
-    const icon = L.divIcon({
-      className: 'peek-map-pin',
-      html: '<span></span>',
-      iconSize: [14, 14],
-      iconAnchor: [7, 7]
+      scrollWheelZoom: false,
+      zoomControl: true,
+      attributionControl: true,
+      dragging: true,
+      touchZoom: true,
+      doubleClickZoom: true,
+      boxZoom: true,
+      keyboard: true
     });
 
-    L.marker([lat, lng], { icon })
-      .addTo(map)
-      .bindTooltip(name, { direction: 'top', offset: [0, -8] });
-  });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-  map.fitBounds(bounds.pad(0.12));
-  window.setTimeout(() => map.invalidateSize(), 150);
+    const bounds = L.latLngBounds(cities.map(city => [city[1], city[2]]));
+
+    cities.forEach(([name, lat, lng]) => {
+      const icon = L.divIcon({
+        className: 'peek-map-pin',
+        html: '<span></span>',
+        iconSize: [14, 14],
+        iconAnchor: [7, 7]
+      });
+
+      L.marker([lat, lng], {
+        icon,
+        keyboard: false,
+        riseOnHover: true
+      }).addTo(map).bindTooltip(name, {
+        direction: 'top',
+        offset: [0, -8]
+      });
+    });
+
+    const fit = () => {
+      map.invalidateSize({ animate: false, pan: false });
+      map.fitBounds(bounds, {
+        paddingTopLeft: [28, 28],
+        paddingBottomRight: [28, 28],
+        maxZoom: 10,
+        animate: false
+      });
+    };
+
+    fit();
+    window.setTimeout(fit, 250);
+    window.setTimeout(fit, 800);
+
+    if ('ResizeObserver' in window) {
+      const observer = new ResizeObserver(() => map.invalidateSize({ animate: false, pan: false }));
+      observer.observe(mapEl);
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPeekServiceMap, { once: true });
+  } else {
+    initPeekServiceMap();
+  }
+
+  window.addEventListener('load', initPeekServiceMap, { once: true });
 })();
+</script>;
 </script>
 
 </body>
