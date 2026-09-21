@@ -210,7 +210,7 @@ const LUCY_SALES_PLAYBOOK = Object.freeze({
   ]
 });
 
-function buildSalesIntelligence(result, safeMessages) {
+function buildSalesIntelligence(result = {}, safeMessages = []) {
   const latest = getLatestUserText(safeMessages);
   const all = safeMessages.map(message => String(message.content || "")).join(" ");
   const buyingIntent = /\b(let's do it|lets do it|book|schedule|ready|sign me up|go ahead|how do i get started|send someone|send somebody|give me a proposal|send me a proposal|quote me|i want to use you|sounds good)\b/i.test(all);
@@ -1609,10 +1609,16 @@ const needsStrongModel = hasImage || pricingRequest || hasDetailedLeadSignal || 
     }
 
     const now = new Date().toISOString();
-    const pricingInstruction = pricingContext.requested ? "\n\nSYSTEM-GENERATED PRICING DATA — DO NOT RECALCULATE OR INVENT DOLLAR AMOUNTS. " + formatEstimateLine(pricingContext) : "";\n    const sandboxStrategy = getSandboxStrategy(request, env);\n    const sandboxInstruction = sandboxStrategy ? `\\n\\nSALES SANDBOX — STAGING ONLY\\nStrategy: ${sandboxStrategy}\\n${LUCY_SALES_SANDBOX_STRATEGIES[sandboxStrategy]}\\nThis is an experiment. Business authority and all production rules remain unchanged.` : "";
-    const salesIntelligence = buildSalesIntelligence(result, safeMessages);
+    const pricingInstruction = pricingContext.requested
+      ? "\n\nSYSTEM-GENERATED PRICING DATA — DO NOT RECALCULATE OR INVENT DOLLAR AMOUNTS. " + formatEstimateLine(pricingContext)
+      : "";
+    const sandboxStrategy = getSandboxStrategy(request, env);
+    const sandboxInstruction = sandboxStrategy
+      ? `\n\nSALES SANDBOX — STAGING ONLY\nStrategy: ${sandboxStrategy}\n${LUCY_SALES_SANDBOX_STRATEGIES[sandboxStrategy]}\nThis is an experiment. Business authority and all production rules remain unchanged.`
+      : "";
+    const salesIntelligence = buildSalesIntelligence({}, safeMessages);
 
-const salesPlaybookContext = `
+    const salesPlaybookContext = `
 SALES PLAYBOOK — NEXT BEST ACTION
 - Primary goal: ${salesIntelligence.goal}
 - Next best action: ${salesIntelligence.next_best_action}
@@ -1623,6 +1629,7 @@ SALES PLAYBOOK — NEXT BEST ACTION
 - If the customer has clearly delegated site review, do not keep asking for measurements that can reasonably be reviewed on site.
 - If buying intent is clear, do not reopen discovery unless a required field is genuinely missing.
 `;
+
     const schedulingContext = `
 CURRENT TIME
 - Current UTC time: ${now}
