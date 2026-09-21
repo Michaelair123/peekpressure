@@ -289,22 +289,45 @@ async function handleLead(context) {
       conversationId ? `Conversation ID: ${conversationId}` : ""
     ].filter(Boolean).join("\n");
 
-    const resendResponse = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
-        "Content-Type": "application/json",
-        "Idempotency-Key": idempotencyKey
-      },
-      body: JSON.stringify({
-        from: FROM_EMAIL,
-        to: [TO_EMAIL],
-        subject,
-        html,
-        text,
-        ...(email ? { reply_to: email } : {})
-      })
-    });
+    const resendPayload = {
+      from: FROM_EMAIL,
+      to: [TO_EMAIL],
+      subject,
+      html,
+      text,
+      ...(email ? { reply_to: email } : {})
+    };
+
+    let resendResponse;
+    let lastResendError = null;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        resendResponse = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${RESEND_API_KEY}`,
+            "Content-Type": "application/json",
+            "Idempotency-Key": idempotencyKey
+          },
+          body: JSON.stringify(resendPayload)
+        });
+
+        if (resendResponse.ok || ![408, 409, 429, 500, 502, 503, 504].includes(resendResponse.status)) break;
+        lastResendError = new Error(`Resend transient HTTP ${resendResponse.status}`);
+        if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 700));
+      } catch (error) {
+        lastResendError = error;
+        if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 700));
+      }
+    }
+
+    if (!resendResponse) {
+      console.error("Resend lead email request failed:", lastResendError);
+      return json({
+        error: "The email provider could not be reached.",
+        handoff_state: "HANDOFF_FAILED"
+      }, 502);
+    }
 
     // Read the provider response defensively. Resend can accept the email even
     // if the response body is empty or cannot be parsed as JSON.
