@@ -1,7 +1,7 @@
 import { LUCY_FAQ } from "../../faq-data.js";
 
 const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
-const PEEK_BOOKING_URL = "https://calendly.com/peekpressure";
+const PEEK_BOOKING_URL = "https://calendly.com/peekpressure/30min";
 const LUCY_FAST_MODEL = "gpt-5.6-terra";
 const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
 const LUCY_REQUEST_TIMEOUT_MS = 10000;
