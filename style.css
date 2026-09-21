@@ -806,3 +806,26 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
     padding:.8rem!important;
   }
 }
+
+/* Accessibility baseline — WCAG 2.2 AA */
+html{scroll-padding-top:96px;scroll-padding-bottom:96px}
+:where(a,button,input,textarea,select,[tabindex]):focus-visible{
+  outline:3px solid #111;
+  outline-offset:3px;
+  border-radius:4px;
+}
+.peek-chat :where(a,button,input,textarea,select,[tabindex]):focus-visible{
+  outline-color:#fff;
+  outline-offset:2px;
+}
+@media (max-width:700px){
+  html{scroll-padding-top:84px;scroll-padding-bottom:88px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
