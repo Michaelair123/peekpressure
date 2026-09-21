@@ -55,6 +55,26 @@ jobs:
             exit 1
           fi
 
+      - name: Check inline JavaScript in index.html
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path("index.html").read_text(encoding="utf-8")
+          if "</script>;" in html:
+              raise SystemExit("Malformed script closing sequence found in index.html")
+          scripts = re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>", html, flags=re.S | re.I)
+          for i, script in enumerate(scripts, 1):
+              Path(f"/tmp/peek-inline-{i}.js").write_text(script, encoding="utf-8")
+          print(f"Found {len(scripts)} inline/external script blocks")
+          PY
+          for file in /tmp/peek-inline-*.js; do
+            echo "Checking $file"
+            cat "$file" | node --input-type=module --check
+          done
+
       - name: Check internal production links
         shell: bash
         run: |
