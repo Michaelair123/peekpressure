@@ -56,11 +56,11 @@ export default {
           "object-src 'none'",
           "frame-ancestors 'none'",
           "script-src 'nonce-" + nonce + "' 'strict-dynamic'",
-          "style-src 'self' 'nonce-" + nonce + "'",
+          "style-src 'self' 'nonce-" + nonce + "' https://cdn.jsdelivr.net",
           "img-src 'self' data: blob: https://lirp.cdn-website.com https://cdn.prod.website-files.com https://images.squarespace-cdn.com https://images.unsplash.com https://images.pexels.com https://www.bestpowerwashli.com https://tile.openstreetmap.org https://*.tile.openstreetmap.org",
           "font-src 'self'",
           "connect-src 'self'",
-          "frame-src https://www.google.com",
+          "frame-src https://www.google.com https://calendly.com",
           "form-action 'self' https://formspree.io",
           "manifest-src 'self'",
           "upgrade-insecure-requests"
