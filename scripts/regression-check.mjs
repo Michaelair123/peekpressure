@@ -45,6 +45,11 @@ check("CSP allows Leaflet CSS", /style-src[^;]*https:\/\/cdn\.jsdelivr\.net/i.te
 check("CSP allows map tiles", /img-src[^;]*https:\/\/tile\.openstreetmap\.org/i.test(worker), "CSP img-src must allow OpenStreetMap tiles.");
 check("Observability configured", /"observability"\s*:\s*\{/.test(wrangler), "wrangler.jsonc should retain observability configuration.");
 check("Stylesheet present", css.length > 1000, "style.css unexpectedly appears empty or truncated.");
+check("Skip link", /class=["']skip-link["'][^>]*href=["']#main-content["']/.test(index) && /<main[^>]*id=["']main-content["']/.test(index), "Keyboard users need a skip link to the main content landmark.");
+check("Visible focus styles", /:focus-visible/.test(css), "Interactive controls need an author-supplied visible keyboard focus indicator.");
+check("Focus-safe scrolling", /scroll-padding-(?:top|bottom)/.test(css), "Sticky navigation and mobile controls need scroll padding so focused elements remain visible.");
+check("Reduced motion", /prefers-reduced-motion\s*:\s*reduce/.test(css), "Motion-sensitive users need a reduced-motion path.");
+
 
 for (const file of ["worker.js", "functions/api/chat.js", "functions/api/faq.js", "functions/api/[[path]].js", "faq-data.js", "scripts/lucy-stress-test.mjs"]) {
   const result = spawnSync(process.execPath, ["--check", file], { encoding: "utf8" });
