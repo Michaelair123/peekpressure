@@ -786,3 +786,37 @@ main>h2{font-size:clamp(2.3rem,4.3vw,4.3rem)!important;font-weight:600!important
 @media(prefers-reduced-motion:reduce){
   .peek-chat-typing-dots i{animation:none;opacity:.6}
 }
+
+
+/* Service-area tools: keep the checker clean, visible, and mobile-friendly. */
+.service-zip-check{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,420px);gap:1.25rem 2rem;align-items:end;margin:1.5rem 0 1.75rem;padding:1.35rem 1.5rem;background:#fff;border:1px solid #e5e5e2;border-radius:18px}
+.service-zip-copy h3{margin:.3rem 0 .35rem;font-size:clamp(1.05rem,2vw,1.35rem);letter-spacing:-.025em}
+.service-zip-copy p{margin:0;color:#666;font-size:.88rem;line-height:1.55}
+.service-zip-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.55rem}
+.service-zip-form input{width:100%;min-height:46px;padding:.75rem .9rem;border:1px solid #d9d9d5;border-radius:12px;background:#fff;color:#111;font:inherit;font-size:16px;outline:none;transition:border-color .2s ease,box-shadow .2s ease}
+.service-zip-form input::placeholder{color:#888}
+.service-zip-form input:focus{border-color:#111;box-shadow:0 0 0 3px rgba(17,17,17,.08)}
+.service-zip-form button{min-height:46px;padding:.7rem 1rem;border:1px solid #111;border-radius:12px;background:#111;color:#fff;font-size:.65rem;font-weight:800;letter-spacing:.08em;white-space:nowrap;cursor:pointer;transition:transform .2s ease,background-color .2s ease}
+.service-zip-form button:hover{background:#2a2a2a;transform:translateY(-1px)}
+.service-zip-form button:active{transform:translateY(0)}
+.service-zip-result{grid-column:1/-1;min-height:1.2rem;margin-top:-.15rem;font-size:.78rem;line-height:1.5}
+.service-zip-result a{color:inherit;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.service-zip-result.is-success{color:#315d3b}
+.service-zip-result.is-error{color:#9a3d31}
+.service-zip-result.is-neutral{color:#666}
+
+/* Let visitors actually interact with the Google map. Markers stay above it without blocking pan/zoom. */
+.service-map iframe{pointer-events:auto}
+.service-map-dots{pointer-events:none}
+.service-map::after{pointer-events:none}
+
+@media(max-width:700px){
+  .service-zip-check{grid-template-columns:1fr;gap:1rem;margin:1.1rem 0 1.35rem;padding:1.1rem;border-radius:16px}
+  .service-zip-form{grid-template-columns:minmax(0,1fr) auto}
+  .service-zip-form button{padding-inline:.85rem}
+  .service-zip-result{margin-top:-.3rem}
+}
+@media(max-width:380px){
+  .service-zip-form{grid-template-columns:1fr}
+  .service-zip-form button{width:100%}
+}
