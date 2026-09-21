@@ -1,7 +1,7 @@
 import { LUCY_FAQ } from "../../faq-data.js";
 
 const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
-const PEEK_BOOKING_URL = "https://calendly.com/michaelair123/30min";
+const PEEK_BOOKING_URL = "https://calendly.com/peekpressure";
 const LUCY_FAST_MODEL = "gpt-5.6-terra";
 const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
 const LUCY_REQUEST_TIMEOUT_MS = 10000;
@@ -1310,7 +1310,7 @@ function buildFastReply(text) {
     return "We serve the Bay Area, with a focus on the Peninsula and nearby areas. Tell me the city and what you need cleaned and I’ll let you know if we cover it.";
   }
   if (/\b(book|booking|schedule|scheduled|appointment|appointments|calendly|available|availability)\b/i.test(value)) {
-    return "Absolutely — you can pick a time that works for you here: ${PEEK_BOOKING_URL}";
+    return `Absolutely — you can pick a time that works for you here: ${PEEK_BOOKING_URL}`;
   }
   return null;
 }
@@ -1763,7 +1763,7 @@ SCHEDULING ACTIONS
     // Calendly is intentionally handled by the public booking link now.
     // Never spend an API call checking or creating appointments from Lucy.
     if (result.action === "check_availability" || result.action === "book_appointment") {
-      reply = "Absolutely 📅 You can pick a time that works for you here: ${PEEK_BOOKING_URL}";
+      reply = `Absolutely 📅 You can pick a time that works for you here: ${PEEK_BOOKING_URL}`;
       result.action = "none";
     }
 
