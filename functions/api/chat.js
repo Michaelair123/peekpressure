@@ -1362,7 +1362,7 @@ function calculateRoughEstimate(service, sizeText, conditionText) {
   else if (/patio|paver/.test(s)) return null;
   let low = sqft * lowRate, high = sqft * highRate;
   if (/oil|grease|rust|heavy|severe|deep|stubborn|thick buildup/.test(condition)) { low += 30; high += 100; }
-  low = Math.max(150, Math.round(low / 5) * 5);
+  low = Math.max(200, Math.round(low / 5) * 5);
   high = Math.max(low, Math.round(high / 5) * 5);
   return { low, high, squareFeet: Math.round(sqft) };
 }
