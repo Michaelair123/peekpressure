@@ -920,3 +920,76 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
   .hero-copy>p{font-size:.98rem}
   .about-grid h2,.process-header h2,.why-peek-intro h2,.service-area h2,.contact-container>h2,.booking-cta-copy h3,.proof-header h2{font-size:clamp(2.75rem,12vw,3.2rem)}
 }
+
+
+/* Calendly booking cleanup — single clean container, no horizontal clipping. */
+.contact-container .booking-cta{
+  width:100%;
+  max-width:none;
+  margin:2.5rem 0 3.5rem;
+  min-height:0;
+  display:block;
+  overflow:visible;
+}
+.contact-container .booking-container{
+  width:100%;
+  max-width:none;
+}
+.contact-container .booking-cta-inner{
+  width:100%;
+  min-width:0;
+  min-height:0;
+  display:grid;
+  grid-template-columns:minmax(240px,.7fr) minmax(320px,1.3fr);
+  align-items:start;
+  gap:clamp(2rem,4vw,4rem);
+  padding:clamp(1.5rem,3vw,2.5rem);
+  border:1px solid #dedede;
+  border-radius:20px;
+  background:#f7f7f7;
+  box-shadow:none;
+  overflow:hidden;
+}
+.contact-container .booking-cta-inner::before{display:none}
+.contact-container .booking-cta-copy{min-width:0}
+.contact-container .booking-cta-action{
+  min-width:0;
+  width:100%;
+  flex:none;
+  display:block;
+}
+.contact-container .booking-action-label{
+  display:block;
+  margin:0 0 .75rem;
+  padding:0;
+}
+.contact-container .calendly-inline-widget{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  height:760px!important;
+  overflow:hidden!important;
+  border-radius:14px;
+}
+@media(max-width:900px){
+  .contact-container .booking-cta-inner{
+    grid-template-columns:1fr;
+    gap:1.5rem;
+  }
+  .contact-container .booking-cta-action{
+    width:100%;
+  }
+}
+@media(max-width:700px){
+  .contact-container .booking-cta{
+    margin:2rem 0 3rem;
+  }
+  .contact-container .booking-cta-inner{
+    padding:1.15rem;
+    border-radius:16px;
+  }
+  .contact-container .calendly-inline-widget{
+    height:740px!important;
+    border-radius:12px;
+  }
+}
