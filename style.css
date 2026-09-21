@@ -993,3 +993,61 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
     border-radius:12px;
   }
 }
+
+
+/* FINAL CALENDLY FIT — prevent the embedded scheduler from forcing a wider box than its column. */
+.contact-container .booking-container,
+.contact-container .booking-cta,
+.contact-container .booking-cta-inner,
+.contact-container .booking-cta-action,
+.contact-container .calendly-inline-widget{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  max-width:100%!important;
+}
+.contact-container .booking-cta-inner{
+  grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)!important;
+}
+.contact-container .booking-cta-action{
+  overflow:hidden!important;
+}
+.contact-container .calendly-inline-widget{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  overflow:hidden!important;
+}
+.contact-container .calendly-inline-widget iframe{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  border:0!important;
+  margin:0!important;
+}
+@media(max-width:900px){
+  .contact-container .booking-cta-inner{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  .contact-container .booking-cta-action{
+    width:100%!important;
+    min-width:0!important;
+  }
+}
+@media(max-width:700px){
+  .contact-container .booking-cta-inner{
+    padding:1rem!important;
+  }
+  .contact-container .calendly-inline-widget{
+    width:100%!important;
+    height:740px!important;
+  }
+}
+@media(max-width:375px){
+  .contact-container .booking-cta-inner{
+    padding:.8rem!important;
+  }
+}
