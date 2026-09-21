@@ -402,7 +402,9 @@
           </div>
         </div>
 
-        <div class="service-area-details" aria-label="Pressure washing services offered across the service area">
+        <div class="sr-only" aria-label="Service area locations"><p>PEEK PRESSURE currently serves these areas:</p><ul><li>San Francisco</li><li>Daly City</li><li>Pacifica</li><li>South San Francisco</li><li>San Bruno</li><li>Millbrae</li><li>Burlingame</li><li>San Mateo</li><li>Foster City</li><li>Belmont</li><li>Redwood City</li><li>Menlo Park</li><li>Palo Alto</li><li>Mountain View</li><li>Sunnyvale</li><li>Santa Clara</li><li>San Jose</li><li>Milpitas</li><li>Fremont</li><li>Newark</li><li>Union City</li><li>Hayward</li><li>San Leandro</li><li>Oakland</li><li>Alameda</li></ul></div>
+
+         <div class="service-area-details" aria-label="Pressure washing services offered across the service area">
           <span>DRIVEWAYS</span>
           <span>SIDEWALKS</span>
           <span>WALKWAYS</span>
@@ -846,11 +848,11 @@ document.addEventListener('DOMContentLoaded', () => {
     <span class="peek-chat-launcher-copy"><strong>HI, I'M LUCY</strong><small>ASK ME ANYTHING</small></span>
   </button>
 
-  <aside class="peek-chat" id="peekChat" role="dialog" aria-modal="false" aria-label="Lucy, PEEK PRESSURE's AI assistant" aria-hidden="true">
+  <aside class="peek-chat" id="peekChat" role="dialog" aria-modal="false" aria-labelledby="peekChatTitle" aria-hidden="true">
     <div class="peek-chat-head">
       <div>
         <span class="peek-chat-kicker">PEEK PRESSURE</span>
-        <strong>LUCY</strong>
+        <strong id="peekChatTitle">LUCY</strong>
       </div>
       <button type="button" class="peek-chat-close" id="peekChatClose" aria-label="Close chat">×</button>
     </div>
@@ -1064,7 +1066,7 @@ document.addEventListener('DOMContentLoaded', () => {
       state.open = true;
       panel.classList.add('is-open');
       panel.setAttribute('aria-hidden', 'false');
-      panel.setAttribute('aria-modal', 'true');
+      panel.setAttribute('aria-modal', 'false');
       launcher.setAttribute('aria-expanded', 'true');
       launcher.classList.add('is-hidden');
 
@@ -1085,6 +1087,7 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.setAttribute('aria-modal', 'false');
       launcher.setAttribute('aria-expanded', 'false');
       launcher.classList.remove('is-hidden');
+      window.setTimeout(() => launcher.focus(), 0);
     }
 
     async function fileToDataUrl(file) {
