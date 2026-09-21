@@ -37,18 +37,22 @@ function service(context) {
 
 const browser = await chromium.launch({headless:true});
 const sources = [];
+const marketplaceTargets = [
+  ...(config.marketplaces?.craigslist || []).map(url => ({name:"Craigslist",url,type:"marketplace_craigslist"})),
+  ...(config.marketplaces?.facebook_public_urls || []).map(url => ({name:"Facebook Marketplace (public URL)",url,type:"marketplace_facebook_public"}))
+];
 try {
-  const targets = [...config.competitors, ...(config.additional_urls || []).map(url => ({name:url,url,type:"additional"}))];
+  const targets = [...config.competitors, ...(config.additional_urls || []).map(url => ({name:url,url,type:"additional"})), ...marketplaceTargets];
   for (const source of targets) {
     const page = await browser.newPage({viewport:{width:1440,height:1000}, userAgent:"PEEK-PRESSURE-MarketSurvey/1.0"});
-    const row = {name:source.name,url:source.url,type:source.type,ok:false,status:null,title:"",prices:[],notes:[]};
+    const row = {name:source.name,url:source.url,type:source.type,ok:false,status:null,title:"",prices:[],listings:[],notes:[]};
     try {
       const response = await page.goto(source.url,{waitUntil:"domcontentloaded",timeout:30000});
       await page.waitForTimeout(1000);
       row.status = response?.status() ?? null;
       row.ok = Boolean(response?.ok());
       row.title = clean(await page.title());
-      const text = clean(await page.locator("body").innerText()).slice(0,70000);
+      const text = clean(await page.locator("body").innerText()).slice(0,70000);\n      if (source.type.startsWith("marketplace_")) {\n        row.listings = [...new Set(text.split(/(?=pressure washing|power washing|driveway cleaning|concrete cleaning)/ig).filter(x => /pressure washing|power washing|driveway cleaning|concrete cleaning/i.test(x)).map(x => clean(x).slice(0,900)))].slice(0,50);\n      }
       for (const p of prices(text)) {
         const context = clean(text.slice(Math.max(0,p.index-220),Math.min(text.length,p.index+260)));
         row.prices.push({service:service(context),raw:p.raw,low:p.low,high:p.high,context:context.slice(0,480)});
@@ -95,7 +99,7 @@ const report = {
     "Research only; no automatic pricing changes.",
     "Do not copy competitor pricing directly into PEEK PRESSURE.",
     "Aggregator and pricing-guide sources are labeled separately from local operators.",
-    "Missing public prices are meaningful because many operators require quotes.",
+    "Missing public prices are meaningful because many operators require quotes.",\n    "Marketplace pages are collected only when publicly accessible; no login or access-control bypass is attempted.",
     "Lucy pricing is not modified by this workflow."
   ]
 };
@@ -109,7 +113,7 @@ md += "## Market observations\n";
 for (const row of summary) {
   md += "- **" + row.service + "** — " + row.observations + " observation(s); low starts $" + (row.observed_low_min ?? "n/a") + ", median low $" + (row.observed_low_median ?? "n/a") + ", median high $" + (row.observed_high_median ?? "n/a") + ", highest $" + (row.observed_high_max ?? "n/a") + ".\n";
 }
-md += "\n## Sources\n";
+md += "\n## Marketplace findings\n";\nfor (const r of sources.filter(x=>x.type.startsWith("marketplace_"))) {\n  md += "### " + r.name + "\n- URL: " + r.url + "\n- HTTP: " + (r.status ?? "error") + "\n";\n  for (const item of r.listings.slice(0,20)) md += "- " + item + "\n";\n  if (!r.listings.length) md += "- No public listing text captured. The marketplace may require login or block automated access.\n";\n}\nmd += "\n## Sources\n";
 for (const r of sources) {
   md += "### " + r.name + "\n- URL: " + r.url + "\n- Type: " + r.type + "\n- HTTP: " + (r.status ?? "error") + "\n";
   if (r.error) md += "- Error: " + r.error + "\n";
