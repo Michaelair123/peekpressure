@@ -25,3 +25,6 @@ jobs:
 
       - name: Run PEEK PRESSURE regression checks
         run: node scripts/regression-check.mjs
+
+      - name: Run CSS debt guard
+        run: node scripts/css-audit.mjs
