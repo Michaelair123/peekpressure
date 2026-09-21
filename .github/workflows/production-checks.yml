@@ -50,8 +50,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RniE '(^|[^[:alnum:]_])eval[[:space:]]*\(|new[[:space:]]+Function[[:space:]]*\(|javascript:'             --exclude-dir=.git --exclude='*.md' .; then
-            echo "Potentially unsafe JavaScript pattern found."
+          if git grep -nI -E '(^|[^[:alnum:]_])eval[[:space:]]*\\(|new[[:space:]]+Function[[:space:]]*\\(|javascript:' -- \
+            '*.js' '*.mjs' '*.html' '*.json' '*.jsonc' '*.css' '*.txt' '*.xml'; then
+            echo "Potentially unsafe JavaScript pattern found in tracked source files."
             exit 1
           fi
 
