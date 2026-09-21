@@ -40,6 +40,10 @@ try {
     seen.add(target);
 
     const page = await browser.newPage({ viewport: DESKTOP });
+    // HARD COST GUARD: the crawler must never invoke Lucy's paid AI/lead APIs.
+    // This keeps automated crawls completely separate from production AI usage.
+    await page.route('**/api/chat**', route => route.abort('blockedbyclient'));
+    await page.route('**/api/lead**', route => route.abort('blockedbyclient'));
     const errors = [];
     const pageErrors = [];
     const requestFailures = [];
@@ -127,6 +131,9 @@ try {
 
   // Dedicated mobile smoke test for the homepage.
   const mobile = await browser.newPage({ viewport: MOBILE });
+  // HARD COST GUARD: no Lucy API traffic during mobile smoke tests.
+  await mobile.route('**/api/chat**', route => route.abort('blockedbyclient'));
+  await mobile.route('**/api/lead**', route => route.abort('blockedbyclient'));
   const mobileErrors = [];
   mobile.on('console', msg => { if (msg.type() === 'error') mobileErrors.push(msg.text()); });
   mobile.on('pageerror', err => mobileErrors.push(String(err)));
