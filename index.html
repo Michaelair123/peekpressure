@@ -247,8 +247,7 @@
                 loading="lazy" decoding="async"
               >
             </div>
-            <div class="service-body">              <span class="number">03</span>              <h2>COMMERCIAL</h2>
-              <p>Exterior cleaning for offices, retail centers, apartment properties, and other commercial spaces.</p><a class="service-cta" href="#quoteForm" data-service="Commercial">REQUEST QUOTE <span>→</span></a>
+            <div class="service-body">              <span class="number">03</span>              <h2>COMMERCIAL</h2>              <p>Exterior cleaning for offices, retail centers, apartment properties, and other commercial spaces.</p><a class="service-cta" href="#quoteForm" data-service="Commercial">REQUEST QUOTE <span>→</span></a>
             </div>
           </article>
 
@@ -497,8 +496,7 @@
       </div>
       <div class="quote-contact">
         <div class="form-field">          <label for="name">YOUR NAME</label>
-          <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required data-fs-field>
-          <span data-fs-error="name"></span>
+          <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required data-fs-field>          <span data-fs-error="name"></span>
         </div>
         <div class="form-field">
           <label for="phone">PHONE</label>
@@ -635,6 +633,10 @@
       const lucyLauncher = document.getElementById('peekChatLauncher');
 
       chatButton?.addEventListener('click', () => {
+        if (typeof window.openChat === 'function') {
+          window.openChat();
+          return;
+        }
         lucyLauncher?.click();
       });
 
@@ -747,8 +749,7 @@
         '94061','94062','94063','94064','94065','94066','94070','94074','94080','94083','94087',
         '94089','94094','94096','94102','94103','94104','94105','94107','94108','94109','94110',
         '94111','94112','94114','94115','94116','94117','94118','94121','94122','94123','94124',        '94127','94128','94129','94130','94131','94132','94133','94134','94158','94301','94302',
-        '94303','94304','94305','94306','94401','94402','94403','94404','94405','94536','94537',
-        '94538','94539','94541','94542','94543','94544','94545','94546','94550','94551','94552',
+        '94303','94304','94305','94306','94401','94402','94403','94404','94405','94536','94537',        '94538','94539','94541','94542','94543','94544','94545','94546','94550','94551','94552',
         '94555','94560','94566','94568','94577','94578','94579','94580','94583','94586','94587',
         '94588','94601','94602','94603','94605','94606','94607','94608','94609','94610','94611',
         '94612','94613','94618','94619','94621','94622','94623','94624','94649','94662','94666'
@@ -997,8 +998,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="peek-chat-messages" id="peekChatMessages" aria-live="polite"></div>
     <div class="peek-chat-quick" id="peekChatQuick"></div>    <div class="peek-chat-attachments" id="peekChatAttachments" aria-live="polite"></div>
     <form class="peek-chat-form" id="peekChatForm">
-      <button class="peek-chat-attach" id="peekChatAttach" type="button" aria-label="Attach a photo" title="Attach a photo">＋</button>
-      <input id="peekChatPhotoInput" type="file" accept="image/*" multiple hidden>
+      <button class="peek-chat-attach" id="peekChatAttach" type="button" aria-label="Attach a photo" title="Attach a photo">＋</button>      <input id="peekChatPhotoInput" type="file" accept="image/*" multiple hidden>
       <textarea id="peekChatInput" rows="1" enterkeyhint="send" autocomplete="off" placeholder="Tell Lucy what you need cleaned…" aria-label="Message Lucy"></textarea>
       <button class="peek-chat-send" type="submit" aria-label="Send message">↑</button>
     </form>
@@ -1247,8 +1247,7 @@ document.addEventListener('DOMContentLoaded', () => {
       launcher.setAttribute('aria-expanded', 'false');      launcher.classList.remove('is-hidden');
       window.setTimeout(() => {
         const floatingChat = document.getElementById('peekFloatingChat');
-        (floatingChat || launcher).focus();
-      }, 0);
+        (floatingChat || launcher).focus();      }, 0);
     }
 
     async function fileToDataUrl(file) {
@@ -1497,7 +1496,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (clean) {
           userContent.push({ type: 'input_text', text: clean });        }
-
         userContent.push(...imageParts);
         state.history.push({
           role: 'user',
