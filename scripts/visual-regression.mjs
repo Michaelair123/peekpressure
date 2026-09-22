@@ -13,7 +13,10 @@ const failures = [];
 
 try {
   for (const viewport of viewports) {
-    const page = await browser.newPage({ viewport });
+    const userAgent = viewport.isMobile
+      ? 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1'
+      : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36';
+    const page = await browser.newPage({ viewport, userAgent, locale: 'en-US', extraHTTPHeaders: { 'Accept-Language': 'en-US,en;q=0.9' } });
     await page.route('**/api/chat**', route => route.abort('blockedbyclient'));
     await page.route('**/api/lead**', route => route.abort('blockedbyclient'));
 
@@ -22,7 +25,10 @@ try {
     page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()); });
     page.on('pageerror', err => pageErrors.push(String(err)));
 
-    await page.goto(START, { waitUntil: 'domcontentloaded', timeout: TIMEOUT });
+    const response = await page.goto(START, { waitUntil: 'domcontentloaded', timeout: TIMEOUT });
+    if (!response || !response.ok()) {
+      throw new Error(`Homepage returned ${response?.status() ?? 'no response'} for ${START}`);
+    }
     await page.waitForTimeout(1200);
 
     const state = await page.evaluate(() => {
