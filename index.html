@@ -768,8 +768,8 @@
           const quoteButton = document.getElementById('serviceZipQuoteButton');
           if (quoteButton) {
             quoteButton.addEventListener('click', () => {
-              document.getElementById('quoteForm')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              setTimeout(() => document.querySelector('#quoteForm input[name="address"]')?.focus({ preventScroll: true }), 550);
+              window.PeekQuoteModal?.open(quoteButton);
+              setTimeout(() => document.querySelector('#quoteForm input[name="address"]')?.focus({ preventScroll: true }), 120);
             });
           }
         } else {
