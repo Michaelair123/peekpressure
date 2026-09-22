@@ -44,11 +44,27 @@ try {
       const map = document.querySelector('#peekServiceMap');
       const pins = [...document.querySelectorAll('#peekServiceMap .peek-map-pin')];
       const mapRect = rect(map);
-      const pinRects = pins.map(rect).filter(Boolean);
-      const pinOverflow = mapRect ? pinRects.some(p =>
-        p.x < mapRect.x - 2 || p.y < mapRect.y - 2 ||
-        p.right > mapRect.right + 2 || p.bottom > mapRect.bottom + 2
-      ) : false;
+      const pinRects = pins.map((pin, index) => ({
+        index,
+        rect: rect(pin),
+        label: pin.getAttribute('aria-label') || pin.querySelector('[aria-label]')?.getAttribute('aria-label') || null
+      }));
+      const overflowingPins = mapRect
+        ? pinRects.filter(({ rect: p }) => p && (
+            p.x < mapRect.x - 2 || p.y < mapRect.y - 2 ||
+            p.right > mapRect.right + 2 || p.bottom > mapRect.bottom + 2
+          ))
+        : [];
+      const pinOverflow = overflowingPins.length > 0;
+
+      const leafletMap = window.L && map && map._leaflet_id
+        ? {
+            zoom: map._leaflet_id ? map._zoom : null,
+            center: map._leaflet_id ? map._mapPane ? map.getCenter() : null : null,
+            bounds: map._leaflet_id ? map.getBounds() : null,
+            size: map._leaflet_id ? map.getSize() : null
+          }
+        : null;
 
       return {
         viewport: { width: innerWidth, height: innerHeight },
@@ -60,6 +76,8 @@ try {
         mapSize: mapRect ? { width: mapRect.width, height: mapRect.height } : null,
         pinCount: pinRects.length,
         pinOverflow,
+        overflowingPins,
+        leafletMap,
         calendlyFrame: !!document.querySelector('iframe[src*="calendly.com"]'),
         quoteForm: !!document.querySelector('#quoteForm')
       };
