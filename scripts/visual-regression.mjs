@@ -57,15 +57,6 @@ try {
         : [];
       const pinOverflow = overflowingPins.length > 0;
 
-      const leafletMap = window.L && map && map._leaflet_id
-        ? {
-            zoom: map._leaflet_id ? map._zoom : null,
-            center: map._leaflet_id ? map._mapPane ? map.getCenter() : null : null,
-            bounds: map._leaflet_id ? map.getBounds() : null,
-            size: map._leaflet_id ? map.getSize() : null
-          }
-        : null;
-
       return {
         viewport: { width: innerWidth, height: innerHeight },
         documentWidth: document.documentElement.scrollWidth,
