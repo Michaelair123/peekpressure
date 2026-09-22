@@ -704,11 +704,27 @@
 
       const fit = () => {
         map.invalidateSize({animate:false});
-        if (bounds.length) map.fitBounds(bounds, {padding:[28,28], maxZoom:10, animate:false});
+        if (bounds.length) {
+          map.fitBounds(bounds, {
+            paddingTopLeft:[48,48],
+            paddingBottomRight:[48,48],
+            maxZoom:10,
+            animate:false
+          });
+        }
       };
       requestAnimationFrame(fit);
       window.addEventListener('load', fit, {once:true});
-      if ('ResizeObserver' in window) new ResizeObserver(() => map.invalidateSize({animate:false})).observe(mapEl);
+      // Re-fit after the map receives its final responsive dimensions so every
+      // marker remains comfortably inside the visible map at every breakpoint.
+      setTimeout(fit, 250);
+      if ('ResizeObserver' in window) {
+        let resizeTimer;
+        new ResizeObserver(() => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(fit, 80);
+        }).observe(mapEl);
+      }
     })();
 
     document.querySelectorAll(
