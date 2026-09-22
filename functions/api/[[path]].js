@@ -183,7 +183,12 @@ async function handleLead(context) {
   }
 
   const RESEND_API_KEY = context.env.RESEND_API_KEY;
-  const LEAD_SIGNING_SECRET = context.env.LEAD_SIGNING_SECRET || RESEND_API_KEY;
+  // Accept both configured secrets so a stale/mismatched LEAD_SIGNING_SECRET
+  // cannot strand a real lead after Lucy has already issued a valid token.
+  const leadSigningSecrets = [
+    context.env.LEAD_SIGNING_SECRET,
+    RESEND_API_KEY
+  ].filter(Boolean).filter((value, index, values) => values.indexOf(value) === index);
 
   if (!RESEND_API_KEY) {
     return json({
@@ -216,8 +221,11 @@ async function handleLead(context) {
     // Partial leads are intentionally capturable when we have a real customer
     // name plus phone or email. This protects against customers disconnecting
     // before qualification is complete.
-    if (!(await verifyLeadToken(LEAD_SIGNING_SECRET, leadToken, lead))) {
-      return json({ error: "This lead handoff is no longer valid. Please start the quote conversation again.", handoff_state: "HANDOFF_FAILED" }, 403);
+    const tokenChecks = await Promise.all(
+      leadSigningSecrets.map(secret => verifyLeadToken(secret, leadToken, lead))
+    );
+    if (!tokenChecks.some(Boolean)) {
+      return json({ error: "This lead handoff could not be verified.", handoff_state: "HANDOFF_FAILED" }, 403);
     }
 
     const isPartial = lead.lead_status === "uncertain";
