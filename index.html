@@ -1317,10 +1317,10 @@ document.addEventListener('DOMContentLoaded', () => {
               state.pendingLeadKind = leadKind;
               const failure = state.handoffState === HANDOFF_STATES.HANDOFF_UNKNOWN
                 ? "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com."
-                : "I couldn’t complete the handoff just yet. Please try again, or call/text PEEK PRESSURE at 415-689-8377.";
+                : "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com.";
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
-              setQuick(['TRY AGAIN', 'Book a time']);
+              setQuick(['Book a time', 'Ask another question']);
             }
           } finally {
             state.sending = false;
@@ -1449,7 +1449,7 @@ document.addEventListener('DOMContentLoaded', () => {
               state.pendingLeadKind = handoffKind;
               const failure = state.handoffState === HANDOFF_STATES.HANDOFF_UNKNOWN
                 ? "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com."
-                : "I couldn’t complete the handoff just yet. Please try again, or call/text PEEK PRESSURE at 415-689-8377.";
+                : "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com.";
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
             }
