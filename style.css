@@ -915,7 +915,7 @@ html{scroll-padding-top:96px;scroll-padding-bottom:96px}
 }
 
 
-/* Centered contact-form modal — the floating EMAIL action opens the existing Formspree form here. */
+/* Email-triggered quote form: hidden from page flow until EMAIL is clicked. */
 body.quote-modal-open{overflow:hidden}
 body.quote-modal-open::before{
   content:"";
@@ -926,14 +926,18 @@ body.quote-modal-open::before{
   backdrop-filter:blur(6px);
   -webkit-backdrop-filter:blur(6px);
 }
-#quoteForm{
-  display:none;
+.peek-quote-modal{display:none}
+.peek-quote-modal.is-open{
+  display:block;
+  position:fixed;
+  inset:0;
+  z-index:2147483646;
+  pointer-events:none;
 }
-#quoteForm.is-quote-modal-open{
-  position:fixed!important;
+.peek-quote-modal #quoteForm{
+  position:absolute!important;
   top:50%!important;
   left:50%!important;
-  z-index:2147483646!important;
   display:block!important;
   width:min(680px,calc(100vw - 32px))!important;
   max-height:calc(100dvh - 32px)!important;
@@ -947,6 +951,7 @@ body.quote-modal-open::before{
   box-shadow:0 30px 100px rgba(0,0,0,.28);
   transform:translate(-50%,-50%);
   animation:peekQuoteModalIn .24s ease both;
+  pointer-events:auto;
 }
 .quote-modal-close{
   position:sticky;
@@ -968,20 +973,13 @@ body.quote-modal-open::before{
   cursor:pointer;
   box-shadow:0 4px 14px rgba(0,0,0,.08);
 }
-.quote-modal-close:hover,
-.quote-modal-close:focus-visible{
-  background:#111;
-  color:#fff;
-}
-#quoteForm.is-quote-modal-open .quote-step:first-of-type{
-  clear:both;
-}
+.quote-modal-close:hover,.quote-modal-close:focus-visible{background:#111;color:#fff}
 @keyframes peekQuoteModalIn{
   from{opacity:0;transform:translate(-50%,-47%) scale(.985)}
   to{opacity:1;transform:translate(-50%,-50%) scale(1)}
 }
 @media(max-width:700px){
-  #quoteForm.is-quote-modal-open{
+  .peek-quote-modal #quoteForm{
     width:calc(100vw - 20px)!important;
     max-height:calc(100dvh - 20px)!important;
     padding:1rem!important;
@@ -989,5 +987,5 @@ body.quote-modal-open::before{
   }
 }
 @media(prefers-reduced-motion:reduce){
-  #quoteForm.is-quote-modal-open{animation:none}
+  .peek-quote-modal #quoteForm{animation:none}
 }
