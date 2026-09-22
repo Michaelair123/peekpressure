@@ -1032,6 +1032,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const photoInput = document.getElementById('peekChatPhotoInput');
     const attachButton = document.getElementById('peekChatAttach');
     const attachments = document.getElementById('peekChatAttachments');
+    const floatingActions = document.querySelector('.peek-floating-actions');
 
     if (!launcher || !panel || !messages || !form || !input) return;
 
@@ -1219,6 +1220,7 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.setAttribute('aria-modal', 'false');
       launcher.setAttribute('aria-expanded', 'true');
       launcher.classList.add('is-hidden');
+      floatingActions?.classList.add('is-chat-open');
 
       if (!messages.children.length) {
         addMessage("Hello — I’m Lucy, PEEK PRESSURE’s AI assistant. 👋 I can help with service questions, cleaning requests, photos, and getting you started with a quote.", 'assistant');
@@ -1237,7 +1239,9 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.classList.remove('is-open');
       panel.setAttribute('aria-hidden', 'true');
       panel.setAttribute('aria-modal', 'false');
-      launcher.setAttribute('aria-expanded', 'false');      launcher.classList.remove('is-hidden');
+      launcher.setAttribute('aria-expanded', 'false');
+      launcher.classList.remove('is-hidden');
+      floatingActions?.classList.remove('is-chat-open');
       window.setTimeout(() => {
         const floatingChat = document.getElementById('peekFloatingChat');
         (floatingChat || launcher).focus();      }, 0);    }
