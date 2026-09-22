@@ -247,8 +247,7 @@
                 loading="lazy" decoding="async"
               >
             </div>
-            <div class="service-body">
-              <span class="number">03</span>
+            <div class="service-body">              <span class="number">03</span>
               <h2>COMMERCIAL</h2>
               <p>Exterior cleaning for offices, retail centers, apartment properties, and other commercial spaces.</p><a class="service-cta" href="#quoteForm" data-service="Commercial">REQUEST QUOTE <span>→</span></a>
             </div>
@@ -497,7 +496,6 @@
         <textarea id="details" name="details" rows="4" placeholder="Stains, size, access, timing, or anything else we should know." data-fs-field></textarea>
         <span data-fs-error="details"></span>
       </div>
-
       <div class="quote-contact">
         <div class="form-field">
           <label for="name">YOUR NAME</label>
@@ -531,6 +529,124 @@
       </div>
     </div>
       </footer>
+
+  <!-- Floating contact rail: persistent, minimal contact actions inspired by the reference site's utility CTAs. -->
+  <nav class="peek-floating-actions" aria-label="Quick contact actions">
+    <button type="button" class="peek-floating-action" id="peekFloatingChat" aria-label="Chat with Lucy">
+      <span class="peek-floating-icon" aria-hidden="true">💬</span>
+      <span>CHAT</span>
+    </button>
+    <a class="peek-floating-action" href="mailto:look@peekpressure.com" aria-label="Email PEEK PRESSURE">
+      <span class="peek-floating-icon" aria-hidden="true">✉</span>
+      <span>EMAIL</span>
+    </a>
+    <a class="peek-floating-action" href="https://calendly.com/peekpressure/30min" id="peekFloatingBook" aria-label="Book a time with PEEK PRESSURE">
+      <span class="peek-floating-icon" aria-hidden="true">↗</span>
+      <span>BOOK</span>
+    </a>
+  </nav>
+
+  <style>
+    /* Persistent contact rail — clean, quiet, and intentionally separate from page content. */
+    .peek-floating-actions{
+      position:fixed;
+      right:20px;
+      bottom:24px;
+      z-index:9990;
+      display:flex;
+      align-items:stretch;
+      gap:0;
+      padding:0;
+      border:1px solid rgba(17,17,17,.14);
+      border-radius:999px;
+      background:rgba(255,255,255,.96);
+      box-shadow:0 12px 36px rgba(0,0,0,.14);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      overflow:hidden;
+    }
+    .peek-floating-action{
+      appearance:none;
+      -webkit-appearance:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      min-width:112px;
+      min-height:52px;
+      padding:0 18px;
+      border:0;
+      border-right:1px solid rgba(17,17,17,.10);
+      border-radius:0;
+      background:transparent;
+      color:#111;
+      font:600 .68rem/1 Inter,Arial,sans-serif;
+      letter-spacing:.13em;
+      text-decoration:none;
+      white-space:nowrap;
+      cursor:pointer;
+      transition:background-color .2s ease,color .2s ease,transform .2s ease;
+    }
+    .peek-floating-action:last-child{border-right:0}
+    .peek-floating-action:hover,
+    .peek-floating-action:focus-visible{
+      background:#111;
+      color:#fff;
+    }
+    .peek-floating-action:active{transform:scale(.98)}
+    .peek-floating-icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:18px;
+      height:18px;
+      font-size:15px;
+      line-height:1;
+      letter-spacing:0;
+    }
+    .mobile-action-bar{display:none!important}
+    @media(max-width:700px){
+      .peek-floating-actions{
+        right:12px;
+        left:12px;
+        bottom:calc(12px + env(safe-area-inset-bottom));
+        width:auto;
+        border-radius:16px;
+      }
+      .peek-floating-action{
+        flex:1 1 0;
+        min-width:0;
+        min-height:56px;
+        padding:0 8px;
+        gap:6px;
+        font-size:.62rem;
+        letter-spacing:.1em;
+      }
+      .peek-floating-icon{font-size:14px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .peek-floating-action{transition:none}
+    }
+  </style>
+
+  <script>
+    (() => {
+      const chatButton = document.getElementById('peekFloatingChat');
+      const bookButton = document.getElementById('peekFloatingBook');
+      const lucyLauncher = document.getElementById('peekChatLauncher');
+
+      chatButton?.addEventListener('click', () => {
+        lucyLauncher?.click();
+      });
+
+      bookButton?.addEventListener('click', event => {
+        if (window.Calendly?.initPopupWidget) {
+          event.preventDefault();
+          window.Calendly.initPopupWidget({url:'https://calendly.com/peekpressure/30min'});
+        }
+      });
+    })();
+  </script>
 
   <div class="mobile-action-bar" aria-label="Quick actions">
     <a href="tel:14156898377">CALL</a>
@@ -747,8 +863,7 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
+          revealObserver.unobserve(entry.target);        }
       });
     }, { rootMargin: '0px 0px -80px 0px' });
 
@@ -997,8 +1112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const cleanUrl = part.replace(/[),.!?;:]+$/, '');
             const trailing = part.slice(cleanUrl.length);
             const link = document.createElement('a');
-            link.href = cleanUrl;
-            link.target = '_blank';
+            link.href = cleanUrl;            link.target = '_blank';
             link.rel = 'noopener noreferrer';
             link.textContent = cleanUrl;
             textNode.appendChild(link);
@@ -1247,7 +1361,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (!response.ok || result?.sent !== true) {
           setHandoffState(HANDOFF_STATES.HANDOFF_FAILED);
         }
-
         const handoffConfirmed =
           response.ok === true &&
           result?.success === true &&
@@ -1497,8 +1610,7 @@ document.addEventListener('DOMContentLoaded', () => {
           error?.message === 'Images are too large. Please send a smaller photo.'
             ? 'That photo is too large. Try a smaller image and I’ll take a look.'
             : error?.message === 'Please choose a JPG, PNG, or WebP image under 1.8 MB.'
-              ? 'I can read JPG, PNG, and WebP photos. Please choose one of those formats.'
-              : /short break|temporarily unavailable|busy right now/i.test(error?.message || '')
+              ? 'I can read JPG, PNG, and WebP photos. Please choose one of those formats.'              : /short break|temporarily unavailable|busy right now/i.test(error?.message || '')
                 ? error.message
                 : "I hit a hiccup connecting to my brain. 😅 You can still call or text PEEK PRESSURE at 415-689-8377.",
           'assistant'
