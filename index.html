@@ -1309,8 +1309,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // sending anything to PEEK PRESSURE.
       if (state.pendingLead && !hasImages) {
         const normalized = clean.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
-        const affirmative = /^(yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|send it|yes send it|yes send|try again)$/i.test(normalized) ||
-          /\b(yes|correct|right|looks good|send it|try again)\b/.test(normalized);
+        const affirmative = /^(yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|send it|yes send it|yes send)$/i.test(normalized) ||
+          /\b(yes|correct|right|looks good|send it)\b/.test(normalized);
         const correction = /\b(change|wrong|incorrect|fix|update|different|no)\b/.test(normalized);
 
         addMessage(clean, 'user');
@@ -1469,11 +1469,7 @@ document.addEventListener('DOMContentLoaded', () => {
               addMessage(success, 'assistant');
               state.history.push({ role: 'assistant', content: success });
             } else {
-              state.pendingLead = leadToSend;
-              state.pendingLeadKind = handoffKind;
-              const failure = state.handoffState === HANDOFF_STATES.HANDOFF_UNKNOWN
-                ? "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com."
-                : "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com.";
+              const failure = "I couldn’t confirm that the email handoff went through. To make sure we don’t lose your request, please call or text 415-689-8377 or email look@peekpressure.com.";
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
             }
