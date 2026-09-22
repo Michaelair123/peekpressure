@@ -902,13 +902,13 @@ html{scroll-padding-top:96px;scroll-padding-bottom:96px}
 }
 @media (min-width:701px){
   .peek-chat{
-    bottom:88px !important;
+    bottom:110px !important;
     right:20px !important;
   }
 }
 @media (max-width:700px){
   .peek-chat{
-    bottom:calc(5.35rem + env(safe-area-inset-bottom)) !important;
+    bottom:calc(6.25rem + env(safe-area-inset-bottom)) !important;
     right:10px !important;
     max-height:calc(100dvh - 7rem - env(safe-area-inset-bottom)) !important;
   }
