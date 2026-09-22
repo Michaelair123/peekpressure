@@ -608,7 +608,7 @@ main>h2{font-size:clamp(2.3rem,4.3vw,4.3rem)!important;font-weight:600!important
 
 /* Interactive service map: pins and map now share the same geographic coordinate system. */
 .peek-service-leaflet{position:absolute;inset:0;width:100%;height:100%;z-index:1}.service-map{isolation:isolate}.service-map::after{z-index:4}.peek-map-pin{background:transparent!important;border:0!important}.peek-map-pin span{display:block;width:14px;height:14px;border-radius:50%;background:#e53935;border:2px solid #fff;box-shadow:0 2px 9px rgba(0,0,0,.28)}.peek-map-pin::after{content:"";position:absolute;inset:-5px;border:1px solid rgba(229,57,53,.55);border-radius:50%;animation:service-pulse 2.4s ease-out infinite;pointer-events:none}.service-map-key{position:relative;z-index:5}.leaflet-control-attribution{font-size:9px!important}.leaflet-tooltip{border:0!important;border-radius:8px!important;background:#111!important;color:#fff!important;box-shadow:0 8px 20px rgba(0,0,0,.16)!important;font:700 10px/1.2 Inter,Arial,sans-serif!important}.leaflet-tooltip-top:before{border-top-color:#111!important}
-@media(max-width:700px){.service-map{height:clamp(380px,80vw,560px)}}
+@media(max-width:700px){.service-map{height:clamp(380px,80vw,560px)!important}}
 .service-zip-success{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
 .service-zip-checkmark{display:inline-flex;align-items:center;justify-content:center;flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:#2f7d4a;color:#fff;font-size:1rem;font-weight:900;line-height:1;box-shadow:0 0 0 5px rgba(47,125,74,.1)}
 .service-zip-success>div{display:flex;flex-direction:column;gap:.12rem;min-width:0}
