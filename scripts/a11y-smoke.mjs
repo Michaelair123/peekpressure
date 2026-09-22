@@ -3,7 +3,14 @@ import AxeBuilder from '@axe-core/playwright';
 
 const baseURL = process.env.A11Y_BASE_URL || 'https://peekpressure.com/';
 const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+const page = await browser.newPage({
+  viewport: { width: 1440, height: 1000 },
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36',
+  locale: 'en-US',
+  extraHTTPHeaders: {
+    'Accept-Language': 'en-US,en;q=0.9'
+  }
+});
 
 const consoleErrors = [];
 page.on('console', msg => {
