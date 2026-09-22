@@ -66,10 +66,15 @@ jobs:
           html = Path("index.html").read_text(encoding="utf-8")
           if "</script>;" in html:
               raise SystemExit("Malformed script closing sequence found in index.html")
-          scripts = re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>", html, flags=re.S | re.I)
+          scripts = []
+          for match in re.finditer(r"<script(?:\s[^>]*)?>(.*?)</script>", html, flags=re.S | re.I):
+              attrs, script = match.group(0).split(">", 1)[0], match.group(1)
+              if re.search(r'type=["\']application/ld\+json["\']', attrs, flags=re.I):
+                  continue
+              scripts.append(script)
           for i, script in enumerate(scripts, 1):
               Path(f"/tmp/peek-inline-{i}.js").write_text(script, encoding="utf-8")
-          print(f"Found {len(scripts)} inline/external script blocks")
+          print(f"Found {len(scripts)} JavaScript inline script blocks (JSON-LD skipped)")
           PY
           for file in /tmp/peek-inline-*.js; do
             echo "Checking $file"
