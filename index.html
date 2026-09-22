@@ -438,73 +438,7 @@
       </div>
     </div>
 
-    <form
-      id="quoteForm"
-      action="https://formspree.io/f/mdekoerb"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      <fieldset class="quote-step">
-        <legend>01 / WHAT NEEDS CLEANING?</legend>
-        <div class="service-choice-grid">
-          <label class="service-choice">
-            <input type="radio" name="service" value="Driveway" required data-fs-field>
-            <span>DRIVEWAY</span><b>→</b>
-          </label>
-          <label class="service-choice">
-            <input type="radio" name="service" value="Sidewalk / Walkway" data-fs-field>
-            <span>SIDEWALK / WALKWAY</span><b>→</b>
-          </label>
-          <label class="service-choice">
-            <input type="radio" name="service" value="Commercial" data-fs-field>
-            <span>COMMERCIAL</span><b>→</b>
-          </label>
-          <label class="service-choice">
-            <input type="radio" name="service" value="Other" data-fs-field>
-            <span>OTHER</span><b>→</b>
-          </label>
-        </div>
-        <span data-fs-error="service"></span>
-      </fieldset>
 
-      <div class="form-field">
-        <label for="address">02 / WHERE IS IT?</label>
-        <input type="text" id="address" name="address" placeholder="Property address" autocomplete="street-address" required data-fs-field>
-        <span data-fs-error="address"></span>
-      </div>
-
-      <div class="form-field photo-field">
-        <label for="photos">03 / WANT TO SHOW US? <span>OPTIONAL</span></label>
-        <input type="file" id="photos" name="photos" accept="image/*" multiple data-max-files="5">
-        <label for="photos" class="photo-upload">
-          <strong>+ ADD PHOTO</strong>
-          <span>Photos help us quote faster.</span>
-        </label>
-      </div>
-
-      <div class="form-field">
-        <label for="details">04 / ANYTHING ELSE? <span>OPTIONAL</span></label>
-        <textarea id="details" name="details" rows="4" placeholder="Stains, size, access, timing, or anything else we should know." data-fs-field></textarea>
-        <span data-fs-error="details"></span>
-      </div>
-      <div class="quote-contact">
-        <div class="form-field">          <label for="name">YOUR NAME</label>
-          <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required data-fs-field>          <span data-fs-error="name"></span>
-        </div>        <div class="form-field">
-          <label for="phone">PHONE</label>
-          <input type="tel" id="phone" name="phone" placeholder="(415) 555-5555" autocomplete="tel" required data-fs-field>
-          <span data-fs-error="phone"></span>
-        </div>
-        <div class="form-field quote-email">
-          <label for="email">EMAIL</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required data-fs-field>
-          <span data-fs-error="email"></span>
-        </div>
-      </div>
-
-      <button type="submit" data-fs-submit-btn>GET MY QUOTE →</button>
-      <p class="form-note">NO OBLIGATION — WE’LL REVIEW YOUR REQUEST AND FOLLOW UP WITH NEXT STEPS.</p>
-    </form>
   </div>
 </div>
 </section>
@@ -533,6 +467,76 @@
       <span>BOOK</span>
     </a>
   </nav>
+
+  <div class="peek-quote-modal" id="peekQuoteModal" aria-hidden="true">
+  <form
+    id="quoteForm"
+    action="https://formspree.io/f/mdekoerb"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    <fieldset class="quote-step">
+      <legend>01 / WHAT NEEDS CLEANING?</legend>
+      <div class="service-choice-grid">
+        <label class="service-choice">
+          <input type="radio" name="service" value="Driveway" required data-fs-field>
+          <span>DRIVEWAY</span><b>→</b>
+        </label>
+        <label class="service-choice">
+          <input type="radio" name="service" value="Sidewalk / Walkway" data-fs-field>
+          <span>SIDEWALK / WALKWAY</span><b>→</b>
+        </label>
+        <label class="service-choice">
+          <input type="radio" name="service" value="Commercial" data-fs-field>
+          <span>COMMERCIAL</span><b>→</b>
+        </label>
+        <label class="service-choice">
+          <input type="radio" name="service" value="Other" data-fs-field>
+          <span>OTHER</span><b>→</b>
+        </label>
+      </div>
+      <span data-fs-error="service"></span>
+    </fieldset>
+
+    <div class="form-field">
+      <label for="address">02 / WHERE IS IT?</label>
+      <input type="text" id="address" name="address" placeholder="Property address" autocomplete="street-address" required data-fs-field>
+      <span data-fs-error="address"></span>
+    </div>
+
+    <div class="form-field photo-field">
+      <label for="photos">03 / WANT TO SHOW US? <span>OPTIONAL</span></label>
+      <input type="file" id="photos" name="photos" accept="image/*" multiple data-max-files="5">
+      <label for="photos" class="photo-upload">
+        <strong>+ ADD PHOTO</strong>
+        <span>Photos help us quote faster.</span>
+      </label>
+    </div>
+
+    <div class="form-field">
+      <label for="details">04 / ANYTHING ELSE? <span>OPTIONAL</span></label>
+      <textarea id="details" name="details" rows="4" placeholder="Stains, size, access, timing, or anything else we should know." data-fs-field></textarea>
+      <span data-fs-error="details"></span>
+    </div>
+    <div class="quote-contact">
+      <div class="form-field">          <label for="name">YOUR NAME</label>
+        <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required data-fs-field>          <span data-fs-error="name"></span>
+      </div>        <div class="form-field">
+        <label for="phone">PHONE</label>
+        <input type="tel" id="phone" name="phone" placeholder="(415) 555-5555" autocomplete="tel" required data-fs-field>
+        <span data-fs-error="phone"></span>
+      </div>
+      <div class="form-field quote-email">
+        <label for="email">EMAIL</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required data-fs-field>
+        <span data-fs-error="email"></span>
+      </div>
+    </div>
+
+    <button type="submit" data-fs-submit-btn>GET MY QUOTE →</button>
+    <p class="form-note">NO OBLIGATION — WE’LL REVIEW YOUR REQUEST AND FOLLOW UP WITH NEXT STEPS.</p>
+  </form>
+  </div>
 
   <style>
     /* Persistent contact rail — clean, quiet, and intentionally separate from page content. */
@@ -998,17 +1002,19 @@ document.addEventListener('DOMContentLoaded', () => {
   </aside>
 
   <script>
-  // Quick quote modal — reuse the existing Formspree form without duplicating fields.
+  // The Formspree quote form lives only inside this modal and opens from EMAIL / quote CTAs.
   (() => {
+    const modal = document.getElementById('peekQuoteModal');
     const form = document.getElementById('quoteForm');
     const floatingActions = document.querySelector('.peek-floating-actions');
-    if (!form) return;
+    if (!modal || !form) return;
 
     let closeButton = null;
     let lastTrigger = null;
 
     const close = () => {
-      form.classList.remove('is-quote-modal-open');
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('quote-modal-open');
       floatingActions?.classList.remove('is-email-open');
       closeButton?.remove();
@@ -1019,7 +1025,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const open = (trigger) => {
       lastTrigger = trigger || document.activeElement;
-      form.classList.add('is-quote-modal-open');
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('quote-modal-open');
       floatingActions?.classList.add('is-email-open');
 
@@ -1048,17 +1055,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && form.classList.contains('is-quote-modal-open')) close();
+      if (event.key === 'Escape' && modal.classList.contains('is-open')) close();
     });
 
     form.addEventListener('submit', () => {
       window.setTimeout(() => {
-        if (document.body.classList.contains('quote-modal-open')) close();
+        if (modal.classList.contains('is-open')) close();
       }, 1200);
     });
   })();
   </script>
-
   <script>
   // Booking easter egg — only appears after Calendly confirms a real booking.
   window.addEventListener('message', event => {
