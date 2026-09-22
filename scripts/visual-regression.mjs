@@ -21,6 +21,10 @@ try {
     await page.route('**/api/lead**', route => route.abort('blockedbyclient'));
 
     const consoleErrors = [];
+    const failedRequests = [];
+    page.on('response', response => {
+      if (response.status() >= 400) failedRequests.push({ status: response.status(), url: response.url() });
+    });
     const pageErrors = [];
     page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()); });
     page.on('pageerror', err => pageErrors.push(String(err)));
@@ -61,6 +65,12 @@ try {
       };
     });
 
+    if (!state.launcher || !state.map || !state.quoteForm) {
+      failures.push({ viewport: viewport.name, check: 'diagnostic: expected page shell missing', state, consoleErrors, pageErrors, failedRequests, bodyText: await page.locator('body').innerText().catch(() => '') });
+      await page.close();
+      continue;
+    }
+
     const screenshot = `visual-${viewport.name}.png`;
     await page.screenshot({ path: screenshot, fullPage: true });
 
@@ -77,7 +87,7 @@ try {
     ];
 
     for (const [name, ok] of checks) {
-      if (!ok) failures.push({ viewport: viewport.name, check: name, state, consoleErrors, pageErrors });
+      if (!ok) failures.push({ viewport: viewport.name, check: name, state, consoleErrors, pageErrors, failedRequests });
     }
 
     await page.close();
