@@ -68,7 +68,6 @@ try {
         pinCount: pinRects.length,
         pinOverflow,
         overflowingPins,
-        leafletMap,
         calendlyFrame: !!document.querySelector('iframe[src*="calendly.com"]'),
         quoteForm: !!document.querySelector('#quoteForm')
       };
