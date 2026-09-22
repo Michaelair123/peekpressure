@@ -247,8 +247,7 @@
                 loading="lazy" decoding="async"
               >
             </div>
-            <div class="service-body">              <span class="number">03</span>
-              <h2>COMMERCIAL</h2>
+            <div class="service-body">              <span class="number">03</span>              <h2>COMMERCIAL</h2>
               <p>Exterior cleaning for offices, retail centers, apartment properties, and other commercial spaces.</p><a class="service-cta" href="#quoteForm" data-service="Commercial">REQUEST QUOTE <span>→</span></a>
             </div>
           </article>
@@ -497,8 +496,7 @@
         <span data-fs-error="details"></span>
       </div>
       <div class="quote-contact">
-        <div class="form-field">
-          <label for="name">YOUR NAME</label>
+        <div class="form-field">          <label for="name">YOUR NAME</label>
           <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required data-fs-field>
           <span data-fs-error="name"></span>
         </div>
@@ -548,6 +546,7 @@
 
   <style>
     /* Persistent contact rail — clean, quiet, and intentionally separate from page content. */
+    .peek-chat-launcher{display:none!important}
     .peek-floating-actions{
       position:fixed;
       right:20px;
@@ -747,8 +746,7 @@
         '94027','94028','94030','94035','94037','94038','94040','94041','94042','94043','94044',
         '94061','94062','94063','94064','94065','94066','94070','94074','94080','94083','94087',
         '94089','94094','94096','94102','94103','94104','94105','94107','94108','94109','94110',
-        '94111','94112','94114','94115','94116','94117','94118','94121','94122','94123','94124',
-        '94127','94128','94129','94130','94131','94132','94133','94134','94158','94301','94302',
+        '94111','94112','94114','94115','94116','94117','94118','94121','94122','94123','94124',        '94127','94128','94129','94130','94131','94132','94133','94134','94158','94301','94302',
         '94303','94304','94305','94306','94401','94402','94403','94404','94405','94536','94537',
         '94538','94539','94541','94542','94543','94544','94545','94546','94550','94551','94552',
         '94555','94560','94566','94568','94577','94578','94579','94580','94583','94586','94587',
@@ -997,8 +995,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
     <div class="peek-chat-status"><span></span> Online · Usually replies in seconds</div>
     <div class="peek-chat-messages" id="peekChatMessages" aria-live="polite"></div>
-    <div class="peek-chat-quick" id="peekChatQuick"></div>
-    <div class="peek-chat-attachments" id="peekChatAttachments" aria-live="polite"></div>
+    <div class="peek-chat-quick" id="peekChatQuick"></div>    <div class="peek-chat-attachments" id="peekChatAttachments" aria-live="polite"></div>
     <form class="peek-chat-form" id="peekChatForm">
       <button class="peek-chat-attach" id="peekChatAttach" type="button" aria-label="Attach a photo" title="Attach a photo">＋</button>
       <input id="peekChatPhotoInput" type="file" accept="image/*" multiple hidden>
@@ -1247,9 +1244,11 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.classList.remove('is-open');
       panel.setAttribute('aria-hidden', 'true');
       panel.setAttribute('aria-modal', 'false');
-      launcher.setAttribute('aria-expanded', 'false');
-      launcher.classList.remove('is-hidden');
-      window.setTimeout(() => launcher.focus(), 0);
+      launcher.setAttribute('aria-expanded', 'false');      launcher.classList.remove('is-hidden');
+      window.setTimeout(() => {
+        const floatingChat = document.getElementById('peekFloatingChat');
+        (floatingChat || launcher).focus();
+      }, 0);
     }
 
     async function fileToDataUrl(file) {
@@ -1497,8 +1496,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const userContent = [];
 
         if (clean) {
-          userContent.push({ type: 'input_text', text: clean });
-        }
+          userContent.push({ type: 'input_text', text: clean });        }
 
         userContent.push(...imageParts);
         state.history.push({
