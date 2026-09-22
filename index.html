@@ -705,10 +705,18 @@
       const fit = () => {
         map.invalidateSize({animate:false});
         if (bounds.length) {
-          map.fitBounds(bounds, {
-            paddingTopLeft:[48,48],
-            paddingBottomRight:[48,48],
+          const geographicBounds = L.latLngBounds(bounds);
+          map.fitBounds(geographicBounds, {
+            paddingTopLeft:[64,64],
+            paddingBottomRight:[64,64],
             maxZoom:10,
+            animate:false
+          });
+          // Leaflet's fitBounds handles the zoom; this final containment pass
+          // handles responsive rounding/viewport changes so no marker center
+          // can finish outside the visible map.
+          map.panInsideBounds(geographicBounds, {
+            padding:[64,64],
             animate:false
           });
         }
