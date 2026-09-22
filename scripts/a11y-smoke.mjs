@@ -12,10 +12,10 @@ page.on('console', msg => {
 page.on('pageerror', error => consoleErrors.push(error.message));
 
 try {
-  const response = await page.goto(baseURL, { waitUntil: 'networkidle', timeout: 30000 });
+  const response = await page.goto(baseURL, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.locator('#main-content').waitFor({ state: 'attached', timeout: 15000 });
   if (!response || !response.ok()) throw new Error(`Homepage returned ${response?.status() ?? 'no response'}`);
 
-  await page.locator('#main-content').waitFor();
 
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
