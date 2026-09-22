@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 const baseURL = process.env.A11Y_BASE_URL || 'https://peekpressure.com/';
 const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage({
+const context = await browser.newContext({
   viewport: { width: 1440, height: 1000 },
   userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36',
   locale: 'en-US',
@@ -11,6 +11,7 @@ const page = await browser.newPage({
     'Accept-Language': 'en-US,en;q=0.9'
   }
 });
+const page = await context.newPage();
 
 const consoleErrors = [];
 page.on('console', msg => {
@@ -22,7 +23,6 @@ try {
   const response = await page.goto(baseURL, { waitUntil: 'domcontentloaded', timeout: 30000 });
   if (!response || !response.ok()) throw new Error(`Homepage returned ${response?.status() ?? 'no response'}`);
   await page.waitForTimeout(1000);
-
 
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
@@ -55,5 +55,6 @@ try {
     process.exitCode = 1;
   }
 } finally {
+  await context.close();
   await browser.close();
 }
