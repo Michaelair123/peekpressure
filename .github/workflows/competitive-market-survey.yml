@@ -35,7 +35,7 @@ jobs:
 
       - name: Run public competitor survey
         env:
-          EXTRA_URLS: \${{ github.event.inputs.extra_urls }}
+          EXTRA_URLS: ${{ github.event.inputs.extra_urls }}
         run: |
           set -euo pipefail
           if [ -n "\${EXTRA_URLS:-}" ]; then
@@ -60,15 +60,13 @@ jobs:
 
       - name: Publish GitHub issue
         env:
-          GH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           gh issue create --title "Bay Area competitive pricing survey — $(date -u +%Y-%m-%d)" --body-file competitive-market-survey.md --label pricing || gh issue create --title "Bay Area competitive pricing survey — $(date -u +%Y-%m-%d)" --body-file competitive-market-survey.md
 
       - name: Email Monday market survey
-        if: \${{ secrets.RESEND_API_KEY != '' }}
-        env:
-          RESEND_API_KEY: \${{ secrets.RESEND_API_KEY }}
+        if: ${{ env.RESEND_API_KEY != '' }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -115,6 +113,6 @@ jobs:
             --data-binary @/tmp/resend-payload.json
 
       - name: Report email configuration
-        if: \${{ secrets.RESEND_API_KEY == '' }}
+        if: ${{ env.RESEND_API_KEY == '' }}
         run: |
           echo "::warning::RESEND_API_KEY is not configured in GitHub Actions, so the Monday market survey was not emailed. The report artifact and GitHub issue were still published."
