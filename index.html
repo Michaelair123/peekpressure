@@ -919,16 +919,8 @@ body.peek-calendly-open{overflow:hidden}
         }
 
         if (serviceZips.has(zip)) {
-          serviceZipResult.innerHTML = '<div class="service-zip-success"><span class="service-zip-checkmark" aria-hidden="true">✓</span><div><strong>YES — WE SERVICE YOUR AREA.</strong><small>Good news — we can help with your property.</small></div><button type="button" class="service-zip-quote-button" id="serviceZipQuoteButton">GET A QUOTE <span>→</span></button></div>';
+          serviceZipResult.innerHTML = '<div class="service-zip-success"><span class="service-zip-checkmark" aria-hidden="true">✓</span><div><strong>YES — WE SERVICE YOUR AREA.</strong><small>Good news — we can help with your property.</small></div></div>';
           serviceZipResult.classList.add('is-success');
-
-          const quoteButton = document.getElementById('serviceZipQuoteButton');
-          if (quoteButton) {
-            quoteButton.addEventListener('click', () => {
-              window.PeekQuoteModal?.open(quoteButton);
-              setTimeout(() => document.querySelector('#quoteForm input[name="address"]')?.focus({ preventScroll: true }), 120);
-            });
-          }
         } else {
           serviceZipResult.innerHTML = '<strong>Not currently on our ZIP list.</strong> <a href="tel:14156898377">Call us</a> and we\'ll confirm coverage.';
           serviceZipResult.classList.add('is-neutral');
@@ -1192,7 +1184,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const open = (trigger) => {
-      closeOtherPopups('quote');
+      document.dispatchEvent(new CustomEvent('peek:popup-open', {detail:{except:'quote'}}));
       lastTrigger = trigger || document.activeElement;
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
