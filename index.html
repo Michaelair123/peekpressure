@@ -1390,6 +1390,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       messages.appendChild(bubble);
       messages.scrollTop = messages.scrollHeight;
+      return bubble;
+    }
+
+    function replaceAssistantMessage(bubble, text) {
+      if (!bubble) return;
+      const textNode = bubble.querySelector('div');
+      if (textNode) textNode.textContent = String(text || '');
+      else {
+        const node = document.createElement('div');
+        node.textContent = String(text || '');
+        bubble.appendChild(node);
+      }
+      messages.scrollTop = messages.scrollHeight;
     }
 
     function setQuick(items) {
@@ -1699,15 +1712,18 @@ document.addEventListener('DOMContentLoaded', () => {
               const success = leadKind === 'final'
                 ? "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly."
                 : "✅ Got it — I saved your contact information and sent what we have to PEEK PRESSURE. If you disconnect, we’ll still have a way to follow up.";
-              addMessage(success, 'assistant');
-              state.history.push({ role: 'assistant', content: success });
+              // Handoff is the authoritative customer-facing response. Replace
+              // Lucy's draft rather than stacking a second assistant bubble.
+              replaceAssistantMessage(replyBubble, success);
+              state.history[state.history.length - 1] = { role: 'assistant', content: success };
               setQuick(['Ask another question', 'Book a time']);
             } else {
               state.pendingLead = leadToSend;
               state.pendingLeadKind = leadKind;
               const failure = "I hit a snag getting that through. Your details are still here — reply YES and I’ll retry it, or call/text 415-689-8377 if you’d rather reach the team directly.";
-              addMessage(failure, 'assistant');
-              state.history.push({ role: 'assistant', content: failure });
+              // Keep exactly one assistant bubble for this turn.
+              replaceAssistantMessage(replyBubble, failure);
+              state.history[state.history.length - 1] = { role: 'assistant', content: failure };
               setQuick(['Book a time', 'Ask another question']);
             }
           } finally {
@@ -1802,7 +1818,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const reply = data.reply || "Got it. What’s the one detail you think I should know about the job?";
         setHandoffState(deriveHandoffState(data));
-        addMessage(reply, 'assistant');
+        const replyBubble = addMessage(reply, 'assistant');
         state.history.push({ role: 'assistant', content: reply });
 
         // Lucy captures partial leads immediately. A property-address confirmation
