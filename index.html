@@ -1207,6 +1207,10 @@ document.addEventListener('DOMContentLoaded', () => {
   (() => {
     const chat = document.getElementById('peekChat');
     const chatClose = document.getElementById('peekChatClose');
+    const chatLauncher = document.getElementById('peekChatLauncher');
+    chatLauncher?.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('peek:popup-open', {detail:{except:'chat'}}));
+    }, {capture:true});
     document.addEventListener('peek:popup-open', event => {
       if (event.detail?.except !== 'chat' && chat?.getAttribute('aria-hidden') === 'false') chatClose?.click();
     });
