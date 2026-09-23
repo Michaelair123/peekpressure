@@ -23,7 +23,15 @@ try {
     const consoleErrors = [];
     const failedRequests = [];
     page.on('response', response => {
-      if (response.status() >= 400) failedRequests.push({ status: response.status(), url: response.url() });
+      if (response.status() >= 400) failedRequests.push({ type: 'response', status: response.status(), url: response.url() });
+    });
+    page.on('requestfailed', request => {
+      failedRequests.push({
+        type: 'requestfailed',
+        status: null,
+        url: request.url(),
+        failure: request.failure()?.errorText || 'unknown'
+      });
     });
     const pageErrors = [];
     page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()); });
