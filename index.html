@@ -1415,13 +1415,13 @@ document.addEventListener('DOMContentLoaded', () => {
         button.textContent = item;
 
         button.addEventListener('click', () => {
-          if (/^(book a time|check availability again)$/i.test(item)) {
-            window.open('https://calendly.com/peekpressure/30min', '_blank', 'noopener,noreferrer');
-            return;
-          }
-
-          if (/^open calendly$/i.test(item)) {
-            window.open('https://calendly.com/peekpressure/30min', '_blank', 'noopener,noreferrer');
+          if (/^(book a time|check availability again|open calendly)$/i.test(item)) {
+            // Use the site's existing booking trigger so Lucy opens the same
+            // centered Calendly modal as the main BOOK button.
+            const bookingTrigger = document.querySelector('[data-peek-book]');
+            if (bookingTrigger) {
+              bookingTrigger.click();
+            }
             return;
           }
 
