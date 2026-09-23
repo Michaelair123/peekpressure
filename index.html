@@ -419,10 +419,10 @@ body.peek-calendly-open{overflow:hidden}
           <div class="before-after-card">
             <div class="before-after-media" aria-label="Interactive before and after driveway slider">
               <div class="before-after-layer before-after-before">
-                <div class="proof-placeholder before"><span>BEFORE</span><small>SAMPLE DEMO</small></div>
+                <div class="proof-placeholder before"><span>BEFORE</span><small>COMING SOON</small></div>
               </div>
               <div class="before-after-layer before-after-after">
-                <div class="proof-placeholder after"><span>AFTER</span><small>SAMPLE DEMO</small></div>
+                <div class="proof-placeholder after"><span>AFTER</span><small>COMING SOON</small></div>
               </div>
               <input class="before-after-range" type="range" min="0" max="100" value="50" aria-label="Reveal clean driveway">
               <div class="before-after-divider" aria-hidden="true"><span>↔</span></div>
@@ -1976,5 +1976,23 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 </script>
 
+
+
+<script>
+(() => {
+  const media = document.querySelector('.before-after-media');
+  const range = document.querySelector('.before-after-range');
+  const divider = document.querySelector('.before-after-divider');
+  if (!media || !range || !divider) return;
+  const update = () => {
+    const value = Number(range.value);
+    media.style.setProperty('--before-after-position', value + '%');
+    divider.setAttribute('aria-hidden', 'true');
+  };
+  range.addEventListener('input', update, { passive: true });
+  range.addEventListener('change', update, { passive: true });
+  update();
+})();
+</script>
 </body>
 </html>
