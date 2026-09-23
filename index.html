@@ -1671,8 +1671,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!clean && !hasImages) return;
       if (state.sending) return;
 
-      // If Lucy has collected a lead, confirm the contact details before
-      // sending anything to PEEK PRESSURE.
+      // A partial lead may already have been sent. If a handoff failed or
+      // could not be confirmed, keep the captured lead available for a retry.
       if (state.pendingLead && !hasImages) {
         const normalized = clean.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
         const affirmative = /^(yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|send it|yes send it|yes send)$/i.test(normalized) ||
@@ -1705,9 +1705,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
               state.pendingLead = leadToSend;
               state.pendingLeadKind = leadKind;
-              const failure = state.handoffState === HANDOFF_STATES.HANDOFF_UNKNOWN
-                ? "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com."
-                : "I couldn’t confirm the handoff just now. To make sure your request reaches PEEK PRESSURE, please call or text 415-689-8377 or email look@peekpressure.com.";
+              const failure = "I hit a snag getting that through. Your details are still here — reply YES and I’ll retry it, or call/text 415-689-8377 if you’d rather reach the team directly.";
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
               setQuick(['Book a time', 'Ask another question']);
@@ -1839,9 +1837,14 @@ document.addEventListener('DOMContentLoaded', () => {
               addMessage(success, 'assistant');
               state.history.push({ role: 'assistant', content: success });
             } else {
-              const failure = "I couldn’t confirm that the email handoff went through. To make sure we don’t lose your request, please call or text 415-689-8377 or email look@peekpressure.com.";
+              // Preserve the lead locally so a customer can retry instead of
+              // having to re-enter their contact information.
+              state.pendingLead = leadToSend;
+              state.pendingLeadKind = handoffKind;
+              const failure = "I hit a snag getting that through. Your details are still here — reply YES and I’ll retry it, or call/text 415-689-8377 if you’d rather reach the team directly.";
               addMessage(failure, 'assistant');
               state.history.push({ role: 'assistant', content: failure });
+              setQuick(['YES — RETRY', 'Book a time']);
             }
           } finally {
             state.sending = false;
