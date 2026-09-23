@@ -232,6 +232,114 @@ body.peek-calendly-open{overflow:hidden}
 }
 </style>
 
+
+<style id="peek-liquid-glass-final">
+/* FINAL LIQUID GLASS — inline fallback so the visual layer cannot be blocked by asset/cache order */
+.header-cta,
+.hero-buttons .button,
+#quoteForm button,
+.booking-cta-button,
+.service-card .service-body .service-cta{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  border:1px solid rgba(255,255,255,.76)!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(232,232,232,.52)) padding-box!important;
+  color:#171717!important;
+  -webkit-backdrop-filter:saturate(190%) blur(24px)!important;
+  backdrop-filter:saturate(190%) blur(24px)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.98),inset 0 -1px 0 rgba(0,0,0,.08),0 14px 34px rgba(0,0,0,.11),0 3px 10px rgba(0,0,0,.05)!important;
+}
+.hero-buttons .primary,
+#quoteForm button,
+.booking-cta-button,
+.service-card .service-body .service-cta{
+  color:#fff!important;
+  background:linear-gradient(180deg,rgba(70,70,70,.97),rgba(7,7,7,.99)) padding-box!important;
+  border-color:rgba(255,255,255,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -2px 5px rgba(0,0,0,.32),0 14px 34px rgba(0,0,0,.19),0 3px 10px rgba(0,0,0,.07)!important;
+}
+.header-cta::before,
+.hero-buttons .button::before,
+#quoteForm button::before,
+.booking-cta-button::before,
+.service-card .service-body .service-cta::before{
+  content:""!important;
+  position:absolute!important;
+  z-index:0!important;
+  left:7%!important;
+  right:7%!important;
+  top:1px!important;
+  height:52%!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,0))!important;
+  pointer-events:none!important;
+}
+.header-cta > *,
+.hero-buttons .button > *,
+#quoteForm button > *,
+.booking-cta-button > *,
+.service-card .service-body .service-cta > *{
+  position:relative!important;
+  z-index:1!important;
+}
+@media (hover:hover){
+  .header-cta:hover,
+  .hero-buttons .button:hover,
+  #quoteForm button:hover:not(:disabled),
+  .booking-cta-button:hover,
+  .service-card .service-body .service-cta:hover{
+    transform:translateY(-2px) scale(1.008)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,1),0 18px 42px rgba(0,0,0,.14),0 4px 12px rgba(0,0,0,.06)!important;
+  }
+}
+.header-cta:active,
+.hero-buttons .button:active,
+#quoteForm button:active:not(:disabled),
+.booking-cta-button:active,
+.service-card .service-body .service-cta:active{
+  transform:translateY(1px) scale(.975)!important;
+}
+@media(max-width:700px){
+  .mobile-action-bar{
+    position:fixed!important;
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+    padding:0!important;
+    gap:9px!important;
+    width:48px!important;
+    border-radius:0!important;
+    overflow:visible!important;
+  }
+  .mobile-action-bar::before{display:none!important;content:none!important}
+  .mobile-action-bar button{
+    width:48px!important;
+    min-width:48px!important;
+    height:48px!important;
+    min-height:48px!important;
+    flex:0 0 48px!important;
+    margin:0!important;
+    border:1px solid rgba(255,255,255,.82)!important;
+    border-radius:15px!important;
+    background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(235,235,235,.58)) padding-box!important;
+    color:#454545!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.98),inset 0 -1px 0 rgba(0,0,0,.07),0 10px 25px rgba(0,0,0,.12)!important;
+    -webkit-backdrop-filter:saturate(190%) blur(22px)!important;
+    backdrop-filter:saturate(190%) blur(22px)!important;
+  }
+  .mobile-action-bar button:nth-child(2){
+    background:linear-gradient(180deg,rgba(62,62,62,.97),rgba(7,7,7,.99)) padding-box!important;
+    border-color:rgba(255,255,255,.2)!important;
+    color:#fff!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 12px 28px rgba(0,0,0,.2)!important;
+  }
+}
+</style>
+
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
