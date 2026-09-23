@@ -34,6 +34,11 @@ try {
       throw new Error(`Homepage returned ${response?.status() ?? 'no response'} for ${START}`);
     }
     await page.waitForTimeout(1200);
+    // The service-area section uses content-visibility:auto for performance.
+    // Bring the map into the viewport before measuring Leaflet descendants;
+    // otherwise skipped descendants legitimately report zero-size rects.
+    await page.locator('#peekServiceMap').scrollIntoViewIfNeeded().catch(() => {});
+    await page.waitForTimeout(350);
 
     const state = await page.evaluate(() => {
       const rect = el => {
