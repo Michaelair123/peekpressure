@@ -2216,3 +2216,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
   }
 }
 
+
+/* WCAG 2.2 AA contrast fixes */
+#services > .container > .section-top > .label,
+.why-peek-container > .section-top > .label,
+.proof-container > .section-top > .label,
+.before-after-meta > .label{
+  color:#6f6f6f!important;
+}
+.service-card .service-body .number{
+  color:#666!important;
+}
+.service-card .service-body > p{
+  color:#666!important;
+}
+.proof-placeholder.after small{
+  color:#626262!important;
+}
