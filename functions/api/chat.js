@@ -1193,14 +1193,17 @@ function enforceLeadSafety(result, safeMessages) {
       .toLowerCase()
       .replace(/[.!?]+$/g, "");
 
+  const addressAffirmative = text => {
+    const value = normalizedUserText({ content: text });
+    return /^(?:yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|looks right|that's it|that is it|thats it|yup thats the one|yeah thats the one|yes thats the one|send it|go ahead|yes send it|yes send)$/i.test(value) ||
+      /^(?:yes|yeah|yep|yup),?\s+(?:that's|that is|thats)\s+(?:right|correct|it|the one)$/i.test(value) ||
+      /^(?:looks|sounds)\s+(?:good|right)$/i.test(value);
+  };
+
   const propertyAddressConfirmed = Boolean(
     location &&
     lastAddressPromptIndex >= 0 &&
-    confirmationUsers.some(message =>
-      /^(?:yes|yeah|yep|yup|correct|right|that's right|that is right|looks good|yes send it)$/i.test(
-        normalizedUserText(message)
-      )
-    )
+    confirmationUsers.some(message => addressAffirmative(message.content))
   );
 
   // Once Lucy has explicitly confirmed the same address with the customer,
@@ -1232,10 +1235,21 @@ function enforceLeadSafety(result, safeMessages) {
     (!latestUserAddress || confirmedAddressInAssistant.toLowerCase().includes(location.toLowerCase()))
   );
 
-  const addressConfirmed = propertyAddressConfirmed || confirmedAddressMatchesCurrent;
+  const addressCorrection = Boolean(
+    lastAddressPromptIndex >= 0 &&
+    confirmationUsers.some(message => {
+      const value = normalizedUserText(message);
+      return /^(?:no|nope|nah|not quite|wrong|incorrect|that's not right|that is not right|thats not right)$/i.test(value) ||
+        /\b(?:actually|instead|correction|correct address|wrong address)\b/i.test(value);
+    })
+  );
+
+  const addressConfirmed = !addressCorrection && (propertyAddressConfirmed || confirmedAddressMatchesCurrent);
   const hasStreetAddress = /\b\d{1,6}\s+[A-Za-z0-9.'-]+(?:\s+[A-Za-z0-9.'-]+){0,5}\s+(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ct|Court|Ln|Lane|Way|Pl|Place|Pkwy|Parkway|Hwy|Highway)\b/i.test(location);
 
-  if (!suspicious && result.lead_status !== "spam" && location && hasStreetAddress && !addressConfirmed) {
+  if (!suspicious && result.lead_status !== "spam" && addressCorrection && location && hasStreetAddress) {
+    result.reply = `Got it — thanks for catching that. What’s the correct property address?`;
+  } else if (!suspicious && result.lead_status !== "spam" && location && hasStreetAddress && !addressConfirmed) {
     result.reply = `Just to confirm, is the property address ${location}? Please reply yes if that's correct, or send me the corrected address.`;
   } else if (!suspicious && result.lead_status !== "spam" && !hasStreetAddress && service && location) {
     result.reply = `What’s the full property address for the job? I’ll confirm it with you before sending your request to PEEK PRESSURE.`;
@@ -1260,6 +1274,9 @@ function enforceLeadSafety(result, safeMessages) {
     result.lead_status = "real";
   }
   result.conversation_state = deriveConversationState(result, safeMessages, addressConfirmed);
+  result.conversation_state.address_status = addressCorrection
+    ? "correction_needed"
+    : result.conversation_state.address_status;
   result.flow_signals = flowSignals;
   return result;
 }
