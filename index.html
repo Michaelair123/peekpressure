@@ -1850,16 +1850,18 @@ document.addEventListener('DOMContentLoaded', () => {
               const success = data.lead_ready
                 ? "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly."
                 : "✅ Sent to the PEEK PRESSURE team for review. We’ve got your contact information and will follow up directly.";
-              addMessage(success, 'assistant');
-              state.history.push({ role: 'assistant', content: success });
+              // The server handoff result is authoritative. Replace Lucy's
+              // draft reply so one customer turn produces one assistant bubble.
+              replaceAssistantMessage(replyBubble, success);
+              state.history[state.history.length - 1] = { role: 'assistant', content: success };
             } else {
               // Preserve the lead locally so a customer can retry instead of
               // having to re-enter their contact information.
               state.pendingLead = leadToSend;
               state.pendingLeadKind = handoffKind;
               const failure = "I hit a snag getting that through. Your details are still here — reply YES and I’ll retry it, or call/text 415-689-8377 if you’d rather reach the team directly.";
-              addMessage(failure, 'assistant');
-              state.history.push({ role: 'assistant', content: failure });
+              replaceAssistantMessage(replyBubble, failure);
+              state.history[state.history.length - 1] = { role: 'assistant', content: failure };
               setQuick(['YES — RETRY', 'Book a time']);
             }
           } finally {
