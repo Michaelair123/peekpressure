@@ -14,30 +14,23 @@
   background:#22c55e;
   border-radius:50%;
   box-shadow:0 0 0 3px rgba(34,197,94,.12),0 0 10px rgba(34,197,94,.35);
-  animation:lucyOnlinePulse 2s ease-in-out infinite;
-}
+  animation:lucyOnlinePulse 2s ease-in-out infinite}
 .peek-chat-status{
-  color:#666;
-}
+  color:#666}
 .peek-chat-head{
-  background:linear-gradient(180deg,#fff 0%,#fafafa 100%);
-}
+  background:linear-gradient(180deg,#fff 0%,#fafafa 100%)}
 .peek-chat-head strong{
-  letter-spacing:-.035em;
-}
+  letter-spacing:-.035em}
 .peek-chat-message.assistant{
   border-color:#e4e7e5;
-  box-shadow:0 2px 8px rgba(0,0,0,.035);
-}
+  box-shadow:0 2px 8px rgba(0,0,0,.035)}
 .peek-chat-quick button:hover{
   border-color:#22c55e;
   color:#15803d;
-  background:#f0fdf4;
-}
+  background:#f0fdf4}
 .peek-chat-form input:focus{
   border-color:#22c55e;
-  box-shadow:0 0 0 3px rgba(34,197,94,.08);
-}
+  box-shadow:0 0 0 3px rgba(34,197,94,.08)}
 @keyframes lucyOnlinePulse{
   0%,100%{opacity:1;transform:scale(1)}
   50%{opacity:.58;transform:scale(.86)}
@@ -62,8 +55,7 @@
   overflow-x:auto;
   padding:8px 12px 2px;
   background:#fff;
-  scrollbar-width:none;
-}
+  scrollbar-width:none}
 .peek-chat-attachments:empty{display:none}
 .peek-chat-attachments::-webkit-scrollbar{display:none}
 .peek-chat-attachment{
@@ -77,21 +69,18 @@
   border-radius:12px;
   background:#fafafa;
   font-size:.58rem;
-  color:#333;
-}
+  color:#333}
 .peek-chat-attachment img{
   width:32px;
   height:32px;
   flex:0 0 32px;
   border-radius:8px;
-  object-fit:cover;
-}
+  object-fit:cover}
 .peek-chat-attachment span{
   max-width:130px;
   overflow:hidden;
   text-overflow:ellipsis;
-  white-space:nowrap;
-}
+  white-space:nowrap}
 .peek-chat-attachment button{
   width:26px;
   height:26px;
@@ -102,25 +91,21 @@
   color:#222;
   font-size:1rem;
   line-height:1;
-  cursor:pointer;
-}
+  cursor:pointer}
 .peek-chat-message-images{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:5px;
-  margin-top:7px;
-}
+  margin-top:7px}
 .peek-chat-message-images:has(img:only-child){grid-template-columns:1fr}
 .peek-chat-message-images img{
   display:block;
   width:100%;
   aspect-ratio:1;
   object-fit:cover;
-  border-radius:10px;
-}
+  border-radius:10px}
 .peek-chat-form{
-  align-items:flex-end;
-}
+  align-items:flex-end}
 .peek-chat-attach{
   width:44px!important;
   height:44px!important;
@@ -129,8 +114,7 @@
   background:#fafafa!important;
   color:#333!important;
   font-size:1.35rem!important;
-  line-height:1!important;
-}
+  line-height:1!important}
 .peek-chat-attach:disabled{opacity:.45;cursor:not-allowed}
 .peek-chat-form textarea{
   min-width:0;
@@ -146,13 +130,11 @@
   font:inherit;
   font-size:.78rem;
   line-height:1.35;
-  background:#fafafa;
-}
+  background:#fafafa}
 .peek-chat-form textarea:focus{
   border-color:#22c55e;
   background:#fff;
-  box-shadow:0 0 0 3px rgba(34,197,94,.08);
-}
+  box-shadow:0 0 0 3px rgba(34,197,94,.08)}
 .peek-chat-send{
   width:44px!important;
   height:44px!important;
@@ -162,8 +144,7 @@
   background:#111!important;
   color:#fff!important;
   font-size:1.15rem!important;
-  cursor:pointer;
-}
+  cursor:pointer}
 .peek-chat-send:disabled,.peek-chat-attach:disabled{opacity:.5}
 @media(max-width:700px){
   .peek-chat{
@@ -172,38 +153,31 @@
     width:calc(100vw - 16px);
     height:min(720px,calc(100dvh - 16px));
     max-height:calc(100dvh - 16px);
-    border-radius:20px;
-  }
+    border-radius:20px}
   .peek-chat-messages{
     padding:14px 11px 10px;
     -webkit-overflow-scrolling:touch;
-    overscroll-behavior:contain;
-  }
+    overscroll-behavior:contain}
   .peek-chat-form{
     gap:6px;
-    padding:8px 8px calc(8px + env(safe-area-inset-bottom));
-  }
+    padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
   .peek-chat-form textarea{
     font-size:16px;
     min-height:44px;
-    padding:11px 12px;
-  }
+    padding:11px 12px}
   .peek-chat-attach,.peek-chat-send{
     width:44px!important;
     min-width:44px!important;
-    height:44px!important;
-  }
+    height:44px!important}
   .peek-chat-note{
-    padding-bottom:9px;
-  }
+    padding-bottom:9px}
 }
 @media(max-width:375px){
   .peek-chat-form{gap:5px}
   .peek-chat-attach,.peek-chat-send{
     width:42px!important;
     min-width:42px!important;
-    height:42px!important;
-  }
+    height:42px!important}
 }
 @media(prefers-reduced-motion:reduce){
   .peek-chat-attachment button,
@@ -219,43 +193,39 @@
     bottom:calc(4.9rem + env(safe-area-inset-bottom)) !important;
     z-index:2147483646 !important;
     pointer-events:auto !important;
-    touch-action:manipulation;
-  }
-  .peek-chat-launcher.is-hidden{pointer-events:none !important;}
+    touch-action:manipulation}
+  .peek-chat-launcher.is-hidden{pointer-events:none !important}
   .peek-chat{
     right:8px !important;
     bottom:calc(.5rem + env(safe-area-inset-bottom)) !important;
     width:calc(100vw - 16px) !important;
     height:min(720px,calc(100dvh - 16px)) !important;
     max-height:calc(100dvh - 16px) !important;
-    z-index:2147483647 !important;
-  }
+    z-index:2147483647 !important}
 }
 /* Prevent accidental giant footer copy from inherited heading styles. */
 footer .footer-inner,
 footer .footer-inner p,
 footer 
-footer .footer-inner p{font-size:.65rem;line-height:1.6;}
+footer .footer-inner p{font-size:.65rem;line-height:1.6}
 
 
 /* Audit fixes: the process has three steps, so keep a three-column desktop grid. */
 @media (min-width:901px){
-  .process-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .process-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
 /* Quote photo selection preview */
 .photo-upload{
   position:relative;
-  overflow:hidden;
-}
+  overflow:hidden}
 .photo-upload-preview{
   display:flex;
   align-items:center;
   gap:7px;
   margin-top:10px;
   overflow-x:auto;
-  scrollbar-width:none;
-}
+  scrollbar-width:none}
 .photo-upload-preview::-webkit-scrollbar{display:none}
 .photo-upload-preview img{
   width:52px;
@@ -264,8 +234,7 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
   object-fit:cover;
   border-radius:9px;
   border:1px solid #ddd;
-  background:#f5f5f5;
-}
+  background:#f5f5f5}
 .photo-upload-more{
   width:52px;
   height:52px;
@@ -276,15 +245,13 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
   background:#eee;
   color:#333;
   font-size:.72rem;
-  font-weight:700;
-}
+  font-weight:700}
 
 /* Final booking CTA cleanup */
 .booking-cta-inner{
   background:#f3f3f3!important;
   background-image:none!important;
-  border-radius:18px!important;
-}
+  border-radius:18px!important}
 .booking-cta-inner::before,
 .booking-cta-inner::after{
   content:none!important;
@@ -293,8 +260,7 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
   height:0!important;
   border:0!important;
   background:none!important;
-  box-shadow:none!important;
-}
+  box-shadow:none!important}
 .booking-cta-action{align-items:flex-start!important}
 .booking-cta-button{order:1!important;border-radius:4px!important}
 .booking-action-label{order:2!important;padding-left:0!important;margin-top:2px!important;margin-bottom:0!important}
@@ -327,8 +293,7 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
   color:#fff!important;
   border-color:#111!important;
   opacity:1!important;
-  text-shadow:none!important;
-}
+  text-shadow:none!important}
 .booking-cta-button:hover,
 .booking-cta-button:focus,
 .booking-cta-button:focus-visible,
@@ -337,13 +302,11 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
   color:#fff!important;
   border-color:#111!important;
   opacity:1!important;
-  transform:translateY(-2px) scale(1.035)!important;
-}
+  transform:translateY(-2px) scale(1.035)!important}
 .booking-cta-button:hover span,
 .booking-cta-button:focus-visible span{
   color:#fff!important;
-  opacity:1!important;
-}
+  opacity:1!important}
 
 /* Typography: slightly open large headings for easier reading. */
 .hero-copy h1{letter-spacing:-.085em!important}
@@ -357,11 +320,9 @@ footer .footer-inner p{font-size:.65rem;line-height:1.6;}
 
 /* FEAR-OF-GOD-INSPIRED TYPE REVAMP — typography only, no HTML changes */
 :root{
-  --peek-font-sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
-}
+  --peek-font-sans:"Helvetica Neue",Helvetica,Arial,sans-serif}
 html{
-  font-family:var(--peek-font-sans);
-}
+  font-family:var(--peek-font-sans)}
 body,
 button,
 input,
@@ -369,8 +330,7 @@ textarea,
 select{
   font-family:var(--peek-font-sans)!important;
   -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-}
+  text-rendering:optimizeLegibility}
 
 /* Quiet, editorial grotesk: less techy, more luxury/minimal. */
 h1,h2,h3,h4,h5,h6,
@@ -386,8 +346,7 @@ h1,h2,h3,h4,h5,h6,
 .number{
   font-family:var(--peek-font-sans)!important;
   font-weight:500!important;
-  text-transform:uppercase;
-}
+  text-transform:uppercase}
 
 /* Hero: oversized, restrained, fashion-editorial proportions. */
 .hero-copy h1{
@@ -395,8 +354,7 @@ h1,h2,h3,h4,h5,h6,
   letter-spacing:-.065em!important;
   line-height:.86!important;
   text-transform:uppercase;
-  text-wrap:balance;
-}
+  text-wrap:balance}
 
 /* Section headings: lighter weight + generous tracking. */
 .about h2,
@@ -410,8 +368,7 @@ h1,h2,h3,h4,h5,h6,
   letter-spacing:-.055em!important;
   line-height:.9!important;
   text-transform:uppercase;
-  text-wrap:balance;
-}
+  text-wrap:balance}
 
 /* Small labels become understated luxury-style metadata. */
 .label,
@@ -419,8 +376,7 @@ h1,h2,h3,h4,h5,h6,
 .booking-action-label{
   font-weight:500!important;
   letter-spacing:.18em!important;
-  line-height:1.2;
-}
+  line-height:1.2}
 
 /* Body copy: cleaner and more relaxed. */
 body,
@@ -432,8 +388,7 @@ p,
 .contact-container>p,
 .booking-cta-copy p{
   font-weight:400;
-  letter-spacing:-.005em;
-}
+  letter-spacing:-.005em}
 
 /* Navigation + controls: compact, premium, never overly bold. */
 .header nav a,
@@ -443,25 +398,21 @@ p,
 .proof-review-cta,
 .booking-cta-button{
   font-weight:500!important;
-  letter-spacing:.11em!important;
-}
+  letter-spacing:.11em!important}
 
 /* Number markers stay tiny and quiet rather than competing with headings. */
 .number,
 .step-number,
 .why-peek-point>span{
   font-weight:500!important;
-  letter-spacing:.08em!important;
-}
+  letter-spacing:.08em!important}
 
 /* Logo: clean wordmark treatment. */
 .logo{
   font-weight:600!important;
-  letter-spacing:-.045em!important;
-}
+  letter-spacing:-.045em!important}
 .logo span{
-  font-weight:400!important;
-}
+  font-weight:400!important}
 
 /* Form typography follows the same system. */
 input,
@@ -470,16 +421,14 @@ select,
 .form-field label,
 .photo-upload strong,
 .photo-upload span{
-  font-family:var(--peek-font-sans)!important;
-}
+  font-family:var(--peek-font-sans)!important}
 
 /* Mobile: preserve hierarchy without oversized heavy type. */
 @media(max-width:700px){
   .hero-copy h1{
     font-size:clamp(3.2rem,15.5vw,6rem)!important;
     letter-spacing:-.065em!important;
-    line-height:.88!important;
-  }
+    line-height:.88!important}
   .about-grid h2,
   .process-header h2,
   .why-peek-intro h2,
@@ -488,8 +437,7 @@ select,
   .proof-header h2,
   .booking-cta-copy h3{
     letter-spacing:-.055em!important;
-    line-height:.91!important;
-  }
+    line-height:.91!important}
 }
 
 
@@ -535,22 +483,18 @@ main>h2{font-size:clamp(2.3rem,4.3vw,4.3rem)!important;font-weight:600!important
   letter-spacing:0;
   background:#fff;
   border:1px solid #e5e5e5;
-  border-radius:15px 15px 15px 6px;
-}
+  border-radius:15px 15px 15px 6px}
 .peek-chat-typing-name{
   color:#111;
-  font-weight:600;
-}
+  font-weight:600}
 .peek-chat-typing-text{
-  color:#888;
-}
+  color:#888}
 .peek-chat-typing-dots{
   display:inline-flex;
   align-items:center;
   gap:3px;
   min-width:17px;
-  margin-left:1px;
-}
+  margin-left:1px}
 .peek-chat-typing-dots i{
   display:block;
   width:3.5px;
@@ -558,8 +502,7 @@ main>h2{font-size:clamp(2.3rem,4.3vw,4.3rem)!important;font-weight:600!important
   border-radius:50%;
   background:#777;
   opacity:.28;
-  animation:lucyTypingDot 1.15s ease-in-out infinite;
-}
+  animation:lucyTypingDot 1.15s ease-in-out infinite}
 .peek-chat-typing-dots i:nth-child(2){animation-delay:.16s}
 .peek-chat-typing-dots i:nth-child(3){animation-delay:.32s}
 @keyframes lucyTypingDot{
@@ -682,12 +625,10 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
   margin:2.5rem 0 3.5rem;
   min-height:0;
   display:block;
-  overflow:visible;
-}
+  overflow:visible}
 .contact-container .booking-container{
   width:100%;
-  max-width:none;
-}
+  max-width:none}
 .contact-container .booking-cta-inner{
   width:100%;
   min-width:0;
@@ -701,50 +642,41 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
   border-radius:20px;
   background:#f7f7f7;
   box-shadow:none;
-  overflow:hidden;
-}
+  overflow:hidden}
 .contact-container .booking-cta-inner::before{display:none}
 .contact-container .booking-cta-copy{min-width:0}
 .contact-container .booking-cta-action{
   min-width:0;
   width:100%;
   flex:none;
-  display:block;
-}
+  display:block}
 .contact-container .booking-action-label{
   display:block;
   margin:0 0 .75rem;
-  padding:0;
-}
+  padding:0}
 .contact-container .calendly-inline-widget{
   width:100%!important;
   min-width:0!important;
   max-width:100%!important;
   height:760px!important;
   overflow:hidden!important;
-  border-radius:14px;
-}
+  border-radius:14px}
 @media(max-width:900px){
   .contact-container .booking-cta-inner{
     grid-template-columns:1fr;
-    gap:1.5rem;
-  }
+    gap:1.5rem}
   .contact-container .booking-cta-action{
-    width:100%;
-  }
+    width:100%}
 }
 @media(max-width:700px){
   .contact-container .booking-cta{
-    margin:2rem 0 3rem;
-  }
+    margin:2rem 0 3rem}
   .contact-container .booking-cta-inner{
     padding:1.15rem;
-    border-radius:16px;
-  }
+    border-radius:16px}
   .contact-container .calendly-inline-widget{
     height:740px!important;
-    border-radius:12px;
-  }
+    border-radius:12px}
 }
 
 
@@ -756,14 +688,11 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
 .contact-container .calendly-inline-widget{
   box-sizing:border-box!important;
   min-width:0!important;
-  max-width:100%!important;
-}
+  max-width:100%!important}
 .contact-container .booking-cta-inner{
-  grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)!important;
-}
+  grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)!important}
 .contact-container .booking-cta-action{
-  overflow:hidden!important;
-}
+  overflow:hidden!important}
 .contact-container .calendly-inline-widget{
   width:100%!important;
   min-width:0!important;
@@ -771,38 +700,31 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
   margin:0!important;
   padding:0!important;
   display:block!important;
-  overflow:hidden!important;
-}
+  overflow:hidden!important}
 .contact-container .calendly-inline-widget iframe{
   display:block!important;
   width:100%!important;
   min-width:0!important;
   max-width:100%!important;
   border:0!important;
-  margin:0!important;
-}
+  margin:0!important}
 @media(max-width:900px){
   .contact-container .booking-cta-inner{
-    grid-template-columns:minmax(0,1fr)!important;
-  }
+    grid-template-columns:minmax(0,1fr)!important}
   .contact-container .booking-cta-action{
     width:100%!important;
-    min-width:0!important;
-  }
+    min-width:0!important}
 }
 @media(max-width:700px){
   .contact-container .booking-cta-inner{
-    padding:1rem!important;
-  }
+    padding:1rem!important}
   .contact-container .calendly-inline-widget{
     width:100%!important;
-    height:740px!important;
-  }
+    height:740px!important}
 }
 @media(max-width:375px){
   .contact-container .booking-cta-inner{
-    padding:.8rem!important;
-  }
+    padding:.8rem!important}
 }
 
 
@@ -818,8 +740,7 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
   border:2px solid #fff;
   border-radius:8px;
   font:700 14px/1.2 Inter,Arial,sans-serif;
-  text-decoration:none;
-}
+  text-decoration:none}
 .skip-link:focus-visible{transform:translateY(0)}
 
 /* Booking easter egg — revealed only after Calendly confirms a booking. */
@@ -842,25 +763,21 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
   opacity:0;
   pointer-events:none;
   transform:translate(-50%,12px);
-  transition:opacity .28s ease,transform .28s ease;
-}
+  transition:opacity .28s ease,transform .28s ease}
 .peek-booking-egg span:first-child{
   font-size:18px;
   line-height:1;
-  letter-spacing:0;
-}
+  letter-spacing:0}
 .peek-booking-egg.is-visible{
   opacity:1;
-  transform:translate(-50%,0);
-}
+  transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){
   .peek-booking-egg{transition:none}
 }
 @media (max-width:700px){
   .peek-booking-egg{
     bottom:calc(76px + env(safe-area-inset-bottom));
-    max-width:calc(100vw - 32px);
-  }
+    max-width:calc(100vw - 32px)}
 }
 
 /* Accessibility baseline — WCAG 2.2 AA */
@@ -868,12 +785,10 @@ html{scroll-padding-top:96px;scroll-padding-bottom:96px}
 :where(a,button,input,textarea,select,[tabindex]):focus-visible{
   outline:3px solid #111;
   outline-offset:3px;
-  border-radius:4px;
-}
+  border-radius:4px}
 .peek-chat :where(a,button,input,textarea,select,[tabindex]):focus-visible{
   outline-color:#fff;
-  outline-offset:2px;
-}
+  outline-offset:2px}
 @media (max-width:700px){
   html{scroll-padding-top:84px;scroll-padding-bottom:88px}
 }
@@ -882,34 +797,28 @@ html{scroll-padding-top:96px;scroll-padding-bottom:96px}
     animation-duration:.01ms!important;
     animation-iteration-count:1!important;
     scroll-behavior:auto!important;
-    transition-duration:.01ms!important;
-  }
+    transition-duration:.01ms!important}
 }
 
 
 
 /* Floating contact stack: Lucy opens above the contact row and hides only CHAT while open. */
 .peek-floating-actions.is-chat-open #peekFloatingChat{
-  display:none;
-}
+  display:none}
 .peek-floating-actions.is-chat-open{
-  z-index:2147483645;
-}
+  z-index:2147483645}
 .peek-chat{
-  z-index:2147483647 !important;
-}
+  z-index:2147483647 !important}
 @media (min-width:701px){
   .peek-chat{
     bottom:110px !important;
-    right:20px !important;
-  }
+    right:20px !important}
 }
 @media (max-width:700px){
   .peek-chat{
     bottom:calc(6.25rem + env(safe-area-inset-bottom)) !important;
     right:10px !important;
-    max-height:calc(100dvh - 7rem - env(safe-area-inset-bottom)) !important;
-  }
+    max-height:calc(100dvh - 7rem - env(safe-area-inset-bottom)) !important}
 }
 
 
@@ -922,16 +831,14 @@ body.quote-modal-open::before{
   z-index:2147483640;
   background:rgba(0,0,0,.38);
   backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
-}
+  -webkit-backdrop-filter:blur(6px)}
 .peek-quote-modal{display:none}
 .peek-quote-modal.is-open{
   display:block;
   position:fixed;
   inset:0;
   z-index:2147483646;
-  pointer-events:none;
-}
+  pointer-events:none}
 .peek-quote-modal #quoteForm{
   position:absolute!important;
   top:50%!important;
@@ -949,8 +856,7 @@ body.quote-modal-open::before{
   box-shadow:0 30px 100px rgba(0,0,0,.28);
   transform:translate(-50%,-50%);
   animation:peekQuoteModalIn .24s ease both;
-  pointer-events:auto;
-}
+  pointer-events:auto}
 .quote-modal-close{
   position:sticky;
   top:0;
@@ -969,8 +875,7 @@ body.quote-modal-open::before{
   color:#111;
   font:400 26px/1 Arial,sans-serif;
   cursor:pointer;
-  box-shadow:0 4px 14px rgba(0,0,0,.08);
-}
+  box-shadow:0 4px 14px rgba(0,0,0,.08)}
 .quote-modal-close:hover,.quote-modal-close:focus-visible{background:#111;color:#fff}
 @keyframes peekQuoteModalIn{
   from{opacity:0;transform:translate(-50%,-47%) scale(.985)}
@@ -981,8 +886,7 @@ body.quote-modal-open::before{
     width:calc(100vw - 20px)!important;
     max-height:calc(100dvh - 20px)!important;
     padding:1rem!important;
-    border-radius:18px;
-  }
+    border-radius:18px}
 }
 @media(prefers-reduced-motion:reduce){
   .peek-quote-modal #quoteForm{animation:none}
@@ -995,30 +899,26 @@ body.quote-modal-open::before{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
-  padding:0 3rem .75rem 0;
-}
+  padding:0 3rem .75rem 0}
 .quote-modal-kicker{
   display:block;
   margin-bottom:.45rem;
   color:#888;
   font-size:.58rem;
   font-weight:700;
-  letter-spacing:.14em;
-}
+  letter-spacing:.14em}
 .quote-modal-heading h2{
   margin:0;
   color:#111;
   font-size:clamp(1.8rem,4vw,2.6rem);
   line-height:.95;
-  letter-spacing:-.055em;
-}
+  letter-spacing:-.055em}
 .quote-modal-heading p{
   max-width:32rem;
   margin:.7rem 0 0;
   color:#666;
   font-size:.76rem;
-  line-height:1.55;
-}
+  line-height:1.55}
 .quote-modal-close{
   position:absolute;
   top:1rem;
@@ -1031,12 +931,10 @@ body.quote-modal-open::before{
   box-shadow:none;
   background:transparent;
   color:#666;
-  font-size:24px;
-}
+  font-size:24px}
 .quote-modal-close:hover,.quote-modal-close:focus-visible{
   background:#f3f3f3;
-  color:#111;
-}
+  color:#111}
 .customer-type-step{margin-top:1rem}
 .customer-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:700px){
@@ -1050,67 +948,50 @@ body.quote-modal-open::before{
 
 /* Quote modal — compact, evenly spaced controls and a properly sized close button. */
 .peek-quote-modal #quoteForm{
-  gap:0!important;
-}
+  gap:0!important}
 .peek-quote-modal .quote-modal-heading{
-  padding-bottom:.5rem!important;
-}
+  padding-bottom:.5rem!important}
 .peek-quote-modal .customer-type-step{
-  margin-top:.55rem!important;
-}
+  margin-top:.55rem!important}
 .peek-quote-modal .quote-step,
 .peek-quote-modal .form-field{
-  margin-bottom:1rem!important;
-}
+  margin-bottom:1rem!important}
 .peek-quote-modal fieldset{
-  padding:0!important;
-}
+  padding:0!important}
 .peek-quote-modal .quote-step legend,
 .peek-quote-modal .form-field label{
-  margin-bottom:.5rem!important;
-}
+  margin-bottom:.5rem!important}
 .peek-quote-modal .service-choice-grid{
-  gap:.55rem!important;
-}
+  gap:.55rem!important}
 .peek-quote-modal .service-choice{
   min-height:48px!important;
   padding:.7rem .8rem!important;
-  border-radius:10px!important;
-}
+  border-radius:10px!important}
 .peek-quote-modal .service-choice span{
   font-size:.68rem!important;
   line-height:1.2!important;
-  letter-spacing:.07em!important;
-}
+  letter-spacing:.07em!important}
 .peek-quote-modal .service-choice b{
-  font-size:.85rem!important;
-}
+  font-size:.85rem!important}
 .peek-quote-modal .customer-choice-grid .service-choice{
-  min-height:46px!important;
-}
+  min-height:46px!important}
 .peek-quote-modal .customer-choice-grid .service-choice span{
-  font-size:.64rem!important;
-}
+  font-size:.64rem!important}
 .peek-quote-modal .form-field input,
 .peek-quote-modal .form-field select,
 .peek-quote-modal .form-field textarea{
   min-height:46px!important;
   padding:.7rem .8rem!important;
-  border-radius:10px!important;
-}
+  border-radius:10px!important}
 .peek-quote-modal .form-field textarea{
-  min-height:92px!important;
-}
+  min-height:92px!important}
 .peek-quote-modal .quote-contact{
-  gap:.75rem!important;
-}
+  gap:.75rem!important}
 .peek-quote-modal #quoteForm > button[type="submit"]{
   min-height:48px!important;
-  margin-top:.15rem!important;
-}
+  margin-top:.15rem!important}
 .peek-quote-modal .form-note{
-  margin-top:.65rem!important;
-}
+  margin-top:.65rem!important}
 .peek-quote-modal .quote-modal-close{
   width:28px!important;
   height:28px!important;
@@ -1120,44 +1001,35 @@ body.quote-modal-open::before{
   font-size:17px!important;
   font-weight:400!important;
   line-height:1!important;
-  border-radius:50%!important;
-}
+  border-radius:50%!important}
 @media(max-width:700px){
   .peek-quote-modal #quoteForm{
-    padding:.9rem!important;
-  }
+    padding:.9rem!important}
   .peek-quote-modal .quote-step,
   .peek-quote-modal .form-field{
-    margin-bottom:.85rem!important;
-  }
+    margin-bottom:.85rem!important}
   .peek-quote-modal .service-choice{
     min-height:46px!important;
-    padding:.65rem .75rem!important;
-  }
+    padding:.65rem .75rem!important}
   .peek-quote-modal .service-choice-grid{
-    gap:.45rem!important;
-  }
+    gap:.45rem!important}
   .peek-quote-modal .quote-modal-close{
     width:26px!important;
     height:26px!important;
     top:.7rem!important;
     right:.7rem!important;
-    font-size:16px!important;
-  }
+    font-size:16px!important}
 }
 
 /* Quote contact fields — keep NAME and PHONE perfectly aligned side-by-side. */
 .peek-quote-modal .quote-contact{
-  align-items:start!important;
-}
+  align-items:start!important}
 .peek-quote-modal .quote-contact > .form-field{
   align-self:start!important;
-  margin-top:0!important;
-}
+  margin-top:0!important}
 .peek-quote-modal .quote-contact > .form-field > label{
   display:block!important;
-  min-height:1em;
-}
+  min-height:1em}
 
 
 /* FINAL QUOTE MODAL CLOSE — override the generic #quoteForm button styling. */
@@ -1189,14 +1061,12 @@ body.quote-modal-open::before{
   -webkit-appearance:none!important;
   transform:none!important;
   overflow:visible!important;
-  cursor:pointer!important;
-}
+  cursor:pointer!important}
 .peek-quote-modal #quoteForm .quote-modal-close:hover{
   background:transparent!important;
   color:#111!important;
   box-shadow:none!important;
-  transform:none!important;
-}
+  transform:none!important}
 .peek-quote-modal #quoteForm .quote-modal-close:focus,
 .peek-quote-modal #quoteForm .quote-modal-close:focus-visible{
   background:transparent!important;
@@ -1204,8 +1074,7 @@ body.quote-modal-open::before{
   box-shadow:none!important;
   outline:2px solid #111!important;
   outline-offset:3px!important;
-  border-radius:3px!important;
-}
+  border-radius:3px!important}
 @media(max-width:700px){
   .peek-quote-modal #quoteForm .quote-modal-close{
     top:10px!important;
@@ -1217,32 +1086,26 @@ body.quote-modal-open::before{
     min-height:30px!important;
     max-height:30px!important;
     font-size:28px!important;
-    line-height:28px!important;
-  }
+    line-height:28px!important}
 }
 
 
 /* Quote address — separate street, city, and ZIP fields. */
 .peek-quote-modal .quote-address-section > label{
   display:block!important;
-  margin-bottom:.5rem!important;
-}
+  margin-bottom:.5rem!important}
 .peek-quote-modal .quote-address-grid{
   display:grid!important;
   grid-template-columns:minmax(0,2fr) minmax(0,1.25fr) minmax(90px,.75fr)!important;
-  gap:.75rem!important;
-}
+  gap:.75rem!important}
 .peek-quote-modal .quote-address-grid .form-field{
-  margin:0!important;
-}
+  margin:0!important}
 @media(max-width:700px){
   .peek-quote-modal .quote-address-grid{
     grid-template-columns:1fr 1fr!important;
-    gap:.65rem!important;
-  }
+    gap:.65rem!important}
   .peek-quote-modal .quote-address-grid .form-field:first-child{
-    grid-column:1 / -1!important;
-  }
+    grid-column:1 / -1!important}
 }
 
 
@@ -1346,7 +1209,7 @@ body.quote-modal-open::before{
 /* PEEK ABOUT — architectural statement treatment */
 .about::before{content:"PEEK PRESSURE · BAY AREA";position:absolute;right:var(--page-padding);top:clamp(2rem,4vw,4rem);z-index:1;color:#b0b0b0;font-size:.5rem;font-weight:700;letter-spacing:.16em;line-height:1;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg);pointer-events:none}
 .about::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(17,17,17,.06);z-index:1;pointer-events:none}
-.about-grid{background:linear-gradient(90deg,transparent calc(28% - .5px),rgba(17,17,17,.045) 28%,transparent calc(28% + .5px));}
+.about-grid{background:linear-gradient(90deg,transparent calc(28% - .5px),rgba(17,17,17,.045) 28%,transparent calc(28% + .5px))}
 @media(max-width:700px){.about::before{right:1rem;top:1.5rem;font-size:.44rem}.about::after{display:none}.about-grid{background:none}}
 
 
@@ -1382,24 +1245,20 @@ body.quote-modal-open::before{
   html,body{
     width:100%;
     max-width:100%;
-    overflow-x:hidden;
-  }
+    overflow-x:hidden}
 
   /* Service cards: the quote CTA stays inside the card and the photo credit never
      becomes a stray line/button beneath the image. */
   .services-grid{
     align-items:stretch!important;
-    padding-bottom:1.25rem!important;
-  }
+    padding-bottom:1.25rem!important}
   .service{
     display:flex!important;
     flex-direction:column!important;
-    overflow:hidden!important;
-  }
+    overflow:hidden!important}
   .service-image{
     position:relative!important;
-    flex:0 0 auto!important;
-  }
+    flex:0 0 auto!important}
   .service-image-credit{
     position:absolute!important;
     left:10px!important;
@@ -1418,15 +1277,13 @@ body.quote-modal-open::before{
     color:#fff!important;
     font-size:9px!important;
     line-height:1.2!important;
-    letter-spacing:0!important;
-  }
+    letter-spacing:0!important}
   .service-body{
     position:relative!important;
     z-index:2!important;
     display:flex!important;
     flex:1 1 auto!important;
-    min-height:0!important;
-  }
+    min-height:0!important}
   .service-body .service-cta{
     position:relative!important;
     z-index:3!important;
@@ -1445,31 +1302,26 @@ body.quote-modal-open::before{
     text-decoration:none!important;
     visibility:visible!important;
     opacity:1!important;
-    pointer-events:auto!important;
-  }
+    pointer-events:auto!important}
 
   /* Fixed bottom bar clearance: never let content hide behind it. */
   body{
-    padding-bottom:calc(78px + env(safe-area-inset-bottom))!important;
-  }
+    padding-bottom:calc(78px + env(safe-area-inset-bottom))!important}
 
   /* Hero CTA remains visible even if reveal animation has not initialized. */
   .hero-buttons,
   .hero-buttons .button{
     visibility:visible!important;
-    opacity:1!important;
-  }
+    opacity:1!important}
 }
 
 @media (max-width:375px){
   .mobile-action-bar{
     left:7px!important;
-    right:7px!important;
-  }
+    right:7px!important}
   .mobile-action-bar a{
     font-size:.48rem!important;
-    letter-spacing:.065em!important;
-  }
+    letter-spacing:.065em!important}
 }
 
 /* ============================================================
@@ -1490,8 +1342,7 @@ body.quote-modal-open::before{
   text-transform:uppercase;
   border-radius:999px;
   transition:transform .3s var(--peek-ease),background-color .3s ease,color .3s ease,border-color .3s ease,box-shadow .3s ease;
-  -webkit-tap-highlight-color:transparent;
-}
+  -webkit-tap-highlight-color:transparent}
 
 /* Shared PEEK pill language: white surface / black ink by default. */
 .button,
@@ -1507,27 +1358,23 @@ body.quote-modal-open::before{
   font-size:.72rem;
   line-height:1.2;
   font-weight:500!important;
-  letter-spacing:.1em;
-}
+  letter-spacing:.1em}
 
 .button.primary,
 .header-cta{
   background:#111;
   border-color:#111;
-  color:#fff;
-}
+  color:#fff}
 
 .button.secondary{
   background:#fff;
   border-color:#111;
-  color:#111;
-}
+  color:#111}
 
 .button:hover,
 .button:focus-visible{
   transform:translateY(-2px);
-  box-shadow:0 10px 26px rgba(0,0,0,.10);
-}
+  box-shadow:0 10px 26px rgba(0,0,0,.10)}
 
 .button.primary:hover,
 .button.primary:focus-visible,
@@ -1535,21 +1382,18 @@ body.quote-modal-open::before{
 .header-cta:focus-visible{
   background:#fff;
   border-color:#111;
-  color:#111;
-}
+  color:#111}
 
 .button.secondary:hover,
 .button.secondary:focus-visible{
   background:#f5f5f5;
   border-color:#111;
-  color:#111;
-}
+  color:#111}
 
 .button:active,
 .header-cta:active{
   transform:scale(.98);
-  box-shadow:none;
-}
+  box-shadow:none}
 
 /* Service CTAs were missing a stable global definition. */
 .service-cta{
@@ -1566,14 +1410,12 @@ body.quote-modal-open::before{
   font-size:.68rem;
   line-height:1;
   font-weight:500!important;
-  letter-spacing:.1em;
-}
+  letter-spacing:.1em}
 
 .service-cta span{
   font-size:1rem;
   line-height:1;
-  transition:transform .3s var(--peek-ease);
-}
+  transition:transform .3s var(--peek-ease)}
 
 .service-cta:hover,
 .service-cta:focus-visible{
@@ -1581,28 +1423,23 @@ body.quote-modal-open::before{
   color:#111;
   border-color:#111;
   transform:translateY(-2px);
-  box-shadow:0 10px 26px rgba(0,0,0,.10);
-}
+  box-shadow:0 10px 26px rgba(0,0,0,.10)}
 
 .service-cta:hover span,
 .service-cta:focus-visible span{
-  transform:translateX(3px);
-}
+  transform:translateX(3px)}
 
 .service-cta:active{
   transform:scale(.99);
-  box-shadow:none;
-}
+  box-shadow:none}
 
 /* The sticky mobile bar is its own component, not a giant button. */
 .mobile-action-bar{
-  box-sizing:border-box;
-}
+  box-sizing:border-box}
 
 .mobile-action-bar a{
   font-family:var(--peek-font-sans)!important;
-  text-transform:uppercase;
-}
+  text-transform:uppercase}
 
 @media(max-width:700px){
 
@@ -1612,22 +1449,19 @@ body.quote-modal-open::before{
     margin-top:16px!important;
     padding:0 15px!important;
     border-radius:999px!important;
-    font-size:.64rem!important;
-  }
+    font-size:.64rem!important}
 
   .mobile-action-bar a:hover,
   .mobile-action-bar a:focus-visible{
     background:#f5f5f5!important;
     border-color:#111!important;
-    color:#111!important;
-  }
+    color:#111!important}
 
   .mobile-action-bar a:nth-child(2):hover,
   .mobile-action-bar a:nth-child(2):focus-visible{
     background:#222!important;
     border-color:#222!important;
-    color:#fff!important;
-  }
+    color:#fff!important}
 }
 
 @media(max-width:375px){
@@ -1635,41 +1469,34 @@ body.quote-modal-open::before{
     min-height:42px!important;
     height:42px!important;
     padding-inline:.9rem!important;
-    font-size:.58rem!important;
-  }
+    font-size:.58rem!important}
 
   .hero-buttons .button{
     min-height:52px!important;
-    height:52px!important;
-  }
+    height:52px!important}
 
   .service-cta{
     min-height:48px!important;
-    height:48px!important;
-  }
+    height:48px!important}
 
   .mobile-action-bar{
     left:7px!important;
-    right:7px!important;
-  }
+    right:7px!important}
 
   .mobile-action-bar a{
     min-height:50px!important;
     height:50px!important;
-    font-size:.56rem!important;
-  }
+    font-size:.56rem!important}
 }
 
 /* Never manufacture a CTA under a service image via pseudo-elements. */
 .service-image::before,
 .service-image::after{
-  pointer-events:none;
-}
+  pointer-events:none}
 
 /* Keep the actual service image overlay decorative only. */
 .service-image::after{
-  content:""!important;
-}
+  content:""!important}
 
 /* Accessibility: preserve visible keyboard focus without changing the visual system. */
 .button:focus-visible,
@@ -1677,8 +1504,7 @@ body.quote-modal-open::before{
 .service-cta:focus-visible,
 .mobile-action-bar a:focus-visible{
   outline:2px solid #111!important;
-  outline-offset:3px!important;
-}
+  outline-offset:3px!important}
 
 
 /* CASCADE SURGERY — canonical mobile controls */
@@ -1809,8 +1635,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
   .service,.process-step,.why-peek-point,.proof-container,.contact-container{
     animation:peekReveal linear both;
     animation-timeline:view();
-    animation-range:entry 0% cover 28%;
-  }
+    animation-range:entry 0% cover 28%}
   @keyframes peekReveal{
     from{opacity:.72;transform:translateY(18px)}
     to{opacity:1;transform:translateY(0)}
@@ -1819,26 +1644,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 @supports (content-visibility:auto){
   .process,.why-peek,.service-area,.proof-section,.contact-section{
     content-visibility:auto;
-    contain-intrinsic-size:1px 700px;
-  }
+    contain-intrinsic-size:1px 700px}
 }
 @supports (transition-behavior:allow-discrete){
   .peek-calendly-modal,.peek-chat{
     transition:opacity .28s cubic-bezier(.22,1,.36,1),visibility 0s linear .28s;
-    transition-behavior:allow-discrete;
-  }
+    transition-behavior:allow-discrete}
 }
 @supports selector(:has(*)){
   .service-card:has(a:focus-visible),
   .booking-cta-inner:has(button:focus-visible){
     outline:2px solid currentColor;
-    outline-offset:3px;
-  }
+    outline-offset:3px}
 }
 @media (hover:hover){
   .service-card,.booking-cta-inner,.proof-container{
-    transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s cubic-bezier(.22,1,.36,1);
-  }
+    transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s cubic-bezier(.22,1,.36,1)}
   .service-card:hover{transform:translateY(-4px);box-shadow:0 18px 48px rgba(0,0,0,.09)}
 }
 @media (prefers-reduced-motion:reduce){
@@ -1847,20 +1668,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
     animation-duration:.01ms!important;
     animation-iteration-count:1!important;
     transition-duration:.01ms!important;
-    scroll-behavior:auto!important;
-  }
+    scroll-behavior:auto!important}
 }
 @media (max-width:700px){
   .service-card,.process-step,.why-peek-point,.proof-container,.contact-container{
-    animation-range:entry 0% cover 22%;
-  }
+    animation-range:entry 0% cover 22%}
   .services-grid{overscroll-behavior-x:contain;scroll-snap-stop:always}
   button,a{touch-action:manipulation}
 }
 @view-transition{
-  navigation:auto;
-}
+  navigation:auto}
 ::view-transition-old(root),::view-transition-new(root){
   animation-duration:.32s;
-  animation-timing-function:cubic-bezier(.22,1,.36,1);
-}
+  animation-timing-function:cubic-bezier(.22,1,.36,1)}
