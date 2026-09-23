@@ -1,0 +1,321 @@
+/* PEEK PRESSURE — Liquid Glass controls
+   Dedicated visual layer. HTML structure intentionally untouched.
+   Apple-inspired: translucent depth, specular edge, subtle refraction, tactile press.
+*/
+:root{
+  --peek-glass-ease:cubic-bezier(.22,1,.36,1);
+  --peek-glass-shadow:0 14px 34px rgba(0,0,0,.11),0 3px 10px rgba(0,0,0,.055);
+}
+
+/* Individual controls: each button is its own floating glass object. */
+.header-cta,
+.hero-buttons .button,
+#quoteForm button,
+.booking-cta-button,
+.service-card .service-body .service-cta{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  border:1px solid rgba(255,255,255,.74)!important;
+  border-radius:999px!important;
+  -webkit-backdrop-filter:saturate(180%) blur(22px)!important;
+  backdrop-filter:saturate(180%) blur(22px)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.92),
+    inset 0 -1px 0 rgba(0,0,0,.10),
+    0 1px 1px rgba(255,255,255,.75),
+    var(--peek-glass-shadow)!important;
+  transform:translateZ(0);
+  transition:
+    transform .42s var(--peek-glass-ease),
+    box-shadow .42s var(--peek-glass-ease),
+    background .42s var(--peek-glass-ease),
+    border-color .42s var(--peek-glass-ease),
+    color .28s ease!important;
+}
+
+/* Curved optical highlight + tiny edge refraction. */
+.header-cta::before,
+.hero-buttons .button::before,
+#quoteForm button::before,
+.booking-cta-button::before,
+.service-card .service-body .service-cta::before{
+  content:""!important;
+  position:absolute!important;
+  z-index:2!important;
+  inset:1px 7% 52% 7%!important;
+  border-radius:999px!important;
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,.72) 0%,
+      rgba(255,255,255,.24) 42%,
+      rgba(255,255,255,0) 100%)!important;
+  opacity:.82!important;
+  pointer-events:none!important;
+  transition:opacity .42s ease,transform .42s var(--peek-glass-ease)!important;
+}
+
+/* Fine glossy rim that catches movement without looking neon. */
+.header-cta::after,
+.hero-buttons .button::after,
+#quoteForm button::after,
+.booking-cta-button::after,
+.service-card .service-body .service-cta::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:1!important;
+  inset:0!important;
+  border-radius:inherit!important;
+  padding:1px!important;
+  background:
+    linear-gradient(115deg,
+      rgba(255,255,255,.78),
+      rgba(255,255,255,.08) 28%,
+      rgba(255,255,255,0) 55%,
+      rgba(255,255,255,.34))!important;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+  -webkit-mask-composite:xor!important;
+  mask-composite:exclude!important;
+  opacity:.72!important;
+  pointer-events:none!important;
+}
+
+/* Keep labels above the optical layers. */
+.header-cta,
+.hero-buttons .button,
+#quoteForm button,
+.booking-cta-button,
+.service-card .service-body .service-cta{
+  text-shadow:0 1px 1px rgba(0,0,0,.06);
+}
+
+/* Light glass. */
+.header-cta,
+.hero-buttons .secondary,
+.secondary{
+  color:#171717!important;
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,.84),
+      rgba(241,241,241,.48)) padding-box!important;
+}
+
+/* Dark glass — not flat black; it has depth and a soft graphite gradient. */
+.hero-buttons .primary,
+#quoteForm button,
+.booking-cta-button,
+.service-card .service-body .service-cta{
+  color:#fff!important;
+  background:
+    linear-gradient(180deg,
+      rgba(67,67,67,.94) 0%,
+      rgba(18,18,18,.98) 55%,
+      rgba(5,5,5,.99) 100%) padding-box!important;
+  border-color:rgba(255,255,255,.20)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.27),
+    inset 0 -2px 5px rgba(0,0,0,.30),
+    0 1px 1px rgba(255,255,255,.10),
+    0 14px 34px rgba(0,0,0,.19),
+    0 3px 10px rgba(0,0,0,.08)!important;
+}
+
+@media (hover:hover){
+  .header-cta:hover,
+  .hero-buttons .button:hover,
+  #quoteForm button:hover:not(:disabled),
+  .booking-cta-button:hover,
+  .service-card .service-body .service-cta:hover{
+    transform:translateY(-2px) scale(1.008)!important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.98),
+      inset 0 -1px 0 rgba(0,0,0,.08),
+      0 18px 42px rgba(0,0,0,.14),
+      0 4px 12px rgba(0,0,0,.06)!important;
+  }
+
+  .header-cta:hover::before,
+  .hero-buttons .button:hover::before,
+  #quoteForm button:hover::before,
+  .booking-cta-button:hover::before,
+  .service-card .service-body .service-cta:hover::before{
+    opacity:1!important;
+    transform:translateY(-1px)!important;
+  }
+
+  .hero-buttons .primary:hover,
+  #quoteForm button:hover:not(:disabled),
+  .booking-cta-button:hover,
+  .service-card .service-body .service-cta:hover{
+    background:
+      linear-gradient(180deg,
+        rgba(82,82,82,.96),
+        rgba(18,18,18,.99) 58%,
+        rgba(5,5,5,1)) padding-box!important;
+  }
+}
+
+/* Real tactile press — the glass settles into the surface. */
+.header-cta:active,
+.hero-buttons .button:active,
+#quoteForm button:active:not(:disabled),
+.booking-cta-button:active,
+.service-card .service-body .service-cta:active{
+  transform:translateY(1px) scale(.975)!important;
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.42),
+    0 3px 9px rgba(0,0,0,.10)!important;
+}
+
+/* Don't let disabled submit controls pretend to be interactive. */
+#quoteForm button:disabled{
+  transform:none!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.35),
+    0 5px 16px rgba(0,0,0,.07)!important;
+}
+
+/* Hero buttons are separate objects with deliberate breathing room. */
+.hero-buttons{
+  gap:12px!important;
+}
+.hero-buttons .button{
+  margin:0!important;
+}
+
+/* Booking CTA is an individual glass object, never a joined control. */
+.booking-cta-button{
+  flex:0 0 230px!important;
+}
+
+/* MOBILE: remove the old shared glass slab.
+   Every quick action floats independently with a real gap. */
+@media(max-width:700px){
+  .mobile-action-bar{
+    position:fixed!important;
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+    padding:0!important;
+    gap:8px!important;
+    width:48px!important;
+    border-radius:0!important;
+    overflow:visible!important;
+  }
+
+  .mobile-action-bar::before{
+    display:none!important;
+    content:none!important;
+  }
+
+  .mobile-action-bar a,
+  .mobile-action-bar button{
+    position:relative!important;
+    width:48px!important;
+    min-width:48px!important;
+    height:48px!important;
+    min-height:48px!important;
+    flex:0 0 48px!important;
+    margin:0!important;
+    border:1px solid rgba(255,255,255,.80)!important;
+    border-radius:15px!important;
+    background:
+      linear-gradient(180deg,
+        rgba(255,255,255,.86),
+        rgba(238,238,238,.58)) padding-box!important;
+    color:#454545!important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.96),
+      inset 0 -1px 0 rgba(0,0,0,.07),
+      0 10px 25px rgba(0,0,0,.12),
+      0 2px 7px rgba(0,0,0,.06)!important;
+    -webkit-backdrop-filter:saturate(190%) blur(22px)!important;
+    backdrop-filter:saturate(190%) blur(22px)!important;
+    overflow:hidden!important;
+    transform:translateZ(0);
+    transition:transform .3s var(--peek-glass-ease),box-shadow .3s var(--peek-glass-ease),background .3s ease!important;
+  }
+
+  .mobile-action-bar a::before,
+  .mobile-action-bar button::before{
+    content:""!important;
+    position:absolute!important;
+    z-index:0!important;
+    inset:1px 8% 52% 8%!important;
+    border-radius:999px!important;
+    background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,0))!important;
+    pointer-events:none!important;
+  }
+
+  .mobile-action-bar a::after,
+  .mobile-action-bar button::after{
+    content:""!important;
+    position:absolute!important;
+    z-index:0!important;
+    inset:0!important;
+    border-radius:inherit!important;
+    background:linear-gradient(120deg,rgba(255,255,255,.42),transparent 48%,rgba(255,255,255,.18))!important;
+    pointer-events:none!important;
+  }
+
+  .mobile-action-bar a > *,
+  .mobile-action-bar button > *{
+    position:relative!important;
+    z-index:1!important;
+  }
+
+  /* Email remains the dark hero control, but still has its own glass shell. */
+  .mobile-action-bar a:nth-child(2),
+  .mobile-action-bar button:nth-child(2){
+    background:
+      linear-gradient(180deg,
+        rgba(62,62,62,.96),
+        rgba(7,7,7,.99)) padding-box!important;
+    border-color:rgba(255,255,255,.20)!important;
+    color:#fff!important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.25),
+      inset 0 -2px 5px rgba(0,0,0,.30),
+      0 12px 28px rgba(0,0,0,.20),
+      0 3px 8px rgba(0,0,0,.08)!important;
+  }
+
+  .mobile-action-bar a:active,
+  .mobile-action-bar button:active{
+    transform:scale(.93)!important;
+    box-shadow:
+      inset 0 2px 5px rgba(0,0,0,.14),
+      0 4px 10px rgba(0,0,0,.09)!important;
+  }
+}
+
+@media(max-width:390px){
+  .mobile-action-bar{
+    width:46px!important;
+    gap:7px!important;
+  }
+  .mobile-action-bar a,
+  .mobile-action-bar button{
+    width:46px!important;
+    min-width:46px!important;
+    height:46px!important;
+    min-height:46px!important;
+    flex-basis:46px!important;
+    border-radius:14px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .header-cta,
+  .hero-buttons .button,
+  #quoteForm button,
+  .booking-cta-button,
+  .service-card .service-body .service-cta,
+  .mobile-action-bar a,
+  .mobile-action-bar button{
+    transition:none!important;
+  }
+}
