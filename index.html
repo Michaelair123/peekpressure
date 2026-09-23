@@ -886,55 +886,6 @@ body.peek-calendly-open{overflow:hidden}
     }, { passive: true });
     updateScrollUI();
 
-    // Temporary pressure-washing photos for testing. Replace these URLs with PEEK PRESSURE job photos later.
-    const aboutReelImages = [
-      "https://images.unsplash.com/photo-1754797007471-68300d87b793?auto=format&fit=crop&fm=jpg&q=65&w=1200",
-      "https://images.unsplash.com/photo-1718152422485-f2d62ea3f5a8?auto=format&fit=crop&fm=jpg&q=65&w=1200",
-      "https://images.unsplash.com/photo-1718152470408-cfeebeb6b9fc?auto=format&fit=crop&fm=jpg&q=65&w=1200",
-      "https://images.unsplash.com/photo-1718152421680-d1580e843cc9?auto=format&fit=crop&fm=jpg&q=65&w=1200"
-    ];
-
-    const aboutSection = document.querySelector('.about');
-
-    if (aboutSection && aboutReelImages.length) {
-      const reel = document.createElement('div');
-      reel.className = 'about-reel has-images';
-      reel.setAttribute('aria-hidden', 'true');
-
-      const track = document.createElement('div');
-      track.className = 'about-reel-track';
-
-      aboutReelImages.forEach(src => {
-        const slide = document.createElement('div');
-        slide.className = 'about-reel-slide';
-        slide.dataset.bg = src;
-        track.appendChild(slide);
-      });
-
-      reel.appendChild(track);
-      aboutSection.prepend(reel);
-
-      // Load the reel images only when the About section is close to view.
-      const loadAboutReel = () => {
-        track.querySelectorAll('.about-reel-slide[data-bg]').forEach(slide => {
-          slide.style.backgroundImage = `url("${slide.dataset.bg}")`;
-          slide.removeAttribute('data-bg');
-        });
-      };
-
-      if ('IntersectionObserver' in window) {
-        const reelLoader = new IntersectionObserver(entries => {
-          if (entries.some(entry => entry.isIntersecting)) {
-            loadAboutReel();
-            reelLoader.disconnect();
-          }
-        }, { rootMargin: '500px 0px' });
-        reelLoader.observe(aboutSection);
-      } else {
-        loadAboutReel();
-      }
-    }
-
     // Service-area map uses the embedded Google Map and lightweight city markers. No third-party boundary overlay is required.
 
     const serviceZipForm = document.getElementById('serviceZipForm');
