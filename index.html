@@ -521,10 +521,25 @@
       <span data-fs-error="service"></span>
     </fieldset>
 
-    <div class="form-field">
-      <label for="address">03 / WHERE IS IT?</label>
-      <input type="text" id="address" name="address" placeholder="Property address" autocomplete="street-address" required data-fs-field>
-      <span data-fs-error="address"></span>
+    <div class="form-field quote-address-section">
+      <label>03 / WHERE IS IT?</label>
+      <div class="quote-address-grid">
+        <div class="form-field">
+          <label for="street">STREET ADDRESS</label>
+          <input type="text" id="street" name="street" placeholder="123 Main St" autocomplete="street-address" required data-fs-field>
+          <span data-fs-error="street"></span>
+        </div>
+        <div class="form-field">
+          <label for="city">CITY</label>
+          <input type="text" id="city" name="city" placeholder="San Mateo" autocomplete="address-level2" required data-fs-field>
+          <span data-fs-error="city"></span>
+        </div>
+        <div class="form-field">
+          <label for="zip">ZIP CODE</label>
+          <input type="text" id="zip" name="zip" inputmode="numeric" maxlength="5" pattern="[0-9]{5}" placeholder="94401" autocomplete="postal-code" required data-fs-field>
+          <span data-fs-error="zip"></span>
+        </div>
+      </div>
     </div>
 
     <div class="form-field photo-field">
