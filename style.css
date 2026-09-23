@@ -1722,3 +1722,11 @@ body.quote-modal-open::before{
   .mobile-action-bar{left:.45rem!important;right:.45rem!important;bottom:calc(.45rem + env(safe-area-inset-bottom))!important;min-height:54px!important;padding:.25rem!important;border-radius:16px!important}
   .mobile-action-bar a{min-height:46px!important;height:46px!important;font-size:.48rem!important}
 }
+
+
+/* MOBILE CONTACT BAR — mirror the desktop contact rail */
+@media(max-width:700px){
+  .mobile-action-bar{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .mobile-action-bar button{display:flex!important;align-items:center!important;justify-content:center!important;min-width:0!important;min-height:48px!important;height:48px!important;padding:.55rem .2rem!important;border:0!important;border-radius:14px!important;background:transparent!important;color:#666!important;font:800 .48rem/1 inherit!important;letter-spacing:.09em!important;white-space:nowrap!important;cursor:pointer!important}
+  .mobile-action-bar button:focus-visible,.mobile-action-bar button:hover{background:#f1f1f1!important;color:#111!important}
+}
