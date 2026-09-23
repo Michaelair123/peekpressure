@@ -1222,3 +1222,27 @@ body.quote-modal-open::before{
     line-height:28px!important;
   }
 }
+
+
+/* Quote address — separate street, city, and ZIP fields. */
+.peek-quote-modal .quote-address-section > label{
+  display:block!important;
+  margin-bottom:.5rem!important;
+}
+.peek-quote-modal .quote-address-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,2fr) minmax(0,1.25fr) minmax(90px,.75fr)!important;
+  gap:.75rem!important;
+}
+.peek-quote-modal .quote-address-grid .form-field{
+  margin:0!important;
+}
+@media(max-width:700px){
+  .peek-quote-modal .quote-address-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:.65rem!important;
+  }
+  .peek-quote-modal .quote-address-grid .form-field:first-child{
+    grid-column:1 / -1!important;
+  }
+}
