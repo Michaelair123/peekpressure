@@ -1086,6 +1086,11 @@ body.peek-calendly-open{overflow:hidden}
           title:name,
           alt:name
         }).addTo(map);
+        // Leaflet's generated marker element does not consistently inherit
+        // title/alt as an accessible name across browsers. Set the ARIA name
+        // on the actual interactive element after it has been added.
+        const markerEl = marker.getElement();
+        if (markerEl) markerEl.setAttribute('aria-label', name);
         marker.bindTooltip(name, {direction:'top', offset:[0,-8], opacity:.96});
         bounds.push([lat,lng]);
       });
