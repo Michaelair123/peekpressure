@@ -457,11 +457,35 @@ body.peek-calendly-open{overflow:hidden}
       <span class="peek-floating-icon" aria-hidden="true">✉</span>
       <span>EMAIL</span>
     </button>
+    <button type="button" class="peek-floating-action" id="peekFloatingText" aria-label="Text PEEK PRESSURE">
+      <span class="peek-floating-icon" aria-hidden="true">💬</span>
+      <span>TEXT</span>
+    </button>
     <a class="peek-floating-action" href="#peekCalendlyModal" data-peek-book id="peekFloatingBook" aria-label="Book a time with PEEK PRESSURE">
       <span class="peek-floating-icon" aria-hidden="true">↗</span>
       <span>BOOK</span>
     </a>
   </nav>
+
+  <div class="peek-text-modal" id="peekTextModal" aria-hidden="true">
+    <div class="peek-text-backdrop" data-peek-text-close></div>
+    <div class="peek-text-dialog" role="dialog" aria-modal="true" aria-labelledby="peekTextTitle" tabindex="-1">
+      <button type="button" class="peek-text-close" id="peekTextClose" aria-label="Close text panel">×</button>
+      <div class="peek-text-heading">
+        <span class="label">TEXT PEEK PRESSURE</span>
+        <h2 id="peekTextTitle">LET'S TALK.</h2>
+        <p>Type your message below. When you tap SEND TEXT, your phone's messaging app will open with your message ready to send.</p>
+      </div>
+      <form class="peek-text-form" id="peekTextForm">
+        <label for="peekTextMessage">YOUR MESSAGE</label>
+        <textarea id="peekTextMessage" rows="5" maxlength="1000" placeholder="Hi PEEK PRESSURE — I'd like a quote for..." required></textarea>
+        <div class="peek-text-actions">
+          <span class="peek-text-number">415-689-8377</span>
+          <button type="submit">SEND TEXT →</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   
   <div class="peek-calendly-modal" id="peekCalendlyModal" aria-hidden="true">
@@ -586,6 +610,39 @@ body.peek-calendly-open{overflow:hidden}
   </div>
 
   <style>
+    /* In-page text composer — hands the final message to the device's native SMS app. */
+    body.peek-text-open{overflow:hidden}
+    .peek-text-modal{position:fixed;inset:0;z-index:10055;display:none;align-items:center;justify-content:center;padding:24px}
+    .peek-text-modal.is-open{display:flex}
+    .peek-text-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.52);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .peek-text-dialog{position:relative;z-index:1;width:min(620px,100%);background:#fff;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.28);padding:28px}
+    .peek-text-heading{padding-right:48px}
+    .peek-text-heading h2{margin:5px 0 8px;font-size:clamp(2.3rem,6vw,4.5rem);line-height:.88;letter-spacing:-.07em}
+    .peek-text-heading p{margin:0;color:#666;font-size:15px;line-height:1.6;max-width:48rem}
+    .peek-text-close{position:absolute;top:14px;right:16px;width:40px;height:40px;border:0;border-radius:50%;background:#f3f3f3;color:#111;font-size:28px;line-height:1;cursor:pointer}
+    .peek-text-close:hover{background:#e8e8e8}
+    .peek-text-close:focus-visible{outline:3px solid #111;outline-offset:2px}
+    .peek-text-form{margin-top:24px}
+    .peek-text-form label{display:block;margin-bottom:8px;font-size:.7rem;font-weight:700;letter-spacing:.12em}
+    .peek-text-form textarea{display:block;width:100%;min-height:140px;box-sizing:border-box;resize:vertical;padding:14px 15px;border:1px solid #d8d8d8;border-radius:12px;background:#fff;color:#111;font:inherit;font-size:16px;line-height:1.5}
+    .peek-text-form textarea:focus{border-color:#111;outline:3px solid rgba(17,17,17,.12);outline-offset:1px}
+    .peek-text-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px}
+    .peek-text-number{font-size:.72rem;font-weight:700;letter-spacing:.08em;color:#666}
+    .peek-text-actions button{min-height:48px;padding:0 18px;border:1px solid #111;border-radius:999px;background:#111;color:#fff;font:700 .72rem/1 Inter,Arial,sans-serif;letter-spacing:.1em;cursor:pointer}
+    .peek-text-actions button:hover{background:#333}
+    .peek-text-actions button:active{transform:scale(.98)}
+    @media(max-width:700px){
+      .peek-text-modal{padding:10px}
+      .peek-text-dialog{width:100%;padding:20px;border-radius:14px}
+      .peek-text-heading{padding-right:44px}
+      .peek-text-heading h2{font-size:clamp(2.25rem,12vw,3.6rem)}
+      .peek-text-heading p{font-size:14px}
+      .peek-text-form{margin-top:20px}
+      .peek-text-actions{align-items:stretch;flex-direction:column}
+      .peek-text-number{order:2}
+      .peek-text-actions button{width:100%;min-height:52px}
+    }
+
     /* Persistent contact rail — clean, quiet, and intentionally separate from page content. */
     .peek-chat-launcher{display:none!important}
     .peek-floating-actions{
@@ -683,6 +740,47 @@ body.peek-calendly-open{overflow:hidden}
       // Email opens the existing Formspree contact form as a centered quick-contact modal.
       emailButton?.addEventListener('click', () => {
         window.PeekQuoteModal?.open(emailButton);
+      });
+
+      const textButton = document.getElementById('peekFloatingText');
+      const textModal = document.getElementById('peekTextModal');
+      const textClose = document.getElementById('peekTextClose');
+      const textForm = document.getElementById('peekTextForm');
+      const textMessage = document.getElementById('peekTextMessage');
+      let textTrigger = null;
+
+      const closeText = () => {
+        if (!textModal) return;
+        textModal.classList.remove('is-open');
+        textModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('peek-text-open');
+        textTrigger?.focus?.({preventScroll:true});
+        textTrigger = null;
+      };
+
+      const openText = (trigger) => {
+        if (!textModal || !textMessage) return;
+        textTrigger = trigger || document.activeElement;
+        document.body.classList.remove('quote-modal-open', 'peek-calendly-open');
+        document.body.classList.add('peek-text-open');
+        textModal.classList.add('is-open');
+        textModal.setAttribute('aria-hidden', 'false');
+        window.setTimeout(() => textMessage.focus({preventScroll:true}), 0);
+      };
+
+      textButton?.addEventListener('click', () => openText(textButton));
+      textClose?.addEventListener('click', closeText);
+      textModal?.querySelector('[data-peek-text-close]')?.addEventListener('click', closeText);
+
+      textForm?.addEventListener('submit', event => {
+        event.preventDefault();
+        const message = textMessage.value.trim();
+        if (!message) return;
+        window.location.href = 'sms:14156898377?body=' + encodeURIComponent(message);
+      });
+
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && textModal?.classList.contains('is-open')) closeText();
       });
     })();
   </script>
