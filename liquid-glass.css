@@ -319,3 +319,110 @@
     transition:none!important;
   }
 }
+
+/* SURGICAL QUOTE MODAL FIX
+   The quote form already lives in #peekQuoteModal and the JavaScript already
+   opens/closes that modal. The missing presentation layer caused the form to
+   render in normal document flow below the footer. Keep the HTML untouched. */
+.peek-quote-modal{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483644!important;
+  display:none!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:24px!important;
+  background:rgba(0,0,0,.56)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+  overflow:auto!important;
+}
+.peek-quote-modal.is-open{
+  display:flex!important;
+}
+.peek-quote-modal::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  background:rgba(0,0,0,.10)!important;
+  pointer-events:none!important;
+}
+.peek-quote-modal > #quoteForm{
+  position:relative!important;
+  z-index:1!important;
+  width:min(760px,100%)!important;
+  max-height:calc(100vh - 48px)!important;
+  margin:0!important;
+  padding:30px!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  background:#fff!important;
+  border:1px solid rgba(17,17,17,.10)!important;
+  border-radius:22px!important;
+  box-shadow:0 30px 100px rgba(0,0,0,.28)!important;
+}
+.peek-quote-modal .quote-modal-heading{
+  padding-right:52px!important;
+}
+.peek-quote-modal .quote-modal-close{
+  position:absolute!important;
+  top:14px!important;
+  right:16px!important;
+  z-index:3!important;
+  width:40px!important;
+  height:40px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#f1f1f1!important;
+  color:#111!important;
+  font-size:28px!important;
+  line-height:1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  cursor:pointer!important;
+}
+.peek-quote-modal .quote-modal-close:hover,
+.peek-quote-modal .quote-modal-close:focus-visible{
+  background:#111!important;
+  color:#fff!important;
+}
+body.quote-modal-open{
+  overflow:hidden!important;
+}
+.peek-quote-modal[aria-hidden="true"]{
+  pointer-events:none!important;
+}
+.peek-quote-modal[aria-hidden="false"]{
+  pointer-events:auto!important;
+}
+@media(max-width:700px){
+  .peek-quote-modal{
+    padding:10px!important;
+    align-items:center!important;
+  }
+  .peek-quote-modal > #quoteForm{
+    width:100%!important;
+    max-width:34rem!important;
+    max-height:calc(100dvh - 20px)!important;
+    padding:20px!important;
+    border-radius:16px!important;
+  }
+  .peek-quote-modal .quote-modal-heading{
+    padding-right:46px!important;
+  }
+  .peek-quote-modal .quote-modal-close{
+    top:10px!important;
+    right:10px!important;
+    width:38px!important;
+    height:38px!important;
+    font-size:25px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .peek-quote-modal > #quoteForm{
+    scroll-behavior:auto!important;
+  }
+}
