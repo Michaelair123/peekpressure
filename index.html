@@ -791,6 +791,7 @@ body.peek-calendly-open{overflow:hidden}
       const chatButton = document.getElementById('peekFloatingChat');
       const bookButton = document.getElementById('peekFloatingBook');
       const emailButton = document.getElementById('peekFloatingEmail');
+      const closeOtherPopups = (except) => document.dispatchEvent(new CustomEvent('peek:popup-open', { detail: { except } }));
 
       // Lucy owns the floating CHAT action; the handler is attached inside Lucy's own scope.
       chatButton?.setAttribute('aria-controls', 'peekChat');
@@ -818,6 +819,7 @@ body.peek-calendly-open{overflow:hidden}
 
       const openText = (trigger) => {
         if (!textModal || !textMessage) return;
+        closeOtherPopups('text');
         textTrigger = trigger || document.activeElement;
         document.body.classList.remove('quote-modal-open', 'peek-calendly-open');
         document.body.classList.add('peek-text-open');
@@ -829,6 +831,9 @@ body.peek-calendly-open{overflow:hidden}
       textButton?.addEventListener('click', () => openText(textButton));
       textClose?.addEventListener('click', closeText);
       textModal?.querySelector('[data-peek-text-close]')?.addEventListener('click', closeText);
+      document.addEventListener('peek:popup-open', event => {
+        if (event.detail?.except !== 'text' && textModal?.classList.contains('is-open')) closeText();
+      });
 
       textForm?.addEventListener('submit', event => {
         event.preventDefault();
@@ -1198,6 +1203,17 @@ document.addEventListener('DOMContentLoaded', () => {
   </aside>
 
   <script>
+  // Keep the floating contact actions mutually exclusive: only one panel can be open at a time.
+  (() => {
+    const chat = document.getElementById('peekChat');
+    const chatClose = document.getElementById('peekChatClose');
+    document.addEventListener('peek:popup-open', event => {
+      if (event.detail?.except !== 'chat' && chat?.getAttribute('aria-hidden') === 'false') chatClose?.click();
+    });
+  })();
+  </script>
+
+  <script>
   // The Formspree quote form lives only inside this modal and opens from EMAIL / quote CTAs.
   (() => {
     const modal = document.getElementById('peekQuoteModal');
@@ -1220,6 +1236,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const open = (trigger) => {
+      closeOtherPopups('quote');
       lastTrigger = trigger || document.activeElement;
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
@@ -1254,6 +1271,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clicking the dimmed area outside the form closes the quote modal.
     modal.addEventListener('click', event => {
       if (event.target === modal) close();
+    });
+
+    document.addEventListener('peek:popup-open', event => {
+      if (event.detail?.except !== 'quote' && modal.classList.contains('is-open')) close();
     });
 
     document.addEventListener('keydown', event => {
@@ -1940,6 +1961,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const openCalendly=(event)=>{
     event.preventDefault();
+    document.dispatchEvent(new CustomEvent('peek:popup-open', {detail:{except:'calendly'}}));
     previousFocus=document.activeElement;
     document.body.classList.remove('quote-modal-open');
     document.body.classList.add('peek-calendly-open');
@@ -1957,6 +1979,9 @@ document.addEventListener('DOMContentLoaded', () => {
   bookingTriggers.forEach(trigger=>trigger.addEventListener('click',openCalendly));
   closeButton.addEventListener('click',closeCalendly);
   modal.querySelector('[data-peek-calendly-close]')?.addEventListener('click',closeCalendly);
+  document.addEventListener('peek:popup-open', event=>{
+    if(event.detail?.except!=='calendly'&&modal.classList.contains('is-open'))closeCalendly();
+  });
   document.addEventListener('keydown',event=>{
     if(event.key==='Escape'&&modal.classList.contains('is-open'))closeCalendly();
   });
@@ -1969,9 +1994,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if(!menu||!toggle||!close)return;
   let trigger=null;
   const closeMenu=()=>{menu.classList.remove('is-open');menu.setAttribute('aria-hidden','true');toggle.setAttribute('aria-expanded','false');document.body.classList.remove('peek-side-menu-open');trigger?.focus?.({preventScroll:true});trigger=null;};
-  const openMenu=()=>{trigger=document.activeElement;menu.classList.add('is-open');menu.setAttribute('aria-hidden','false');toggle.setAttribute('aria-expanded','true');document.body.classList.add('peek-side-menu-open');window.setTimeout(()=>menu.querySelector('.peek-side-menu-links a')?.focus({preventScroll:true}),40);};
+  const openMenu=()=>{document.dispatchEvent(new CustomEvent('peek:popup-open', {detail:{except:'menu'}}));trigger=document.activeElement;menu.classList.add('is-open');menu.setAttribute('aria-hidden','false');toggle.setAttribute('aria-expanded','true');document.body.classList.add('peek-side-menu-open');window.setTimeout(()=>menu.querySelector('.peek-side-menu-links a')?.focus({preventScroll:true}),40);};
   toggle.addEventListener('click',openMenu);close.addEventListener('click',closeMenu);menu.querySelector('[data-peek-menu-close]')?.addEventListener('click',closeMenu);
   menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{if(!a.hasAttribute('data-peek-book'))closeMenu();}));
+  document.addEventListener('peek:popup-open', event=>{if(event.detail?.except!=='menu'&&menu.classList.contains('is-open'))closeMenu();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.classList.contains('is-open'))closeMenu();});
 })();
 </script>
