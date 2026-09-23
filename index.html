@@ -475,8 +475,31 @@
     method="POST"
     enctype="multipart/form-data"
   >
+    <div class="quote-modal-heading">
+      <div>
+        <span class="quote-modal-kicker">PEEK PRESSURE</span>
+        <h2>CONTACT US</h2>
+        <p>Tell us a little about your project and we’ll take it from there.</p>
+      </div>
+    </div>
+
+    <fieldset class="quote-step customer-type-step">
+      <legend>01 / NEW OR RETURNING CUSTOMER?</legend>
+      <div class="service-choice-grid customer-choice-grid">
+        <label class="service-choice">
+          <input type="radio" name="customer_type" value="New customer" required data-fs-field>
+          <span>NEW CUSTOMER</span><b>→</b>
+        </label>
+        <label class="service-choice">
+          <input type="radio" name="customer_type" value="Returning customer" data-fs-field>
+          <span>RETURNING CUSTOMER</span><b>→</b>
+        </label>
+      </div>
+      <span data-fs-error="customer_type"></span>
+    </fieldset>
+
     <fieldset class="quote-step">
-      <legend>01 / WHAT NEEDS CLEANING?</legend>
+      <legend>02 / WHAT NEEDS CLEANING?</legend>
       <div class="service-choice-grid">
         <label class="service-choice">
           <input type="radio" name="service" value="Driveway" required data-fs-field>
@@ -499,13 +522,13 @@
     </fieldset>
 
     <div class="form-field">
-      <label for="address">02 / WHERE IS IT?</label>
+      <label for="address">03 / WHERE IS IT?</label>
       <input type="text" id="address" name="address" placeholder="Property address" autocomplete="street-address" required data-fs-field>
       <span data-fs-error="address"></span>
     </div>
 
     <div class="form-field photo-field">
-      <label for="photos">03 / WANT TO SHOW US? <span>OPTIONAL</span></label>
+      <label for="photos">04 / WANT TO SHOW US? <span>OPTIONAL</span></label>
       <input type="file" id="photos" name="photos" accept="image/*" multiple data-max-files="5">
       <label for="photos" class="photo-upload">
         <strong>+ ADD PHOTO</strong>
@@ -514,7 +537,7 @@
     </div>
 
     <div class="form-field">
-      <label for="details">04 / ANYTHING ELSE? <span>OPTIONAL</span></label>
+      <label for="details">05 / ANYTHING ELSE? <span>OPTIONAL</span></label>
       <textarea id="details" name="details" rows="4" placeholder="Stains, size, access, timing, or anything else we should know." data-fs-field></textarea>
       <span data-fs-error="details"></span>
     </div>
