@@ -1517,3 +1517,283 @@ body.quote-modal-open::before{
     letter-spacing:.065em!important;
   }
 }
+
+/* ============================================================
+   PEEK CASCADE NORMALIZATION
+   Single authoritative control layer for mobile controls.
+   Keep this block last. No layout/HTML restructuring.
+   ============================================================ */
+
+.button,
+.header-cta,
+.service-cta,
+.booking-cta-button,
+#quoteForm button,
+.service-zip-form button,
+.service-zip-quote-button{
+  box-sizing:border-box;
+  font-family:var(--peek-font-sans)!important;
+  text-transform:uppercase;
+  border-radius:999px;
+  transition:transform .3s var(--peek-ease),background-color .3s ease,color .3s ease,border-color .3s ease,box-shadow .3s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* Shared PEEK pill language: white surface / black ink by default. */
+.button,
+.header-cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:3.1rem;
+  padding:0 1.4rem;
+  border:1px solid #d4d4d4;
+  background:#fff;
+  color:#111;
+  font-size:.72rem;
+  line-height:1.2;
+  font-weight:500!important;
+  letter-spacing:.1em;
+}
+
+.button.primary,
+.header-cta{
+  background:#111;
+  border-color:#111;
+  color:#fff;
+}
+
+.button.secondary{
+  background:#fff;
+  border-color:#111;
+  color:#111;
+}
+
+.button:hover,
+.button:focus-visible{
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(0,0,0,.10);
+}
+
+.button.primary:hover,
+.button.primary:focus-visible,
+.header-cta:hover,
+.header-cta:focus-visible{
+  background:#fff;
+  border-color:#111;
+  color:#111;
+}
+
+.button.secondary:hover,
+.button.secondary:focus-visible{
+  background:#f5f5f5;
+  border-color:#111;
+  color:#111;
+}
+
+.button:active,
+.header-cta:active{
+  transform:scale(.98);
+  box-shadow:none;
+}
+
+/* Service CTAs were missing a stable global definition. */
+.service-cta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  min-height:3.1rem;
+  margin-top:auto;
+  padding:0 1rem;
+  border:1px solid #111;
+  background:#111;
+  color:#fff;
+  font-size:.68rem;
+  line-height:1;
+  font-weight:500!important;
+  letter-spacing:.1em;
+}
+
+.service-cta span{
+  font-size:1rem;
+  line-height:1;
+  transition:transform .3s var(--peek-ease);
+}
+
+.service-cta:hover,
+.service-cta:focus-visible{
+  background:#fff;
+  color:#111;
+  border-color:#111;
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(0,0,0,.10);
+}
+
+.service-cta:hover span,
+.service-cta:focus-visible span{
+  transform:translateX(3px);
+}
+
+.service-cta:active{
+  transform:scale(.99);
+  box-shadow:none;
+}
+
+/* The sticky mobile bar is its own component, not a giant button. */
+.mobile-action-bar{
+  box-sizing:border-box;
+}
+
+.mobile-action-bar a{
+  font-family:var(--peek-font-sans)!important;
+  text-transform:uppercase;
+}
+
+@media(max-width:700px){
+  .header-cta{
+    width:auto!important;
+    min-width:0!important;
+    min-height:44px!important;
+    height:44px!important;
+    padding:0 1.05rem!important;
+    border-radius:999px!important;
+    font-size:.62rem!important;
+    letter-spacing:.1em!important;
+  }
+
+  .hero-buttons .button{
+    width:100%!important;
+    min-height:54px!important;
+    height:54px!important;
+    padding:0 1.25rem!important;
+    border-radius:999px!important;
+    font-size:.68rem!important;
+    letter-spacing:.1em!important;
+  }
+
+  .service-cta{
+    min-height:50px!important;
+    height:50px!important;
+    margin-top:16px!important;
+    padding:0 15px!important;
+    border-radius:999px!important;
+    font-size:.64rem!important;
+  }
+
+  /* Match the current PEEK button language instead of the old dark-card style. */
+  .mobile-action-bar{
+    left:10px!important;
+    right:10px!important;
+    bottom:calc(8px + env(safe-area-inset-bottom))!important;
+    width:auto!important;
+    height:58px!important;
+    min-height:58px!important;
+    padding:4px!important;
+    display:grid!important;
+    grid-template-columns:1fr 1.45fr 1fr!important;
+    gap:0!important;
+    z-index:2147483640!important;
+    border:1px solid rgba(17,17,17,.12)!important;
+    border-radius:16px!important;
+    background:rgba(255,255,255,.97)!important;
+    box-shadow:0 12px 38px rgba(0,0,0,.18)!important;
+    backdrop-filter:blur(18px)!important;
+    -webkit-backdrop-filter:blur(18px)!important;
+  }
+
+  .mobile-action-bar a{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-width:0!important;
+    min-height:50px!important;
+    height:50px!important;
+    padding:0 .35rem!important;
+    border:1px solid transparent!important;
+    border-radius:12px!important;
+    background:transparent!important;
+    color:#111!important;
+    font-size:.6rem!important;
+    line-height:1!important;
+    font-weight:500!important;
+    letter-spacing:.1em!important;
+    white-space:nowrap!important;
+    box-shadow:none!important;
+  }
+
+  .mobile-action-bar a:nth-child(2){
+    background:#111!important;
+    border-color:#111!important;
+    color:#fff!important;
+    font-weight:500!important;
+  }
+
+  .mobile-action-bar a:hover,
+  .mobile-action-bar a:focus-visible{
+    background:#f5f5f5!important;
+    border-color:#111!important;
+    color:#111!important;
+  }
+
+  .mobile-action-bar a:nth-child(2):hover,
+  .mobile-action-bar a:nth-child(2):focus-visible{
+    background:#222!important;
+    border-color:#222!important;
+    color:#fff!important;
+  }
+
+  .mobile-action-bar a:active{
+    transform:scale(.98)!important;
+  }
+}
+
+@media(max-width:375px){
+  .header-cta{
+    min-height:42px!important;
+    height:42px!important;
+    padding-inline:.9rem!important;
+    font-size:.58rem!important;
+  }
+
+  .hero-buttons .button{
+    min-height:52px!important;
+    height:52px!important;
+  }
+
+  .service-cta{
+    min-height:48px!important;
+    height:48px!important;
+  }
+
+  .mobile-action-bar{
+    left:7px!important;
+    right:7px!important;
+  }
+
+  .mobile-action-bar a{
+    min-height:50px!important;
+    height:50px!important;
+    font-size:.56rem!important;
+  }
+}
+
+/* Never manufacture a CTA under a service image via pseudo-elements. */
+.service-image::before,
+.service-image::after{
+  pointer-events:none;
+}
+
+/* Keep the actual service image overlay decorative only. */
+.service-image::after{
+  content:""!important;
+}
+
+/* Accessibility: preserve visible keyboard focus without changing the visual system. */
+.button:focus-visible,
+.header-cta:focus-visible,
+.service-cta:focus-visible,
+.mobile-action-bar a:focus-visible{
+  outline:2px solid #111!important;
+  outline-offset:3px!important;
+}
