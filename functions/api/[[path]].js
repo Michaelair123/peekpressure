@@ -1,3 +1,14 @@
+function json(body, status = 200, extraHeaders = {}) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      ...extraHeaders
+    }
+  });
+}
+
 const LEAD_RATE_WINDOW_MS = 10 * 60 * 1000;
 const LEAD_RATE_LIMIT = 3;
 const leadRateBuckets = new Map();
