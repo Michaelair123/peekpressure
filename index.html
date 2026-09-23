@@ -1825,9 +1825,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // question must NOT block the partial handoff — the /api/lead endpoint
         // intentionally accepts a name plus phone/email so we never lose a lead
         // just because the conversation is incomplete.
+        // A successful handoff is terminal for this conversation unless Lucy
+        // has newly reached the final qualified state after an earlier partial
+        // capture. Follow-up messages like "thanks" must stay conversational
+        // and must never trigger a second /api/lead submission.
         const shouldAutoHandoff = Boolean(
           data.lead &&
-          (data.lead_ready === true || data.lead_capture === true)
+          (
+            (data.lead_ready === true && !state.leadSubmitted) ||
+            (data.lead_capture === true && !state.partialLeadCaptured && !state.leadSubmitted)
+          )
         );
 
         if (shouldAutoHandoff) {
