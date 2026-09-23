@@ -1356,3 +1356,19 @@ body.quote-modal-open::before{
 .about::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(17,17,17,.06);z-index:1;pointer-events:none}
 .about-grid{background:linear-gradient(90deg,transparent calc(28% - .5px),rgba(17,17,17,.045) 28%,transparent calc(28% + .5px));}
 @media(max-width:700px){.about::before{right:1rem;top:1.5rem;font-size:.44rem}.about::after{display:none}.about-grid{background:none}}
+
+
+/* BEFORE + AFTER — native range slider, touch + keyboard friendly */
+.before-after-media{--before-after-position:50%;position:relative;overflow:hidden;isolation:isolate;background:#f3f3f3;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.before-after-layer{position:absolute;inset:0;overflow:hidden}
+.before-after-before{z-index:1}
+.before-after-after{z-index:2;width:var(--before-after-position);right:auto}
+.before-after-range{position:absolute;inset:0;width:100%;height:100%;margin:0;z-index:5;opacity:0;cursor:ew-resize;appearance:none;-webkit-appearance:none;background:transparent}
+.before-after-range::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:44px;height:44px;background:transparent;border:0;cursor:ew-resize}
+.before-after-range::-moz-range-thumb{width:44px;height:44px;background:transparent;border:0;cursor:ew-resize}
+.before-after-divider{position:absolute;z-index:4;top:0;bottom:0;left:var(--before-after-position);width:2px;transform:translateX(-1px);background:#fff;box-shadow:0 0 0 1px rgba(17,17,17,.12),0 0 18px rgba(0,0,0,.12);pointer-events:none}
+.before-after-divider span{position:absolute;top:50%;left:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);border:1px solid rgba(17,17,17,.14);border-radius:999px;background:#fff;color:#111;font-size:18px;line-height:1;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.before-after-range:focus-visible{opacity:1;outline:2px solid #111;outline-offset:-4px}
+.before-after-range:focus-visible + .before-after-divider span{box-shadow:0 0 0 3px rgba(17,17,17,.12),0 8px 24px rgba(0,0,0,.12)}
+@media(max-width:700px){.before-after-media{min-height:260px!important}.before-after-divider span{width:46px;height:46px}.before-after-range::-webkit-slider-thumb{width:52px;height:52px}.before-after-range::-moz-range-thumb{width:52px;height:52px}}
+@media(prefers-reduced-motion:reduce){.before-after-divider,.before-after-divider span{transition:none!important}}
