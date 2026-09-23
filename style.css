@@ -1350,3 +1350,9 @@ body.quote-modal-open::before{
   .hero-copy h1{font-size:clamp(2.55rem,13vw,3.6rem)!important}
   .mobile-action-bar{left:7px;right:7px}
 }
+
+/* PEEK ABOUT — architectural statement treatment */
+.about::before{content:"PEEK PRESSURE · BAY AREA";position:absolute;right:var(--page-padding);top:clamp(2rem,4vw,4rem);z-index:1;color:#b0b0b0;font-size:.5rem;font-weight:700;letter-spacing:.16em;line-height:1;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg);pointer-events:none}
+.about::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(17,17,17,.06);z-index:1;pointer-events:none}
+.about-grid{background:linear-gradient(90deg,transparent calc(28% - .5px),rgba(17,17,17,.045) 28%,transparent calc(28% + .5px));}
+@media(max-width:700px){.about::before{right:1rem;top:1.5rem;font-size:.44rem}.about::after{display:none}.about-grid{background:none}}
