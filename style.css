@@ -1767,3 +1767,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 .mobile-action-bar{border:1px solid rgba(0,0,0,.08)!important;background:rgba(250,250,250,.88)!important;box-shadow:0 10px 35px rgba(0,0,0,.14)!important;backdrop-filter:saturate(180%) blur(22px)!important;-webkit-backdrop-filter:saturate(180%) blur(22px)!important}.mobile-action-bar a,.mobile-action-bar button{font-weight:700!important;letter-spacing:.01em!important}.mobile-action-bar a:nth-child(2){border-radius:13px!important;box-shadow:0 2px 5px rgba(0,0,0,.12)!important}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+
+/* MOBILE — hide image/source link UI */
+@media(max-width:700px){
+  .service-image a,
+  .service-image .image-link,
+  .service-image .photo-link,
+  .service-image [class*="photo-link"],
+  .service-image [class*="image-link"],
+  .service-image [class*="source"],
+  .service-image [href*="unsplash"],
+  .service-image [href*="pexels"],
+  .service-image [href*="pixabay"]{display:none!important}
+  .service-image{position:relative!important}
+  .service-image::after{display:none!important;content:none!important}
+}
