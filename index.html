@@ -1655,13 +1655,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         setHandoffState(HANDOFF_STATES.HANDED_OFF);
+        // Once the backend confirms delivery, this conversation is already
+        // handed off. Mark both client-side guards so later customer messages
+        // (thanks, questions, photos, etc.) can continue through normal chat
+        // without ever re-entering the lead-handoff path.
+        state.leadSubmitted = true;
         if (handoffKind === 'partial') {
           state.partialLeadCaptured = true;
           console.info('Lucy partial lead capture confirmed', result);
         } else {
-          state.leadSubmitted = true;
           console.info('Lucy final lead handoff confirmed', result);
         }
+        state.pendingLead = null;
+        state.pendingLeadKind = null;
         return { ok: true, state: HANDOFF_STATES.HANDED_OFF };
       } catch (error) {
         const unknown = error?.name === 'AbortError' || !navigator.onLine;
