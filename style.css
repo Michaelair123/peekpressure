@@ -1792,3 +1792,110 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
     box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 3px 8px rgba(0,0,0,.18)!important;
   }
 }
+
+
+/* GLASS BUTTON SYSTEM — polished translucent / liquid-glass finish */
+.header-cta,
+.button,
+#quoteForm button,
+.booking-cta-button,
+.service-card .service-body .service-cta{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate;
+  border:1px solid rgba(255,255,255,.72)!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,.18)) padding-box,
+    linear-gradient(135deg,rgba(255,255,255,.95),rgba(0,0,0,.12)) border-box!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 0 -1px 0 rgba(0,0,0,.08),
+    0 8px 24px rgba(0,0,0,.12),
+    0 2px 5px rgba(0,0,0,.06)!important;
+  backdrop-filter:saturate(180%) blur(16px)!important;
+  -webkit-backdrop-filter:saturate(180%) blur(16px)!important;
+  transition:transform .35s var(--peek-ease),box-shadow .35s var(--peek-ease),background .35s ease,border-color .35s ease!important;
+}
+
+.header-cta::before,
+.button::before,
+#quoteForm button::before,
+.booking-cta-button::before,
+.service-card .service-body .service-cta::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  left:2%;
+  right:2%;
+  top:1px;
+  height:48%;
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,0));
+  pointer-events:none;
+}
+
+.header-cta:hover,
+.button:hover,
+#quoteForm button:hover,
+.booking-cta-button:hover,
+.service-card .service-body .service-cta:hover{
+  transform:translateY(-3px)!important;
+  border-color:rgba(255,255,255,.95)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(0,0,0,.07),
+    0 16px 38px rgba(0,0,0,.16),
+    0 3px 8px rgba(0,0,0,.08)!important;
+}
+
+.primary,
+.booking-cta-button,
+#quoteForm button,
+.service-card .service-body .service-cta{
+  color:#fff!important;
+  background:
+    linear-gradient(180deg,rgba(62,62,62,.96),rgba(8,8,8,.98)) padding-box,
+    linear-gradient(135deg,rgba(255,255,255,.42),rgba(255,255,255,.06)) border-box!important;
+  border-color:rgba(255,255,255,.2)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -2px 4px rgba(0,0,0,.22),
+    0 10px 28px rgba(0,0,0,.18)!important;
+}
+
+.primary:hover,
+.booking-cta-button:hover,
+#quoteForm button:hover,
+.service-card .service-body .service-cta:hover{
+  color:#fff!important;
+  background:
+    linear-gradient(180deg,rgba(76,76,76,.98),rgba(12,12,12,.99)) padding-box,
+    linear-gradient(135deg,rgba(255,255,255,.5),rgba(255,255,255,.08)) border-box!important;
+}
+
+.secondary,
+.header-cta{
+  color:#171717!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.82),rgba(232,232,232,.48)) padding-box,
+    linear-gradient(135deg,rgba(255,255,255,.98),rgba(0,0,0,.1)) border-box!important;
+}
+
+.secondary:hover,
+.header-cta:hover{
+  color:#111!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.96),rgba(235,235,235,.64)) padding-box,
+    linear-gradient(135deg,rgba(255,255,255,1),rgba(0,0,0,.12)) border-box!important;
+}
+
+@media (max-width:700px){
+  .header-cta,
+  .hero-buttons .button,
+  #quoteForm button,
+  .booking-cta-button,
+  .service-card .service-body .service-cta{
+    -webkit-backdrop-filter:saturate(190%) blur(18px)!important;
+    backdrop-filter:saturate(190%) blur(18px)!important;
+  }
+}
