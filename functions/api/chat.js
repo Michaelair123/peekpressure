@@ -264,7 +264,7 @@ PERSONALITY
 - When a customer shows buying intent ("sounds good", "let's do it", "how do I book", "when can you come", "I want to schedule"), recognize it and move directly toward booking or collecting the remaining details.
 - When the customer is price-sensitive, acknowledge the concern, explain the preliminary estimate clearly, and offer a smaller scope or the authorized courtesy discount when applicable. Never pressure or manufacture urgency.
 - When all required lead details are collected, stop asking unnecessary questions and move toward owner review/booking.
-- PROPERTY ADDRESS CONFIRMATION: For a quote lead, "location" means the property/job address or at minimum the specific property location needed to identify where the work will occur. Before setting lead_ready to true, explicitly confirm the property address/location with the customer. Repeat the address naturally and ask a yes/no confirmation, e.g. "Just to confirm, is the property address 123 Main St, Hayward, CA 94541?" Do not treat the customer's first mention of an address as confirmed. If the customer corrects it, update the location and ask for confirmation again. A city alone is not a property-address confirmation when an exact property address is available/needed. Once the customer confirms the address, retain the confirmed address in location and continue to the contact confirmation/handoff step.
+- PROPERTY ADDRESS CONFIRMATION: For a quote lead, "location" means the property/job address or at minimum the specific property location needed to identify where the work will occur. Before setting lead_ready to true, explicitly confirm the property address/location with the customer. This confirmation is required for a qualified/final handoff, not for an emergency-safe partial contact capture. If a real customer has already provided a usable name plus phone or email, preserve that contact information and allow the partial lead capture flow to continue even while the address is still being confirmed. Repeat the address naturally and ask a yes/no confirmation, e.g. "Just to confirm, is the property address 123 Main St, Hayward, CA 94541?" Do not treat the customer's first mention of an address as confirmed. If the customer corrects it, update the location and ask for confirmation again. A city alone is not a property-address confirmation when an exact property address is available/needed. Once the customer confirms the address, retain the confirmed address in location and continue to the contact confirmation/handoff step.
 - Use a simple close: answer → reassure → next step. Keep it conversational and never manipulative.
 - If the customer is casual, Lucy can be a little casual back. If they're formal, Lucy stays polished.
 - Never sound like a form, scripted sales bot, or call center.
@@ -1472,7 +1472,16 @@ async function handleLucyRequest({ request, env }) {
   try {
     const body = await request.json();
     const messages = Array.isArray(body.messages) ? body.messages.slice(-24) : [];
-    const customerTimezone = "America/Los_Angeles";
+    const requestedTimezone = typeof body.timezone === "string" ? body.timezone.trim() : "";
+    let customerTimezone = "America/Los_Angeles";
+    if (requestedTimezone) {
+      try {
+        new Intl.DateTimeFormat("en-US", { timeZone: requestedTimezone }).format();
+        customerTimezone = requestedTimezone;
+      } catch {
+        customerTimezone = "America/Los_Angeles";
+      }
+    }
 
     if (!messages.length) {
       return Response.json({ error: "No messages supplied." }, { status: 400, headers: cors });
@@ -1551,12 +1560,16 @@ async function handleLucyRequest({ request, env }) {
     const pricingContext = extractPricingContext(safeMessages);
     const hasImage = safeMessages.some(message => Array.isArray(message.content) && message.content.some(part => part?.type === "input_image"));
     const pricingRequest = pricingContext.requested;
-    const hasDetailedLeadSignal = /\b(?:\d[\d,]*(?:\.\d+)?\s*(?:sq\.?\s*ft|sqft|square\s+feet|square\s+foot)|\d{3}[-.\s]\d{3}[-.\s]\d{4}|\b(?:my name is|i'm|i am)\b|\b(?:at|in)\s+[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+)?\s+(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Drive|Dr|Ct|Court|Ln|Lane)\b)/i.test(String(latestUserText));
+    const hasDetailedLeadSignal = /(?:\b\d[\d,]*(?:\.\d+)?\s*(?:sq\.?\s*ft|sqft|square\s+feet|square\s+foot)\b|\b\d{3}[-.\s]\d{3}[-.\s]\d{4}\b|\b(?:my name is|i'm|i am)\b|\b(?:at|in)\s+[A-Z][A-Za-z0-9.'-]*(?:\s+[A-Z][A-Za-z0-9.'-]*){0,5}\s+(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Drive|Dr|Ct|Court|Ln|Lane|Way|Place|Pkwy|Parkway|Hwy|Highway)\b|\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b)/i.test(String(latestUserText));
 const needsStrongModel = hasImage || pricingRequest || hasDetailedLeadSignal || /\b(commercial|contract|property manager|stain|rust|oil|grease|damage|booking|schedule|appointment)\b/i.test(String(latestUserText));
     const selectedPrimaryModel = needsStrongModel ? (env.OPENAI_MODEL || LUCY_PRIMARY_MODEL) : LUCY_FAST_MODEL;
     const faqAnswer = getFaqAnswer(latestUserText);
     const fastReply = buildFastReply(latestUserText);
-    if (faqAnswer && !pricingContext.requested) {
+    // Never let a shortcut path swallow contact/address data. If the customer
+    // is supplying lead information, send the turn through the full extractor
+    // so partial capture works consistently even when the message is also an FAQ.
+    const hasLeadDataSignal = hasDetailedLeadSignal || /\b(?:email|e-mail|phone|mobile|cell|call|text me|reach me|contact me)\b/i.test(String(latestUserText));
+    if (faqAnswer && !pricingContext.requested && !hasLeadDataSignal) {
       const fastResult = enforceLeadSafety({
         reply: faqAnswer,
         lead_ready: false,
@@ -1578,7 +1591,7 @@ const needsStrongModel = hasImage || pricingRequest || hasDetailedLeadSignal || 
         scheduling: null
       }, { headers: cors });
     }
-    if (fastReply && !pricingContext.requested) {
+    if (fastReply && !pricingContext.requested && !hasLeadDataSignal) {
       const fastResult = enforceLeadSafety({
         reply: fastReply,
         lead_ready: false,        service: null, location: null, size: null, surface: null, condition: null, timing: null,
