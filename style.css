@@ -1597,3 +1597,74 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 ::view-transition-old(root),::view-transition-new(root){
   animation-duration:.32s;
   animation-timing-function:cubic-bezier(.22,1,.36,1)}
+
+
+/* MOBILE PERFORMANCE + RESPONSIVE CORRECTION — 2026-09-22
+   Keep horizontal snapping inside the service rail only.
+   Prevent accidental page-wide horizontal scrolling and oversized controls.
+*/
+@media (max-width:700px){
+  html,body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden!important;
+    scroll-snap-type:none!important;
+  }
+
+  .services-grid{
+    display:flex!important;
+    align-items:stretch!important;
+    gap:12px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    padding-bottom:4px;
+    scroll-snap-type:x mandatory!important;
+    scroll-snap-stop:always;
+    overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .service.service-card{
+    flex:0 0 calc(100vw - 40px)!important;
+    width:calc(100vw - 40px)!important;
+    scroll-snap-align:start!important;
+  }
+
+  /* Fix an accidental tiny mobile hero heading override. */
+  .hero-copy h1{
+    font-size:clamp(2.7rem,14.5vw,4rem)!important;
+    line-height:.86!important;
+    letter-spacing:-.095em!important;
+    padding-right:0!important;
+  }
+
+  /* Keep the primary form control phone-sized instead of adding 8rem of vertical padding. */
+  #quoteForm button[type=submit]{
+    min-height:60px!important;
+    height:60px!important;
+    padding:0 1rem!important;
+    margin-top:1rem!important;
+  }
+
+  /* Avoid expensive hover-only motion on touch devices. */
+  .service-card:hover,
+  .booking-cta-inner:hover{
+    transform:none;
+    box-shadow:none;
+  }
+}
+
+@media (max-width:390px){
+  .service.service-card{
+    flex-basis:calc(100vw - 32px)!important;
+    width:calc(100vw - 32px)!important;
+  }
+
+  .hero-copy h1{
+    font-size:clamp(2.6rem,14.5vw,3.8rem)!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .services-grid{scroll-snap-type:none!important}
+}
