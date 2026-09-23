@@ -1730,3 +1730,72 @@ body.quote-modal-open::before{
   .mobile-action-bar button{display:flex!important;align-items:center!important;justify-content:center!important;min-width:0!important;min-height:48px!important;height:48px!important;padding:.55rem .2rem!important;border:0!important;border-radius:14px!important;background:transparent!important;color:#666!important;font:800 .48rem/1 inherit!important;letter-spacing:.09em!important;white-space:nowrap!important;cursor:pointer!important}
   .mobile-action-bar button:focus-visible,.mobile-action-bar button:hover{background:#f1f1f1!important;color:#111!important}
 }
+
+
+/* PEEK MOBILE — dedicated phone layout (CSS-only) */
+@media (max-width:700px){
+:root{--page-padding:1rem;--mobile-radius:18px}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body{padding-bottom:calc(78px + env(safe-area-inset-bottom))!important}
+.header{padding:.55rem 0!important;background:rgba(255,255,255,.96)!important}
+.header-inner{width:calc(100% - 1rem)!important;min-height:48px!important;gap:.4rem!important}
+.header nav{display:none!important}
+.logo{flex:0 0 auto!important;font-size:.82rem!important;white-space:nowrap!important}
+.header-contact{margin-left:auto!important;display:flex!important;align-items:center!important;min-width:0!important}
+.header-contact .header-phone{display:inline-flex!important;min-height:40px!important;padding:0 .15rem!important;font-size:.56rem!important;white-space:nowrap!important}
+.header-email{display:inline-flex!important;width:38px!important;min-width:38px!important;height:38px!important;flex:0 0 38px!important}
+.header-cta{height:40px!important;min-height:40px!important;padding:0 .8rem!important;font-size:.54rem!important;white-space:nowrap!important}
+.peek-menu-toggle{width:40px!important;height:40px!important;min-width:40px!important;margin-left:0!important;flex:0 0 40px!important}
+.hero{padding:7.25rem 0 3.5rem!important;min-height:0!important}
+.hero-copy{width:100%!important;max-width:none!important}
+.hero-copy h1{margin-top:1rem!important;max-width:none!important;font-size:clamp(3rem,14.5vw,5rem)!important;line-height:.84!important;letter-spacing:-.095em!important}
+.hero-copy>p{max-width:34rem!important;margin-top:1.3rem!important;font-size:.82rem!important;line-height:1.65!important}
+.hero-proof{margin-top:1rem!important;gap:.35rem .55rem!important}
+.hero-buttons{display:grid!important;grid-template-columns:1fr!important;gap:.6rem!important;width:100%!important;margin-top:1.35rem!important}
+.hero-buttons .button{width:100%!important;min-height:56px!important;height:56px!important;padding:0 1rem!important}
+.services{padding:4rem 0!important;overflow:hidden!important}
+.services-grid{display:flex!important;width:calc(100vw - .5rem)!important;margin-left:.25rem!important;gap:.8rem!important;padding:.2rem .5rem 1rem!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory!important;scroll-padding-inline:.5rem!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important}
+.services-grid::-webkit-scrollbar{display:none!important}
+.service{flex:0 0 calc(100vw - 2rem)!important;max-width:calc(100vw - 2rem)!important;scroll-snap-align:start!important;scroll-snap-stop:always!important;border-radius:var(--mobile-radius)!important;transform:none!important;box-shadow:0 8px 30px rgba(0,0,0,.045)!important}
+.service:hover{transform:none!important;box-shadow:0 8px 30px rgba(0,0,0,.045)!important}
+.service-image{height:54vw!important;min-height:205px!important;max-height:280px!important}
+.service-body{min-height:190px!important;padding:1.2rem!important}
+.service h2{font-size:1.5rem!important;line-height:.95!important}
+.service p{max-width:none!important;font-size:.73rem!important;line-height:1.6!important}
+.service-card .service-body .service-cta{min-height:52px!important;height:52px!important;margin-top:auto!important}
+.about-grid,.why-peek-container,.service-area-container,.proof-container,.contact-container{width:calc(100% - 2rem)!important;max-width:none!important}
+.about-grid{display:block!important;min-height:0!important;padding-block:4.25rem!important}
+.about-grid h2,.why-peek-intro h2,.service-area h2,.proof-header h2,.contact-container>h2,.booking-cta-copy h3{font-size:clamp(2.9rem,12.5vw,4.6rem)!important;line-height:.86!important;letter-spacing:-.09em!important}
+.about p,.why-peek-point p,.service-area-container>p,.proof-header p,.contact-container>h2+p,.booking-cta-copy p{font-size:.79rem!important;line-height:1.65!important;max-width:34rem!important}
+.process,.why-peek,.service-area,.proof-section{padding-block:4.25rem!important}
+.process-header{display:block!important;margin-bottom:2rem!important}
+.process-header p{margin-top:1.2rem!important}
+.process-grid{display:block!important}
+.process-step{min-height:0!important;padding:1.4rem 0!important;border-right:0!important}
+.process-step:first-child{padding-top:0!important}
+main>form#quoteForm,#quoteForm{width:calc(100% - 2rem)!important;max-width:34rem!important;margin-inline:auto!important;padding-bottom:4.25rem!important}
+main>form#quoteForm .form-field{margin-top:1rem!important}
+main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textarea{width:100%!important;min-height:56px!important;padding:.9rem 1rem!important;border:1px solid #d8d8d8!important;border-radius:12px!important;background:#fafafa!important;font-size:16px!important}
+main>form#quoteForm textarea{min-height:132px!important}
+#quoteForm .service-choice-grid{grid-template-columns:1fr!important}
+#quoteForm .service-choice{min-height:54px!important}
+#quoteForm button[type=submit]{width:100%!important;min-height:58px!important;height:58px!important;margin-top:.65rem!important}
+.booking-cta{width:calc(100% - 2rem)!important;margin-inline:auto!important;padding-block:4.25rem!important}
+.booking-cta-inner{display:block!important;min-height:0!important;padding:1.35rem!important;border-radius:var(--mobile-radius)!important}
+.booking-cta-copy{padding:1rem 0 1.25rem!important}
+.booking-cta-action{width:100%!important;padding:0 0 .2rem!important}
+.booking-cta-button{width:100%!important;min-width:0!important;min-height:56px!important;height:56px!important;font-size:.8rem!important}
+.peek-calendly-modal{padding:8px!important;align-items:center!important}
+.peek-calendly-dialog{width:100%!important;max-height:calc(100dvh - 16px)!important;border-radius:16px!important}
+.peek-calendly-heading{padding:16px 54px 8px 18px!important}
+.peek-calendly-widget{height:calc(100dvh - 135px)!important;min-height:460px!important;overflow:auto!important;-webkit-overflow-scrolling:touch!important}
+.peek-calendly-close{top:10px!important;right:10px!important;width:42px!important;height:42px!important;font-size:25px!important;background:#f1f1f1!important}
+.peek-chat-launcher{right:12px!important;bottom:calc(84px + env(safe-area-inset-bottom))!important}
+.peek-chat{left:8px!important;right:8px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;width:auto!important;max-width:none!important;max-height:calc(100dvh - 16px)!important}
+.mobile-action-bar{left:8px!important;right:8px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;width:auto!important;min-height:60px!important;padding:5px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important;border-radius:18px!important;z-index:2147483646!important}
+.mobile-action-bar a,.mobile-action-bar button{min-width:0!important;min-height:48px!important;height:48px!important;padding:0 4px!important;border-radius:14px!important;font-size:.53rem!important;letter-spacing:.08em!important;white-space:nowrap!important}
+footer{padding-bottom:calc(7rem + env(safe-area-inset-bottom))!important}
+}
+@media (max-width:390px){
+.header-inner{width:calc(100% - .8rem)!important;gap:.25rem!important}.logo{font-size:.75rem!important}.header-contact .header-phone{font-size:.48rem!important}.header-email{width:36px!important;min-width:36px!important;height:36px!important}.header-cta{height:38px!important;min-height:38px!important;padding-inline:.62rem!important;font-size:.49rem!important}.peek-menu-toggle{width:38px!important;height:38px!important;min-width:38px!important}.hero{padding-top:6.75rem!important}.hero-copy h1{font-size:clamp(2.75rem,14.8vw,4rem)!important}.service{flex-basis:calc(100vw - 1.5rem)!important;max-width:calc(100vw - 1.5rem)!important}.mobile-action-bar{left:7px!important;right:7px!important}.mobile-action-bar a,.mobile-action-bar button{font-size:.49rem!important}
+}
