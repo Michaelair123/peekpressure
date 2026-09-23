@@ -57,7 +57,7 @@ export default {
           "frame-ancestors 'none'",
           "script-src 'nonce-" + nonce + "' 'strict-dynamic'",
           "style-src 'self' 'nonce-" + nonce + "' https://cdn.jsdelivr.net",
-          "img-src 'self' data: blob: https://lirp.cdn-website.com https://cdn.prod.website-files.com https://images.squarespace-cdn.com https://images.unsplash.com https://images.pexels.com https://www.bestpowerwashli.com https://tile.openstreetmap.org https://*.tile.openstreetmap.org",
+          "img-src 'self' data: blob: https://lirp.cdn-website.com https://cdn.prod.website-files.com https://images.squarespace-cdn.com https://images.unsplash.com https://images.pexels.com https://www.bestpowerwashli.com https://www.sftravel.com https://upload.wikimedia.org https://tile.openstreetmap.org https://*.tile.openstreetmap.org",
           "font-src 'self'",
           "connect-src 'self'",
           "frame-src https://www.google.com https://calendly.com",
