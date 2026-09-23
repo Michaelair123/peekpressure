@@ -1835,7 +1835,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (sent) {
               const success = data.lead_ready
                 ? "✅ Sent! Your quote request has been sent to PEEK PRESSURE. We’ll follow up directly."
-                : "✅ Got it — I saved your contact information and sent what we have to PEEK PRESSURE. If you disconnect, we’ll still have a way to follow up.";
+                : "✅ Sent to the PEEK PRESSURE team for review. We’ve got your contact information and will follow up directly.";
               addMessage(success, 'assistant');
               state.history.push({ role: 'assistant', content: success });
             } else {
