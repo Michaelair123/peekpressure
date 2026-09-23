@@ -1048,3 +1048,102 @@ body.quote-modal-open::before{
   .customer-choice-grid{grid-template-columns:1fr}
   .quote-modal-close{top:.75rem;right:.75rem}
 }
+
+
+/* Quote modal — compact, evenly spaced controls and a properly sized close button. */
+.peek-quote-modal #quoteForm{
+  gap:0!important;
+}
+.peek-quote-modal .quote-modal-heading{
+  padding-bottom:.5rem!important;
+}
+.peek-quote-modal .customer-type-step{
+  margin-top:.55rem!important;
+}
+.peek-quote-modal .quote-step,
+.peek-quote-modal .form-field{
+  margin-bottom:1rem!important;
+}
+.peek-quote-modal fieldset{
+  padding:0!important;
+}
+.peek-quote-modal .quote-step legend,
+.peek-quote-modal .form-field label{
+  margin-bottom:.5rem!important;
+}
+.peek-quote-modal .service-choice-grid{
+  gap:.55rem!important;
+}
+.peek-quote-modal .service-choice{
+  min-height:48px!important;
+  padding:.7rem .8rem!important;
+  border-radius:10px!important;
+}
+.peek-quote-modal .service-choice span{
+  font-size:.68rem!important;
+  line-height:1.2!important;
+  letter-spacing:.07em!important;
+}
+.peek-quote-modal .service-choice b{
+  font-size:.85rem!important;
+}
+.peek-quote-modal .customer-choice-grid .service-choice{
+  min-height:46px!important;
+}
+.peek-quote-modal .customer-choice-grid .service-choice span{
+  font-size:.64rem!important;
+}
+.peek-quote-modal .form-field input,
+.peek-quote-modal .form-field select,
+.peek-quote-modal .form-field textarea{
+  min-height:46px!important;
+  padding:.7rem .8rem!important;
+  border-radius:10px!important;
+}
+.peek-quote-modal .form-field textarea{
+  min-height:92px!important;
+}
+.peek-quote-modal .quote-contact{
+  gap:.75rem!important;
+}
+.peek-quote-modal #quoteForm > button[type="submit"]{
+  min-height:48px!important;
+  margin-top:.15rem!important;
+}
+.peek-quote-modal .form-note{
+  margin-top:.65rem!important;
+}
+.peek-quote-modal .quote-modal-close{
+  width:28px!important;
+  height:28px!important;
+  top:1rem!important;
+  right:1rem!important;
+  padding:0!important;
+  font-size:17px!important;
+  font-weight:400!important;
+  line-height:1!important;
+  border-radius:50%!important;
+}
+@media(max-width:700px){
+  .peek-quote-modal #quoteForm{
+    padding:.9rem!important;
+  }
+  .peek-quote-modal .quote-step,
+  .peek-quote-modal .form-field{
+    margin-bottom:.85rem!important;
+  }
+  .peek-quote-modal .service-choice{
+    min-height:46px!important;
+    padding:.65rem .75rem!important;
+  }
+  .peek-quote-modal .service-choice-grid{
+    gap:.45rem!important;
+  }
+  .peek-quote-modal .quote-modal-close{
+    width:26px!important;
+    height:26px!important;
+    top:.7rem!important;
+    right:.7rem!important;
+    font-size:16px!important;
+  }
+}
