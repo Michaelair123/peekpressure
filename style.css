@@ -1147,3 +1147,16 @@ body.quote-modal-open::before{
     font-size:16px!important;
   }
 }
+
+/* Quote contact fields — keep NAME and PHONE perfectly aligned side-by-side. */
+.peek-quote-modal .quote-contact{
+  align-items:start!important;
+}
+.peek-quote-modal .quote-contact > .form-field{
+  align-self:start!important;
+  margin-top:0!important;
+}
+.peek-quote-modal .quote-contact > .form-field > label{
+  display:block!important;
+  min-height:1em;
+}
