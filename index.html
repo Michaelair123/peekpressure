@@ -848,11 +848,12 @@ body.peek-calendly-open{overflow:hidden}
     })();
   </script>
 
-  <div class="mobile-action-bar" aria-label="Quick actions">
-    <a href="tel:14156898377">CALL</a>
-    <a href="#quoteForm">GET A QUOTE</a>
-    <a href="#peekCalendlyModal" data-peek-book>BOOK</a>
-  </div>
+  <nav class="mobile-action-bar" aria-label="Quick contact actions">
+    <button type="button" onclick="document.getElementById('peekFloatingChat')?.click()">CHAT</button>
+    <button type="button" onclick="document.getElementById('peekFloatingEmail')?.click()">EMAIL</button>
+    <button type="button" onclick="document.getElementById('peekFloatingText')?.click()">TEXT</button>
+    <button type="button" onclick="document.getElementById('peekFloatingBook')?.click()">BOOK</button>
+  </nav>
 
   <script>
 
