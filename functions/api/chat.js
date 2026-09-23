@@ -1248,7 +1248,7 @@ function enforceLeadSafety(result, safeMessages) {
   const hasStreetAddress = /\b\d{1,6}\s+[A-Za-z0-9.'-]+(?:\s+[A-Za-z0-9.'-]+){0,5}\s+(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ct|Court|Ln|Lane|Way|Pl|Place|Pkwy|Parkway|Hwy|Highway)\b/i.test(location);
 
   if (!suspicious && result.lead_status !== "spam" && addressCorrection && location && hasStreetAddress) {
-    result.reply = `Got it — thanks for catching that. What’s the correct property address?`;
+    result.reply = `Got it — thanks for catching that. Just to confirm, is the property address ${location}?`;
   } else if (!suspicious && result.lead_status !== "spam" && location && hasStreetAddress && !addressConfirmed) {
     result.reply = `Just to confirm, is the property address ${location}? Please reply yes if that's correct, or send me the corrected address.`;
   } else if (!suspicious && result.lead_status !== "spam" && !hasStreetAddress && service && location) {
