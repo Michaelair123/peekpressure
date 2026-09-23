@@ -40,8 +40,7 @@
 }
 /* Keep Lucy clear of the mobile action bar. */
 @media (max-width:700px){
-  .peek-chat-launcher{right:14px;bottom:calc(4.9rem + env(safe-area-inset-bottom));z-index:2147483646}
-  .peek-chat{right:10px;bottom:calc(.55rem + env(safe-area-inset-bottom));z-index:2147483646}
+  .peek-chat-launcher{right:14px;bottom:calc(.55rem + env(safe-area-inset-bottom));z-index:2147483646}
 }
 @media (max-width:375px){
   .peek-chat-launcher{right:12px;bottom:calc(4.75rem + env(safe-area-inset-bottom))}
@@ -190,7 +189,6 @@
 @media (max-width:700px){
   .peek-chat-launcher{
     right:12px !important;
-    bottom:calc(4.9rem + env(safe-area-inset-bottom)) !important;
     z-index:2147483646 !important;
     pointer-events:auto !important;
     touch-action:manipulation}
@@ -1116,79 +1114,34 @@ body.quote-modal-open::before{
   body{padding-bottom:var(--peek-mobile-bottom)}
 
   /* Keep the first screen focused: brand + quote + menu. */
-  .header{padding:10px 0;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-  .header-inner{min-height:48px;gap:7px;width:calc(100% - 24px)}
-  .header nav,.header-phone{display:none!important}
-  .header-contact{display:none!important}
-  .logo{font-size:.9rem;margin-right:auto}
-  .peek-menu-toggle{width:42px;height:42px;margin-left:0;background:#fff}
-
-  /* Hero: one job, one message, one obvious next step. */
-  .hero{min-height:auto;padding-top:7.2rem;padding-bottom:3.25rem;background:linear-gradient(180deg,#fff 0%,#fafafa 100%)}
-  .hero-copy{max-width:100%}
-  .eyebrow{font-size:.57rem;letter-spacing:.16em}
-  .hero-copy h1{font-size:clamp(2.75rem,12.8vw,4.15rem)!important;line-height:.9!important;letter-spacing:-.065em!important;margin-top:1.15rem;max-width:10ch}
-  .hero-copy>p{font-size:.94rem;line-height:1.55;margin-top:1.35rem;max-width:32rem;color:#555}
-  .hero-proof{display:flex;flex-wrap:wrap;gap:7px 10px;margin-top:1.2rem;font-size:.57rem;letter-spacing:.12em;color:#777}
-  .hero-proof i{display:none}
-  .hero-proof span{padding:7px 9px;border:1px solid #ddd;border-radius:999px;background:#fff}
+  .header{padding:10px 0;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  .header-inner{min-height:48px;margin-right:auto}
+  .peek-menu-toggle{width:42px;margin-left:0;flex-wrap:wrap;background:#fff}
   .hero-buttons{margin-top:1.25rem}
 
   /* Make section starts obvious and reduce scrolling fatigue. */
-  .services,.process,.about,.why-peek,.proof-section,.service-area{padding-top:4rem!important;padding-bottom:4rem!important}
-  .section-top{margin-bottom:1.5rem}
-  .services-grid{gap:14px}
-  .service{border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,.045)}
+  .services,.process,.about,.why-peek,.proof-section,.service-area{padding-top:4rem!important;box-shadow:0 8px 28px rgba(0,0,0,.045)}
   .service-image{height:190px!important}
-  .service-body{min-height:0;padding:18px 17px 19px}
-  .service h2{font-size:1.45rem;line-height:.95;margin-top:3px}
-  .service p{font-size:.82rem;line-height:1.55;margin-top:9px;max-width:none}
-  .service-cta{display:flex!important;align-items:center;justify-content:space-between;width:100%;min-height:48px;margin-top:16px;padding:0 15px;border:1px solid #111;border-radius:999px;background:#111;color:#fff;font-size:.62rem;letter-spacing:.1em}
+  .service-body{min-height:0;align-items:center;justify-content:space-between;border:1px solid #111;background:#111;color:#fff;letter-spacing:.1em}
   .service-cta span{font-size:1rem}
 
-  .about-grid{min-height:0!important;gap:1.2rem;padding-top:0!important;padding-bottom:0!important}
-  .about p{font-size:.88rem;line-height:1.65;margin-top:1.25rem}
-  .process-header{gap:1rem;margin-bottom:1.5rem}
-  .process-header p{font-size:.88rem;line-height:1.6}
-  .process-grid{grid-template-columns:1fr!important;border-top:1px solid #ddd}
-  .process-step,.process-step:nth-child(n){min-height:0;padding:20px 0!important;border-right:0;border-bottom:1px solid #ddd}
+  .about-grid{min-height:0!important;padding-top:0!important;padding-bottom:0!important}
+  .about p{font-size:.88rem;border-top:1px solid #ddd}
+  .process-step,.process-step:nth-child(n){min-height:0;border-right:0;border-bottom:1px solid #ddd}
   .process-step:last-child{border-bottom:0}
   .step-number{margin-bottom:1rem}
   .process-step h3{font-size:.78rem;margin-bottom:.55rem}
-  .process-step p{font-size:.82rem;line-height:1.55;max-width:none}
+  .process-step p{font-size:.82rem;max-width:none}
 
-  .why-peek-grid{grid-template-columns:1fr!important;gap:2rem}
-  .why-peek-point{padding:17px 0!important}
-  .why-peek-point p{font-size:.82rem;line-height:1.55}
-  .proof-header{display:block!important}
-  .proof-header p{margin-top:1rem;font-size:.84rem;line-height:1.6}
-  .proof-grid{grid-template-columns:1fr!important;gap:14px}
-  .review-card,.before-after-card{border-radius:16px}
-
-  .service-area-lead{font-size:.88rem;line-height:1.6}
-  .service-zip-check{padding:18px!important;border-radius:16px!important}
-  .service-zip-copy h3{font-size:1.25rem;margin-top:.45rem}
+  .why-peek-grid{grid-template-columns:1fr!important;margin-top:.45rem}
   .service-zip-copy p{font-size:.8rem;line-height:1.5}
   .service-zip-form{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
   .service-zip-form input,.service-zip-form button{min-height:52px!important;width:100%!important}
   .service-map-wrap{margin-top:14px}
-  .service-map{height:300px!important;border-radius:16px!important}
-
-  /* The floating 4-button desktop rail becomes a focused mobile conversion bar. */
-  .peek-floating-actions{display:none!important}
-
-  /* Forms: fewer cramped rows, larger tap targets, less typing friction. */
-  .peek-quote-modal{padding:8px!important}
-  .peek-quote-modal form{padding:20px!important;border-radius:18px!important}
+  .service-map{height:300px!important;border-radius:18px!important}
   .peek-quote-modal input,.peek-quote-modal select,.peek-quote-modal textarea{font-size:16px!important;min-height:52px!important}
   .peek-quote-modal textarea{min-height:120px!important}
-  .peek-quote-modal .service-choice{min-height:56px!important;padding:0 14px!important}
-  .peek-quote-modal button[type="submit"]{min-height:56px!important}
-
-  /* Side menu: use the whole phone as a clear navigation surface. */
-  .peek-side-menu-panel{padding:18px 20px!important}
-  .peek-side-menu-head{min-height:44px}
-  .peek-side-menu-close{width:44px;height:44px}
+  .peek-quote-modal .service-choice{min-height:56px!important;height:44px}
   .peek-side-menu-panel h2{font-size:clamp(3.3rem,16vw,5rem)!important;margin:34px 0 22px!important}
   .peek-side-menu-links a{min-height:62px;padding:0!important;font-size:1rem}
   .peek-side-menu-footer{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
@@ -1244,7 +1197,6 @@ body.quote-modal-open::before{
 @media (max-width:700px){
   html,body{
     width:100%;
-    max-width:100%;
     overflow-x:hidden}
 
   /* Service cards: the quote CTA stays inside the card and the photo credit never
@@ -1255,36 +1207,17 @@ body.quote-modal-open::before{
   .service{
     display:flex!important;
     flex-direction:column!important;
-    overflow:hidden!important}
-  .service-image{
-    position:relative!important;
-    flex:0 0 auto!important}
-  .service-image-credit{
-    position:absolute!important;
     left:10px!important;
     right:10px!important;
     bottom:9px!important;
-    z-index:3!important;
-    display:block!important;
-    width:auto!important;
     max-width:calc(100% - 20px)!important;
     overflow:hidden!important;
     text-overflow:ellipsis!important;
     white-space:nowrap!important;
-    padding:5px 7px!important;
-    border-radius:7px!important;
-    background:rgba(17,17,17,.72)!important;
-    color:#fff!important;
     font-size:9px!important;
     line-height:1.2!important;
     letter-spacing:0!important}
   .service-body{
-    position:relative!important;
-    z-index:2!important;
-    display:flex!important;
-    flex:1 1 auto!important;
-    min-height:0!important}
-  .service-body .service-cta{
     position:relative!important;
     z-index:3!important;
     display:flex!important;
@@ -1509,13 +1442,10 @@ body.quote-modal-open::before{
 
 /* CASCADE SURGERY — canonical mobile controls */
 @media (max-width:700px){
-  .mobile-action-bar{position:fixed;left:.6rem;right:.6rem;bottom:calc(.6rem + env(safe-area-inset-bottom));z-index:100;display:grid;grid-template-columns:1fr 1.35fr 1fr;align-items:center;gap:.25rem;padding:.3rem;border:1px solid #dedede;border-radius:18px;background:rgba(255,255,255,.96);box-shadow:0 12px 34px rgba(0,0,0,.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-  .mobile-action-bar a{min-width:0;min-height:48px;display:flex;align-items:center;justify-content:center;padding:.55rem .4rem;border-radius:14px;color:#666;background:transparent;font-size:.52rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;transition:background-color .25s var(--peek-ease),color .25s var(--peek-ease),transform .25s var(--peek-ease)}
-  .mobile-action-bar a:nth-child(2){background:#111;color:#fff}
-  .mobile-action-bar a:hover,.mobile-action-bar a:focus-visible{background:#f1f1f1;color:#111;transform:translateY(-1px)}
-  .mobile-action-bar a:nth-child(2):hover,.mobile-action-bar a:nth-child(2):focus-visible{background:#111;color:#fff}
-  .mobile-action-bar a:active{transform:translateY(0)}
-  .header-cta{display:inline-flex;align-items:center;justify-content:center;min-height:42px;height:42px;width:auto;min-width:0;padding:0 13px;border:1px solid #111;border-radius:999px;background:#111;color:#fff;font-size:.59rem;line-height:1;letter-spacing:.09em;white-space:nowrap;flex:0 0 auto}
+  .mobile-action-bar{position:fixed;left:.6rem;right:.6rem;bottom:calc(.6rem + env(safe-area-inset-bottom));z-index:100;grid-template-columns:1fr 1.35fr 1fr;gap:.25rem;box-shadow:0 12px 34px rgba(0,0,0,.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .mobile-action-bar a{min-width:0;display:flex;font-weight:800;text-transform:uppercase;transition:background-color .25s var(--peek-ease),color .25s var(--peek-ease),transform .25s var(--peek-ease)}
+  .mobile-action-bar a:nth-child(2){background:#111;transform:translateY(-1px)}
+  .mobile-action-bar a:nth-child(2):hover,.mobile-action-bar a:nth-child(2):focus-visible{background:#111;align-items:center;justify-content:center;height:42px;width:auto;min-width:0;padding:0 13px;border:1px solid #111;border-radius:999px;background:#111;line-height:1;letter-spacing:.09em;white-space:nowrap;flex:0 0 auto}
   .header-cta:hover,.header-cta:focus-visible{background:#222;border-color:#222;color:#fff}
   .hero-buttons .button{width:100%;min-height:54px;font-size:.65rem}
 }
@@ -1560,16 +1490,11 @@ body.quote-modal-open::before{
 
 /* PEEK MOBILE — dedicated phone layout */
 @media(max-width:700px){
-html,body{width:100%;overflow-x:hidden}body{padding-bottom:calc(82px + env(safe-area-inset-bottom))!important}
-.header-inner{width:calc(100% - 1rem)!important;min-height:50px!important;gap:.4rem!important}.header nav{display:none!important}.logo{font-size:.8rem!important;white-space:nowrap!important}.header-contact{margin-left:auto!important;min-width:0!important}.header-contact .header-phone{font-size:.55rem!important;white-space:nowrap!important}.header-email{width:38px!important;min-width:38px!important;height:38px!important}.header-cta{height:40px!important;min-height:40px!important;padding:0 .75rem!important;font-size:.53rem!important;white-space:nowrap!important}.peek-menu-toggle{width:40px!important;min-width:40px!important;height:40px!important}
-.hero{padding:7rem 1rem 3.5rem!important;min-height:0!important}.hero-copy{width:100%!important;max-width:none!important}.hero-copy h1{font-size:clamp(3rem,14.5vw,5rem)!important;line-height:.86!important;letter-spacing:-.09em!important}.hero-copy>p{font-size:.82rem!important;line-height:1.6!important}.hero-buttons{display:grid!important;grid-template-columns:1fr!important;gap:.65rem!important;width:100%!important}.hero-buttons .button{width:100%!important;height:56px!important;min-height:56px!important}
-.services{padding:4rem 0!important;overflow:hidden!important}.services-grid{display:flex!important;width:100%!important;margin:0!important;padding:.25rem 1rem 1rem!important;gap:.8rem!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;scrollbar-width:none!important}.services-grid::-webkit-scrollbar{display:none}.service{flex:0 0 calc(100vw - 2rem)!important;max-width:calc(100vw - 2rem)!important;scroll-snap-align:start!important;transform:none!important}.service-image{height:54vw!important;min-height:200px!important}.service-body{min-height:0!important;padding:1.15rem!important}.service-card .service-body .service-cta{position:static!important;align-self:stretch!important;width:100%!important;height:52px!important;min-height:52px!important;margin-top:1rem!important}
-.about-grid,.why-peek-container,.service-area-container,.proof-container,.contact-container{width:calc(100% - 2rem)!important;max-width:none!important}.about-grid{display:block!important;min-height:0!important;padding-block:4rem!important}.about-grid h2,.why-peek-intro h2,.service-area h2,.proof-header h2,.contact-container>h2,.booking-cta-copy h3{font-size:clamp(2.8rem,12.5vw,4.5rem)!important;line-height:.88!important;letter-spacing:-.08em!important}.about p,.why-peek-point p,.service-area-container>p,.proof-header p,.contact-container>h2+p,.booking-cta-copy p{font-size:.8rem!important;line-height:1.65!important}.process,.why-peek,.service-area,.proof-section{padding-block:4rem!important}.process-header{display:block!important;margin-bottom:2rem!important}.process-grid{display:block!important}.process-step{min-height:0!important;padding:1.35rem 0!important;border-right:0!important}
-#quoteForm{width:calc(100% - 2rem)!important;max-width:34rem!important;margin-inline:auto!important}#quoteForm input,#quoteForm select,#quoteForm textarea{width:100%!important;min-height:56px!important;font-size:16px!important;box-sizing:border-box!important}#quoteForm textarea{min-height:130px!important}#quoteForm .service-choice-grid{grid-template-columns:1fr!important}#quoteForm .service-choice{min-height:54px!important}#quoteForm button[type=submit]{width:100%!important;min-height:58px!important;height:58px!important}
-.booking-cta{width:calc(100% - 2rem)!important;margin-inline:auto!important;padding-block:4rem!important}.booking-cta-inner{display:block!important;min-height:0!important;padding:1.35rem!important}.booking-cta-action{width:100%!important}.booking-cta-button{width:100%!important;min-width:0!important;height:56px!important;min-height:56px!important}
-.peek-calendly-modal{padding:8px!important}.peek-calendly-dialog{width:100%!important;max-height:calc(100dvh - 16px)!important}.peek-calendly-widget{height:calc(100dvh - 135px)!important;min-height:460px!important;overflow:auto!important}.peek-calendly-close{top:10px!important;right:10px!important;width:42px!important;height:42px!important;background:#f1f1f1!important}
-.peek-chat-launcher{right:12px!important;bottom:calc(86px + env(safe-area-inset-bottom))!important}.peek-chat{left:8px!important;right:8px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;width:auto!important;max-width:none!important;max-height:calc(100dvh - 16px)!important}
-.mobile-action-bar{left:8px!important;right:8px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;width:auto!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important;padding:5px!important;min-height:60px!important;border-radius:18px!important;z-index:2147483646!important}.mobile-action-bar a,.mobile-action-bar button{min-width:0!important;min-height:48px!important;height:48px!important;padding:0 4px!important;border-radius:14px!important;font-size:.52rem!important;white-space:nowrap!important}.mobile-action-bar a:nth-child(2){background:#111!important;color:#fff!important}footer{padding-bottom:7rem!important}
+html,body{width:100%;margin:0!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;scrollbar-width:none!important}.services-grid::-webkit-scrollbar{display:none}.service{flex:0 0 calc(100vw - 2rem)!important;scroll-snap-align:start!important;transform:none!important}.service-image{height:54vw!important;align-self:stretch!important;margin-top:1rem!important}
+.about-grid,.why-peek-container,.service-area-container,.proof-container,.contact-container{width:calc(100% - 2rem)!important;letter-spacing:-.08em!important}.about p,.why-peek-point p,.service-area-container>p,.proof-header p,.contact-container>h2+p,.booking-cta-copy p{font-size:.8rem!important;line-height:1.65!important}.process,.why-peek,.service-area,.proof-section{padding-block:4rem!important}.process-header{display:block!important;margin-bottom:2rem!important}.process-grid{display:block!important}.process-step{min-height:0!important;border-right:0!important}
+#quoteForm{width:calc(100% - 2rem)!important;box-sizing:border-box!important}#quoteForm textarea{min-height:130px!important}#quoteForm .service-choice-grid{grid-template-columns:1fr!important}#quoteForm .service-choice{min-height:54px!important}#quoteForm button[type=submit]{width:100%!important;margin-inline:auto!important;padding-block:4rem!important}.booking-cta-inner{display:block!important;min-width:0!important;overflow:auto!important}.peek-calendly-close{top:10px!important;background:#f1f1f1!important}
+.peek-chat-launcher{right:12px!important;max-width:none!important;max-height:calc(100dvh - 16px)!important}
+.mobile-action-bar{left:8px!important;right:8px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;width:auto!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important;z-index:2147483646!important}.mobile-action-bar a,.mobile-action-bar button{min-width:0!important;min-height:48px!important;height:48px!important;padding:0 4px!important;border-radius:14px!important;font-size:.52rem!important;white-space:nowrap!important}.mobile-action-bar a:nth-child(2){background:#111!important;color:#fff!important}footer{padding-bottom:7rem!important}
 }
 @media(max-width:390px){.header-contact .header-phone{font-size:.48rem!important}.header-cta{padding-inline:.6rem!important;font-size:.49rem!important}.hero{padding-top:6.6rem!important}.hero-copy h1{font-size:clamp(2.7rem,14.5vw,4rem)!important}.mobile-action-bar{left:6px!important;right:6px!important}}
 
@@ -1579,17 +1504,8 @@ html,body{width:100%;overflow-x:hidden}body{padding-bottom:calc(82px + env(safe-
 :root{--page-padding:20px}
 *{-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,system-ui,sans-serif!important;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-.header{position:sticky!important;top:0!important;z-index:1000!important;border-bottom:1px solid rgba(0,0,0,.07)!important;box-shadow:0 1px 12px rgba(0,0,0,.035)!important;backdrop-filter:saturate(180%) blur(20px)!important;-webkit-backdrop-filter:saturate(180%) blur(20px)!important}
-.header-inner{min-height:52px!important}
-.logo{letter-spacing:-.035em!important;font-weight:800!important}
-.header-phone{opacity:.72!important}
-.header-cta{border-radius:999px!important;font-weight:750!important;letter-spacing:.01em!important}
-.hero{padding-left:20px!important;padding-right:20px!important;padding-top:6.5rem!important;text-align:left!important}.hero-copy h1{font-weight:750!important;letter-spacing:-.085em!important}.hero-copy>p{color:#6e6e73!important;letter-spacing:-.01em!important}.hero-buttons .button{border-radius:14px!important;font-size:.72rem!important;font-weight:700!important;letter-spacing:.01em!important;transition:transform .18s ease,opacity .18s ease!important}.hero-buttons .button:active{transform:scale(.985)!important;opacity:.88!important}
-.services-grid{padding-left:20px!important;padding-right:20px!important;scroll-padding-inline:20px!important;gap:12px!important}.service{border:1px solid rgba(0,0,0,.06)!important;border-radius:20px!important;box-shadow:0 10px 35px rgba(0,0,0,.055)!important;background:#fff!important}.service-image{border-radius:20px 20px 0 0!important}.service-body{padding:20px!important}.service h2{font-weight:750!important;letter-spacing:-.045em!important}.service p{color:#6e6e73!important}.service-card .service-body .service-cta{border-radius:14px!important;font-weight:700!important;transition:transform .18s ease,opacity .18s ease!important}.service-card .service-body .service-cta:active{transform:scale(.985)!important;opacity:.88!important}
-.about-grid,.why-peek-container,.service-area-container,.proof-container,.contact-container,#quoteForm{width:calc(100% - 40px)!important}.about-grid h2,.why-peek-intro h2,.service-area h2,.proof-header h2,.contact-container>h2,.booking-cta-copy h3{font-weight:750!important;letter-spacing:-.085em!important}.about p,.why-peek-point p,.service-area-container>p,.proof-header p,.contact-container>h2+p,.booking-cta-copy p{color:#6e6e73!important}
-#quoteForm input,#quoteForm select,#quoteForm textarea{appearance:none!important;-webkit-appearance:none!important;border:1px solid #d2d2d7!important;border-radius:12px!important;background:#f5f5f7!important;box-shadow:none!important;color:#1d1d1f!important;transition:border-color .2s ease,box-shadow .2s ease,background .2s ease!important}#quoteForm input:focus,#quoteForm select:focus,#quoteForm textarea:focus{outline:none!important;border-color:#0071e3!important;box-shadow:0 0 0 3px rgba(0,113,227,.16)!important;background:#fff!important}#quoteForm button[type=submit]{border-radius:14px!important;font-weight:700!important}
-.booking-cta-inner{border-radius:20px!important;box-shadow:0 10px 35px rgba(0,0,0,.05)!important}.booking-cta-button{border-radius:14px!important;font-weight:700!important}
-.peek-calendly-dialog{border-radius:20px!important;overflow:hidden!important;box-shadow:0 24px 80px rgba(0,0,0,.22)!important}.peek-calendly-close{border-radius:50%!important;border:0!important;font-weight:500!important}
+.header{position:sticky!important;top:0!important;z-index:1000!important;border-bottom:1px solid rgba(0,0,0,.07)!important;box-shadow:0 1px 12px rgba(0,0,0,.035)!important;padding-top:6.5rem!important;text-align:left!important}.hero-copy h1{font-weight:750!important;font-size:.72rem!important;padding-right:20px!important;scroll-padding-inline:20px!important;gap:12px!important}.service{border:1px solid rgba(0,0,0,.06)!important;box-shadow:0 10px 35px rgba(0,0,0,.055)!important;opacity:.88!important}
+.about-grid,.why-peek-container,.service-area-container,.proof-container,.contact-container,#quoteForm{width:calc(100% - 40px)!important}.about-grid h2,.why-peek-intro h2,.service-area h2,.proof-header h2,.contact-container>h2,.booking-cta-copy h3{font-weight:750!important;-webkit-appearance:none!important;border-radius:12px!important;box-shadow:none!important;color:#1d1d1f!important;transition:border-color .2s ease,box-shadow .2s ease,background .2s ease!important}#quoteForm input:focus,#quoteForm select:focus,#quoteForm textarea:focus{outline:none!important;border-color:#0071e3!important;box-shadow:0 0 0 3px rgba(0,113,227,.16)!important;box-shadow:0 10px 35px rgba(0,0,0,.05)!important}.booking-cta-button{border-radius:14px!important;overflow:hidden!important;box-shadow:0 24px 80px rgba(0,0,0,.22)!important}.peek-calendly-close{border-radius:50%!important;border:0!important;font-weight:500!important}
 .mobile-action-bar{border:1px solid rgba(0,0,0,.08)!important;background:rgba(250,250,250,.88)!important;box-shadow:0 10px 35px rgba(0,0,0,.14)!important;backdrop-filter:saturate(180%) blur(22px)!important;-webkit-backdrop-filter:saturate(180%) blur(22px)!important}.mobile-action-bar a,.mobile-action-bar button{font-weight:700!important;letter-spacing:.01em!important}.mobile-action-bar a:nth-child(2){border-radius:13px!important;box-shadow:0 2px 5px rgba(0,0,0,.12)!important}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
@@ -1614,7 +1530,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 /* MOBILE HEADER — compact phone number placement */
 @media(max-width:700px){
   .header-inner{position:relative!important;align-items:center!important}
-  .header-contact{position:absolute!important;top:3px!important;right:58px!important;margin:0!important;z-index:3!important;transform:none!important}
+  .header-contact{position:absolute!important;top:3px!important;margin:0!important;z-index:3!important;transform:none!important}
   .header-contact .header-phone{min-height:16px!important;height:16px!important;padding:0!important;font-size:.47rem!important;line-height:16px!important;letter-spacing:.02em!important;opacity:.62!important}
   .header-contact .header-email{display:none!important}
   .header-cta{margin-left:auto!important;margin-right:44px!important}
