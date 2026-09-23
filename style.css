@@ -1799,3 +1799,68 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
   .header-contact .header-phone{font-size:.42rem!important}
   .header-cta{margin-right:41px!important}
 }
+
+/* 2026 MODERN CSS LAYER — progressive enhancement, performance + motion */
+@supports (interpolate-size: allow-keywords){
+  :root{interpolate-size:allow-keywords}
+}
+@supports (scroll-timeline: --page){
+  html{scroll-timeline-name:--page;scroll-timeline-axis:block}
+  .service,.process-step,.why-peek-point,.proof-container,.contact-container{
+    animation:peekReveal linear both;
+    animation-timeline:view();
+    animation-range:entry 0% cover 28%;
+  }
+  @keyframes peekReveal{
+    from{opacity:.72;transform:translateY(18px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+}
+@supports (content-visibility:auto){
+  .process,.why-peek,.service-area,.proof-section,.contact-section{
+    content-visibility:auto;
+    contain-intrinsic-size:1px 700px;
+  }
+}
+@supports (transition-behavior:allow-discrete){
+  .peek-calendly-modal,.peek-chat{
+    transition:opacity .28s cubic-bezier(.22,1,.36,1),visibility 0s linear .28s;
+    transition-behavior:allow-discrete;
+  }
+}
+@supports selector(:has(*)){
+  .service-card:has(a:focus-visible),
+  .booking-cta-inner:has(button:focus-visible){
+    outline:2px solid currentColor;
+    outline-offset:3px;
+  }
+}
+@media (hover:hover){
+  .service-card,.booking-cta-inner,.proof-container{
+    transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s cubic-bezier(.22,1,.36,1);
+  }
+  .service-card:hover{transform:translateY(-4px);box-shadow:0 18px 48px rgba(0,0,0,.09)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+@media (max-width:700px){
+  .service-card,.process-step,.why-peek-point,.proof-container,.contact-container{
+    animation-range:entry 0% cover 22%;
+  }
+  .services-grid{overscroll-behavior-x:contain;scroll-snap-stop:always}
+  button,a{touch-action:manipulation}
+}
+@view-transition{
+  navigation:auto;
+}
+::view-transition-old(root),::view-transition-new(root){
+  animation-duration:.32s;
+  animation-timing-function:cubic-bezier(.22,1,.36,1);
+}
