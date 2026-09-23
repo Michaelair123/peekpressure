@@ -1246,3 +1246,107 @@ body.quote-modal-open::before{
     grid-column:1 / -1!important;
   }
 }
+
+
+/* 2026 mobile conversion pass — clarity, thumb-friendly controls, progressive disclosure */
+@media (max-width:700px){
+  :root{--page-padding:16px;--section-space:4rem;--peek-mobile-bottom:calc(68px + env(safe-area-inset-bottom))}
+  html{scroll-padding-top:72px}
+  body{padding-bottom:var(--peek-mobile-bottom)}
+
+  /* Keep the first screen focused: brand + quote + menu. */
+  .header{padding:10px 0;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  .header-inner{min-height:48px;gap:7px;width:calc(100% - 24px)}
+  .header nav,.header-phone{display:none!important}
+  .header-contact{display:none!important}
+  .logo{font-size:.9rem;margin-right:auto}
+  .header-cta{min-height:42px;padding:0 13px;font-size:.59rem;background:#111;border-color:#111;color:#fff;box-shadow:none}
+  .peek-menu-toggle{width:42px;height:42px;margin-left:0;background:#fff}
+
+  /* Hero: one job, one message, one obvious next step. */
+  .hero{min-height:auto;padding-top:7.2rem;padding-bottom:3.25rem;background:linear-gradient(180deg,#fff 0%,#fafafa 100%)}
+  .hero-copy{max-width:100%}
+  .eyebrow{font-size:.57rem;letter-spacing:.16em}
+  .hero-copy h1{font-size:clamp(2.75rem,12.8vw,4.15rem)!important;line-height:.9!important;letter-spacing:-.065em!important;margin-top:1.15rem;max-width:10ch}
+  .hero-copy>p{font-size:.94rem;line-height:1.55;margin-top:1.35rem;max-width:32rem;color:#555}
+  .hero-proof{display:flex;flex-wrap:wrap;gap:7px 10px;margin-top:1.2rem;font-size:.57rem;letter-spacing:.12em;color:#777}
+  .hero-proof i{display:none}
+  .hero-proof span{padding:7px 9px;border:1px solid #ddd;border-radius:999px;background:#fff}
+  .hero-buttons{margin-top:1.25rem}
+  .hero-buttons .button{width:100%;min-height:54px;font-size:.65rem}
+
+  /* Make section starts obvious and reduce scrolling fatigue. */
+  .services,.process,.about,.why-peek,.proof-section,.service-area{padding-top:4rem!important;padding-bottom:4rem!important}
+  .section-top{margin-bottom:1.5rem}
+  .services-grid{gap:14px}
+  .service{border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,.045)}
+  .service-image{height:190px!important}
+  .service-body{min-height:0;padding:18px 17px 19px}
+  .service h2{font-size:1.45rem;line-height:.95;margin-top:3px}
+  .service p{font-size:.82rem;line-height:1.55;margin-top:9px;max-width:none}
+  .service-cta{display:flex!important;align-items:center;justify-content:space-between;width:100%;min-height:48px;margin-top:16px;padding:0 15px;border:1px solid #111;border-radius:999px;background:#111;color:#fff;font-size:.62rem;letter-spacing:.1em}
+  .service-cta span{font-size:1rem}
+
+  .about-grid{min-height:0!important;gap:1.2rem;padding-top:0!important;padding-bottom:0!important}
+  .about p{font-size:.88rem;line-height:1.65;margin-top:1.25rem}
+  .process-header{gap:1rem;margin-bottom:1.5rem}
+  .process-header p{font-size:.88rem;line-height:1.6}
+  .process-grid{grid-template-columns:1fr!important;border-top:1px solid #ddd}
+  .process-step,.process-step:nth-child(n){min-height:0;padding:20px 0!important;border-right:0;border-bottom:1px solid #ddd}
+  .process-step:last-child{border-bottom:0}
+  .step-number{margin-bottom:1rem}
+  .process-step h3{font-size:.78rem;margin-bottom:.55rem}
+  .process-step p{font-size:.82rem;line-height:1.55;max-width:none}
+
+  .why-peek-grid{grid-template-columns:1fr!important;gap:2rem}
+  .why-peek-point{padding:17px 0!important}
+  .why-peek-point p{font-size:.82rem;line-height:1.55}
+  .proof-header{display:block!important}
+  .proof-header p{margin-top:1rem;font-size:.84rem;line-height:1.6}
+  .proof-grid{grid-template-columns:1fr!important;gap:14px}
+  .review-card,.before-after-card{border-radius:16px}
+
+  .service-area-lead{font-size:.88rem;line-height:1.6}
+  .service-zip-check{padding:18px!important;border-radius:16px!important}
+  .service-zip-copy h3{font-size:1.25rem;margin-top:.45rem}
+  .service-zip-copy p{font-size:.8rem;line-height:1.5}
+  .service-zip-form{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+  .service-zip-form input,.service-zip-form button{min-height:52px!important;width:100%!important}
+  .service-map-wrap{margin-top:14px}
+  .service-map{height:300px!important;border-radius:16px!important}
+
+  /* The floating 4-button desktop rail becomes a focused mobile conversion bar. */
+  .peek-floating-actions{display:none!important}
+  .mobile-action-bar{position:fixed!important;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));height:58px;z-index:2147483640!important;display:grid!important;grid-template-columns:1fr 1.45fr 1fr;gap:0;padding:4px;border:1px solid rgba(17,17,17,.12);border-radius:16px;background:rgba(255,255,255,.97);box-shadow:0 12px 38px rgba(0,0,0,.18);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  .mobile-action-bar a{display:flex;align-items:center;justify-content:center;min-width:0;min-height:50px;border-radius:12px;color:#111;font-size:.6rem;font-weight:600;letter-spacing:.1em;text-decoration:none;-webkit-tap-highlight-color:transparent}
+  .mobile-action-bar a:nth-child(2){background:#111;color:#fff;font-weight:700}
+  .mobile-action-bar a:active{transform:scale(.98)}
+
+  /* Forms: fewer cramped rows, larger tap targets, less typing friction. */
+  .peek-quote-modal{padding:8px!important}
+  .peek-quote-modal form{padding:20px!important;border-radius:18px!important}
+  .peek-quote-modal input,.peek-quote-modal select,.peek-quote-modal textarea{font-size:16px!important;min-height:52px!important}
+  .peek-quote-modal textarea{min-height:120px!important}
+  .peek-quote-modal .service-choice{min-height:56px!important;padding:0 14px!important}
+  .peek-quote-modal button[type="submit"]{min-height:56px!important}
+
+  /* Side menu: use the whole phone as a clear navigation surface. */
+  .peek-side-menu-panel{padding:18px 20px!important}
+  .peek-side-menu-head{min-height:44px}
+  .peek-side-menu-close{width:44px;height:44px}
+  .peek-side-menu-panel h2{font-size:clamp(3.3rem,16vw,5rem)!important;margin:34px 0 22px!important}
+  .peek-side-menu-links a{min-height:62px;padding:0!important;font-size:1rem}
+  .peek-side-menu-footer{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+
+  /* Keep Lucy comfortably above the persistent conversion bar. */
+  .peek-chat-launcher{bottom:calc(76px + env(safe-area-inset-bottom))!important;right:12px!important}
+  .peek-chat{bottom:calc(8px + env(safe-area-inset-bottom))!important}
+}
+
+@media (max-width:375px){
+  .header-inner{width:calc(100% - 20px)}
+  .header-cta{padding-inline:10px;font-size:.55rem}
+  .hero{padding-top:6.8rem}
+  .hero-copy h1{font-size:clamp(2.55rem,13vw,3.6rem)!important}
+  .mobile-action-bar{left:7px;right:7px}
+}
