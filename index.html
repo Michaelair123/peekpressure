@@ -163,6 +163,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
+<style id="peek-calendly-modal-styles">
+body.peek-calendly-open{overflow:hidden}
+.peek-calendly-modal{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;padding:24px}
+.peek-calendly-modal.is-open{display:flex}
+.peek-calendly-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.58);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.peek-calendly-dialog{position:relative;z-index:1;width:min(920px,100%);max-height:min(900px,calc(100vh - 48px));overflow:hidden;background:#fff;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.28);display:flex;flex-direction:column}
+.peek-calendly-heading{padding:24px 58px 12px 28px;flex:0 0 auto}
+.peek-calendly-heading h2{margin:5px 0 6px}
+.peek-calendly-heading p{margin:0}
+.peek-calendly-close{position:absolute;top:14px;right:16px;z-index:3;width:40px;height:40px;border:0;border-radius:999px;background:#f3f3f3;color:#111;font-size:28px;line-height:1;cursor:pointer}
+.peek-calendly-close:hover{background:#e8e8e8}
+.peek-calendly-close:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+.peek-calendly-widget{width:100%;min-width:320px;height:720px;overflow:auto}
+@media(max-width:700px){
+.peek-calendly-modal{padding:10px;align-items:center}
+.peek-calendly-dialog{width:100%;max-height:calc(100vh - 20px);border-radius:14px}
+.peek-calendly-heading{padding:18px 52px 8px 20px}
+.peek-calendly-heading p{font-size:14px}
+.peek-calendly-widget{height:min(720px,calc(100vh - 145px))}
+}
+</style>
+
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -173,7 +196,7 @@
       <nav aria-label="Primary navigation">
         <a href="#services">Services</a>
         <a href="#process">Process</a>
-        <a href="#book">Book</a>
+        <a href="#quoteForm">Book</a>
       </nav>
       <span class="header-contact"><a href="tel:14156898377" class="header-phone" aria-label="Call PEEK PRESSURE at 415-689-8377">📞 415-689-8377</a><a href="sms:14156898377" class="header-text" aria-label="Text PEEK PRESSURE at 415-689-8377">💬</a></span>
     <a href="mailto:look@peekpressure.com" class="header-email" aria-label="Email PEEK PRESSURE">✉️</a>
@@ -420,28 +443,7 @@
 <div class="contact-container">
     <h2 id="quote">CONTACT US</h2>
     <p>Tell us what you need cleaned, where it is, and anything we should know about the property. Send the details below and we’ll take it from there.</p>
-
-    <div class="booking-cta" id="book">
-      <div class="booking-container">
-<div class="booking-cta-inner">
-        <div class="booking-cta-copy">
-          <span class="booking-icon" aria-hidden="true">📅</span>
-          <span class="label">READY TO BOOK?</span>
-          <h3>LET’S GET<br>IT CLEAN.</h3>
-          <p>Choose a time that works for you and we’ll take it from there.</p>
-        </div>
-        <div class="booking-cta-action">
-          <span class="booking-action-label">SCHEDULE ONLINE <span aria-hidden="true">👇👇</span></span>
-          <div class="calendly-inline-widget" data-url="https://calendly.com/peekpressure/30min?hide_gdpr_banner=1&background_color=ffffff" style="min-width:320px;height:760px;"></div>
-        </div>
-      </div>
-      </div>
-    </div>
-
-
-  </div>
-</div>
-</section>
+    </section>
 
   <footer>
     <div class="container footer-inner">
@@ -468,7 +470,21 @@
     </a>
   </nav>
 
-  <div class="peek-quote-modal" id="peekQuoteModal" aria-hidden="true">
+  
+  <div class="peek-calendly-modal" id="peekCalendlyModal" aria-hidden="true">
+    <div class="peek-calendly-backdrop" data-peek-calendly-close></div>
+    <div class="peek-calendly-dialog" role="dialog" aria-modal="true" aria-labelledby="peekCalendlyTitle" tabindex="-1">
+      <button type="button" class="peek-calendly-close" id="peekCalendlyClose" aria-label="Close booking">×</button>
+      <div class="peek-calendly-heading">
+        <span class="label">BOOK</span>
+        <h2 id="peekCalendlyTitle">CHOOSE A TIME.</h2>
+        <p>Pick a time that works for you. Calendly will handle the rest.</p>
+      </div>
+      <div class="calendly-inline-widget peek-calendly-widget" data-url="https://calendly.com/peekpressure/30min?hide_gdpr_banner=1&background_color=ffffff" style="min-width:320px;height:720px;"></div>
+    </div>
+  </div>
+
+<div class="peek-quote-modal" id="peekQuoteModal" aria-hidden="true">
   <form
     id="quoteForm"
     action="https://formspree.io/f/mdekoerb"
@@ -688,7 +704,7 @@
   <div class="mobile-action-bar" aria-label="Quick actions">
     <a href="tel:14156898377">CALL</a>
     <a href="#quoteForm">GET A QUOTE</a>
-    <a href="#book">BOOK</a>
+    <a href="#quoteForm">BOOK</a>
   </div>
 
   <script>
@@ -1756,6 +1772,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
   </script>
+
+
+<script>
+(() => {
+  const modal=document.getElementById('peekCalendlyModal');
+  const closeButton=document.getElementById('peekCalendlyClose');
+  const floatingBook=document.getElementById('peekFloatingBook');
+  if(!modal||!closeButton||!floatingBook)return;
+  let previousFocus=null;
+  const openCalendly=(event)=>{
+    event.preventDefault();
+    previousFocus=document.activeElement;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('peek-calendly-open');
+    window.setTimeout(()=>closeButton.focus(),0);
+    if(window.Calendly?.initInlineWidget){
+      const widget=modal.querySelector('.peek-calendly-widget');
+      if(widget&&!widget.dataset.initialized){
+        widget.dataset.initialized='true';
+        window.Calendly.initInlineWidget({
+          url:'https://calendly.com/peekpressure/30min?hide_gdpr_banner=1&background_color=ffffff',
+          parentElement:widget
+        });
+      }
+    }
+  };
+  const closeCalendly=()=>{
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('peek-calendly-open');
+    if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus();
+  };
+  floatingBook.addEventListener('click',openCalendly);
+  closeButton.addEventListener('click',closeCalendly);
+  modal.querySelector('[data-peek-calendly-close]')?.addEventListener('click',closeCalendly);
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&modal.classList.contains('is-open'))closeCalendly();
+  });
+})();
+</script>
 
 </body>
 </html>
