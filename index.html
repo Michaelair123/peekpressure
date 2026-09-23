@@ -196,7 +196,7 @@ body.peek-calendly-open{overflow:hidden}
       <nav aria-label="Primary navigation">
         <a href="#services">Services</a>
         <a href="#process">Process</a>
-        <a href="#quoteForm">Book</a>
+        <a href="#peekCalendlyModal" data-peek-book>Book</a>
       </nav>
       <span class="header-contact"><a href="tel:14156898377" class="header-phone" aria-label="Call PEEK PRESSURE at 415-689-8377">📞 415-689-8377</a><a href="sms:14156898377" class="header-text" aria-label="Text PEEK PRESSURE at 415-689-8377">💬</a></span>
     <a href="mailto:look@peekpressure.com" class="header-email" aria-label="Email PEEK PRESSURE">✉️</a>
@@ -464,7 +464,7 @@ body.peek-calendly-open{overflow:hidden}
       <span class="peek-floating-icon" aria-hidden="true">✉</span>
       <span>EMAIL</span>
     </button>
-    <a class="peek-floating-action" href="https://calendly.com/peekpressure/30min" id="peekFloatingBook" aria-label="Book a time with PEEK PRESSURE">
+    <a class="peek-floating-action" href="#peekCalendlyModal" data-peek-book id="peekFloatingBook" aria-label="Book a time with PEEK PRESSURE">
       <span class="peek-floating-icon" aria-hidden="true">↗</span>
       <span>BOOK</span>
     </a>
@@ -687,13 +687,6 @@ body.peek-calendly-open{overflow:hidden}
       // Lucy owns the floating CHAT action; the handler is attached inside Lucy's own scope.
       chatButton?.setAttribute('aria-controls', 'peekChat');
 
-      bookButton?.addEventListener('click', event => {
-        if (window.Calendly?.initPopupWidget) {
-          event.preventDefault();
-          window.Calendly.initPopupWidget({url:'https://calendly.com/peekpressure/30min'});
-        }
-      });
-
       // Email opens the existing Formspree contact form as a centered quick-contact modal.
       emailButton?.addEventListener('click', () => {
         window.PeekQuoteModal?.open(emailButton);
@@ -704,7 +697,7 @@ body.peek-calendly-open{overflow:hidden}
   <div class="mobile-action-bar" aria-label="Quick actions">
     <a href="tel:14156898377">CALL</a>
     <a href="#quoteForm">GET A QUOTE</a>
-    <a href="#quoteForm">BOOK</a>
+    <a href="#peekCalendlyModal" data-peek-book>BOOK</a>
   </div>
 
   <script>
@@ -1779,35 +1772,40 @@ document.addEventListener('DOMContentLoaded', () => {
 (() => {
   const modal=document.getElementById('peekCalendlyModal');
   const closeButton=document.getElementById('peekCalendlyClose');
-  const floatingBook=document.getElementById('peekFloatingBook');
-  if(!modal||!closeButton||!floatingBook)return;
+  const bookingTriggers=document.querySelectorAll('[data-peek-book]');
+  if(!modal||!closeButton||!bookingTriggers.length)return;
   let previousFocus=null;
+  let widgetInitialized=false;
+  const initializeWidget=()=>{
+    const widget=modal.querySelector('.peek-calendly-widget');
+    if(!widget||widgetInitialized)return;
+    if(window.Calendly?.initInlineWidget){
+      widgetInitialized=true;
+      window.Calendly.initInlineWidget({
+        url:'https://calendly.com/peekpressure/30min?hide_gdpr_banner=1&background_color=ffffff',
+        parentElement:widget
+      });
+      return;
+    }
+    window.setTimeout(initializeWidget,250);
+  };
   const openCalendly=(event)=>{
     event.preventDefault();
     previousFocus=document.activeElement;
-    modal.classList.add('is-open');
-    modal.setAttribute('aria-hidden','false');
     document.body.classList.remove('quote-modal-open');
     document.body.classList.add('peek-calendly-open');
-    window.setTimeout(()=>closeButton.focus(),0);
-    if(window.Calendly?.initInlineWidget){
-      const widget=modal.querySelector('.peek-calendly-widget');
-      if(widget&&!widget.dataset.initialized){
-        widget.dataset.initialized='true';
-        window.Calendly.initInlineWidget({
-          url:'https://calendly.com/peekpressure/30min?hide_gdpr_banner=1&background_color=ffffff',
-          parentElement:widget
-        });
-      }
-    }
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden','false');
+    window.setTimeout(()=>closeButton.focus({preventScroll:true}),0);
+    initializeWidget();
   };
   const closeCalendly=()=>{
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden','true');
     document.body.classList.remove('peek-calendly-open', 'quote-modal-open');
-    if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus();
+    if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus({preventScroll:true});
   };
-  floatingBook.addEventListener('click',openCalendly);
+  bookingTriggers.forEach(trigger=>trigger.addEventListener('click',openCalendly));
   closeButton.addEventListener('click',closeCalendly);
   modal.querySelector('[data-peek-calendly-close]')?.addEventListener('click',closeCalendly);
   document.addEventListener('keydown',event=>{
