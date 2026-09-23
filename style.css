@@ -1160,3 +1160,65 @@ body.quote-modal-open::before{
   display:block!important;
   min-height:1em;
 }
+
+
+/* FINAL QUOTE MODAL CLOSE — override the generic #quoteForm button styling. */
+.peek-quote-modal #quoteForm .quote-modal-close{
+  position:absolute!important;
+  top:16px!important;
+  right:16px!important;
+  z-index:20!important;
+  display:block!important;
+  width:32px!important;
+  min-width:32px!important;
+  max-width:32px!important;
+  height:32px!important;
+  min-height:32px!important;
+  max-height:32px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  color:#666!important;
+  box-shadow:none!important;
+  font:400 30px/30px Arial,sans-serif!important;
+  letter-spacing:0!important;
+  text-align:center!important;
+  text-indent:0!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  transform:none!important;
+  overflow:visible!important;
+  cursor:pointer!important;
+}
+.peek-quote-modal #quoteForm .quote-modal-close:hover{
+  background:transparent!important;
+  color:#111!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+.peek-quote-modal #quoteForm .quote-modal-close:focus,
+.peek-quote-modal #quoteForm .quote-modal-close:focus-visible{
+  background:transparent!important;
+  color:#111!important;
+  box-shadow:none!important;
+  outline:2px solid #111!important;
+  outline-offset:3px!important;
+  border-radius:3px!important;
+}
+@media(max-width:700px){
+  .peek-quote-modal #quoteForm .quote-modal-close{
+    top:10px!important;
+    right:10px!important;
+    width:30px!important;
+    min-width:30px!important;
+    max-width:30px!important;
+    height:30px!important;
+    min-height:30px!important;
+    max-height:30px!important;
+    font-size:28px!important;
+    line-height:28px!important;
+  }
+}
