@@ -1807,9 +1807,20 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage(reply, 'assistant');
         state.history.push({ role: 'assistant', content: reply });
 
-        if ((data.lead_ready || data.lead_capture) && data.lead) {
-          // A lead marked complete by the server is ready for immediate handoff.
-          // Property-address confirmation has already been enforced server-side.
+        // Final leads may be handed off immediately. Partial leads are also
+        // capturable, but NEVER while a property address is awaiting confirmation.
+        // The server is the authority for address_status; the client mirrors that
+        // safety gate so a confirmation question can never trigger a premature /api/lead.
+        const addressPending = data.conversation_state?.address_status === 'needs_confirmation';
+        const shouldAutoHandoff = Boolean(
+          data.lead &&
+          (
+            data.lead_ready === true ||
+            (data.lead_capture === true && !addressPending)
+          )
+        );
+
+        if (shouldAutoHandoff) {
           state.pendingLead = {
             ...data.lead,
             lead_token: data.lead_token || ''
