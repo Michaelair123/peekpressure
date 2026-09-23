@@ -1081,7 +1081,10 @@ body.peek-calendly-open{overflow:hidden}
       const bounds = [];
       cities.forEach(([name, lat, lng]) => {
         const marker = L.marker([lat,lng], {
-          icon: L.divIcon({ className:'peek-map-pin', html:'<span aria-hidden="true"></span>', iconSize:[14,14], iconAnchor:[7,7] })
+          icon: L.divIcon({ className:'peek-map-pin', html:'<span aria-hidden="true"></span>', iconSize:[14,14], iconAnchor:[7,7] }),
+          keyboard:true,
+          title:name,
+          alt:name
         }).addTo(map);
         marker.bindTooltip(name, {direction:'top', offset:[0,-8], opacity:.96});
         bounds.push([lat,lng]);
