@@ -1383,3 +1383,137 @@ body.quote-modal-open::before{
 .before-after-range{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:5!important;margin:0!important;opacity:0!important;cursor:ew-resize!important;appearance:none!important;-webkit-appearance:none!important;background:transparent!important}
 .before-after-divider{position:absolute!important;z-index:6!important;top:0!important;bottom:0!important;left:var(--before-after-position)!important;width:2px!important;transform:translateX(-1px)!important;pointer-events:none!important}
 @media(max-width:700px){.before-after-media{min-height:260px!important;aspect-ratio:4/3!important}.before-after-range::-webkit-slider-thumb{width:52px!important;height:52px!important}.before-after-range::-moz-range-thumb{width:52px!important;height:52px!important}}
+
+
+/* FINAL MOBILE QA HARDENING — keep conversion controls visible and service credits contained. */
+@media (max-width:700px){
+  html,body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  /* Service cards: the quote CTA stays inside the card and the photo credit never
+     becomes a stray line/button beneath the image. */
+  .services-grid{
+    align-items:stretch!important;
+    padding-bottom:1.25rem!important;
+  }
+  .service{
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+  }
+  .service-image{
+    position:relative!important;
+    flex:0 0 auto!important;
+  }
+  .service-image-credit{
+    position:absolute!important;
+    left:10px!important;
+    right:10px!important;
+    bottom:9px!important;
+    z-index:3!important;
+    display:block!important;
+    width:auto!important;
+    max-width:calc(100% - 20px)!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    padding:5px 7px!important;
+    border-radius:7px!important;
+    background:rgba(17,17,17,.72)!important;
+    color:#fff!important;
+    font-size:9px!important;
+    line-height:1.2!important;
+    letter-spacing:0!important;
+  }
+  .service-body{
+    position:relative!important;
+    z-index:2!important;
+    display:flex!important;
+    flex:1 1 auto!important;
+    min-height:0!important;
+  }
+  .service-body .service-cta{
+    position:relative!important;
+    z-index:3!important;
+    display:flex!important;
+    flex:0 0 auto!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    width:100%!important;
+    min-height:50px!important;
+    margin-top:auto!important;
+    padding:0 15px!important;
+    border:1px solid #111!important;
+    border-radius:999px!important;
+    background:#111!important;
+    color:#fff!important;
+    text-decoration:none!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+  }
+
+  /* Persistent mobile actions must remain above page content, including long
+     service cards and the footer, while leaving Lucy above the bar. */
+  .mobile-action-bar{
+    position:fixed!important;
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    left:max(8px,env(safe-area-inset-left))!important;
+    right:max(8px,env(safe-area-inset-right))!important;
+    bottom:max(8px,env(safe-area-inset-bottom))!important;
+    width:auto!important;
+    height:auto!important;
+    min-height:58px!important;
+    z-index:2147483640!important;
+  }
+  .mobile-action-bar a{
+    position:relative!important;
+    z-index:1!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+  }
+  .mobile-action-bar a:nth-child(2){
+    background:#111!important;
+    color:#fff!important;
+  }
+
+  /* Fixed bottom bar clearance: never let content hide behind it. */
+  body{
+    padding-bottom:calc(78px + env(safe-area-inset-bottom))!important;
+  }
+
+  /* Header CTA remains a real tappable control on every phone width. */
+  .header-cta{
+    display:inline-flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+  }
+
+  /* Hero CTA remains visible even if reveal animation has not initialized. */
+  .hero-buttons,
+  .hero-buttons .button{
+    visibility:visible!important;
+    opacity:1!important;
+  }
+}
+
+@media (max-width:375px){
+  .mobile-action-bar{
+    left:7px!important;
+    right:7px!important;
+  }
+  .mobile-action-bar a{
+    font-size:.48rem!important;
+    letter-spacing:.065em!important;
+  }
+}
