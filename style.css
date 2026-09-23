@@ -1783,3 +1783,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
   .service-image{position:relative!important}
   .service-image::after{display:none!important;content:none!important}
 }
+
+
+/* MOBILE HEADER — compact phone number placement */
+@media(max-width:700px){
+  .header-inner{position:relative!important;align-items:center!important}
+  .header-contact{position:absolute!important;top:3px!important;right:58px!important;margin:0!important;z-index:3!important;transform:none!important}
+  .header-contact .header-phone{min-height:16px!important;height:16px!important;padding:0!important;font-size:.47rem!important;line-height:16px!important;letter-spacing:.02em!important;opacity:.62!important}
+  .header-contact .header-email{display:none!important}
+  .header-cta{margin-left:auto!important;margin-right:44px!important}
+  .peek-menu-toggle{position:absolute!important;right:0!important;bottom:50%!important;transform:translateY(50%)!important}
+}
+@media(max-width:390px){
+  .header-contact{right:52px!important;top:2px!important}
+  .header-contact .header-phone{font-size:.42rem!important}
+  .header-cta{margin-right:41px!important}
+}
