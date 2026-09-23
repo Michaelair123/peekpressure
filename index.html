@@ -1069,7 +1069,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const close = () => {
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('quote-modal-open');
+      document.body.classList.remove('quote-modal-open', 'peek-calendly-open');
       floatingActions?.classList.remove('is-email-open');
       closeButton?.remove();
       closeButton = null;
@@ -1081,6 +1081,7 @@ document.addEventListener('DOMContentLoaded', () => {
       lastTrigger = trigger || document.activeElement;
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.remove('peek-calendly-open');
       document.body.classList.add('quote-modal-open');
       floatingActions?.classList.add('is-email-open');
 
@@ -1786,6 +1787,7 @@ document.addEventListener('DOMContentLoaded', () => {
     previousFocus=document.activeElement;
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden','false');
+    document.body.classList.remove('quote-modal-open');
     document.body.classList.add('peek-calendly-open');
     window.setTimeout(()=>closeButton.focus(),0);
     if(window.Calendly?.initInlineWidget){
@@ -1802,7 +1804,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeCalendly=()=>{
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden','true');
-    document.body.classList.remove('peek-calendly-open');
+    document.body.classList.remove('peek-calendly-open', 'quote-modal-open');
     if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus();
   };
   floatingBook.addEventListener('click',openCalendly);
