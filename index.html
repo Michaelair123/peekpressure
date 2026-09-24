@@ -2060,5 +2060,66 @@ document.addEventListener('DOMContentLoaded', () => {
   update();
 })();
 </script>
+
+
+<script>
+(() => {
+  const toggle = document.getElementById('peekMenuToggle');
+  const menu = document.getElementById('peekSideMenu');
+  const panel = menu?.querySelector('.peek-side-menu-panel');
+  const closeButton = document.getElementById('peekMenuClose');
+  if (!toggle || !menu || !panel || !closeButton) return;
+
+  let previousFocus = null;
+
+  const openMenu = () => {
+    previousFocus = document.activeElement;
+    menu.classList.add('is-open');
+    menu.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    document.body.classList.add('peek-side-menu-open');
+    window.setTimeout(() => closeButton.focus({preventScroll:true}), 0);
+  };
+
+  const closeMenu = (restoreFocus = true) => {
+    menu.classList.remove('is-open');
+    menu.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    document.body.classList.remove('peek-side-menu-open');
+    if (restoreFocus && previousFocus && typeof previousFocus.focus === 'function') {
+      previousFocus.focus({preventScroll:true});
+    }
+  };
+
+  toggle.addEventListener('click', () => {
+    if (menu.classList.contains('is-open')) closeMenu();
+    else openMenu();
+  });
+
+  closeButton.addEventListener('click', () => closeMenu());
+
+  menu.querySelector('[data-peek-menu-close]')?.addEventListener('click', () => closeMenu());
+
+  menu.querySelectorAll('.peek-side-menu-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      closeMenu(false);
+    });
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && menu.classList.contains('is-open')) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener('peek:popup-open', event => {
+    if (event.detail?.except !== 'menu' && menu.classList.contains('is-open')) {
+      closeMenu(false);
+    }
+  });
+})();
+</script>
 </body>
 </html>
