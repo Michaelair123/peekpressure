@@ -7,17 +7,18 @@ export default {
     const url = new URL(request.url);
 
     const origin = request.headers.get("Origin");
-    const allowedOrigin =
-      origin === "https://www.peekpressure.com" || origin === "https://peekpressure.com"
-        ? origin
-        : "https://www.peekpressure.com";
+    const isAllowedOrigin =
+      origin === "https://www.peekpressure.com" || origin === "https://peekpressure.com";
+    const allowedOrigin = isAllowedOrigin ? origin : null;
 
     const securityHeaders = {
       "X-Content-Type-Options": "nosniff",
       "X-Frame-Options": "DENY",
       "Referrer-Policy": "strict-origin-when-cross-origin",
       "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
-      "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+      "Cross-Origin-Resource-Policy": "same-origin",
+      "X-DNS-Prefetch-Control": "off"
     };
 
     const withSecurity = (response) => {
@@ -85,14 +86,15 @@ export default {
         }));
     };
 
-    const cors = {
+    const cors = isAllowedOrigin ? {
       "Access-Control-Allow-Origin": allowedOrigin,
       "Access-Control-Allow-Headers": "Content-Type, X-Lucy-Staging-Token",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Vary": "Origin"
-    };
+    } : {};
 
     if (request.method === "OPTIONS" && url.pathname.startsWith("/api/")) {
+      if (!isAllowedOrigin) return new Response(null, { status: 403, headers: securityHeaders });
       return new Response(null, {
         status: 204,
         headers: { ...cors, ...securityHeaders }
