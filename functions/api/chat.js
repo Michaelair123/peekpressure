@@ -275,6 +275,18 @@ PERSONALITY
 - PROPERTY ADDRESS CONFIRMATION: For a single-property quote lead, "location" means the property/job address and it must be explicitly confirmed before lead_ready becomes true. Do not treat the customer's first mention of an address as confirmed; ask a simple yes/no confirmation and update it if corrected.
 - MULTI-PROPERTY / PORTFOLIO EXCEPTION: Do NOT force a full street address when the customer clearly describes a commercial portfolio, multiple properties/sites, or a contract covering multiple locations. A portfolio request is a different lead shape: capture the portfolio count if given, the city/market if given, the cleaning scope, contract/recurring intent, and a usable contact. If the customer says there are many properties or asks for the team to email/call them, stop asking for an individual property address. Explain that they do not need to enter every address in chat and ask for their name plus best phone or email. For a multi-property portfolio, a confirmed city/market such as "San Francisco, CA" is sufficient location context for the initial handoff; the team can collect the property list and individual site addresses during follow-up. Never invent a property count, site list, or address.
 - PARTIAL LEADS: A usable name plus phone or email is enough to capture a partial lead when the customer is ready to hand off, even if additional site details are still pending. Never lose a real lead because one nonessential field is missing.
+- INFORMATION ORDER: Customers may provide details in any order, in fragments, or across several messages. Continuously use what they already told you. Never ask again for a field that is already known unless the customer corrected it.
+- ONE-QUESTION RULE: Ask for the single most useful missing detail. Do not dump a questionnaire on the customer and do not repeat the same question after they answer it.
+- NO-ADDRESS LOOP: If a single-property customer says they do not have the exact address yet, do not repeat the full-address question. Capture the city/ZIP and contact information for a partial lead and explain that the team can confirm the site details later. A full address is still required before a single-property quote lead becomes ready for handoff.
+- SIZE UNKNOWN: If the customer does not know square footage or dimensions, do not force them to guess. Ask for a photo, approximate size, or offer that the team can assess the scope on site when appropriate.
+- PHOTO-FIRST: If a customer sends a photo, treat it as useful lead information. Analyze what is visibly relevant, state uncertainty when material identification is unclear, and ask only for the next missing detail.
+- HUMAN REQUESTS: If the customer asks for a person, callback, email, proposal, or team follow-up, switch from discovery to handoff/contact capture. Do not continue a checklist unless a genuinely required safety or contact detail is missing.
+- DECISION MAKER: If the customer says they need approval from a boss, owner, spouse, manager, or partner, do not pressure them. Offer a concise summary/follow-up path and capture a contact method if useful.
+- PRICE OBJECTIONS: Acknowledge the concern and clarify scope/value. Do not invent discounts, attack competitors, or manufacture urgency. Use only authorized pricing/discount rules.
+- CUSTOMER EXIT: If the customer says "never mind," "no thanks," "forget it," or otherwise ends the conversation, respect it and stop selling. Do not ask another qualification question.
+- CORRECTIONS: When a customer changes the service, property type, location, quantity, or scope, update the current lead state and use the corrected information. Do not preserve contradictory old details as if both are current.
+- OUT-OF-SCOPE: For ladder-required work or another unsupported service, clearly state the current limitation and offer an appropriate supported alternative or human review when applicable. Never invent a service.
+- UNKNOWN/AMBIGUOUS MATERIALS: Do not confidently identify a surface, stain, damage cause, or treatment from insufficient information. Ask for a photo or say the team needs to assess it.
 - Use a simple close: answer → reassure → next step. Keep it conversational and never manipulative.
 - If the customer is casual, Lucy can be a little casual back. If they're formal, Lucy stays polished.
 - Never sound like a form, scripted sales bot, or call center.
@@ -1089,8 +1101,12 @@ function detectLucyConversationSignals(safeMessages) {
   const recurring = /\b(contract|recurring|ongoing|maintenance plan|maintenance contract|regular service|routine service|monthly|quarterly|weekly|biweekly|every month|every quarter)\b/i.test(text);
   const unknownSize = /\b(i (?:don't|do not) know|not sure|no idea|unknown|you can (?:measure|check|figure) (?:it|that) out)\b/i.test(text) &&
     /\b(size|square|sq\.?\s*ft|sqft|footage|dimensions|area)\b/i.test(text);
+  const noAddressAvailable = /\b(?:i (?:don't|do not) have|don't have|do not have|no)\b.{0,50}\b(?:full )?(?:property )?(?:street )?address\b|\b(?:too many|a lot|lots of)\s+(?:addresses|properties|sites)\b/i.test(text);
+  const customerExit = /^(?:never mind|nevermind|forget it|forget about it|no thanks|no thank you|i'm good|im good|all good|that's all|thats all|stop|don't worry about it|do not worry about it)$/i.test(normalized);
+  const decisionMaker = /\b(?:need to ask|have to ask|run it by|check with|my (?:boss|manager|owner|wife|husband|partner)|send (?:it|this) to|forward (?:it|this))\b/i.test(text);
+  const priceObjection = /\b(?:too expensive|too much|cheaper|less expensive|lower price|better price|beat (?:that|the) price|another (?:company|guy)|competitor|budget|can't afford|cannot afford)\b/i.test(text);
 
-  return { text, normalized, frustrated, delegatesSiteReview, humanRequested, recurring, unknownSize };
+  return { text, normalized, frustrated, delegatesSiteReview, humanRequested, recurring, unknownSize, noAddressAvailable, customerExit, decisionMaker, priceObjection };
 }
 
 function deriveConversationState(result, safeMessages, addressConfirmed = false) {
@@ -1145,7 +1161,8 @@ function detectCommercialPortfolioSignals(safeMessages) {
   const multipleMatch = allText.match(/\b(\d{1,5})\s+(?:properties|sites|locations|buildings)\b/i);
   const multipleProperties = Boolean(
     multipleMatch ||
-    /\b(?:multiple|several|many|portfolio|portfolio-wide|all\s+(?:of\s+)?(?:the\s+)?(?:properties|sites|locations|buildings)|multi[- ]property)\b/i.test(allText)
+    /\b(?:multiple|several|many|portfolio|portfolio-wide|all\s+(?:of\s+)?(?:the\s+)?(?:properties|sites|locations|buildings)|multi[- ]property)\b/i.test(allText) ||
+    /\b(?:a lot|lots)\s+of\s+(?:properties|sites|locations|buildings|addresses)\b/i.test(allText)
   );
 
   const city =
@@ -1154,6 +1171,11 @@ function detectCommercialPortfolioSignals(safeMessages) {
     /\bsan\s+mateo\b/i.test(allText) ? "San Mateo, CA" :
     /\bburlingame\b/i.test(allText) ? "Burlingame, CA" :
     /\bhayward\b/i.test(allText) ? "Hayward, CA" :
+    /\bsan\s+leandro\b/i.test(allText) ? "San Leandro, CA" :
+    /\bsouth\s+san\s+francisco\b/i.test(allText) ? "South San Francisco, CA" :
+    /\bdaly\s+city\b/i.test(allText) ? "Daly City, CA" :
+    /\bfremont\b/i.test(allText) ? "Fremont, CA" :
+    /\bsan\s+jose\b/i.test(allText) ? "San Jose, CA" :
     null;
 
   const count = multipleMatch ? Number(multipleMatch[1]) : null;
@@ -1167,6 +1189,19 @@ function detectCommercialPortfolioSignals(safeMessages) {
 function applyConversationFlow(result, safeMessages, addressConfirmed) {
   const signals = detectLucyConversationSignals(safeMessages);
   const portfolio = detectCommercialPortfolioSignals(safeMessages);
+
+  // Conversational escape hatches: never trap a customer in a form-like loop.
+  if (signals.customerExit && !signals.humanRequested) {
+    result.reply = "No problem — thanks for stopping by. If you need us later, I'm here.";
+  }
+
+  if (signals.noAddressAvailable && !portfolio.multipleProperties && !signals.customerExit) {
+    result.reply = "No problem. If you don't have the exact property address yet, give me the city or ZIP and your best contact info. I can save the request and the team can confirm the site details with you.";
+  }
+
+  if (signals.decisionMaker && !signals.customerExit) {
+    result.reply = "No problem — I can keep this simple. If you'd like, give me your name and best phone or email and the team can follow up with the details you can pass along.";
+  }
 
   if (portfolio.multipleProperties) {
     if (!result.location && portfolio.city) result.location = portfolio.city;
@@ -1318,7 +1353,7 @@ function enforceLeadSafety(result, safeMessages) {
   const addressConfirmed = !addressCorrection && (
     propertyAddressConfirmed ||
     confirmedAddressMatchesCurrent ||
-    (portfolio.multipleProperties && Boolean(location))
+    (portfolio.multipleProperties && Boolean(location || portfolio.city))
   );
   const hasStreetAddress = /\b\d{1,6}\s+[A-Za-z0-9.'-]+(?:\s+[A-Za-z0-9.'-]+){0,5}\s+(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ct|Court|Ln|Lane|Way|Pl|Place|Pkwy|Parkway|Hwy|Highway)\b/i.test(location);
 
@@ -1342,7 +1377,8 @@ function enforceLeadSafety(result, safeMessages) {
   if (portfolioAfterFlow.multipleProperties && !usableContact && !suspicious && result.lead_status !== "spam") {
     const wantsEmailFollowup = portfolioAfterFlow.emailFollowup || flowSignals.humanRequested || flowSignals.delegatesSiteReview;
     if (wantsEmailFollowup) {
-      result.reply = "Absolutely. We can handle the 50-property scope without collecting 50 addresses in chat. What's your name and best email so I can pass the portfolio request to the team?";
+      const portfolioLabel = portfolioAfterFlow.count ? String(portfolioAfterFlow.count) : "multi-property";
+      result.reply = `Absolutely. We can handle the ${portfolioLabel} scope without collecting every address in chat. What's your name and best email so I can pass the portfolio request to the team?`;
     }
   }
 
