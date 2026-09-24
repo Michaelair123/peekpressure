@@ -1,6 +1,6 @@
-# Keep HTML revalidating so deployments appear promptly
+# Cache the static homepage at Cloudflare's edge while keeping browsers revalidating
 /
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: public, max-age=0, must-revalidate, s-maxage=3600, stale-while-revalidate=86400
 
 # Versioned static assets can be cached aggressively
 /style.css
