@@ -323,6 +323,23 @@ body.quote-modal-open{
 .peek-quote-modal .service-choice b{
   font-size:.76rem!important;
 }
+
+/* Selected choices stay unmistakably selected — never wash out to white. */
+.peek-quote-modal .service-choice:has(input:checked){
+  border-color:#111!important;
+  background:#111!important;
+  color:#fff!important;
+  box-shadow:0 0 0 2px #111!important;
+}
+.peek-quote-modal .service-choice:has(input:checked) b{
+  color:#fff!important;
+  transform:translateX(3px)!important;
+}
+.peek-quote-modal .service-choice:has(input:checked):hover{
+  background:#111!important;
+  border-color:#111!important;
+  color:#fff!important;
+}
 .peek-quote-modal .quote-address-grid{
   display:grid!important;
   grid-template-columns:minmax(0,1.8fr) minmax(0,1fr) minmax(90px,.62fr)!important;
