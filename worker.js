@@ -18,7 +18,7 @@ export default {
       "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
       "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
       "Cross-Origin-Resource-Policy": "same-origin",
-      "X-DNS-Prefetch-Control": "off"
+      "X-DNS-Prefetch-Control": "on"
     };
 
     const withSecurity = (response) => {
