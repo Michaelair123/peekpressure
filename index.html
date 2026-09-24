@@ -8,9 +8,6 @@
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://peekpressure.com/">
   <meta name="theme-color" content="#ffffff">
-  <link rel="preconnect" href="https://images.pexels.com">
-  <link rel="preconnect" href="https://images.unsplash.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
   <meta name="author" content="PEEK PRESSURE">
@@ -188,9 +185,6 @@ body.peek-side-menu-open{overflow:hidden}
 
   <link rel="stylesheet" href="style.css?v=20260923-2">
   <link rel="stylesheet" href="liquid-glass.css?v=20260923-2">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
-  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
 <style id="peek-calendly-modal-styles">
 body.peek-calendly-open{overflow:hidden}
@@ -953,78 +947,73 @@ body.peek-calendly-open{overflow:hidden}
       });
     }
 
-    // Interactive Leaflet service map — pins are real map markers, so they move with the map.
+    // Interactive service map — load Leaflet only when the map is near the viewport.
     (() => {
       const mapEl = document.getElementById('peekServiceMap');
-      if (!mapEl || typeof L === 'undefined') return;
-
-      const cities = [
-        ['San Francisco',37.7749,-122.4194],['Daly City',37.6879,-122.4702],['Pacifica',37.6138,-122.4869],
-        ['South San Francisco',37.6547,-122.4077],['San Bruno',37.6305,-122.4111],['Millbrae',37.5985,-122.3870],
-        ['Burlingame',37.5779,-122.3481],['San Mateo',37.5630,-122.3255],['Foster City',37.5585,-122.2711],
-        ['Belmont',37.5202,-122.2758],['Redwood City',37.4852,-122.2364],['Menlo Park',37.4530,-122.1817],
-        ['Palo Alto',37.4419,-122.1430],['Mountain View',37.3861,-122.0839],['Sunnyvale',37.3688,-122.0363],
-        ['Santa Clara',37.3541,-121.9552],['San Jose',37.3382,-121.8863],['Milpitas',37.4323,-121.8996],
-        ['Fremont',37.5485,-121.9886],['Newark',37.5297,-122.0402],['Union City',37.5934,-122.0438],
-        ['Hayward',37.6688,-122.0808],['San Leandro',37.7249,-122.1561],['Oakland',37.8044,-122.2712],['Alameda',37.7799,-122.2822]
-      ];
-
-      const map = L.map(mapEl, { scrollWheelZoom:false, zoomControl:true, attributionControl:true });
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom:19,
-        attribution:'&copy; OpenStreetMap contributors'
-      }).addTo(map);
-
-      const bounds = [];
-      cities.forEach(([name, lat, lng]) => {
-        const marker = L.marker([lat,lng], {
-          icon: L.divIcon({ className:'peek-map-pin', html:'<span aria-hidden="true"></span>', iconSize:[14,14], iconAnchor:[7,7] }),
-          keyboard:true,
-          title:name,
-          alt:name
-        }).addTo(map);
-        // Leaflet's generated marker element does not consistently inherit
-        // title/alt as an accessible name across browsers. Set the ARIA name
-        // on the actual interactive element after it has been added.
-        const markerEl = marker.getElement();
-        if (markerEl) markerEl.setAttribute('aria-label', name);
-        marker.bindTooltip(name, {direction:'top', offset:[0,-8], opacity:.96});
-        bounds.push([lat,lng]);
-      });
-
-      const fit = () => {
-        map.invalidateSize({animate:false});
-        if (bounds.length) {
+      if (!mapEl) return;
+      let mapLoaded = false;
+      let loading = false;
+      const loadLeaflet = () => {
+        if (mapLoaded || loading) return;
+        loading = true;
+        const css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css';
+        css.crossOrigin = '';
+        document.head.appendChild(css);
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';
+        script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+        script.crossOrigin = '';
+        script.onload = () => { mapLoaded = true; initializeMap(); };
+        script.onerror = () => { loading = false; };
+        document.head.appendChild(script);
+      };
+      const initializeMap = () => {
+        if (!mapLoaded || typeof L === 'undefined' || mapEl.dataset.initialized === 'true') return;
+        mapEl.dataset.initialized = 'true';
+        const cities = [
+          ['San Francisco',37.7749,-122.4194],['Daly City',37.6879,-122.4702],['Pacifica',37.6138,-122.4869],
+          ['South San Francisco',37.6547,-122.4077],['San Bruno',37.6305,-122.4111],['Millbrae',37.5985,-122.3870],
+          ['Burlingame',37.5779,-122.3481],['San Mateo',37.5630,-122.3255],['Foster City',37.5585,-122.2711],
+          ['Belmont',37.5202,-122.2758],['Redwood City',37.4852,-122.2364],['Menlo Park',37.4530,-122.1817],
+          ['Palo Alto',37.4419,-122.1430],['Mountain View',37.3861,-122.0839],['Sunnyvale',37.3688,-122.0363],
+          ['Santa Clara',37.3541,-121.9552],['San Jose',37.3382,-121.8863],['Milpitas',37.4323,-121.8996],
+          ['Fremont',37.5485,-121.9886],['Newark',37.5297,-122.0402],['Union City',37.5934,-122.0438],
+          ['Hayward',37.6688,-122.0808],['San Leandro',37.7249,-122.1561],['Oakland',37.8044,-122.2712],['Alameda',37.7799,-122.2822]
+        ];
+        const map = L.map(mapEl, { scrollWheelZoom:false, zoomControl:true, attributionControl:true });
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:19, attribution:'&copy; OpenStreetMap contributors' }).addTo(map);
+        const bounds = [];
+        cities.forEach(([name, lat, lng]) => {
+          const marker = L.marker([lat,lng], { icon:L.divIcon({ className:'peek-map-pin', html:'<span aria-hidden="true"></span>', iconSize:[14,14], iconAnchor:[7,7] }), keyboard:true, title:name, alt:name }).addTo(map);
+          const markerEl = marker.getElement();
+          if (markerEl) markerEl.setAttribute('aria-label', name);
+          marker.bindTooltip(name, {direction:'top', offset:[0,-8], opacity:.96});
+          bounds.push([lat,lng]);
+        });
+        const fit = () => {
+          map.invalidateSize({animate:false});
+          if (!bounds.length) return;
           const geographicBounds = L.latLngBounds(bounds);
-          map.fitBounds(geographicBounds, {
-            paddingTopLeft:[64,64],
-            paddingBottomRight:[64,64],
-            maxZoom:10,
-            animate:false
-          });
-          // Leaflet's fitBounds handles the zoom; this final containment pass
-          // handles responsive rounding/viewport changes so no marker center
-          // can finish outside the visible map.
-          map.panInsideBounds(geographicBounds, {
-            padding:[64,64],
-            animate:false
-          });
+          map.fitBounds(geographicBounds, { paddingTopLeft:[64,64], paddingBottomRight:[64,64], maxZoom:10, animate:false });
+          map.panInsideBounds(geographicBounds, { padding:[64,64], animate:false });
+        };
+        requestAnimationFrame(fit);
+        window.addEventListener('load', fit, {once:true});
+        setTimeout(fit, 250);
+        if ('ResizeObserver' in window) {
+          let resizeTimer;
+          new ResizeObserver(() => { clearTimeout(resizeTimer); resizeTimer = setTimeout(fit, 80); }).observe(mapEl);
         }
       };
-      requestAnimationFrame(fit);
-      window.addEventListener('load', fit, {once:true});
-      // Re-fit after the map receives its final responsive dimensions so every
-      // marker remains comfortably inside the visible map at every breakpoint.
-      setTimeout(fit, 250);
-      if ('ResizeObserver' in window) {
-        let resizeTimer;
-        new ResizeObserver(() => {
-          clearTimeout(resizeTimer);
-          resizeTimer = setTimeout(fit, 80);
-        }).observe(mapEl);
-      }
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); loadLeaflet(); }
+        }, { rootMargin:'600px 0px' });
+        observer.observe(mapEl);
+      } else loadLeaflet();
     })();
-
     document.querySelectorAll(
       '.services-grid, .about-grid, .process-header, .process-grid, .service, .process-step, .why-peek-grid, .why-peek-point, .service-area-container, .contact-container, .booking-cta-inner'
     ).forEach((el, i) => {
@@ -1968,22 +1957,33 @@ document.addEventListener('DOMContentLoaded', () => {
   if(!modal||!closeButton||!bookingTriggers.length)return;
   let previousFocus=null;
   let widgetInitialized=false;
-  const initializeWidget=()=>{
+  let calendlyLoading=null;
+  const loadCalendly=()=>{
+    if(window.Calendly?.initInlineWidget)return Promise.resolve();
+    if(calendlyLoading)return calendlyLoading;
+    calendlyLoading=new Promise((resolve,reject)=>{
+      const script=document.createElement('script');
+      script.src='https://assets.calendly.com/assets/external/widget.js';
+      script.async=true;
+      script.onload=resolve;
+      script.onerror=reject;
+      document.head.appendChild(script);
+    });
+    return calendlyLoading;
+  };
+  const initializeWidget=async()=>{
     const widget=modal.querySelector('.peek-calendly-widget');
     if(!widget||widgetInitialized)return;
-    if(window.Calendly?.initInlineWidget){
+    try{
+      await loadCalendly();
+      if(!window.Calendly?.initInlineWidget)return;
       widgetInitialized=true;
-      window.Calendly.initInlineWidget({
-        url:'https://calendly.com/peekpressure/30min?hide_gdpr_banner=1&background_color=ffffff',
-        parentElement:widget
-      });
-      return;
-    }
-    window.setTimeout(initializeWidget,250);
+      window.Calendly.initInlineWidget({url:'https://calendly.com/peekpressure/30min?hide_gdpr_banner=1&background_color=ffffff',parentElement:widget});
+    }catch{widgetInitialized=false;}
   };
   const openCalendly=(event)=>{
     event.preventDefault();
-    document.dispatchEvent(new CustomEvent('peek:popup-open', {detail:{except:'calendly'}}));
+    document.dispatchEvent(new CustomEvent('peek:popup-open',{detail:{except:'calendly'}}));
     previousFocus=document.activeElement;
     document.body.classList.remove('quote-modal-open');
     document.body.classList.add('peek-calendly-open');
@@ -1995,32 +1995,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeCalendly=()=>{
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden','true');
-    document.body.classList.remove('peek-calendly-open', 'quote-modal-open');
+    document.body.classList.remove('peek-calendly-open','quote-modal-open');
     if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus({preventScroll:true});
   };
   bookingTriggers.forEach(trigger=>trigger.addEventListener('click',openCalendly));
   closeButton.addEventListener('click',closeCalendly);
   modal.querySelector('[data-peek-calendly-close]')?.addEventListener('click',closeCalendly);
-  document.addEventListener('peek:popup-open', event=>{
-    if(event.detail?.except!=='calendly'&&modal.classList.contains('is-open'))closeCalendly();
-  });
-  document.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&modal.classList.contains('is-open'))closeCalendly();
-  });
-})();
-
-(() => {
-  const menu=document.getElementById('peekSideMenu');
-  const toggle=document.getElementById('peekMenuToggle');
-  const close=document.getElementById('peekMenuClose');
-  if(!menu||!toggle||!close)return;
-  let trigger=null;
-  const closeMenu=()=>{menu.classList.remove('is-open');menu.setAttribute('aria-hidden','true');toggle.setAttribute('aria-expanded','false');document.body.classList.remove('peek-side-menu-open');trigger?.focus?.({preventScroll:true});trigger=null;};
-  const openMenu=()=>{document.dispatchEvent(new CustomEvent('peek:popup-open', {detail:{except:'menu'}}));trigger=document.activeElement;menu.classList.add('is-open');menu.setAttribute('aria-hidden','false');toggle.setAttribute('aria-expanded','true');document.body.classList.add('peek-side-menu-open');window.setTimeout(()=>menu.querySelector('.peek-side-menu-links a')?.focus({preventScroll:true}),40);};
-  toggle.addEventListener('click',openMenu);close.addEventListener('click',closeMenu);menu.querySelector('[data-peek-menu-close]')?.addEventListener('click',closeMenu);
-  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{if(!a.hasAttribute('data-peek-book'))closeMenu();}));
-  document.addEventListener('peek:popup-open', event=>{if(event.detail?.except!=='menu'&&menu.classList.contains('is-open'))closeMenu();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.classList.contains('is-open'))closeMenu();});
+  document.addEventListener('peek:popup-open',event=>{if(event.detail?.except!=='calendly'&&modal.classList.contains('is-open'))closeCalendly();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&modal.classList.contains('is-open'))closeCalendly();});
 })();
 </script>
 
