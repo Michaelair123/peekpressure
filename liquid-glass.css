@@ -270,3 +270,204 @@ body.quote-modal-open{
     scroll-behavior:auto!important;
   }
 }
+
+
+/* COMPACT CONTACT FORM — clear hierarchy, fast scanning, minimal vertical waste. */
+.peek-quote-modal > #quoteForm{
+  width:min(820px,100%)!important;
+  padding:24px!important;
+}
+.peek-quote-modal .quote-modal-heading{
+  padding:0 34px 8px 0!important;
+}
+.peek-quote-modal .quote-modal-heading h2{
+  margin:3px 0 5px!important;
+  font-size:clamp(2rem,4vw,3.2rem)!important;
+  line-height:.9!important;
+  letter-spacing:-.06em!important;
+}
+.peek-quote-modal .quote-modal-heading p{
+  margin:0!important;
+  max-width:620px!important;
+  color:#666!important;
+  font-size:.82rem!important;
+  line-height:1.45!important;
+}
+.peek-quote-modal .quote-step,
+.peek-quote-modal .quote-address-section,
+.peek-quote-modal .photo-field,
+.peek-quote-modal #details{
+  margin-top:14px!important;
+}
+.peek-quote-modal .quote-step{
+  padding:0!important;
+  border:0!important;
+  min-inline-size:0!important;
+}
+.peek-quote-modal .quote-step legend,
+.peek-quote-modal .quote-address-section > label,
+.peek-quote-modal .photo-field > label:first-child,
+.peek-quote-modal .form-field > label{
+  display:block!important;
+  margin:0 0 6px!important;
+  color:#555!important;
+  font-size:.62rem!important;
+  line-height:1.2!important;
+  font-weight:700!important;
+  letter-spacing:.1em!important;
+}
+.peek-quote-modal .service-choice-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:7px!important;
+}
+.peek-quote-modal .service-choice{
+  min-height:42px!important;
+  padding:9px 11px!important;
+  border:1px solid #ddd!important;
+  border-radius:10px!important;
+  background:#fafafa!important;
+  font-size:.68rem!important;
+}
+.peek-quote-modal .service-choice b{
+  font-size:.8rem!important;
+}
+.peek-quote-modal .quote-address-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.7fr) minmax(0,1fr) minmax(100px,.65fr)!important;
+  gap:10px!important;
+}
+.peek-quote-modal .quote-address-grid .form-field{
+  margin-top:0!important;
+}
+.peek-quote-modal .quote-address-grid .form-field label,
+.peek-quote-modal .quote-contact .form-field label{
+  margin-bottom:4px!important;
+  font-size:.56rem!important;
+}
+.peek-quote-modal .quote-address-grid input,
+.peek-quote-modal .quote-contact input,
+.peek-quote-modal #details{
+  min-height:44px!important;
+  height:44px!important;
+  padding:9px 11px!important;
+  border:1px solid #d8d8d8!important;
+  border-radius:9px!important;
+  background:#fafafa!important;
+  font-size:16px!important;
+  line-height:1.35!important;
+}
+.peek-quote-modal #details{
+  height:auto!important;
+  min-height:82px!important;
+  resize:vertical!important;
+}
+.peek-quote-modal .form-field:has(> #details){
+  margin-top:14px!important;
+}
+.peek-quote-modal .quote-contact{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  margin-top:14px!important;
+}
+.peek-quote-modal .quote-contact .form-field{
+  margin-top:0!important;
+}
+.peek-quote-modal .photo-field{
+  display:grid!important;
+  grid-template-columns:1fr auto!important;
+  align-items:center!important;
+  column-gap:12px!important;
+}
+.peek-quote-modal .photo-field > label:first-child{
+  grid-column:1/-1!important;
+}
+.peek-quote-modal .photo-upload{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  min-height:42px!important;
+  margin:0!important;
+  padding:8px 11px!important;
+  border:1px dashed #cfcfcf!important;
+  border-radius:9px!important;
+  background:#fafafa!important;
+}
+.peek-quote-modal .photo-upload strong{
+  font-size:.65rem!important;
+}
+.peek-quote-modal .photo-upload span{
+  color:#777!important;
+  font-size:.65rem!important;
+}
+.peek-quote-modal #photos{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.peek-quote-modal #quoteForm button{
+  min-height:48px!important;
+  margin-top:14px!important;
+  font-size:.72rem!important;
+}
+.peek-quote-modal .form-note{
+  margin-top:7px!important;
+  font-size:.55rem!important;
+  line-height:1.35!important;
+}
+.peek-quote-modal [data-fs-error]{
+  display:block!important;
+  margin-top:3px!important;
+  font-size:.58rem!important;
+}
+@media(max-width:700px){
+  .peek-quote-modal > #quoteForm{
+    padding:18px!important;
+  }
+  .peek-quote-modal .quote-modal-heading h2{
+    font-size:clamp(1.9rem,10vw,2.8rem)!important;
+  }
+  .peek-quote-modal .quote-modal-heading p{
+    font-size:.78rem!important;
+    line-height:1.4!important;
+  }
+  .peek-quote-modal .quote-address-grid{
+    grid-template-columns:minmax(0,1fr) minmax(100px,.48fr)!important;
+  }
+  .peek-quote-modal .quote-address-grid .form-field:first-child{
+    grid-column:1/-1!important;
+  }
+  .peek-quote-modal .quote-contact{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .peek-quote-modal .quote-contact .quote-email{
+    grid-column:1/-1!important;
+  }
+  .peek-quote-modal .photo-upload{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+    gap:2px!important;
+  }
+}
+@media(max-width:380px){
+  .peek-quote-modal > #quoteForm{
+    padding:16px!important;
+  }
+  .peek-quote-modal .service-choice{
+    min-height:40px!important;
+    padding:8px!important;
+    font-size:.62rem!important;
+  }
+  .peek-quote-modal .quote-contact,
+  .peek-quote-modal .quote-address-grid{
+    grid-template-columns:1fr!important;
+  }
+  .peek-quote-modal .quote-address-grid .form-field:first-child,
+  .peek-quote-modal .quote-contact .quote-email{
+    grid-column:auto!important;
+  }
+}
