@@ -517,3 +517,30 @@ body.quote-modal-open{
     scroll-behavior:auto!important;
   }
 }
+
+/* Quiet pre-launch signal — visible without making the site feel unfinished. */
+.launch-status{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-top:14px;
+  color:#666;
+  font-size:.56rem;
+  font-weight:700;
+  letter-spacing:.13em;
+  line-height:1.4;
+}
+.launch-status span{
+  width:6px;
+  height:6px;
+  flex:0 0 6px;
+  border-radius:50%;
+  background:#111;
+}
+@media(max-width:700px){
+  .launch-status{
+    margin-top:12px;
+    font-size:.52rem;
+    letter-spacing:.11em;
+  }
+}
