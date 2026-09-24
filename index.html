@@ -218,8 +218,8 @@ body.peek-side-menu-open{overflow:hidden}
       .hero-buttons .button{min-height:3.15rem}
     }
   </style>
-  <link rel="preload" as="style" href="style.css?v=20260924-3" id="peek-full-style">
-  <link rel="preload" as="style" href="liquid-glass.css?v=20260924-3" id="peek-glass-style">
+  <link rel="stylesheet" href="style.css?v=20260924-3">
+  <link rel="stylesheet" href="liquid-glass.css?v=20260924-3">
 
 <style id="peek-calendly-modal-styles">
 body.peek-calendly-open{overflow:hidden}
@@ -263,19 +263,6 @@ body.peek-calendly-open{overflow:hidden}
 
 
 
-
-<script>
-  (() => {
-    const applyDeferredStyles = () => {
-      for (const id of ['peek-full-style','peek-glass-style']) {
-        const link = document.getElementById(id);
-        if (link && link.rel === 'preload') link.rel = 'stylesheet';
-      }
-    };
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyDeferredStyles, {once:true});
-    else applyDeferredStyles();
-  })();
-</script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
