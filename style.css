@@ -1081,3 +1081,15 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
   }
 }
 @media (max-width:700px){.hero-content,.hero-copy h1,.hero-copy>p,.hero-buttons{animation:none!important;opacity:1!important;transform:none!important}}
+/* Mobile rendering budget: don't fully render below-fold sections until they approach view. */
+@media (max-width:700px){
+  .header,.header.scrolled{
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+    background:rgba(255,255,255,.97)!important;
+  }
+  .services,.about,.process,.why-peek,.proof-section,.service-area,.faq-section,.booking-cta{
+    content-visibility:auto;
+    contain-intrinsic-size:800px;
+  }
+}
