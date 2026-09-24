@@ -199,31 +199,55 @@
 }
 
 /* Normal X: text glyph, no button bubble, no background. */
-.peek-quote-modal .quote-modal-close{
+.peek-quote-modal > #quoteForm > .quote-modal-close{
+  all:unset!important;
   position:absolute!important;
-  top:16px!important;
-  right:18px!important;
-  z-index:3!important;
-  width:auto!important;
-  height:auto!important;
-  min-width:0!important;
-  min-height:0!important;
+  inset:16px 18px auto auto!important;
+  z-index:9999!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:28px!important;
+  height:28px!important;
+  min-width:28px!important;
+  min-height:28px!important;
   padding:0!important;
   margin:0!important;
   border:0!important;
   border-radius:0!important;
-  background:transparent!important;
+  outline:0!important;
+  background:none!important;
+  background-color:transparent!important;
+  background-image:none!important;
   color:#111!important;
   font-family:Arial,Helvetica,sans-serif!important;
   font-size:28px!important;
   font-weight:400!important;
-  line-height:1!important;
-  display:block!important;
+  line-height:28px!important;
+  text-align:center!important;
   cursor:pointer!important;
-  appearance:none!important;
-  -webkit-appearance:none!important;
   box-shadow:none!important;
   text-shadow:none!important;
+  transform:none!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+}
+.peek-quote-modal > #quoteForm > .quote-modal-close::before,
+.peek-quote-modal > #quoteForm > .quote-modal-close::after{
+  content:none!important;
+  display:none!important;
+}
+.peek-quote-modal > #quoteForm > .quote-modal-close:hover,
+.peek-quote-modal > #quoteForm > .quote-modal-close:focus,
+.peek-quote-modal > #quoteForm > .quote-modal-close:focus-visible,
+.peek-quote-modal > #quoteForm > .quote-modal-close:active{
+  outline:0!important;
+  border:0!important;
+  background:none!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+  color:#555!important;
+  transform:none!important;
 }
 .peek-quote-modal .quote-modal-close:hover,
 .peek-quote-modal .quote-modal-close:focus-visible{
@@ -258,10 +282,14 @@ body.quote-modal-open{
   .peek-quote-modal .quote-modal-heading{
     padding-right:30px!important;
   }
-  .peek-quote-modal .quote-modal-close{
-    top:12px!important;
-    right:14px!important;
+  .peek-quote-modal > #quoteForm > .quote-modal-close{
+    inset:12px 14px auto auto!important;
+    width:27px!important;
+    height:27px!important;
+    min-width:27px!important;
+    min-height:27px!important;
     font-size:27px!important;
+    line-height:27px!important;
   }
 }
 
