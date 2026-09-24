@@ -45,8 +45,8 @@ function checkLucyRateLimit(request) {
 function normalizePreAiAbuseText(text) {
   return String(text || "")
     .normalize("NFKC")
-    .replace(/[\\u200B-\\u200D\\u2060\\uFEFF]/g, "")
-    .replace(/[\\u00A0\\u1680\\u2000-\\u200A\\u2028\\u2029\\u202F\\u205F\\u3000]/g, " ")
+    .replace(/[\u200B-\u200D\u2060\uFEFF]/g, "")
+    .replace(/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g, " ")
     .trim();
 }
 
