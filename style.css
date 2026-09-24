@@ -1069,3 +1069,14 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
 .proof-placeholder.after small{
   color:#626262;
 }
+
+
+/* Lucy position: anchor the chat panel visually above the persistent contact rail. */
+.peek-chat{
+  bottom:calc(24px + 52px + 12px)!important;
+}
+@media(max-width:700px){
+  .peek-chat{
+    bottom:calc(12px + 56px + 10px + env(safe-area-inset-bottom))!important;
+  }
+}
