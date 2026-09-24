@@ -209,11 +209,35 @@ async function handleLead(context) {
   }
 
   try {
+    const contentLength = Number(context.request.headers.get("Content-Length") || 0);
+    if (Number.isFinite(contentLength) && contentLength > 300000) {
+      return json({ error: "Lead request is too large.", handoff_state: "HANDOFF_FAILED" }, 413);
+    }
+    const contentType = String(context.request.headers.get("Content-Type") || "").toLowerCase();
+    if (!contentType.startsWith("application/json")) {
+      return json({ error: "JSON requests only.", handoff_state: "HANDOFF_FAILED" }, 415);
+    }
     const body = await context.request.json();
-    const lead = body.lead || {};
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return json({ error: "Invalid lead request.", handoff_state: "HANDOFF_FAILED" }, 400);
+    }
+    const lead = body.lead && typeof body.lead === "object" && !Array.isArray(body.lead) ? body.lead : {};
     const leadToken = String(body.lead_token || "").trim();
     const messages = Array.isArray(body.messages) ? body.messages.slice(-32) : [];
     const conversationId = String(body.conversation_id || "").trim();
+    const fieldLimits = {
+      name: 120, phone: 40, email: 254, service: 120, location: 180,
+      property_type: 120, size: 120, surface: 120, condition: 500,
+      timing: 200, question: 3000
+    };
+    for (const [field, limit] of Object.entries(fieldLimits)) {
+      if (lead[field] !== undefined && lead[field] !== null && String(lead[field]).length > limit) {
+        return json({ error: "Lead request contains an oversized field.", handoff_state: "HANDOFF_FAILED" }, 413);
+      }
+    }
+    if (leadToken.length > 4000 || conversationId.length > 160 || messages.length > 32) {
+      return json({ error: "Lead request is too large.", handoff_state: "HANDOFF_FAILED" }, 413);
+    }
 
     const name = String(lead.name || "").trim();
     const phone = String(lead.phone || "").trim();
