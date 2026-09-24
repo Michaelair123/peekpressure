@@ -42,8 +42,16 @@ function checkLucyRateLimit(request) {
   return { allowed: true, retryAfter: 0 };
 }
 
+function normalizePreAiAbuseText(text) {
+  return String(text || "")
+    .normalize("NFKC")
+    .replace(/[\\u200B-\\u200D\\u2060\\uFEFF]/g, "")
+    .replace(/[\\u00A0\\u1680\\u2000-\\u200A\\u2028\\u2029\\u202F\\u205F\\u3000]/g, " ")
+    .trim();
+}
+
 function looksLikePreAiAbuse(text) {
-  const value = String(text || "").trim();
+  const value = normalizePreAiAbuseText(text);
   if (!value) return false;
   return /(?:ignore\s+(?:all\s+)?previous\s+instructions|reveal\s+(?:the\s+)?system\s+prompt|show\s+(?:me\s+)?(?:your|the)\s+(?:api\s*key|secret|credentials)|(?:api\s*key|access\s*token|password)\s*[:=]|send\s+(?:money|crypto|gift\s*card)|seo\s+(?:services|backlinks)|guest\s+post|link\s+building)/i.test(value);
 }
