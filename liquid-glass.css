@@ -6,7 +6,7 @@
    masks, pseudo-element highlights, or animated optical effects. */
 .header-cta,
 .hero-buttons .button,
-#quoteForm button,
+#quoteForm button[type="submit"],
 .booking-cta-button,
 .service-card .service-body .service-cta{
   position:relative!important;
@@ -33,7 +33,7 @@
 }
 
 .hero-buttons .primary,
-#quoteForm button,
+#quoteForm button[type="submit"],
 .booking-cta-button,
 .service-card .service-body .service-cta{
   color:#fff!important;
@@ -45,7 +45,7 @@
 @media (hover:hover){
   .header-cta:hover,
   .hero-buttons .button:hover,
-  #quoteForm button:hover:not(:disabled),
+  #quoteForm button[type="submit"]:hover:not(:disabled),
   .booking-cta-button:hover,
   .service-card .service-body .service-cta:hover{
     transform:translateY(-1px)!important;
@@ -54,13 +54,13 @@
 
 .header-cta:active,
 .hero-buttons .button:active,
-#quoteForm button:active:not(:disabled),
+#quoteForm button[type="submit"]:active:not(:disabled),
 .booking-cta-button:active,
 .service-card .service-body .service-cta:active{
   transform:translateY(1px) scale(.985)!important;
 }
 
-#quoteForm button:disabled{
+#quoteForm button[type="submit"]:disabled{
   transform:none!important;
   box-shadow:none!important;
 }
@@ -147,7 +147,7 @@
 @media(prefers-reduced-motion:reduce){
   .header-cta,
   .hero-buttons .button,
-  #quoteForm button,
+  #quoteForm button[type="submit"],
   .booking-cta-button,
   .service-card .service-body .service-cta,
   .mobile-action-bar a,
@@ -409,7 +409,7 @@ body.quote-modal-open{
   opacity:0!important;
   pointer-events:none!important;
 }
-.peek-quote-modal #quoteForm button{
+.peek-quote-modal #quoteForm button[type="submit"]{
   min-height:48px!important;
   margin-top:14px!important;
   font-size:.72rem!important;
