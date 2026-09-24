@@ -272,7 +272,9 @@ PERSONALITY
 - When a customer shows buying intent ("sounds good", "let's do it", "how do I book", "when can you come", "I want to schedule"), recognize it and move directly toward booking or collecting the remaining details.
 - When the customer is price-sensitive, acknowledge the concern, explain the preliminary estimate clearly, and offer a smaller scope or the authorized courtesy discount when applicable. Never pressure or manufacture urgency.
 - When all required lead details are collected, stop asking unnecessary questions and move toward owner review/booking.
-- PROPERTY ADDRESS CONFIRMATION: For a quote lead, "location" means the property/job address or at minimum the specific property location needed to identify where the work will occur. Before setting lead_ready to true, explicitly confirm the property address/location with the customer. This confirmation is required for a qualified/final handoff, not for an emergency-safe partial contact capture. If a real customer has already provided a usable name plus phone or email, preserve that contact information and allow the partial lead capture flow to continue even while the address is still being confirmed. Repeat the address naturally and ask a yes/no confirmation, e.g. "Just to confirm, is the property address 123 Main St, Hayward, CA 94541?" Do not treat the customer's first mention of an address as confirmed. If the customer corrects it, update the location and ask for confirmation again. A city alone is not a property-address confirmation when an exact property address is available/needed. Once the customer confirms the address, retain the confirmed address in location and continue to the contact confirmation/handoff step.
+- PROPERTY ADDRESS CONFIRMATION: For a single-property quote lead, "location" means the property/job address and it must be explicitly confirmed before lead_ready becomes true. Do not treat the customer's first mention of an address as confirmed; ask a simple yes/no confirmation and update it if corrected.
+- MULTI-PROPERTY / PORTFOLIO EXCEPTION: Do NOT force a full street address when the customer clearly describes a commercial portfolio, multiple properties/sites, or a contract covering multiple locations. A portfolio request is a different lead shape: capture the portfolio count if given, the city/market if given, the cleaning scope, contract/recurring intent, and a usable contact. If the customer says there are many properties or asks for the team to email/call them, stop asking for an individual property address. Explain that they do not need to enter every address in chat and ask for their name plus best phone or email. For a multi-property portfolio, a confirmed city/market such as "San Francisco, CA" is sufficient location context for the initial handoff; the team can collect the property list and individual site addresses during follow-up. Never invent a property count, site list, or address.
+- PARTIAL LEADS: A usable name plus phone or email is enough to capture a partial lead when the customer is ready to hand off, even if additional site details are still pending. Never lose a real lead because one nonessential field is missing.
 - Use a simple close: answer → reassure → next step. Keep it conversational and never manipulative.
 - If the customer is casual, Lucy can be a little casual back. If they're formal, Lucy stays polished.
 - Never sound like a form, scripted sales bot, or call center.
@@ -943,6 +945,8 @@ Set lead_ready to true ONLY when:
 - the customer has clearly expressed a real cleaning need,
 - enough job information exists to understand the basic scope (at minimum service + location/general property context),
 - AND the customer has provided a usable name plus either phone or email.
+For a single-property request, the property address must also be explicitly confirmed.
+For a clearly identified multi-property/portfolio request, a confirmed city/market is sufficient for the initial handoff; do not require a single street address when the customer has explained that the work covers multiple sites.
 When lead_ready becomes true:
 - Give the customer a concise summary of what you understood.
 - Tell them PEEK PRESSURE can review the request and follow up.
@@ -1131,8 +1135,66 @@ function deriveConversationState(result, safeMessages, addressConfirmed = false)
   };
 }
 
+
+function detectCommercialPortfolioSignals(safeMessages) {
+  const allText = safeMessages
+    .filter(message => message.role === "user")
+    .map(message => String(message.content || ""))
+    .join(" ");
+
+  const multipleMatch = allText.match(/\b(\d{1,5})\s+(?:properties|sites|locations|buildings)\b/i);
+  const multipleProperties = Boolean(
+    multipleMatch ||
+    /\b(?:multiple|several|many|portfolio|portfolio-wide|all\s+(?:of\s+)?(?:the\s+)?(?:properties|sites|locations|buildings)|multi[- ]property)\b/i.test(allText)
+  );
+
+  const city =
+    /\bsan\s+francisco\b/i.test(allText) ? "San Francisco, CA" :
+    /\boakland\b/i.test(allText) ? "Oakland, CA" :
+    /\bsan\s+mateo\b/i.test(allText) ? "San Mateo, CA" :
+    /\bburlingame\b/i.test(allText) ? "Burlingame, CA" :
+    /\bhayward\b/i.test(allText) ? "Hayward, CA" :
+    null;
+
+  const count = multipleMatch ? Number(multipleMatch[1]) : null;
+  const contract = /\b(contract|recurring|ongoing|maintenance plan|maintenance contract|regular service|routine service|monthly|quarterly|weekly|biweekly)\b/i.test(allText);
+  const commercial = /\b(commercial|property manager|property management|portfolio|office|retail|industrial|multifamily|apartment|apartments|hoa)\b/i.test(allText);
+  const emailFollowup = /\b(?:email|e-mail)\b.{0,40}\b(?:me|us|them|team|someone)\b|\b(?:have|ask)\b.{0,20}\b(?:them|someone|the team)\b.{0,20}\bemail\b/i.test(allText);
+
+  return { multipleProperties, count, city, contract, commercial, emailFollowup };
+}
+
 function applyConversationFlow(result, safeMessages, addressConfirmed) {
   const signals = detectLucyConversationSignals(safeMessages);
+  const portfolio = detectCommercialPortfolioSignals(safeMessages);
+
+  if (portfolio.multipleProperties) {
+    if (!result.location && portfolio.city) result.location = portfolio.city;
+    if (!result.property_type && (portfolio.commercial || signals.recurring)) result.property_type = "commercial property portfolio";
+    if (portfolio.contract || signals.recurring) result.timing = "recurring service / contract";
+
+    const portfolioScope = [
+      portfolio.count ? `${portfolio.count} properties` : "multiple properties",
+      portfolio.city || result.location || null,
+      result.surface || null
+    ].filter(Boolean).join("; ");
+
+    if (portfolioScope) {
+      result.question = [String(result.question || "").trim(), `Portfolio request: ${portfolioScope}`]
+        .filter(Boolean)
+        .join(" — ");
+    }
+
+    const wantsEmailFollowup = portfolio.emailFollowup || signals.humanRequested || signals.delegatesSiteReview;
+    const hasContact = Boolean(
+      String(result.name || "").trim() &&
+      (isUsablePhone(result.phone) || isUsableEmail(result.email))
+    );
+
+    if (!hasContact && wantsEmailFollowup) {
+      result.reply = "Absolutely. You don't need to enter 50 addresses here. I can pass the portfolio request to the team for review. What's your name and the best email for the follow-up?";
+    }
+  }
 
   if (signals.recurring && !result.timing) {
     result.timing = "recurring service / contract";
@@ -1252,14 +1314,19 @@ function enforceLeadSafety(result, safeMessages) {
     })
   );
 
-  const addressConfirmed = !addressCorrection && (propertyAddressConfirmed || confirmedAddressMatchesCurrent);
+  const portfolio = detectCommercialPortfolioSignals(safeMessages);
+  const addressConfirmed = !addressCorrection && (
+    propertyAddressConfirmed ||
+    confirmedAddressMatchesCurrent ||
+    (portfolio.multipleProperties && Boolean(location))
+  );
   const hasStreetAddress = /\b\d{1,6}\s+[A-Za-z0-9.'-]+(?:\s+[A-Za-z0-9.'-]+){0,5}\s+(?:St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ct|Court|Ln|Lane|Way|Pl|Place|Pkwy|Parkway|Hwy|Highway)\b/i.test(location);
 
   if (!suspicious && result.lead_status !== "spam" && addressCorrection && location && hasStreetAddress) {
     result.reply = `Got it — thanks for catching that. Just to confirm, is the property address ${location}?`;
   } else if (!suspicious && result.lead_status !== "spam" && location && hasStreetAddress && !addressConfirmed) {
     result.reply = `Just to confirm, is the property address ${location}? Please reply yes if that's correct, or send me the corrected address.`;
-  } else if (!suspicious && result.lead_status !== "spam" && !hasStreetAddress && service && location) {
+  } else if (!suspicious && result.lead_status !== "spam" && !hasStreetAddress && service && location && !portfolio.multipleProperties) {
     result.reply = `What’s the full property address for the job? I’ll confirm it with you before sending your request to PEEK PRESSURE.`;
   }
 
@@ -1270,6 +1337,14 @@ function enforceLeadSafety(result, safeMessages) {
   result.email = email || null;
 
   const flowSignals = applyConversationFlow(result, safeMessages, addressConfirmed);
+  const portfolioAfterFlow = detectCommercialPortfolioSignals(safeMessages);
+
+  if (portfolioAfterFlow.multipleProperties && !usableContact && !suspicious && result.lead_status !== "spam") {
+    const wantsEmailFollowup = portfolioAfterFlow.emailFollowup || flowSignals.humanRequested || flowSignals.delegatesSiteReview;
+    if (wantsEmailFollowup) {
+      result.reply = "Absolutely. We can handle the 50-property scope without collecting 50 addresses in chat. What's your name and best email so I can pass the portfolio request to the team?";
+    }
+  }
 
   if (suspicious || result.lead_status === "spam") {
     result.lead_ready = false;
