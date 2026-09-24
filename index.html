@@ -183,8 +183,43 @@ body.peek-side-menu-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.peek-side-menu-panel,.peek-menu-toggle span{transition:none}}
 </style>
 
-  <link rel="stylesheet" href="style.css?v=20260924-1" fetchpriority="high">
-  <link rel="stylesheet" href="liquid-glass.css?v=20260924-1">
+  <!-- Critical above-the-fold CSS stays inline; full styling is preloaded and applied after first paint. -->
+  <style id="peek-critical-css">
+    :root{--peek-ink:#151515;--page-padding:clamp(1rem,4vw,4rem);--content-width:1240px}
+    *{box-sizing:border-box}
+    html{font-size:16px;scroll-behavior:smooth;scroll-padding-top:80px}
+    body{margin:0;font-family:Inter,Arial,sans-serif;overflow-x:hidden;background:#fff;color:var(--peek-ink);-webkit-font-smoothing:antialiased}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(calc(100% - (var(--page-padding)*2)),var(--content-width));margin-inline:auto}
+    .header{position:fixed;inset:0 0 auto;z-index:100;padding-block:.9rem;background:#fff;border-bottom:1px solid rgba(0,0,0,.06)}
+    .header-inner{display:flex;align-items:center;min-height:2.75rem;gap:clamp(.5rem,2vw,2rem)}
+    .logo{flex-shrink:0;color:#111;font-size:clamp(.82rem,1.1vw,1rem);font-weight:800;letter-spacing:-.075em}
+    .logo span{margin-left:.25rem;color:#888;font-weight:400}
+    .header nav{display:flex;align-items:center;gap:clamp(1rem,2vw,1.8rem);margin-left:auto}
+    .header nav a,.header-phone{color:#666;font-size:.58rem;font-weight:600}
+    .header-cta{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;padding:.65rem 1rem;border:1px solid #d4d4d4;border-radius:999px;background:#fff;color:#111;font-size:.58rem;font-weight:700}
+    .hero{display:flex;align-items:center;position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#fafafa 100%);padding-top:clamp(7.5rem,11vw,9.5rem);padding-bottom:clamp(4rem,6vw,5.5rem)}
+    .hero-copy{max-width:1080px}
+    .eyebrow,.label{color:#777;font-size:.58rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase}
+    .hero-copy h1{color:#111;font-weight:800;position:relative;max-width:980px;margin:1.5rem 0 0;letter-spacing:-.105em;font-size:clamp(4rem,8.5vw,8.5rem);line-height:.8}
+    .hero-copy>p{color:#666;font-size:clamp(.75rem,.95vw,.9rem);line-height:1.7;margin:1.6rem 0 0;max-width:680px}
+    .hero-buttons{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.35rem}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:2.85rem;padding-inline:1.25rem;border-radius:999px;font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    @media(max-width:700px){
+      .container{width:calc(100% - 2rem)}
+      .header-inner{width:calc(100% - 1rem);min-width:0}
+      .header nav{display:none}
+      .header-phone{display:inline-flex;margin-left:auto;white-space:nowrap;font-size:.48rem}
+      .hero{padding-top:6.8rem;padding-bottom:4rem}
+      .hero-copy h1{font-size:clamp(2.85rem,14.6vw,4.35rem);line-height:.86}
+      .hero-copy>p{font-size:.79rem}
+      .hero-buttons{gap:.5rem}
+      .hero-buttons .button{min-height:3.15rem}
+    }
+  </style>
+  <link rel="preload" as="style" href="style.css?v=20260924-2" id="peek-full-style">
+  <link rel="preload" as="style" href="liquid-glass.css?v=20260924-2" id="peek-glass-style">
 
 <style id="peek-calendly-modal-styles">
 body.peek-calendly-open{overflow:hidden}
@@ -229,6 +264,18 @@ body.peek-calendly-open{overflow:hidden}
 
 
 
+<script>
+  (() => {
+    const applyDeferredStyles = () => {
+      for (const id of ['peek-full-style','peek-glass-style']) {
+        const link = document.getElementById(id);
+        if (link && link.rel === 'preload') link.rel = 'stylesheet';
+      }
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyDeferredStyles, {once:true});
+    else applyDeferredStyles();
+  })();
+</script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -319,7 +366,7 @@ body.peek-calendly-open{overflow:hidden}
               <img
                 src="https://images.unsplash.com/photo-1639367900693-66e4ac4a5ccb?auto=format&fit=crop&fm=jpg&q=72&w=1000"
                 alt="San Francisco Chinatown sidewalk and street"
-                loading="lazy" decoding="async"
+                loading="lazy" decoding="async" width="1000" height="667" fetchpriority="low" sizes="(max-width: 700px) 100vw, 33vw" srcset="https://images.unsplash.com/photo-1639367900693-66e4ac4a5ccb?auto=format&fit=crop&fm=webp&q=70&w=700 700w, https://images.unsplash.com/photo-1639367900693-66e4ac4a5ccb?auto=format&fit=crop&fm=webp&q=72&w=1000 1000w"
               >
               <a class="service-image-credit" href="https://unsplash.com/photos/a-city-street-at-night-with-cars-parked-on-the-side-of-the-street-yiUoPqOj5m8" target="_blank" rel="noopener noreferrer">Photo: Annie Spratt / Unsplash</a>
             </div>
@@ -335,7 +382,7 @@ body.peek-calendly-open{overflow:hidden}
               <img
                 src="https://commons.wikimedia.org/wiki/Special:FilePath/333%20Bush%20St.%2C%20SF%20front%20from%20street%20level%202.JPG?width=1000"
                 alt="333 Bush Street in San Francisco"
-                loading="lazy" decoding="async"
+                loading="lazy" decoding="async" width="1000" height="667" fetchpriority="low" sizes="(max-width: 700px) 100vw, 33vw"
               >
               <a class="service-image-credit" href="https://commons.wikimedia.org/wiki/File:333_Bush_St.,_SF_main_entrance.JPG" target="_blank" rel="noopener noreferrer">Photo: BrokenSphere / Wikimedia Commons · CC BY-SA 3.0</a>
             </div>
