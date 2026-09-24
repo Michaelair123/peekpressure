@@ -1093,3 +1093,13 @@ main>form#quoteForm input,main>form#quoteForm select,main>form#quoteForm textare
     contain-intrinsic-size:800px;
   }
 }
+
+/* Mobile performance: pause decorative motion that consumes compositor/main-thread budget. */
+@media (max-width:700px){
+  *,*::before,*::after{
+    animation-duration:0.001ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:0.001ms!important;
+    scroll-behavior:auto!important;
+  }
+}
