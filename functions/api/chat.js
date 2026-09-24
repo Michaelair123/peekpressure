@@ -112,8 +112,8 @@ function isTransientOpenAIStatus(status) {
 
 async function callOpenAI(body, requestId) {
   let lastError = null;
-  const primaryModel = body.primaryModel || LUCY_PRIMARY_MODEL;
-  const fallbackModel = body.fallbackModel || LUCY_FALLBACK_MODEL;
+  const primaryModel = LUCY_PRIMARY_MODEL;
+  const fallbackModel = LUCY_FALLBACK_MODEL;
 
   for (let attempt = 0; attempt <= LUCY_MAX_RETRIES; attempt++) {
     const model = attempt === 0 ? primaryModel : fallbackModel;
@@ -1570,7 +1570,18 @@ async function handleLucyRequest({ request, env }) {
   lucyInFlight += 1;
 
   try {
+    const contentLength = Number(request.headers.get("Content-Length") || 0);
+    if (Number.isFinite(contentLength) && contentLength > 3000000) {
+      return Response.json({ error: "That request is too large." }, { status: 413, headers: cors });
+    }
+    const contentType = String(request.headers.get("Content-Type") || "").toLowerCase();
+    if (!contentType.startsWith("application/json")) {
+      return Response.json({ error: "JSON requests only." }, { status: 415, headers: cors });
+    }
     const body = await request.json();
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return Response.json({ error: "Invalid chat request." }, { status: 400, headers: cors });
+    }
     const messages = Array.isArray(body.messages) ? body.messages.slice(-24) : [];
     const requestedTimezone = typeof body.timezone === "string" ? body.timezone.trim() : "";
     let customerTimezone = "America/Los_Angeles";
@@ -1633,6 +1644,10 @@ async function handleLucyRequest({ request, env }) {
 
     if (!safeMessages.length) {
       return Response.json({ error: "No valid messages supplied." }, { status: 400, headers: cors });
+    }
+
+    if (safeMessages.filter(message => message.role === "user").length > 16) {
+      return Response.json({ error: "That conversation is too long. Please start a new chat." }, { status: 413, headers: cors });
     }
 
     const serializedInputSize = JSON.stringify(safeMessages).length;
