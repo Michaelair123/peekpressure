@@ -1,0 +1,66 @@
+name: Nightly PEEK PRESSURE Guardian
+
+on:
+  schedule:
+    - cron: "31 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  guardian:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run repository safety checks
+        id: safety
+        continue-on-error: true
+        run: |
+          set +e
+          node --version
+          test -f AGENTS.md
+          test -f .github/agents/lucy-guardian.md
+          test -f .github/agents/site-guardian.md
+          echo "agent_policies=present" >> "$GITHUB_OUTPUT"
+
+      - name: Run existing production validation
+        id: production
+        continue-on-error: true
+        run: |
+          set +e
+          for f in worker.js faq-data.js functions/api/[[path]].js functions/api/chat.js functions/api/faq.js functions/api/competitive-review.js scripts/lucy-stress-test.mjs; do
+            if [ -f "$f" ]; then cat "$f" | node --input-type=module --check || exit 1; fi
+          done
+
+      - name: Create guardian report issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SAFETY: ${{ steps.safety.outcome }}
+          PRODUCTION: ${{ steps.production.outcome }}
+        run: |
+          set -euo pipefail
+          title="Guardian report — $(date -u +%Y-%m-%d)"
+          body=$(cat <<EOF
+          ## PEEK PRESSURE Guardian report
+
+          Generated: $(date -u +"%Y-%m-%d %H:%M UTC")
+
+          ### Agent policy files
+          - Status: $SAFETY
+
+          ### Repository production validation
+          - Status: $PRODUCTION
+
+          ### Operating rule
+          This workflow is a review/monitoring gate. It does not directly rewrite production code.
+
+          Autonomous implementation should only be enabled behind a dedicated coding-agent runner with repository-scoped credentials, PR creation, tests, and the Lucy's Guardian gate.
+          EOF
+          )
+          gh issue create --title "$title" --body "$body" --label "guardian" 2>/dev/null || gh issue create --title "$title" --body "$body"
