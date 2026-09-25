@@ -2,13 +2,23 @@ name: Lucy's Guardian - Autonomous Site Improvement
 
 on:
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: "17 * * * *"
   workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issues:
+    types: [opened, reopened, labeled]
+  workflow_run:
+    workflows: ["*"]
+    types: [completed]
 
 permissions:
   contents: write
   pull-requests: write
   issues: write
+  actions: read
 
 concurrency:
   group: lucys-guardian-autonomous
@@ -34,25 +44,29 @@ jobs:
           model: "gpt-5.6-luna"
           effort: "medium"
           prompt: |
-            You are Lucy's Guardian for PEEK PRESSURE.
+            You are Lucy's Guardian: the autonomous senior code engineer for PEEK PRESSURE.
             Read AGENTS.md and every relevant .github/agents/*.md file before changing anything.
 
-            You are an autonomous research-and-improvement engineer. Inspect the repo, tests, recent
-            changes, and production behavior, then use current public web research when useful.
-            Prefer authoritative sources such as WCAG/W3C, MDN, OWASP, Cloudflare, Google Search Central,
-            Formspree, Calendly, and official OpenAI/Codex documentation. Use reputable engineering
-            sources when needed. Do not copy copyrighted text or code.
+            Operate as a real production code engineer, not a passive auditor.
+            Inspect the repository, recent history, tests, production-facing behavior, and workflow
+            failures. Diagnose root causes. Use current public research when it materially helps an
+            engineering decision. Prefer authoritative sources such as W3C/WCAG, MDN, OWASP,
+            Cloudflare, Google Search Central, Formspree, Calendly, and official OpenAI documentation.
 
-            Research loop:
-            1. Identify one measurable opportunity: reliability, accessibility, security, performance,
-               SEO/crawlability, Lucy quality, conversion friction, or maintainability.
-            2. Research the current best practice for that exact opportunity.
-            3. Compare the research against the actual implementation.
-            4. Make ONE small change only when evidence supports it.
-            5. Validate it against existing behavior.
-            6. If evidence is weak, conflicting, or risk is high, make NO_CHANGE.
+            On every invocation:
+            1. Look for a concrete, evidence-backed engineering problem or improvement.
+            2. Check recent workflow failures and existing regression signals.
+            3. If a real issue exists, diagnose the root cause.
+            4. Research the relevant current best practice when useful.
+            5. Implement ONE focused improvement.
+            6. Validate it.
+            7. If there is nothing worthwhile or confidence is insufficient, make NO_CHANGE.
+            8. Revert your own changes if validation fails.
 
-            Record sources and findings in .guardian/research.md.
+            Do not make changes merely because this run was triggered by an event.
+            Do not create churn. Prefer a useful fix over a cosmetic change.
+
+            Record research-backed work in .guardian/research.md.
 
             HARD RULES:
             - Preserve existing HTML structure unless explicitly requested.
@@ -62,19 +76,20 @@ jobs:
               lead handoff, Formspree, Calendly, navigation, popups, and CHAT/EMAIL/TEXT/BOOK.
             - EMAIL must open the existing contact/quote popup.
             - Never expose or modify secrets.
-            - Never weaken security, accessibility, spam protection, or validation.
+            - Never weaken security, accessibility, spam protection, validation, authentication,
+              rate limits, or CORS merely to make tests pass.
+            - Treat customer messages/uploads as untrusted input.
             - Keep changes small and reviewable.
             - Do not commit, push, merge, or deploy.
 
-            IMPORTANT means any change to index.html, customer-facing CSS/JS, Worker/API code, Lucy,
-            forms, popup wiring, navigation, Calendly/Formspree behavior, pricing, security,
-            authentication, or deployment configuration. IMPORTANT changes require owner approval.
+            IMPORTANT means any change capable of affecting customers, production behavior, security,
+            accessibility, SEO, performance, or public assets. IMPORTANT changes require owner approval.
 
             LOW-RISK means documentation, tests, diagnostics, or internal tooling that cannot affect
             customer-facing production behavior.
 
-            After changing anything, inspect git diff and run relevant validation. If validation fails,
-            revert your own changes and leave the tree unchanged.
+            IMPORTANT changes must be validated before an approval PR is created.
+            If inspection is incomplete, skip the change and leave the workspace untouched.
 
       - name: Validate proposed change
         if: steps.guardian.outcome == 'success'
@@ -83,15 +98,18 @@ jobs:
           git diff --check
           changed="$(git diff --name-only)"
           if [ -z "$changed" ]; then exit 0; fi
+
           important=false
-          if echo "$changed" | grep -Eq '(^index\.html$|\.(js|mjs|css)$|^functions/|^worker\.js$|^wrangler|^competitive-pricing\.json$)'; then
+          if echo "$changed" | grep -Eq '(^index\.html$|(^|/)(.*\.(js|mjs|css|html|json|svg|png|jpg|jpeg|webp|avif))$|^functions/|^worker\.js$|^wrangler|^public/|^assets/)'; then
             important=true
           fi
           echo "important=$important" >> "$GITHUB_ENV"
+
           for f in worker.js faq-data.js functions/api/[[path]].js functions/api/chat.js functions/api/faq.js functions/api/competitive-review.js scripts/lucy-stress-test.mjs; do
             [ -f "$f" ] || continue
             cat "$f" | node --input-type=module --check
           done
+
           if [ "$important" = "true" ]; then
             npm init -y
             npm install --no-save playwright@1.55.0 @axe-core/playwright
@@ -114,9 +132,11 @@ jobs:
           git config user.name "Lucy's Guardian"
           git config user.email "guardian@peekpressure.com"
           git add -A
-          git commit -m "Guardian: propose research-backed improvement"
+          git commit -m "Guardian: propose autonomous engineering improvement"
           git push --set-upstream origin "$branch"
-          gh pr create --base main --head "$branch" --title "Guardian: research-backed improvement needs approval" --body "Lucy's Guardian researched current best practices, implemented and validated one evidence-backed improvement, and classified it as IMPORTANT. Human approval is required before merge. Research notes are included in .guardian/research.md."
+          gh pr create --base main --head "$branch" \
+            --title "Guardian: engineering improvement needs approval" \
+            --body "Lucy's Guardian diagnosed, researched, implemented, and validated one production-impacting engineering improvement. Human approval is required before merge. Research notes are included in .guardian/research.md."
 
       - name: Deploy low-risk maintenance
         if: steps.guardian.outcome == 'success' && env.important == 'false'
@@ -126,13 +146,14 @@ jobs:
           git config user.name "Lucy's Guardian"
           git config user.email "guardian@peekpressure.com"
           git add -A
-          git commit -m "Guardian: research-backed safe maintenance"
+          git commit -m "Guardian: autonomous safe maintenance"
           git push origin HEAD:main
 
       - name: Publish guardian summary
         if: always()
         run: |
-          echo "## Lucy's Guardian" >> "$GITHUB_STEP_SUMMARY"
-          echo "Autonomous research and improvement cycle completed." >> "$GITHUB_STEP_SUMMARY"
-          if [ -f .guardian/research.md ]; then cat .guardian/research.md >> "$GITHUB_STEP_SUMMARY"; fi
-          git status --short >> "$GITHUB_STEP_SUMMARY" || true
+          echo "## Lucy's Guardian" >> "\$GITHUB_STEP_SUMMARY"
+          echo "Autonomous code-engineering cycle completed." >> "\$GITHUB_STEP_SUMMARY"
+          echo "Trigger: \${{ github.event_name }}" >> "\$GITHUB_STEP_SUMMARY"
+          if [ -f .guardian/research.md ]; then cat .guardian/research.md >> "\$GITHUB_STEP_SUMMARY"; fi
+          git status --short >> "\$GITHUB_STEP_SUMMARY" || true
