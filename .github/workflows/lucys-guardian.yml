@@ -28,7 +28,7 @@ jobs:
         id: guardian
         uses: openai/codex-action@v1
         with:
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          openai-api-key: \${{ secrets.OPENAI_API_KEY }}
           permission-profile: ":workspace"
           safety-strategy: "drop-sudo"
           model: "gpt-5.6-luna"
@@ -37,8 +37,22 @@ jobs:
             You are Lucy's Guardian for PEEK PRESSURE.
             Read AGENTS.md and every relevant .github/agents/*.md file before changing anything.
 
-            Inspect the current repository, recent history, existing tests, and production-facing code.
-            Find ONE concrete improvement or repair justified by evidence. If none is safe, make NO changes.
+            You are an autonomous research-and-improvement engineer. Inspect the repo, tests, recent
+            changes, and production behavior, then use current public web research when useful.
+            Prefer authoritative sources such as WCAG/W3C, MDN, OWASP, Cloudflare, Google Search Central,
+            Formspree, Calendly, and official OpenAI/Codex documentation. Use reputable engineering
+            sources when needed. Do not copy copyrighted text or code.
+
+            Research loop:
+            1. Identify one measurable opportunity: reliability, accessibility, security, performance,
+               SEO/crawlability, Lucy quality, conversion friction, or maintainability.
+            2. Research the current best practice for that exact opportunity.
+            3. Compare the research against the actual implementation.
+            4. Make ONE small change only when evidence supports it.
+            5. Validate it against existing behavior.
+            6. If evidence is weak, conflicting, or risk is high, make NO_CHANGE.
+
+            Record sources and findings in .guardian/research.md.
 
             HARD RULES:
             - Preserve existing HTML structure unless explicitly requested.
@@ -50,7 +64,7 @@ jobs:
             - Never expose or modify secrets.
             - Never weaken security, accessibility, spam protection, or validation.
             - Keep changes small and reviewable.
-            - Do not commit, push, merge, or deploy. Leave only proposed changes in the workspace.
+            - Do not commit, push, merge, or deploy.
 
             IMPORTANT means any change to index.html, customer-facing CSS/JS, Worker/API code, Lucy,
             forms, popup wiring, navigation, Calendly/Formspree behavior, pricing, security,
@@ -69,18 +83,15 @@ jobs:
           git diff --check
           changed="$(git diff --name-only)"
           if [ -z "$changed" ]; then exit 0; fi
-
           important=false
           if echo "$changed" | grep -Eq '(^index\.html$|\.(js|mjs|css)$|^functions/|^worker\.js$|^wrangler|^competitive-pricing\.json$)'; then
             important=true
           fi
           echo "important=$important" >> "$GITHUB_ENV"
-
           for f in worker.js faq-data.js functions/api/[[path]].js functions/api/chat.js functions/api/faq.js functions/api/competitive-review.js scripts/lucy-stress-test.mjs; do
             [ -f "$f" ] || continue
             cat "$f" | node --input-type=module --check
           done
-
           if [ "$important" = "true" ]; then
             npm init -y
             npm install --no-save playwright@1.55.0 @axe-core/playwright
@@ -94,7 +105,7 @@ jobs:
       - name: Create owner-approval PR for important changes
         if: steps.guardian.outcome == 'success' && env.important == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: \${{ github.token }}
         run: |
           set -euo pipefail
           if [ -z "$(git diff --name-only)" ]; then exit 0; fi
@@ -103,9 +114,9 @@ jobs:
           git config user.name "Lucy's Guardian"
           git config user.email "guardian@peekpressure.com"
           git add -A
-          git commit -m "Guardian: propose safe site improvement"
+          git commit -m "Guardian: propose research-backed improvement"
           git push --set-upstream origin "$branch"
-          gh pr create --base main --head "$branch"             --title "Guardian: owner approval required"             --body "Lucy's Guardian found and validated an IMPORTANT production-facing improvement. Human approval is required before merge. The Guardian did not deploy this change."
+          gh pr create --base main --head "$branch" --title "Guardian: research-backed improvement needs approval" --body "Lucy's Guardian researched current best practices, implemented and validated one evidence-backed improvement, and classified it as IMPORTANT. Human approval is required before merge. Research notes are included in .guardian/research.md."
 
       - name: Deploy low-risk maintenance
         if: steps.guardian.outcome == 'success' && env.important == 'false'
@@ -115,12 +126,13 @@ jobs:
           git config user.name "Lucy's Guardian"
           git config user.email "guardian@peekpressure.com"
           git add -A
-          git commit -m "Guardian: safe maintenance"
+          git commit -m "Guardian: research-backed safe maintenance"
           git push origin HEAD:main
 
       - name: Publish guardian summary
         if: always()
         run: |
           echo "## Lucy's Guardian" >> "$GITHUB_STEP_SUMMARY"
-          echo "Autonomous review completed." >> "$GITHUB_STEP_SUMMARY"
+          echo "Autonomous research and improvement cycle completed." >> "$GITHUB_STEP_SUMMARY"
+          if [ -f .guardian/research.md ]; then cat .guardian/research.md >> "$GITHUB_STEP_SUMMARY"; fi
           git status --short >> "$GITHUB_STEP_SUMMARY" || true
