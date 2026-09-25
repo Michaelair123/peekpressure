@@ -38,7 +38,7 @@ jobs:
         id: guardian
         uses: openai/codex-action@v1
         with:
-          openai-api-key: \${{ secrets.OPENAI_API_KEY }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           permission-profile: ":workspace"
           safety-strategy: "drop-sudo"
           model: "gpt-5.6-luna"
@@ -123,7 +123,7 @@ jobs:
       - name: Create owner-approval PR for important changes
         if: steps.guardian.outcome == 'success' && env.important == 'true'
         env:
-          GH_TOKEN: \${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           if [ -z "$(git diff --name-only)" ]; then exit 0; fi
@@ -154,6 +154,6 @@ jobs:
         run: |
           echo "## Lucy's Guardian" >> "\$GITHUB_STEP_SUMMARY"
           echo "Autonomous code-engineering cycle completed." >> "\$GITHUB_STEP_SUMMARY"
-          echo "Trigger: \${{ github.event_name }}" >> "\$GITHUB_STEP_SUMMARY"
+          echo "Trigger: ${{ github.event_name }}" >> "\$GITHUB_STEP_SUMMARY"
           if [ -f .guardian/research.md ]; then cat .guardian/research.md >> "\$GITHUB_STEP_SUMMARY"; fi
           git status --short >> "\$GITHUB_STEP_SUMMARY" || true
