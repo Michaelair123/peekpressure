@@ -1,0 +1,126 @@
+name: Lucy's Guardian - Autonomous Site Improvement
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: lucys-guardian-autonomous
+  cancel-in-progress: false
+
+jobs:
+  improve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout production
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Run Lucy's Guardian
+        id: guardian
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          permission-profile: ":workspace"
+          safety-strategy: "drop-sudo"
+          model: "gpt-5.6-luna"
+          effort: "medium"
+          prompt: |
+            You are Lucy's Guardian for PEEK PRESSURE.
+            Read AGENTS.md and every relevant .github/agents/*.md file before changing anything.
+
+            Inspect the current repository, recent history, existing tests, and production-facing code.
+            Find ONE concrete improvement or repair justified by evidence. If none is safe, make NO changes.
+
+            HARD RULES:
+            - Preserve existing HTML structure unless explicitly requested.
+            - No unsolicited redesigns, glossy/glass effects, animations, or gimmicks.
+            - Do not change Lucy business rules.
+            - Protect $200 minimum, ground-level patios only, no ladder work, partial lead capture,
+              lead handoff, Formspree, Calendly, navigation, popups, and CHAT/EMAIL/TEXT/BOOK.
+            - EMAIL must open the existing contact/quote popup.
+            - Never expose or modify secrets.
+            - Never weaken security, accessibility, spam protection, or validation.
+            - Keep changes small and reviewable.
+            - Do not commit, push, merge, or deploy. Leave only proposed changes in the workspace.
+
+            IMPORTANT means any change to index.html, customer-facing CSS/JS, Worker/API code, Lucy,
+            forms, popup wiring, navigation, Calendly/Formspree behavior, pricing, security,
+            authentication, or deployment configuration. IMPORTANT changes require owner approval.
+
+            LOW-RISK means documentation, tests, diagnostics, or internal tooling that cannot affect
+            customer-facing production behavior.
+
+            After changing anything, inspect git diff and run relevant validation. If validation fails,
+            revert your own changes and leave the tree unchanged.
+
+      - name: Validate proposed change
+        if: steps.guardian.outcome == 'success'
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only)"
+          if [ -z "$changed" ]; then exit 0; fi
+
+          important=false
+          if echo "$changed" | grep -Eq '(^index\.html$|\.(js|mjs|css)$|^functions/|^worker\.js$|^wrangler|^competitive-pricing\.json$)'; then
+            important=true
+          fi
+          echo "important=$important" >> "$GITHUB_ENV"
+
+          for f in worker.js faq-data.js functions/api/[[path]].js functions/api/chat.js functions/api/faq.js functions/api/competitive-review.js scripts/lucy-stress-test.mjs; do
+            [ -f "$f" ] || continue
+            cat "$f" | node --input-type=module --check
+          done
+
+          if [ "$important" = "true" ]; then
+            npm init -y
+            npm install --no-save playwright@1.55.0 @axe-core/playwright
+            npx playwright install --with-deps chromium
+            node scripts/a11y-smoke.mjs
+            CRAWL_URL=https://peekpressure.com/ TIMEOUT_MS=20000 node scripts/visual-regression.mjs
+            CRAWL_URL=https://peekpressure.com/ MAX_PAGES=10 TIMEOUT_MS=20000 node scripts/site-crawler.mjs
+            node scripts/lucy-stress-test.mjs
+          fi
+
+      - name: Create owner-approval PR for important changes
+        if: steps.guardian.outcome == 'success' && env.important == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ -z "$(git diff --name-only)" ]; then exit 0; fi
+          branch="guardian/$(date -u +%Y%m%d-%H%M%S)"
+          git checkout -b "$branch"
+          git config user.name "Lucy's Guardian"
+          git config user.email "guardian@peekpressure.com"
+          git add -A
+          git commit -m "Guardian: propose safe site improvement"
+          git push --set-upstream origin "$branch"
+          gh pr create --base main --head "$branch"             --title "Guardian: owner approval required"             --body "Lucy's Guardian found and validated an IMPORTANT production-facing improvement. Human approval is required before merge. The Guardian did not deploy this change."
+
+      - name: Deploy low-risk maintenance
+        if: steps.guardian.outcome == 'success' && env.important == 'false'
+        run: |
+          set -euo pipefail
+          if [ -z "$(git diff --name-only)" ]; then exit 0; fi
+          git config user.name "Lucy's Guardian"
+          git config user.email "guardian@peekpressure.com"
+          git add -A
+          git commit -m "Guardian: safe maintenance"
+          git push origin HEAD:main
+
+      - name: Publish guardian summary
+        if: always()
+        run: |
+          echo "## Lucy's Guardian" >> "$GITHUB_STEP_SUMMARY"
+          echo "Autonomous review completed." >> "$GITHUB_STEP_SUMMARY"
+          git status --short >> "$GITHUB_STEP_SUMMARY" || true
