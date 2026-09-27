@@ -117,8 +117,8 @@ function extractMemoryContactValues(messages) {
     return "";
   }).join(" ");
 
-  const emails = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}/gi) || [];
-  const phones = text.match(/(?:\\+?1[\\s.-]?)?(?:\\(?\\d{3}\\)?[\\s.-]?)\\d{3}[\\s.-]\\d{4}/g) || [];
+  const emails = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) || [];
+  const phones = text.match(/(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]\d{4}/g) || [];
   return [...new Set([...emails, ...phones].map(value => String(value).trim()).filter(Boolean))].slice(0, 2);
 }
 
