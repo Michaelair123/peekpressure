@@ -1,6 +1,40 @@
 import { LUCY_FAQ } from "./functions/api/faq.js";
 import { onRequest as handleLucyRequest } from "./functions/api/chat.js";
 import { onRequestPost as handleLead } from "./functions/api/[[path]].js";
+import { LucyMemory } from "./functions/lucy-memory.js";
+
+export { LucyMemory };
+
+function getCookie(request, name) {
+  const header = request.headers.get("Cookie") || "";
+  for (const part of header.split(";")) {
+    const item = part.trim();
+    const separator = item.indexOf("=");
+    if (separator < 0) continue;
+    if (item.slice(0, separator) === name) return decodeURIComponent(item.slice(separator + 1));
+  }
+  return "";
+}
+
+function isValidLucySession(value) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ""));
+}
+
+function attachLucySession(response, sessionId, shouldSetCookie) {
+  const headers = new Headers(response.headers);
+  headers.set("Cache-Control", "no-store");
+  if (shouldSetCookie) {
+    headers.append(
+      "Set-Cookie",
+      "__Host-lucy_session=" + encodeURIComponent(sessionId) + "; Path=/; Max-Age=15552000; HttpOnly; Secure; SameSite=Strict"
+    );
+  }
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
 
 export default {
   async fetch(request, env, ctx) {
@@ -163,7 +197,21 @@ export default {
           if (!allowed) return edgeRateLimitResponse();
         }
       }
-      return withCors(await handleLucyRequest({ request, env, ctx, waitUntil: ctx.waitUntil.bind(ctx) }));
+
+      let lucySessionId = getCookie(request, "__Host-lucy_session");
+      const setLucySession = !isValidLucySession(lucySessionId);
+      if (setLucySession) lucySessionId = crypto.randomUUID();
+
+      const requestHeaders = new Headers(request.headers);
+      requestHeaders.set("X-Lucy-Session-ID", lucySessionId);
+      const sessionRequest = new Request(request, { headers: requestHeaders });
+      const chatResponse = await handleLucyRequest({
+        request: sessionRequest,
+        env,
+        ctx,
+        waitUntil: ctx.waitUntil.bind(ctx)
+      });
+      return withCors(attachLucySession(chatResponse, lucySessionId, setLucySession));
     }
 
     if (url.pathname === "/api/lead" && request.method === "POST") {
