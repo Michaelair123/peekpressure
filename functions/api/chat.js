@@ -1,5 +1,4 @@
 import { LUCY_FAQ } from "../../faq-data.js";
-import { LucyMemory } from "../lucy-memory.js";
 
 const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
 const PEEK_BOOKING_URL = "https://calendly.com/peekpressure/30min";
