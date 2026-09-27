@@ -9,6 +9,20 @@
   "vars": {
     "OPENAI_MODEL": "gpt-5.6-luna"
   },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "LUCY_MEMORY",
+        "class_name": "LucyMemory"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "lucy-memory-v1",
+      "new_sqlite_classes": ["LucyMemory"]
+    }
+  ],
   "ratelimits": [
     {
       "name": "LUCY_EDGE_BURST",
