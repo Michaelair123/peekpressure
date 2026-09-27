@@ -1802,7 +1802,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // local. Sending them back to the model can restart qualification and
       // incorrectly ask the customer to confirm an address a second time.
       if (state.leadSubmitted && !hasImages) {
-        const acknowledgement = /^(?:thanks?|thank you|thank you so much|thx|ty|you'?re welcome|great|awesome|perfect|okay|ok|got it|sounds good)[.!\\s😊👋🙏🎉]*$/i.test(clean);
+        const acknowledgement = /^(?:thanks?|thank you|thank you so much|thx|ty|you'?re welcome|great|awesome|perfect|okay|ok|got it|sounds good)[.!\s😊👋🙏🎉]*$/i.test(clean);
         if (acknowledgement) {
           const name = String(state.lastSubmittedLead?.name || '').trim();
           const reply = name
