@@ -146,3 +146,193 @@
     max-height:none!important;
   }
 }
+
+
+/* PEEK PRESSURE — unified mobile typography system.
+   Mobile-only by design; desktop typography is untouched. */
+@media (max-width:700px) {
+  html { font-size:16px!important; }
+  body { font-size:16px!important; line-height:1.6!important; }
+
+  /* Core reading text: consistent, comfortable, and never micro-sized. */
+  .hero-copy>p,
+  .about p,
+  .process-header p,
+  .process-step p,
+  .service p,
+  .proof-header p,
+  .contact-container>h2+p,
+  .booking-cta-copy p,
+  .faq-list details p,
+  .service-zip-copy p,
+  .peek-text-heading p {
+    font-size:16px!important;
+    line-height:1.6!important;
+  }
+
+  /* Display headings: editorial but controlled on small screens. */
+  .hero-copy h1 {
+    font-size:clamp(2.65rem,11.8vw,3.65rem)!important;
+    line-height:.91!important;
+    letter-spacing:-.075em!important;
+  }
+  .about h2,
+  .about-grid h2,
+  .process-header h2,
+  main>h2,
+  .why-peek-intro h2,
+  .service-area h2,
+  .contact-container>h2,
+  .proof-header h2,
+  .booking-cta-copy h3,
+  .peek-text-heading h2 {
+    font-size:clamp(2rem,8.5vw,2.9rem)!important;
+    line-height:.98!important;
+    letter-spacing:-.065em!important;
+  }
+  .service h2,
+  .service-card .service-body h2 {
+    font-size:1.35rem!important;
+    line-height:1.12!important;
+    letter-spacing:-.035em!important;
+  }
+  .process-step h3 {
+    font-size:.9rem!important;
+    line-height:1.35!important;
+    letter-spacing:.035em!important;
+  }
+  .faq-list summary {
+    font-size:1rem!important;
+    line-height:1.45!important;
+  }
+
+  /* Labels and metadata: small, but no longer difficult to read. */
+  .eyebrow,
+  .label,
+  .launch-status,
+  .hero-proof,
+  .number,
+  .step-number,
+  .booking-cta-copy .label,
+  .booking-action-label,
+  .service-zip-success strong {
+    font-size:11px!important;
+    line-height:1.45!important;
+    letter-spacing:.09em!important;
+  }
+  .service-image-credit,
+  .service-zip-result,
+  .service-zip-success small,
+  .form-note,
+  .footer-inner p,
+  footer .footer-inner,
+  footer .footer-inner p,
+  .footer-signature {
+    font-size:12px!important;
+    line-height:1.5!important;
+  }
+
+  /* Navigation and actions: readable without making the header bulky. */
+  .logo { font-size:15px!important; }
+  .header-phone { font-size:12px!important; }
+  .header-cta,
+  .hero-buttons .button,
+  .button,
+  .booking-cta-button,
+  .service-card .service-body .service-cta,
+  #quoteForm button[type="submit"],
+  .service-zip-form button {
+    font-size:12px!important;
+    line-height:1.3!important;
+    letter-spacing:.07em!important;
+  }
+  .hero-buttons .button { min-height:48px!important; }
+  .peek-side-menu-head .label { font-size:12px!important; }
+  .peek-side-menu-panel h2 { font-size:clamp(3rem,15vw,4rem)!important; }
+  .peek-side-menu-links a { font-size:17px!important; }
+  .peek-side-menu-footer a { font-size:14px!important; }
+
+  /* Quote form: 16px controls prevent iOS auto-zoom; labels/options stay legible. */
+  .form-field label,
+  .quote-step legend,
+  .quote-address-section>label,
+  .photo-field>label:first-child,
+  .peek-quote-modal .quote-step legend,
+  .peek-quote-modal .quote-address-section>label,
+  .peek-quote-modal .photo-field>label:first-child,
+  .peek-quote-modal .form-field>label,
+  .peek-quote-modal .quote-address-grid .form-field label,
+  .peek-quote-modal .quote-contact .form-field label {
+    font-size:12px!important;
+    line-height:1.35!important;
+    letter-spacing:.045em!important;
+  }
+  #quoteForm input,
+  #quoteForm select,
+  #quoteForm textarea,
+  .form-field input,
+  .form-field select,
+  .form-field textarea,
+  .service-zip-form input,
+  .peek-quote-modal .quote-address-grid input,
+  .peek-quote-modal .quote-contact input,
+  .peek-quote-modal #details,
+  .peek-text-form textarea {
+    font-size:16px!important;
+    line-height:1.4!important;
+  }
+  .peek-quote-modal .quote-modal-heading h2 {
+    font-size:clamp(1.7rem,8vw,2.25rem)!important;
+    line-height:1!important;
+  }
+  .peek-quote-modal .quote-modal-heading p { font-size:14px!important; line-height:1.45!important; }
+  .peek-quote-modal .service-choice { font-size:13px!important; line-height:1.3!important; }
+  .peek-quote-modal .service-choice b { font-size:14px!important; }
+  .peek-quote-modal .photo-upload strong { font-size:13px!important; }
+  .peek-quote-modal .photo-upload span { font-size:12px!important; }
+  .peek-quote-modal .form-note,
+  .peek-quote-modal [data-fs-error] { font-size:12px!important; line-height:1.4!important; }
+  .peek-text-form label { font-size:12px!important; line-height:1.4!important; }
+  .peek-text-consent { font-size:12px!important; line-height:1.5!important; }
+
+  /* Lucy: body copy and controls share the site's reading scale. */
+  .peek-chat-message,
+  .peek-chat-message p,
+  .peek-chat-form textarea { font-size:16px!important; line-height:1.5!important; }
+  .peek-chat-quick button { font-size:13px!important; line-height:1.3!important; }
+  .peek-chat-note { font-size:12px!important; line-height:1.45!important; }
+  .peek-chat-attachment { font-size:12px!important; }
+  .peek-chat-attachment button { font-size:16px!important; }
+
+  /* Persistent bottom actions remain compact, but their labels are readable. */
+  .peek-floating-action {
+    font-size:11px!important;
+    line-height:1.25!important;
+    letter-spacing:0!important;
+  }
+}
+
+@media (max-width:380px) {
+  .hero-copy h1 { font-size:clamp(2.45rem,11.2vw,3rem)!important; }
+  .about h2,
+  .about-grid h2,
+  .process-header h2,
+  main>h2,
+  .why-peek-intro h2,
+  .service-area h2,
+  .contact-container>h2,
+  .proof-header h2,
+  .booking-cta-copy h3,
+  .peek-text-heading h2 {
+    font-size:clamp(1.85rem,8.2vw,2.35rem)!important;
+  }
+  .peek-floating-action { font-size:10.5px!important; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .hero-copy h1,
+  .about h2,
+  .process-header h2,
+  .service-area h2,
+  .contact-container>h2 { scroll-behavior:auto!important; }
+}
