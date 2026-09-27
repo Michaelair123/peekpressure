@@ -478,3 +478,124 @@
   .about-expertise-list{grid-template-columns:1fr 1fr!important}
   .about-expertise-trigger{min-height:3.5rem!important}
 }
+
+
+/* About — corner note layout: compact editorial, no side drawer. */
+.about{overflow:visible!important}
+.about-grid{position:relative!important;min-height:0!important;padding-block:clamp(3.5rem,5vw,5rem)!important}
+.about h2,.about-grid h2{font-size:clamp(3rem,4.8vw,4.8rem)!important;line-height:.84!important;letter-spacing:-.075em!important}
+.about-grid>div>p{max-width:36rem!important;margin-top:1.25rem!important;font-size:.82rem!important;line-height:1.7!important}
+
+.about-expertise{
+  position:relative!important;
+  margin-top:clamp(2.25rem,3.5vw,3.25rem)!important;
+  max-width:none!important;
+  padding-bottom:0!important;
+}
+.about-expertise-head{
+  grid-template-columns:minmax(110px,.25fr) minmax(0,.75fr)!important;
+  gap:1.5rem!important;
+  padding:.9rem 0!important;
+}
+.about-expertise-head p{max-width:38rem!important}
+.about-expertise-list{
+  width:100%!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+.about-expertise-trigger{
+  min-height:3.35rem!important;
+  padding:.7rem .65rem!important;
+  font-size:.48rem!important;
+}
+.about-expertise-trigger:not(:first-child){padding-left:.65rem!important}
+
+/* Desktop: the selected topic becomes a small note in the lower-right corner. */
+@media(min-width:901px){
+  .about-expertise-detail{
+    position:absolute!important;
+    z-index:12!important;
+    left:auto!important;
+    right:0!important;
+    top:auto!important;
+    bottom:0!important;
+    width:min(360px,34vw)!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:1.15rem 2.7rem 1.2rem 1.25rem!important;
+    border:1px solid rgba(0,0,0,.13)!important;
+    border-radius:0!important;
+    background:#fafaf7!important;
+    box-shadow:0 14px 34px rgba(0,0,0,.06)!important;
+    transform:translateY(8px)!important;
+    opacity:0;
+    transition:opacity .28s ease,transform .32s cubic-bezier(.22,1,.36,1)!important;
+  }
+  .about-expertise-detail:not([hidden]){
+    opacity:1!important;
+    transform:translateY(0)!important;
+  }
+  .about-expertise-list{
+    width:calc(100% - 390px)!important;
+    transition:width .3s ease!important;
+  }
+  .about-expertise-detail .about-detail-label{
+    margin-bottom:.55rem!important;
+    font-size:.47rem!important;
+  }
+  .about-expertise-detail h3{
+    max-width:18ch!important;
+    margin:0 0 .45rem!important;
+    font-size:clamp(1.25rem,1.7vw,1.7rem)!important;
+    line-height:.96!important;
+  }
+  .about-expertise-detail p{
+    max-width:28rem!important;
+    font-size:.67rem!important;
+    line-height:1.6!important;
+  }
+  .about-detail-close{
+    top:.85rem!important;
+    right:.9rem!important;
+    font-size:.46rem!important;
+  }
+}
+
+/* Mid-width desktop: keep the note compact enough to preserve breathing room. */
+@media(min-width:901px) and (max-width:1150px){
+  .about-expertise-list{width:calc(100% - 330px)!important}
+  .about-expertise-detail{width:310px!important}
+}
+
+/* Mobile: note stays in-flow and never leaves the viewport. */
+@media(max-width:900px){
+  .about-grid{width:calc(100% - 2rem)!important;padding-block:3.5rem!important}
+  .about-grid>.label{margin-bottom:2rem!important}
+  .about-expertise{margin-top:2.75rem!important}
+  .about-expertise-head{grid-template-columns:1fr!important;gap:.5rem!important}
+  .about-expertise-list{width:100%!important}
+  .about-expertise-detail{
+    position:relative!important;
+    left:auto!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:auto!important;
+    width:100%!important;
+    min-height:0!important;
+    margin:.65rem 0 0!important;
+    padding:1.1rem 2.75rem 1.2rem 1.1rem!important;
+    border:1px solid rgba(0,0,0,.13)!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    transform:translateY(6px)!important;
+  }
+  .about-expertise-detail:not([hidden]){transform:translateY(0)!important}
+}
+@media(max-width:520px){
+  .about-grid{width:calc(100% - 1.5rem)!important;padding-block:3rem!important}
+  .about h2,.about-grid h2{font-size:clamp(2.8rem,13vw,4.25rem)!important}
+  .about-expertise-list{grid-template-columns:1fr 1fr!important}
+  .about-expertise-trigger{min-height:3.5rem!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .about-expertise-detail,.about-expertise-list{transition:none!important}
+}
