@@ -556,6 +556,7 @@ body.peek-calendly-open{overflow:hidden}
   <!-- Floating contact rail: persistent, minimal contact actions inspired by the reference site's utility CTAs. -->
   <nav class="peek-floating-actions" aria-label="Quick contact actions">
     <button type="button" class="peek-floating-action" id="peekFloatingChat" aria-label="Chat with Lucy">
+      <span class="peek-floating-unread" id="peekFloatingChatUnread" aria-label="1 unread message" hidden>1</span>
       <span class="peek-floating-icon peek-icon-chat" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-4-.95L4 19l1.15-3.25A7.4 7.4 0 0 1 4.5 12 7.5 7.5 0 0 1 12 4.5a7.5 7.5 0 0 1 8 7Z"/><path d="M9 12h.01M12 12h.01M15 12h.01"/></svg></span>
       <span>CHAT</span>
     </button>
@@ -775,6 +776,25 @@ body.peek-calendly-open{overflow:hidden}
       -webkit-backdrop-filter:blur(14px);
       overflow:hidden;
     }
+    .peek-floating-unread{
+      position:absolute;
+      top:7px;
+      right:7px;
+      min-width:19px;
+      height:19px;
+      padding:0 5px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:#111;
+      color:#fff;
+      border:2px solid #fff;
+      font:700 11px/1 Inter,system-ui,sans-serif;
+      z-index:3;
+      box-sizing:border-box;
+    }
+    .peek-floating-unread[hidden]{display:none!important}
     .peek-floating-action{
       appearance:none;
       -webkit-appearance:none;
@@ -1225,6 +1245,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('peekQuoteModal');
     const form = document.getElementById('quoteForm');
     const floatingActions = document.querySelector('.peek-floating-actions');
+    const floatingChat = document.getElementById('peekFloatingChat');
+    const floatingChatUnread = document.getElementById('peekFloatingChatUnread');
     if (!modal || !form) return;
 
     let closeButton = null;
@@ -1447,6 +1469,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const bubble = document.createElement('div');
       bubble.className = 'peek-chat-message ' + role;
 
+      if (role === 'assistant') markLucyMessageUnread();
+
       if (text) {
         const textNode = document.createElement('div');
         const urlPattern = /(https?:\/\/[^\s<]+)/g;
@@ -1583,8 +1607,23 @@ document.addEventListener('DOMContentLoaded', () => {
       if (state.selectedImages.length) input.focus();
     }
 
+    function markLucyMessagesRead() {
+      if (!floatingChatUnread || !floatingChat) return;
+      floatingChatUnread.hidden = true;
+      floatingChatUnread.textContent = '1';
+      floatingChat.setAttribute('aria-label', 'Chat with Lucy');
+    }
+
+    function markLucyMessageUnread() {
+      if (!floatingChatUnread || !floatingChat || state.open) return;
+      floatingChatUnread.hidden = false;
+      floatingChatUnread.textContent = '1';
+      floatingChat.setAttribute('aria-label', 'Chat with Lucy — 1 unread message');
+    }
+
     function openChat(shouldFocus = true) {
       state.open = true;
+      markLucyMessagesRead();
       panel.classList.add('is-open');
       panel.setAttribute('aria-hidden', 'false');
       panel.setAttribute('aria-modal', 'false');
