@@ -59,23 +59,24 @@
   }
 }
 
-/* About — cleaning expertise */
-.about-expertise{margin-top:clamp(2.5rem,5vw,4.5rem);border-top:1px solid rgba(0,0,0,.14)}
-.about-expertise-intro{display:grid;grid-template-columns:minmax(140px,.34fr) minmax(0,.66fr);gap:clamp(1.5rem,4vw,3.5rem);padding:1.5rem 0 1.75rem;border-bottom:1px solid rgba(0,0,0,.1)}
-.about-kicker{display:block;color:#111;font-size:.54rem;font-weight:800;letter-spacing:.14em;line-height:1.35}
-.about-expertise-intro p{width:auto!important;margin:0!important;color:#555!important;font-size:.72rem!important;line-height:1.65!important}
-.about-expertise-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(1.5rem,4vw,3.5rem)}
-.about-expertise-item{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:1rem;padding:1.5rem 0 1.65rem;border-bottom:1px solid rgba(0,0,0,.1)}
-.about-expertise-number{font-size:.5rem;font-weight:700;letter-spacing:.08em;color:#999;padding-top:.12rem}
-.about-expertise-item h3{margin:0;color:#111;font-size:.62rem;font-weight:800;letter-spacing:.08em;line-height:1.25}
-.about-expertise-item p{width:auto!important;margin:.55rem 0 0!important;color:#666!important;font-size:.68rem!important;line-height:1.65!important}
+/* About — compact expertise */
+.about-expertise{margin-top:clamp(2rem,4vw,3.25rem);max-width:760px;border-top:1px solid rgba(0,0,0,.13)}
+.about-expertise-head{display:grid;grid-template-columns:minmax(150px,.35fr) minmax(0,.65fr);gap:clamp(1.5rem,4vw,3rem);padding:1.25rem 0 1.35rem}
+.about-kicker{display:block;color:#111;font-size:.52rem;font-weight:800;letter-spacing:.13em;line-height:1.4}
+.about-expertise-head p{width:auto!important;margin:0!important;color:#666!important;font-size:.7rem!important;line-height:1.65!important}
+.about-expertise-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid rgba(0,0,0,.1);border-bottom:1px solid rgba(0,0,0,.1)}
+.about-expertise-list span{padding:1rem .85rem 1rem 0;color:#222;font-size:.52rem;font-weight:800;letter-spacing:.08em;line-height:1.3;border-right:1px solid rgba(0,0,0,.1)}
+.about-expertise-list span:not(:first-child){padding-left:.85rem}
+.about-expertise-list span:last-child{border-right:0}
 @media (max-width:900px){
-  .about-expertise-intro{grid-template-columns:1fr;gap:.7rem}
-  .about-expertise-grid{grid-template-columns:1fr}
+  .about-expertise{max-width:100%}
+  .about-expertise-head{grid-template-columns:1fr;gap:.55rem}
 }
 @media (max-width:520px){
-  .about-expertise{margin-top:2.25rem}
-  .about-expertise-intro{padding:1.25rem 0 1.5rem}
-  .about-expertise-item{grid-template-columns:1.5rem minmax(0,1fr);gap:.75rem;padding:1.25rem 0}
-  .about-expertise-item p{font-size:.7rem!important;line-height:1.7!important}
+  .about-expertise{margin-top:2rem}
+  .about-expertise-head{padding:1.1rem 0 1.2rem}
+  .about-expertise-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .about-expertise-list span:nth-child(2){border-right:0}
+  .about-expertise-list span:nth-child(3),.about-expertise-list span:nth-child(4){border-top:1px solid rgba(0,0,0,.1)}
+  .about-expertise-list span:nth-child(3){padding-left:0}
 }
