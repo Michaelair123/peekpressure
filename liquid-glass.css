@@ -336,3 +336,191 @@
   .service-area h2,
   .contact-container>h2 { scroll-behavior:auto!important; }
 }
+
+
+/* PEEK PRESSURE — mobile text wrapping pass.
+   Prevent awkward wraps/clipping without changing desktop layout. */
+@media (max-width:700px) {
+  html, body, main, section, article, header, footer, form, fieldset, div {
+    min-width:0;
+  }
+
+  /* Never let ordinary words split into ugly fragments. */
+  h1, h2, h3, h4, p, li, label, legend, summary, a, button, span {
+    overflow-wrap:normal;
+    word-break:normal;
+    hyphens:auto;
+  }
+
+  /* Display copy: keep the measure intentional so headings wrap by words. */
+  .hero-copy h1 {
+    max-width:11ch!important;
+    text-wrap:balance;
+  }
+  .about h2,
+  .about-grid h2,
+  .process-header h2,
+  main>h2,
+  .why-peek-intro h2,
+  .service-area h2,
+  .contact-container>h2,
+  .proof-header h2,
+  .booking-cta-copy h3,
+  .peek-text-heading h2 {
+    max-width:14ch!important;
+    text-wrap:balance;
+  }
+
+  .hero-copy>p,
+  .about p,
+  .process-header p,
+  .process-step p,
+  .service p,
+  .proof-header p,
+  .contact-container>h2+p,
+  .booking-cta-copy p,
+  .faq-list details p,
+  .service-zip-copy p,
+  .peek-text-heading p {
+    max-width:42rem!important;
+    text-wrap:pretty;
+  }
+
+  /* Don't let labels/metadata create accidental overflow. */
+  .eyebrow,
+  .label,
+  .launch-status,
+  .hero-proof,
+  .number,
+  .step-number,
+  .booking-cta-copy .label,
+  .booking-action-label {
+    white-space:normal!important;
+    overflow-wrap:normal!important;
+    text-wrap:balance;
+  }
+
+  /* Navigation and buttons: wrap only when necessary, never clip text. */
+  .header-cta,
+  .hero-buttons .button,
+  .button,
+  .booking-cta-button,
+  .service-card .service-body .service-cta,
+  #quoteForm button[type="submit"],
+  .service-zip-form button {
+    white-space:normal!important;
+    text-align:center;
+    text-wrap:balance;
+  }
+
+  .hero-buttons .button {
+    max-width:100%;
+  }
+
+  .service h2,
+  .service-card .service-body h2,
+  .process-step h3,
+  .faq-list summary {
+    text-wrap:balance;
+    overflow-wrap:normal;
+  }
+
+  /* Cards/grids must be able to shrink around their text. */
+  .services-grid,
+  .service,
+  .service-card,
+  .service-body,
+  .process-grid,
+  .process-step,
+  .about-grid,
+  .why-peek-grid,
+  .service-area,
+  .contact-container,
+  .booking-cta,
+  .booking-cta-copy,
+  .proof-section,
+  .faq-list {
+    min-width:0!important;
+  }
+
+  /* Addresses, emails and URLs are the legitimate exception: break safely. */
+  .peek-side-menu-footer a,
+  .service-zip-result,
+  .service-zip-success,
+  .form-note,
+  .peek-text-consent,
+  .peek-chat-message,
+  .peek-chat-message a,
+  .peek-chat-note,
+  .peek-chat-attachment,
+  .footer-inner p,
+  .footer-signature {
+    overflow-wrap:anywhere!important;
+    word-break:normal!important;
+  }
+
+  /* Lucy: long addresses/emails must never force the chat shell wider. */
+  .peek-chat,
+  .peek-chat *,
+  .peek-chat-message,
+  .peek-chat-form {
+    min-width:0!important;
+    max-width:100%;
+  }
+  .peek-chat-message {
+    white-space:pre-wrap;
+    text-wrap:pretty;
+  }
+  .peek-chat-message a {
+    overflow-wrap:anywhere!important;
+  }
+
+  /* Form fields and controls: text may wrap, controls themselves stay contained. */
+  .form-field,
+  .quote-step,
+  .quote-address-section,
+  .quote-contact,
+  .photo-field,
+  .service-choice,
+  .photo-upload,
+  .service-zip-form {
+    min-width:0!important;
+    max-width:100%;
+  }
+  .service-choice,
+  .photo-upload {
+    white-space:normal!important;
+    text-wrap:pretty;
+  }
+  .service-choice b {
+    overflow-wrap:normal;
+    text-wrap:balance;
+  }
+
+  input, select, textarea {
+    max-width:100%;
+  }
+
+  /* Keep horizontal scrolling out of the document itself. */
+  body {
+    overflow-x:hidden!important;
+  }
+}
+
+@media (max-width:380px) {
+  .hero-copy h1 {
+    max-width:10ch!important;
+  }
+  .about h2,
+  .about-grid h2,
+  .process-header h2,
+  main>h2,
+  .why-peek-intro h2,
+  .service-area h2,
+  .contact-container>h2,
+  .proof-header h2,
+  .booking-cta-copy h3,
+  .peek-text-heading h2 {
+    max-width:13ch!important;
+  }
+}
