@@ -795,6 +795,28 @@ body.peek-calendly-open{overflow:hidden}
       box-sizing:border-box;
     }
     .peek-floating-unread[hidden]{display:none!important}
+    .peek-chat-status-region{
+      position:absolute!important;
+      width:1px!important;
+      height:1px!important;
+      padding:0!important;
+      margin:-1px!important;
+      overflow:hidden!important;
+      clip:rect(0,0,0,0)!important;
+      white-space:nowrap!important;
+      border:0!important;
+    }
+    .peek-chat-retry{
+      margin-top:8px;
+      min-height:44px;
+      padding:0 14px;
+      border:1px solid rgba(17,17,17,.18);
+      border-radius:10px;
+      background:#fff;
+      color:#111;
+      font:600 .78rem/1 Inter,system-ui,sans-serif;
+      cursor:pointer;
+    }
     .peek-floating-action{
       appearance:none;
       -webkit-appearance:none;
@@ -1215,7 +1237,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <button type="button" class="peek-chat-close" id="peekChatClose" aria-label="Close chat">×</button>
     </div>
     <div class="peek-chat-status"><span></span> Online · Usually replies in seconds</div>
-    <div class="peek-chat-messages" id="peekChatMessages" aria-live="polite"></div>
+    <div class="peek-chat-messages" id="peekChatMessages" role="log" aria-live="polite" aria-relevant="additions text"></div>
+    <div class="peek-chat-status-region" id="peekChatStatus" role="status" aria-live="polite" aria-atomic="true"></div>
     <div class="peek-chat-quick" id="peekChatQuick"></div>    <div class="peek-chat-attachments" id="peekChatAttachments" aria-live="polite"></div>
     <form class="peek-chat-form" id="peekChatForm">      <button class="peek-chat-attach" id="peekChatAttach" type="button" aria-label="Attach a photo" title="Attach a photo">＋</button>      <input id="peekChatPhotoInput" type="file" accept="image/*" multiple hidden>
       <textarea id="peekChatInput" rows="1" enterkeyhint="send" autocomplete="off" placeholder="Tell Lucy what you need cleaned…" aria-label="Message Lucy"></textarea>
@@ -1246,6 +1269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('quoteForm');
     const floatingActions = document.querySelector('.peek-floating-actions');
     const floatingChat = document.getElementById('peekFloatingChat');
+    const chatStatus = document.getElementById('peekChatStatus');
     const floatingChatUnread = document.getElementById('peekFloatingChatUnread');
     if (!modal || !form) return;
 
@@ -1406,10 +1430,15 @@ document.addEventListener('DOMContentLoaded', () => {
       conversationState: null,
       conversationId: createConversationId(),
       inactivityTimer: null,
-      inactivityStep: 0
+      inactivityStep: 0,
+      lastFailedMessage: null
     };
 
     const LUCY_FOLLOW_UP_DELAYS = [45000, 150000, 300000];
+
+    function announceLucyStatus(message) {
+      if (chatStatus) chatStatus.textContent = String(message || '');
+    }
 
     function clearLucyInactivityTimer() {
       if (state.inactivityTimer) {
@@ -1468,8 +1497,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function addMessage(text, role, imageParts = []) {
       const bubble = document.createElement('div');
       bubble.className = 'peek-chat-message ' + role;
+      if (role === 'assistant') bubble.setAttribute('aria-label', 'Lucy: ' + String(text || '').trim());
 
-      if (role === 'assistant') markLucyMessageUnread();
+      if (role === 'assistant') {
+        markLucyMessageUnread();
+        announceLucyStatus('Lucy sent a new message.');
+      }
 
       if (text) {
         const textNode = document.createElement('div');
@@ -1917,7 +1950,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       state.sending = true;
+      state.lastFailedMessage = null;
       attachButton.disabled = true;
+      input.disabled = true;
+      announceLucyStatus('Sending your message to Lucy…');
 
       let imageParts = [];
       try {
@@ -1948,6 +1984,7 @@ document.addEventListener('DOMContentLoaded', () => {
         typing.className = 'peek-chat-message assistant typing';
         typing.setAttribute('role', 'status');
         typing.setAttribute('aria-live', 'polite');
+        announceLucyStatus('Lucy is typing…');
         typing.innerHTML = '<span class="peek-chat-typing-name">Lucy</span><span class="peek-chat-typing-text">is typing</span><span class="peek-chat-typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>';
         messages.appendChild(typing);
         messages.scrollTop = messages.scrollHeight;
@@ -2071,6 +2108,8 @@ document.addEventListener('DOMContentLoaded', () => {
       } finally {
         state.sending = false;
         attachButton.disabled = false;
+        input.disabled = false;
+        announceLucyStatus('');
         input.focus();
         if (state.open && !state.leadSubmitted && !state.pendingLead) scheduleLucyFollowUp();
       }
