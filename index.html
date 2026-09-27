@@ -1374,6 +1374,7 @@ document.addEventListener('DOMContentLoaded', () => {
       history: [],
       open: false,
       leadSubmitted: false,
+      lastSubmittedLead: null,
       partialLeadCaptured: false,
       selectedImages: [],
       sending: false,
@@ -1761,6 +1762,7 @@ document.addEventListener('DOMContentLoaded', () => {
               // Lucy's draft rather than stacking a second assistant bubble.
               replaceAssistantMessage(replyBubble, success);
               state.history[state.history.length - 1] = { role: 'assistant', content: success };
+              state.lastSubmittedLead = { ...leadToSend };
               setQuick(['Ask another question', 'Book a time']);
             } else {
               state.pendingLead = leadToSend;
@@ -1794,6 +1796,24 @@ document.addEventListener('DOMContentLoaded', () => {
         setQuick(['YES — SEND IT', 'I NEED TO CHANGE SOMETHING']);
         input.focus();
         return;
+      }
+
+      // After a confirmed handoff, keep simple thank-yous and acknowledgements
+      // local. Sending them back to the model can restart qualification and
+      // incorrectly ask the customer to confirm an address a second time.
+      if (state.leadSubmitted && !hasImages) {
+        const acknowledgement = /^(?:thanks?|thank you|thank you so much|thx|ty|you'?re welcome|great|awesome|perfect|okay|ok|got it|sounds good)[.!\\s😊👋🙏🎉]*$/i.test(clean);
+        if (acknowledgement) {
+          const name = String(state.lastSubmittedLead?.name || '').trim();
+          const reply = name
+            ? `You’re welcome, ${name}! The PEEK PRESSURE team has your request and will follow up directly. Is there anything else I can help with?`
+            : "You’re welcome! The PEEK PRESSURE team has your request and will follow up directly. Is there anything else I can help with?";
+          addMessage(reply, 'assistant');
+          state.history.push({ role: 'assistant', content: reply });
+          setQuick(['Ask another question', 'Book a time']);
+          input.focus();
+          return;
+        }
       }
 
       state.sending = true;
