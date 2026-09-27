@@ -1241,3 +1241,223 @@
     transition:none!important;
   }
 }
+
+
+/* =========================================================
+   PEEK PRESSURE — MOBILE SENIOR-FRIENDLY UX PASS
+   Larger type, clearer actions, forgiving touch targets.
+   Mobile only; desktop remains unchanged.
+   ========================================================= */
+@media (max-width:700px) {
+  :root {
+    --mobile-gutter:20px;
+    --mobile-control:52px;
+  }
+
+  body {
+    font-size:18px!important;
+    line-height:1.6!important;
+  }
+
+  /* Reading text should be comfortable without zooming. */
+  p,
+  li,
+  .hero-copy>p,
+  .process-step p,
+  .service p,
+  .proof-header p,
+  .about p,
+  .service-area p,
+  .faq-list details p,
+  .booking-cta-copy p {
+    font-size:17px!important;
+    line-height:1.62!important;
+  }
+
+  /* Labels stay readable instead of looking like microcopy. */
+  .eyebrow,
+  .section-top .label,
+  .label,
+  .launch-status,
+  .hero-proof,
+  .form-field label,
+  .quote-step legend,
+  .quote-address-section>label,
+  .photo-field>label:first-child {
+    font-size:13px!important;
+    line-height:1.4!important;
+    letter-spacing:.045em!important;
+  }
+
+  /* Large, obvious section hierarchy. */
+  .section-top h2:not(.sr-only),
+  .process-header h2,
+  .about h2,
+  .proof-header h2,
+  .service-area h2,
+  .contact-container>h2 {
+    font-size:clamp(2.15rem,10vw,2.85rem)!important;
+    line-height:1.02!important;
+  }
+
+  .service h2,
+  .service-card .service-body h2 {
+    font-size:22px!important;
+    line-height:1.18!important;
+  }
+
+  .process-step h3 {
+    font-size:17px!important;
+    line-height:1.4!important;
+  }
+
+  /* Controls: forgiving hit areas and plain readable labels. */
+  button,
+  .button,
+  .header-cta,
+  .peek-menu-toggle,
+  .peek-side-menu-close,
+  .peek-calendly-close,
+  .peek-quote-modal .quote-modal-close,
+  .peek-floating-action,
+  .service-card .service-body .service-cta,
+  .booking-cta-button,
+  #quoteForm button[type="submit"] {
+    min-height:52px!important;
+    font-size:14px!important;
+    line-height:1.25!important;
+  }
+
+  .hero-buttons {
+    gap:12px!important;
+  }
+
+  .hero-buttons .button {
+    padding:14px 20px!important;
+    font-size:15px!important;
+    letter-spacing:.035em!important;
+  }
+
+  .header-cta {
+    padding-inline:14px!important;
+    font-size:13px!important;
+    letter-spacing:.035em!important;
+  }
+
+  /* Don't make users precisely hit tiny menu rows. */
+  .peek-side-menu a,
+  .peek-side-menu-link {
+    min-height:52px!important;
+    padding-block:14px!important;
+    font-size:17px!important;
+    line-height:1.35!important;
+  }
+
+  /* Forms become easy to scan and hard to mis-tap. */
+  .form-field {
+    margin-bottom:16px!important;
+  }
+
+  input,
+  select,
+  textarea,
+  #quoteForm input,
+  #quoteForm select,
+  #quoteForm textarea {
+    min-height:52px!important;
+    padding:13px 14px!important;
+    font-size:17px!important;
+    line-height:1.4!important;
+  }
+
+  textarea {
+    min-height:120px!important;
+  }
+
+  .service-choice {
+    min-height:54px!important;
+    padding:13px 14px!important;
+    font-size:16px!important;
+    line-height:1.35!important;
+  }
+
+  .service-choice b {
+    font-size:16px!important;
+  }
+
+  /* FAQ rows should be unmistakably tappable. */
+  .faq-list summary {
+    min-height:64px!important;
+    padding:18px 40px 18px 0!important;
+    font-size:17px!important;
+    line-height:1.4!important;
+  }
+
+  /* Lucy: readable conversation + obvious controls. */
+  .peek-chat-message,
+  .peek-chat-message p {
+    font-size:17px!important;
+    line-height:1.58!important;
+  }
+
+  .peek-chat-form textarea {
+    min-height:52px!important;
+    padding:13px 14px!important;
+    font-size:17px!important;
+  }
+
+  .peek-chat-quick button {
+    min-height:48px!important;
+    padding:10px 14px!important;
+    font-size:14px!important;
+  }
+
+  /* Floating actions are labels, not tiny app icons. */
+  .peek-floating-action {
+    min-height:52px!important;
+    padding:6px 4px!important;
+    font-size:12px!important;
+    line-height:1.2!important;
+    font-weight:600;
+  }
+
+  /* Keep important phone/contact text together. */
+  .header-phone {
+    font-size:13px!important;
+  }
+
+  /* Larger focus indication for keyboard/switch access. */
+  :focus-visible {
+    outline-width:3px!important;
+    outline-offset:3px!important;
+  }
+}
+
+@media (max-width:390px) {
+  body {
+    font-size:17px!important;
+  }
+
+  p,
+  li,
+  .hero-copy>p,
+  .process-step p,
+  .service p,
+  .proof-header p,
+  .about p,
+  .service-area p,
+  .faq-list details p,
+  .booking-cta-copy p {
+    font-size:16px!important;
+  }
+
+  .hero-buttons .button,
+  button,
+  .button {
+    font-size:14px!important;
+  }
+
+  .peek-floating-action {
+    font-size:11.5px!important;
+  }
+}
