@@ -524,3 +524,720 @@
     max-width:13ch!important;
   }
 }
+
+
+/* =========================================================
+   PEEK PRESSURE — MOBILE DESIGN SYSTEM
+   Research-informed, mobile-first behavior layer.
+   Desktop styles are intentionally left unchanged.
+   ========================================================= */
+@media (max-width:700px) {
+  :root {
+    --mobile-gutter:20px;
+    --mobile-gutter-tight:16px;
+    --mobile-section:72px;
+    --mobile-radius:18px;
+    --mobile-control:48px;
+    --mobile-header:60px;
+  }
+
+  html {
+    scroll-padding-top:calc(var(--mobile-header) + 14px);
+  }
+
+  body {
+    font-size:16px!important;
+    line-height:1.55!important;
+    overflow-x:hidden!important;
+    -webkit-text-size-adjust:100%;
+  }
+
+  /* ---------- GLOBAL MOBILE GRID ---------- */
+  .container {
+    width:auto!important;
+    max-width:none!important;
+    margin-inline:var(--mobile-gutter)!important;
+  }
+
+  main > section,
+  .hero,
+  .services,
+  .process,
+  .about,
+  .proof-section,
+  .service-area,
+  .contact-section,
+  .booking-section {
+    overflow:clip;
+  }
+
+  section {
+    scroll-margin-top:calc(var(--mobile-header) + 14px);
+  }
+
+  /* ---------- HEADER / NAV ---------- */
+  .header {
+    min-height:var(--mobile-header);
+    padding-top:max(7px, env(safe-area-inset-top, 0px))!important;
+    padding-bottom:7px!important;
+    background:rgba(255,255,255,.92)!important;
+    -webkit-backdrop-filter:blur(18px) saturate(150%)!important;
+    backdrop-filter:blur(18px) saturate(150%)!important;
+  }
+
+  .header-inner {
+    width:auto!important;
+    margin-inline:var(--mobile-gutter)!important;
+    min-height:44px!important;
+    gap:8px!important;
+  }
+
+  .logo {
+    font-size:15px!important;
+    line-height:1!important;
+  }
+
+  .header-phone {
+    font-size:12px!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+
+  .header-cta,
+  .peek-menu-toggle {
+    min-width:44px!important;
+    min-height:44px!important;
+  }
+
+  .header-cta {
+    padding:0 12px!important;
+    font-size:11px!important;
+    letter-spacing:.06em!important;
+    white-space:nowrap!important;
+  }
+
+  .peek-menu-toggle {
+    flex:0 0 44px!important;
+    width:44px!important;
+    height:44px!important;
+    margin-left:0!important;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height:auto!important;
+    padding-top:calc(var(--mobile-header) + 48px)!important;
+    padding-bottom:64px!important;
+    display:block!important;
+  }
+
+  .hero-grid {
+    display:block!important;
+  }
+
+  .hero-copy {
+    width:100%!important;
+    max-width:520px!important;
+  }
+
+  .hero-copy .eyebrow {
+    font-size:11px!important;
+    letter-spacing:.12em!important;
+    line-height:1.4!important;
+  }
+
+  .launch-status {
+    max-width:34ch!important;
+    margin-top:10px!important;
+    font-size:10px!important;
+    line-height:1.4!important;
+    letter-spacing:.08em!important;
+  }
+
+  .hero-copy h1 {
+    width:100%!important;
+    max-width:12ch!important;
+    margin-top:24px!important;
+    font-size:clamp(3rem,14vw,4.35rem)!important;
+    line-height:.88!important;
+    letter-spacing:-.075em!important;
+    text-wrap:balance;
+  }
+
+  .hero-copy>p {
+    max-width:34rem!important;
+    margin-top:22px!important;
+    font-size:16px!important;
+    line-height:1.55!important;
+    letter-spacing:-.01em!important;
+  }
+
+  .hero-proof {
+    display:flex!important;
+    flex-wrap:wrap!important;
+    align-items:center!important;
+    gap:7px!important;
+    margin-top:18px!important;
+    font-size:10px!important;
+    line-height:1.35!important;
+    letter-spacing:.06em!important;
+  }
+
+  .hero-buttons {
+    width:100%!important;
+    margin-top:24px!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+  }
+
+  .hero-buttons .button {
+    width:100%!important;
+    min-height:48px!important;
+    padding:12px 18px!important;
+    font-size:12px!important;
+    line-height:1.25!important;
+    letter-spacing:.07em!important;
+  }
+
+  /* ---------- SECTION RHYTHM ---------- */
+  .services,
+  .process,
+  .about,
+  .proof-section,
+  .service-area,
+  .contact-section {
+    padding-block:var(--mobile-section)!important;
+  }
+
+  .section-top {
+    margin-bottom:28px!important;
+  }
+
+  .section-top .label,
+  .label {
+    font-size:11px!important;
+    line-height:1.35!important;
+    letter-spacing:.1em!important;
+  }
+
+  /* Headings should feel large, but never consume the whole viewport. */
+  .section-top h2:not(.sr-only),
+  .process-header h2,
+  .about h2,
+  .proof-header h2,
+  .service-area h2,
+  .contact-container>h2,
+  .booking-cta-copy h3 {
+    max-width:13ch!important;
+    font-size:clamp(2rem,9vw,2.8rem)!important;
+    line-height:.96!important;
+    letter-spacing:-.06em!important;
+    text-wrap:balance!important;
+  }
+
+  .process-header,
+  .proof-header,
+  .contact-container {
+    max-width:100%!important;
+  }
+
+  .process-header p,
+  .proof-header p,
+  .about p,
+  .service-area p,
+  .contact-container>h2+p {
+    max-width:42rem!important;
+    margin-top:18px!important;
+    font-size:16px!important;
+    line-height:1.6!important;
+  }
+
+  /* ---------- SERVICE CARDS ---------- */
+  .services-grid {
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:16px!important;
+  }
+
+  .service-card,
+  .service {
+    width:100%!important;
+    min-width:0!important;
+    border-radius:var(--mobile-radius)!important;
+    overflow:hidden!important;
+  }
+
+  .service-image {
+    aspect-ratio:16/10!important;
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+
+  .service-image img {
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+  }
+
+  .service-body,
+  .service-card .service-body {
+    padding:20px!important;
+  }
+
+  .service h2,
+  .service-card .service-body h2 {
+    max-width:20ch!important;
+    font-size:21px!important;
+    line-height:1.1!important;
+    letter-spacing:-.035em!important;
+    text-wrap:balance!important;
+  }
+
+  .service p {
+    margin-top:10px!important;
+    font-size:15px!important;
+    line-height:1.55!important;
+  }
+
+  .service-card .service-body .service-cta {
+    width:100%!important;
+    min-height:48px!important;
+    margin-top:18px!important;
+    font-size:11px!important;
+    letter-spacing:.06em!important;
+  }
+
+  /* ---------- PROCESS ---------- */
+  .process-grid {
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:0!important;
+  }
+
+  .process-step {
+    min-width:0!important;
+    padding:22px 0!important;
+    border-bottom:1px solid rgba(17,17,17,.10)!important;
+  }
+
+  .process-step:first-child {
+    border-top:1px solid rgba(17,17,17,.10)!important;
+  }
+
+  .process-step h3 {
+    max-width:28ch!important;
+    font-size:15px!important;
+    line-height:1.35!important;
+    letter-spacing:.02em!important;
+  }
+
+  .process-step p {
+    max-width:42rem!important;
+    margin-top:8px!important;
+    font-size:15px!important;
+    line-height:1.55!important;
+  }
+
+  /* ---------- ABOUT / CONTENT CARDS ---------- */
+  .about-grid,
+  .why-peek-grid {
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:24px!important;
+  }
+
+  .about-grid > *,
+  .why-peek-grid > * {
+    min-width:0!important;
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq-list {
+    width:100%!important;
+    border-top:1px solid rgba(17,17,17,.12)!important;
+  }
+
+  .faq-list details {
+    padding:0!important;
+    border-bottom:1px solid rgba(17,17,17,.12)!important;
+  }
+
+  .faq-list summary {
+    min-height:56px!important;
+    padding:17px 34px 17px 0!important;
+    display:flex!important;
+    align-items:center!important;
+    font-size:16px!important;
+    line-height:1.4!important;
+    text-wrap:pretty!important;
+    cursor:pointer;
+  }
+
+  .faq-list details p {
+    padding:0 0 18px!important;
+    font-size:15px!important;
+    line-height:1.6!important;
+  }
+
+  /* ---------- SERVICE AREA ---------- */
+  .service-area {
+    min-width:0!important;
+  }
+
+  .service-area-grid,
+  .service-area-inner {
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:24px!important;
+  }
+
+  /* ---------- BOOKING CTA ---------- */
+  .booking-cta {
+    width:auto!important;
+    min-height:0!important;
+    margin-inline:var(--mobile-gutter)!important;
+    margin-bottom:64px!important;
+    padding:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:24px!important;
+  }
+
+  .booking-cta-copy h3 {
+    max-width:11ch!important;
+    font-size:clamp(2.6rem,12vw,3.7rem)!important;
+    line-height:.9!important;
+  }
+
+  .booking-cta-copy p {
+    max-width:36rem!important;
+    margin-top:16px!important;
+    font-size:16px!important;
+    line-height:1.6!important;
+  }
+
+  .booking-cta-button {
+    width:100%!important;
+    min-width:0!important;
+    min-height:52px!important;
+    height:auto!important;
+    padding:14px 18px!important;
+    flex:0 0 auto!important;
+    font-size:12px!important;
+    line-height:1.25!important;
+    white-space:normal!important;
+    text-wrap:balance!important;
+  }
+
+  /* ---------- FORMS ---------- */
+  .quote-address-grid,
+  .quote-contact,
+  .service-choice-grid {
+    min-width:0!important;
+  }
+
+  .quote-address-grid {
+    grid-template-columns:1fr!important;
+  }
+
+  .quote-address-grid .form-field:first-child {
+    grid-column:auto!important;
+  }
+
+  .quote-contact {
+    grid-template-columns:1fr!important;
+  }
+
+  .quote-contact .quote-email {
+    grid-column:auto!important;
+  }
+
+  .service-choice-grid {
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+  }
+
+  .service-choice {
+    min-height:48px!important;
+    padding:12px 13px!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:10px!important;
+    font-size:14px!important;
+    line-height:1.35!important;
+  }
+
+  .service-choice b {
+    font-size:15px!important;
+    line-height:1.25!important;
+  }
+
+  .form-field label,
+  .quote-step legend,
+  .quote-address-section>label,
+  .photo-field>label:first-child {
+    margin-bottom:6px!important;
+    font-size:12px!important;
+    line-height:1.35!important;
+    letter-spacing:.04em!important;
+  }
+
+  input, select, textarea,
+  #quoteForm input,
+  #quoteForm select,
+  #quoteForm textarea {
+    width:100%!important;
+    min-height:48px!important;
+    font-size:16px!important;
+    line-height:1.4!important;
+  }
+
+  textarea {
+    min-height:112px!important;
+  }
+
+  /* ---------- MODALS: MOBILE SHEET, NOT DESKTOP SHRUNK DOWN ---------- */
+  .peek-quote-modal {
+    padding:0!important;
+    align-items:flex-end!important;
+  }
+
+  .peek-quote-modal > #quoteForm {
+    width:100%!important;
+    max-width:none!important;
+    max-height:calc(100dvh - 8px)!important;
+    margin:0!important;
+    padding:20px var(--mobile-gutter) max(20px, env(safe-area-inset-bottom, 0px))!important;
+    border-radius:22px 22px 0 0!important;
+    border-bottom:0!important;
+    box-shadow:0 -18px 55px rgba(0,0,0,.18)!important;
+  }
+
+  .peek-quote-modal .quote-modal-heading h2 {
+    max-width:12ch!important;
+    font-size:clamp(1.9rem,9vw,2.6rem)!important;
+    line-height:.98!important;
+    text-wrap:balance!important;
+  }
+
+  .peek-quote-modal .quote-modal-heading p {
+    max-width:40rem!important;
+    font-size:15px!important;
+    line-height:1.5!important;
+  }
+
+  .peek-quote-modal > #quoteForm > .quote-modal-close {
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+    inset:10px 12px auto auto!important;
+    font-size:28px!important;
+  }
+
+  /* ---------- CALENDLY: TRUE MOBILE TASK SURFACE ---------- */
+  .peek-calendly-modal {
+    padding:0!important;
+    align-items:stretch!important;
+  }
+
+  .peek-calendly-dialog {
+    width:100%!important;
+    max-height:none!important;
+    height:100dvh!important;
+    border-radius:0!important;
+  }
+
+  .peek-calendly-heading {
+    padding:calc(14px + env(safe-area-inset-top,0px)) 60px 10px var(--mobile-gutter)!important;
+  }
+
+  .peek-calendly-heading h2 {
+    font-size:22px!important;
+    line-height:1.1!important;
+  }
+
+  .peek-calendly-heading p {
+    font-size:14px!important;
+    line-height:1.4!important;
+  }
+
+  .peek-calendly-close {
+    top:max(10px, env(safe-area-inset-top,0px))!important;
+    right:12px!important;
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+  }
+
+  .peek-calendly-widget {
+    min-width:0!important;
+    height:calc(100dvh - 104px)!important;
+    flex:1 1 auto!important;
+    overflow:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  /* ---------- LUCY: FULL-HEIGHT MOBILE WORKSPACE ---------- */
+  .peek-chat {
+    min-width:0!important;
+  }
+
+  .peek-chat-message,
+  .peek-chat-message p {
+    max-width:100%!important;
+    font-size:16px!important;
+    line-height:1.5!important;
+    overflow-wrap:anywhere!important;
+    word-break:normal!important;
+  }
+
+  .peek-chat-form textarea {
+    min-height:48px!important;
+    max-height:140px!important;
+    padding:13px 14px!important;
+    font-size:16px!important;
+    line-height:1.4!important;
+  }
+
+  .peek-chat-quick button {
+    min-height:44px!important;
+    padding:9px 12px!important;
+    font-size:13px!important;
+    line-height:1.25!important;
+    white-space:normal!important;
+  }
+
+  /* ---------- BOTTOM ACTIONS ---------- */
+  .peek-floating-actions {
+    left:var(--mobile-gutter)!important;
+    right:var(--mobile-gutter)!important;
+    bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;
+    width:auto!important;
+    max-width:none!important;
+    border-radius:18px!important;
+  }
+
+  .peek-floating-action {
+    min-height:50px!important;
+    min-width:0!important;
+    padding:5px 3px!important;
+    font-size:11px!important;
+    line-height:1.15!important;
+    letter-spacing:0!important;
+    white-space:normal!important;
+    text-align:center!important;
+  }
+
+  /* ---------- INTERACTION / ACCESSIBILITY ---------- */
+  a,
+  button,
+  summary,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  button,
+  .button,
+  .header-cta,
+  .peek-menu-toggle,
+  .peek-side-menu-close,
+  .peek-calendly-close,
+  .peek-quote-modal .quote-modal-close,
+  .peek-floating-action {
+    touch-action:manipulation;
+  }
+
+  .button,
+  button,
+  .header-cta,
+  .peek-menu-toggle,
+  .peek-side-menu-close,
+  .peek-calendly-close,
+  .peek-quote-modal .quote-modal-close,
+  .peek-floating-action {
+    min-height:44px;
+  }
+
+  /* Remove hover-only motion on touch devices. */
+  @media (hover:none) {
+    .button:hover,
+    .service-card:hover,
+    .booking-cta:hover,
+    .peek-floating-action:hover {
+      transform:none!important;
+    }
+  }
+
+  /* ---------- IMAGE / MEDIA PERFORMANCE ---------- */
+  img,
+  video,
+  iframe {
+    max-width:100%;
+  }
+
+  /* Keep media from creating accidental horizontal scroll. */
+  .service-image,
+  .service-image img,
+  .peek-calendly-widget,
+  .peek-chat {
+    min-width:0!important;
+  }
+}
+
+@media (max-width:390px) {
+  :root {
+    --mobile-gutter:16px;
+  }
+
+  .hero {
+    padding-top:calc(var(--mobile-header) + 40px)!important;
+    padding-bottom:54px!important;
+  }
+
+  .hero-copy h1 {
+    font-size:clamp(2.75rem,14vw,3.7rem)!important;
+    max-width:11ch!important;
+  }
+
+  .section-top h2:not(.sr-only),
+  .process-header h2,
+  .about h2,
+  .proof-header h2,
+  .service-area h2,
+  .contact-container>h2 {
+    font-size:clamp(1.9rem,9vw,2.45rem)!important;
+  }
+
+  .service-body,
+  .service-card .service-body {
+    padding:18px!important;
+  }
+
+  .peek-floating-actions {
+    left:var(--mobile-gutter)!important;
+    right:var(--mobile-gutter)!important;
+  }
+
+  .peek-floating-action {
+    min-height:48px!important;
+    font-size:10.5px!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .header,
+  .peek-side-menu-panel,
+  .peek-menu-toggle span,
+  .button,
+  .service-card,
+  .booking-cta,
+  .peek-floating-action {
+    transition:none!important;
+  }
+}
