@@ -68,3 +68,81 @@
   .peek-floating-actions{inset-inline:6px!important;padding:3px!important}
   .peek-floating-action{min-height:48px!important;font-size:.54rem!important;letter-spacing:.04em!important}
 }
+
+
+/* Mobile layout hardening: one action bar, predictable safe-area spacing, and an unobstructed Lucy panel. */
+@media (max-width:700px){
+  /* Keep the legacy proxy bar in the DOM for compatibility, but never show duplicate controls. */
+  .mobile-action-bar{
+    display:none!important;
+  }
+
+  .peek-floating-actions{
+    inset:auto 10px calc(10px + env(safe-area-inset-bottom, 0px)) 10px!important;
+    width:auto!important;
+    max-width:none!important;
+    margin-inline:0!important;
+    padding:4px!important;
+    gap:0!important;
+  }
+
+  .peek-floating-action{
+    flex:1 1 0!important;
+    min-width:0!important;
+    min-height:50px!important;
+    padding:5px 2px!important;
+    font-size:11px!important;
+    line-height:1.2!important;
+    letter-spacing:.035em!important;
+    white-space:nowrap!important;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+  }
+
+  .peek-floating-icon,
+  .peek-floating-icon svg{
+    width:18px!important;
+    height:18px!important;
+  }
+
+  /* Chat is already open, so remove the bar rather than let it cover Lucy's composer. */
+  .peek-floating-actions.is-chat-open{
+    display:none!important;
+  }
+
+  .peek-floating-actions.is-email-open{
+    z-index:2147483645!important;
+  }
+
+  .peek-floating-action:focus-visible{
+    outline:2px solid #111!important;
+    outline-offset:-3px!important;
+  }
+
+  /* Reserve room at the end of the document so the fixed bar never hides page content. */
+  body{
+    padding-bottom:calc(78px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media(max-width:360px){
+  .peek-floating-actions{
+    inset-inline:6px!important;
+    padding:3px!important;
+  }
+  .peek-floating-action{
+    min-height:48px!important;
+    font-size:10.5px!important;
+    letter-spacing:.015em!important;
+  }
+}
+
+/* In landscape/short viewports, let Lucy use the available height without page scrolling. */
+@media(max-width:700px) and (max-height:520px){
+  .peek-chat{
+    top:8px!important;
+    bottom:8px!important;
+    height:auto!important;
+    max-height:none!important;
+  }
+}
