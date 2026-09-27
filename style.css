@@ -354,3 +354,127 @@
     width:auto!important;
   }
 }
+
+
+/* About — compact, in-flow expertise panel (final) */
+.about{
+  overflow:visible!important;
+}
+.about-grid{
+  min-height:0!important;
+  padding-block:clamp(3.5rem,5vw,5rem)!important;
+  grid-template-columns:minmax(160px,.24fr) minmax(0,.76fr)!important;
+  gap:clamp(2rem,4vw,4rem)!important;
+}
+.about h2,.about-grid h2{
+  max-width:9ch!important;
+  font-size:clamp(3rem,4.8vw,4.8rem)!important;
+  line-height:.84!important;
+  letter-spacing:-.075em!important;
+}
+.about-grid>div>p{
+  max-width:36rem!important;
+  margin-top:1.25rem!important;
+  font-size:.82rem!important;
+  line-height:1.7!important;
+}
+.about-expertise{
+  margin-top:clamp(2.25rem,3.5vw,3.25rem)!important;
+}
+.about-expertise-head{
+  grid-template-columns:minmax(110px,.25fr) minmax(0,.75fr)!important;
+  gap:1.5rem!important;
+  padding:.9rem 0!important;
+}
+.about-expertise-list{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+.about-expertise-trigger{
+  min-height:3.35rem!important;
+  padding:.7rem .65rem!important;
+  font-size:.48rem!important;
+}
+.about-expertise-trigger:not(:first-child){padding-left:.65rem!important}
+
+/* Keep the detail panel inside the About column — never off-screen. */
+.about-expertise-detail{
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  z-index:1!important;
+  width:100%!important;
+  min-height:0!important;
+  box-sizing:border-box!important;
+  margin:.75rem 0 0!important;
+  padding:1.15rem 3rem 1.25rem 1.25rem!important;
+  border:1px solid rgba(0,0,0,.13)!important;
+  border-radius:0!important;
+  background:#fafaf7!important;
+  box-shadow:none!important;
+  transform:translateY(6px)!important;
+}
+.about-expertise-detail:not([hidden]){
+  transform:translateY(0)!important;
+}
+.about-detail-label{
+  margin-bottom:.75rem!important;
+  font-size:.48rem!important;
+}
+.about-expertise-detail h3{
+  max-width:16ch!important;
+  margin:0 0 .55rem!important;
+  font-size:clamp(1.35rem,2vw,2rem)!important;
+  line-height:.95!important;
+}
+.about-expertise-detail p{
+  max-width:38rem!important;
+  font-size:.7rem!important;
+  line-height:1.65!important;
+}
+.about-detail-close{
+  top:.9rem!important;
+  right:1rem!important;
+  font-size:.48rem!important;
+}
+
+/* Remove the old open-state layout expansion. */
+@media(min-width:901px){
+  .about.about-expertise-open .about-grid{
+    grid-template-columns:minmax(160px,.24fr) minmax(0,.76fr)!important;
+    gap:clamp(2rem,4vw,4rem)!important;
+  }
+  .about.about-expertise-open .about-expertise{
+    max-width:none!important;
+  }
+}
+@media(max-width:900px){
+  .about-grid{
+    width:calc(100% - 2rem)!important;
+    padding-block:3.5rem!important;
+  }
+  .about-grid>.label{margin-bottom:2rem!important}
+  .about h2,.about-grid h2{
+    max-width:9ch!important;
+    font-size:clamp(3rem,10vw,4.8rem)!important;
+  }
+  .about-grid>div>p{font-size:.8rem!important}
+  .about-expertise{margin-top:2.75rem!important}
+  .about-expertise-head{grid-template-columns:1fr!important;gap:.5rem!important}
+  .about-expertise-detail{
+    width:100%!important;
+    margin-top:.65rem!important;
+    padding:1.1rem 2.75rem 1.2rem 1.1rem!important;
+  }
+}
+@media(max-width:520px){
+  .about-grid{
+    width:calc(100% - 1.5rem)!important;
+    padding-block:3rem!important;
+  }
+  .about h2,.about-grid h2{
+    font-size:clamp(2.8rem,13vw,4.25rem)!important;
+  }
+  .about-expertise-list{grid-template-columns:1fr 1fr!important}
+  .about-expertise-trigger{min-height:3.5rem!important}
+}
