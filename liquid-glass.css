@@ -1461,3 +1461,441 @@
     font-size:11.5px!important;
   }
 }
+
+
+/* =========================================================
+   PEEK PRESSURE — VISUAL POLISH / MOBILE BEAUTY PASS
+   Keeps the premium editorial direction while restoring
+   depth, rhythm, contrast, and intentional whitespace.
+   ========================================================= */
+@media (max-width:700px) {
+  :root {
+    --peek-mobile-ink:#111;
+    --peek-mobile-muted:#666;
+    --peek-mobile-line:#e4e4e4;
+    --peek-mobile-soft:#f6f6f4;
+  }
+
+  body {
+    background:#fff!important;
+    color:var(--peek-mobile-ink)!important;
+  }
+
+  .container {
+    width:min(calc(100% - 40px),680px)!important;
+  }
+
+  /* Header: crisp, premium, never visually heavy. */
+  .header,
+  .header.scrolled {
+    border-bottom:1px solid rgba(17,17,17,.08)!important;
+    box-shadow:0 4px 22px rgba(0,0,0,.035)!important;
+  }
+
+  .header-inner {
+    min-height:52px!important;
+  }
+
+  .logo {
+    font-size:1rem!important;
+    letter-spacing:-.055em!important;
+  }
+
+  /* Hero: stronger composition and breathing room. */
+  .hero {
+    min-height:calc(100svh - 52px)!important;
+    display:flex!important;
+    align-items:center!important;
+    padding-top:calc(52px + 42px)!important;
+    padding-bottom:64px!important;
+    background:
+      radial-gradient(circle at 92% 16%,rgba(17,17,17,.055),transparent 30%),
+      linear-gradient(180deg,#fff 0%,#f7f7f5 100%)!important;
+  }
+
+  .hero-copy {
+    max-width:34rem!important;
+  }
+
+  .hero-copy h1 {
+    margin-top:18px!important;
+    font-size:clamp(3.05rem,13.5vw,4.55rem)!important;
+    line-height:.86!important;
+    letter-spacing:-.075em!important;
+    max-width:9.5ch!important;
+  }
+
+  .hero-copy>p {
+    max-width:32rem!important;
+    margin-top:22px!important;
+    color:#555!important;
+    font-size:17px!important;
+    line-height:1.58!important;
+  }
+
+  .hero-proof {
+    margin-top:20px!important;
+    color:#777!important;
+    font-size:11px!important;
+    letter-spacing:.12em!important;
+  }
+
+  .hero-buttons {
+    margin-top:26px!important;
+  }
+
+  .hero-buttons .button {
+    width:100%!important;
+    min-height:56px!important;
+    border-radius:16px!important;
+    font-size:14px!important;
+    font-weight:650!important;
+    letter-spacing:.08em!important;
+    box-shadow:0 8px 24px rgba(0,0,0,.07)!important;
+  }
+
+  /* Sections: alternating surfaces create visual rhythm without gimmicks. */
+  .services,
+  .proof-section {
+    background:#f7f7f5!important;
+    border-color:#e7e7e4!important;
+  }
+
+  .about,
+  .service-area {
+    background:#f1f1ef!important;
+  }
+
+  .process,
+  .why-peek {
+    background:#fff!important;
+  }
+
+  .services,
+  .about,
+  .process,
+  .why-peek,
+  .proof-section,
+  .service-area {
+    padding-top:72px!important;
+    padding-bottom:72px!important;
+  }
+
+  .section-top {
+    margin-bottom:28px!important;
+  }
+
+  .label,
+  .eyebrow {
+    color:#777!important;
+    font-size:11px!important;
+    letter-spacing:.16em!important;
+  }
+
+  /* Service cards: tactile, clean, editorial. */
+  .services-grid {
+    gap:16px!important;
+  }
+
+  .service {
+    border:1px solid rgba(17,17,17,.09)!important;
+    border-radius:20px!important;
+    background:#fff!important;
+    box-shadow:0 14px 40px rgba(17,17,17,.055)!important;
+  }
+
+  .service-image {
+    height:auto!important;
+    aspect-ratio:16/10!important;
+  }
+
+  .service-image img {
+    object-position:center!important;
+  }
+
+  .service-body,
+  .service-card .service-body {
+    min-height:0!important;
+    padding:22px!important;
+  }
+
+  .service-body .number {
+    margin-bottom:13px!important;
+    color:#888!important;
+    font-size:11px!important;
+  }
+
+  .service h2,
+  .service-card .service-body h2 {
+    font-size:22px!important;
+    line-height:1.05!important;
+    letter-spacing:-.045em!important;
+  }
+
+  .service p {
+    margin-top:11px!important;
+    color:#5f5f5f!important;
+    font-size:16px!important;
+    line-height:1.58!important;
+  }
+
+  /* About/process: give the oversized type room to breathe. */
+  .about-grid {
+    gap:24px!important;
+    min-height:0!important;
+    padding-top:0!important;
+    padding-bottom:0!important;
+  }
+
+  .about-grid h2,
+  .process-header h2,
+  .why-peek-intro h2,
+  .service-area h2,
+  .proof-header h2,
+  .contact-container>h2,
+  .booking-cta-copy h3 {
+    font-size:clamp(2.55rem,11vw,3.75rem)!important;
+    line-height:.9!important;
+    letter-spacing:-.065em!important;
+  }
+
+  .about p,
+  .process-header p,
+  .proof-header p,
+  .booking-cta-copy p {
+    margin-top:18px!important;
+    color:#5f5f5f!important;
+    font-size:17px!important;
+    line-height:1.62!important;
+  }
+
+  .process-header {
+    gap:20px!important;
+    margin-bottom:34px!important;
+  }
+
+  .process-grid {
+    border-top:1px solid #ddd!important;
+  }
+
+  .process-step {
+    min-height:0!important;
+    padding:24px 0!important;
+    border-right:0!important;
+    border-bottom:1px solid #e1e1e1!important;
+  }
+
+  .step-number {
+    margin-bottom:22px!important;
+    font-size:11px!important;
+  }
+
+  .process-step h3 {
+    margin-bottom:8px!important;
+    font-size:16px!important;
+    letter-spacing:.06em!important;
+  }
+
+  .process-step p {
+    max-width:none!important;
+    color:#666!important;
+    font-size:16px!important;
+  }
+
+  /* Why PEEK becomes a premium checklist, not a wall of text. */
+  .why-peek-point {
+    padding:20px 0!important;
+    border-bottom:1px solid #e2e2e2!important;
+  }
+
+  .why-peek-point>span {
+    font-size:11px!important;
+    color:#888!important;
+  }
+
+  .why-peek-point h3 {
+    font-size:15px!important;
+    line-height:1.3!important;
+    letter-spacing:.07em!important;
+  }
+
+  .why-peek-point p {
+    margin-top:7px!important;
+    color:#666!important;
+    font-size:16px!important;
+    line-height:1.55!important;
+  }
+
+  /* Proof: honest launch state, but visually intentional. */
+  .proof-header {
+    gap:20px!important;
+  }
+
+  .before-after-card,
+  .review-card {
+    border:1px solid #dededb!important;
+    border-radius:20px!important;
+    background:#fff!important;
+    box-shadow:0 12px 36px rgba(17,17,17,.045)!important;
+    overflow:hidden!important;
+  }
+
+  .proof-placeholder {
+    min-height:230px!important;
+  }
+
+  .review-card {
+    padding:22px!important;
+  }
+
+  /* Service area / map: make the utility feel like part of the design. */
+  .service-area-lead {
+    max-width:34rem!important;
+  }
+
+  .service-zip-check {
+    background:#fff!important;
+    border:1px solid #dededb!important;
+    box-shadow:0 10px 30px rgba(17,17,17,.045)!important;
+  }
+
+  .service-map-wrap {
+    border-radius:20px!important;
+    overflow:hidden!important;
+    border:1px solid #ddd!important;
+    box-shadow:0 14px 38px rgba(17,17,17,.06)!important;
+  }
+
+  /* Booking / contact: make the conversion moment feel premium. */
+  .contact-section {
+    margin-block:64px!important;
+    width:min(calc(100% - 40px),680px)!important;
+  }
+
+  .contact-container {
+    padding:24px!important;
+    border-radius:22px!important;
+    border:1px solid #dededb!important;
+    background:#fafaf8!important;
+    box-shadow:0 18px 50px rgba(17,17,17,.065)!important;
+  }
+
+  .contact-container .booking-cta {
+    margin:24px 0 0!important;
+  }
+
+  .contact-container .booking-cta-inner {
+    padding:20px!important;
+    border-radius:18px!important;
+    border:1px solid #dededb!important;
+    background:#f2f2f0!important;
+    box-shadow:none!important;
+  }
+
+  .booking-cta-button,
+  #quoteForm button[type="submit"] {
+    min-height:56px!important;
+    border-radius:16px!important;
+    font-size:14px!important;
+    letter-spacing:.08em!important;
+  }
+
+  /* Forms: beautiful and calm rather than clinical. */
+  main>form#quoteForm input,
+  main>form#quoteForm select,
+  main>form#quoteForm textarea,
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    border:1px solid #d8d8d5!important;
+    border-radius:14px!important;
+    background:#fff!important;
+    padding:14px!important;
+    box-shadow:0 1px 2px rgba(0,0,0,.02)!important;
+  }
+
+  main>form#quoteForm input:focus,
+  main>form#quoteForm select:focus,
+  main>form#quoteForm textarea:focus,
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    border-color:#111!important;
+    background:#fff!important;
+    box-shadow:0 0 0 3px rgba(17,17,17,.07)!important;
+    transform:none!important;
+  }
+
+  /* Footer: strong visual finish. */
+  footer {
+    background:#101010!important;
+    padding-top:48px!important;
+    padding-bottom:calc(40px + env(safe-area-inset-bottom))!important;
+  }
+
+  .footer-inner {
+    padding-bottom:0!important;
+  }
+
+  .footer-inner p {
+    color:#aaa!important;
+    font-size:14px!important;
+    line-height:1.6!important;
+  }
+
+  /* Floating rail: compact but premium, never cramped. */
+  .peek-floating-actions {
+    background:rgba(17,17,17,.96)!important;
+    border:1px solid rgba(255,255,255,.12)!important;
+    box-shadow:0 14px 38px rgba(0,0,0,.2)!important;
+  }
+
+  .peek-floating-action {
+    color:#fff!important;
+    min-height:52px!important;
+    font-size:11px!important;
+  }
+
+  .peek-floating-icon {
+    opacity:.9;
+  }
+
+  /* Keep the layout fluid on very small phones. */
+  .container {
+    width:calc(100% - 32px)!important;
+  }
+
+  .hero {
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+}
+
+@media (max-width:390px) {
+  .hero-copy h1 {
+    font-size:clamp(2.8rem,13.5vw,3.65rem)!important;
+  }
+
+  .hero-copy>p {
+    font-size:16px!important;
+  }
+
+  .services,
+  .about,
+  .process,
+  .why-peek,
+  .proof-section,
+  .service-area {
+    padding-top:60px!important;
+    padding-bottom:60px!important;
+  }
+
+  .service-body,
+  .service-card .service-body {
+    padding:19px!important;
+  }
+
+  .contact-container {
+    padding:20px!important;
+  }
+}
