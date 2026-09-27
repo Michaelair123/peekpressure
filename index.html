@@ -1382,8 +1382,66 @@ document.addEventListener('DOMContentLoaded', () => {
       pendingLeadKind: null,
       handoffState: HANDOFF_STATES.NOT_A_LEAD,
       conversationState: null,
-      conversationId: createConversationId()
+      conversationId: createConversationId(),
+      inactivityTimer: null,
+      inactivityStep: 0
     };
+
+    const LUCY_FOLLOW_UP_DELAYS = [45000, 150000, 300000];
+
+    function clearLucyInactivityTimer() {
+      if (state.inactivityTimer) {
+        window.clearTimeout(state.inactivityTimer);
+        state.inactivityTimer = null;
+      }
+    }
+
+    function scheduleLucyFollowUp() {
+      clearLucyInactivityTimer();
+      if (!state.open || state.sending || state.leadSubmitted || state.pendingLead) return;
+      const last = state.history[state.history.length - 1];
+      if (!last || last.role !== 'assistant' || state.inactivityStep >= LUCY_FOLLOW_UP_DELAYS.length) return;
+
+      const delay = LUCY_FOLLOW_UP_DELAYS[state.inactivityStep];
+      state.inactivityTimer = window.setTimeout(() => {
+        state.inactivityTimer = null;
+        if (!state.open || state.sending || state.leadSubmitted || state.pendingLead) return;
+
+        const lastUser = [...state.history].reverse().find(item => item.role === 'user');
+        const userText = typeof lastUser?.content === 'string' ? lastUser.content.toLowerCase() : '';
+        let followUp;
+
+        if (state.inactivityStep === 0) {
+          if (/price|cost|how much|quote/.test(userText)) {
+            followUp = "Just checking back in — if you’re still comparing options, I can help narrow down the scope and what the $200 minimum would cover. Roughly how large is the area?";
+          } else if (/driveway/.test(userText)) {
+            followUp = "Quick follow-up 👋 If it’s easier, you can just tell me whether the driveway is about 1–2 cars, 3–4 cars, or larger.";
+          } else if (/sidewalk|walkway|entrance/.test(userText)) {
+            followUp = "Quick follow-up 👋 About how much area are we talking — a short walkway/entrance, a longer path, or a larger pedestrian area?";
+          } else if (/commercial|business|apartment|office|retail/.test(userText)) {
+            followUp = "Quick follow-up — for the commercial property, is this a one-time cleanup or something you may want on a recurring schedule?";
+          } else {
+            followUp = "Just checking back in 👋 I can keep this simple. What are you mainly looking to have cleaned?";
+          }
+        } else if (state.inactivityStep === 1) {
+          followUp = "No rush. If you have a photo of the area, you can send it here and I can use that to understand the job faster.";
+        } else {
+          followUp = "Whenever you’re ready, I can get the request started for you. A property address, photo, or your name and best phone/email is enough to take the next step.";
+        }
+
+        state.inactivityStep += 1;
+        addMessage(followUp, 'assistant');
+        state.history.push({ role: 'assistant', content: followUp });
+        setQuick(state.inactivityStep >= 2 ? ['Get a quote', 'Book a time'] : ['Send a photo', 'Get a quote']);
+        messages.scrollTop = messages.scrollHeight;
+        scheduleLucyFollowUp();
+      }, delay);
+    }
+
+    function noteLucyCustomerActivity() {
+      state.inactivityStep = 0;
+      clearLucyInactivityTimer();
+    }
 
     function addMessage(text, role, imageParts = []) {
       const bubble = document.createElement('div');
@@ -1542,11 +1600,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (shouldFocus) {
         window.setTimeout(() => input.focus(), 80);
       }
+      scheduleLucyFollowUp();
     }
 
     document.getElementById('peekFloatingChat')?.addEventListener('click', () => openChat());
 
     function closeChat() {
+      clearLucyInactivityTimer();
       state.open = false;
       panel.classList.remove('is-open');
       panel.setAttribute('aria-hidden', 'true');
@@ -1725,6 +1785,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function sendMessage(text) {
       const clean = text.trim();
+      noteLucyCustomerActivity();
       const hasImages = state.selectedImages.length > 0;
 
       if (!clean && !hasImages) return;
@@ -1952,6 +2013,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           setQuick(['Book a time', 'Ask another question']);
         }
+
+        scheduleLucyFollowUp();
       } catch (error) {
         const typing = messages.querySelector('.peek-chat-message.typing');
         if (typing) typing.remove();
@@ -1970,6 +2033,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.sending = false;
         attachButton.disabled = false;
         input.focus();
+        if (state.open && !state.leadSubmitted && !state.pendingLead) scheduleLucyFollowUp();
       }
     }
 
