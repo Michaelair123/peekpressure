@@ -127,15 +127,15 @@ async function loadLucyMemory(env, request, messages) {
     if (!env.LUCY_MEMORY) return null;
     const sessionId = String(request.headers.get("X-Lucy-Session-ID") || "").trim();
     if (!sessionId) return null;
-    const contactValues = extractMemoryContactValues(messages);
+    // Loading memory is session-bound only. Contact details are not an authentication
+    // factor and must never be sufficient to retrieve another customer's profile.
     const stub = env.LUCY_MEMORY.getByName("customer-memory");
     const response = await stub.fetch("https://lucy-memory.internal", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         action: "load",
-        session_id: sessionId,
-        contact_values: contactValues
+        session_id: sessionId
       })
     });
     if (!response.ok) return null;
