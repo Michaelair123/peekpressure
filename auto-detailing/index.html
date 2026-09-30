@@ -1,47 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Auto Detailing | PEEK PRESSURE | Bay Area</title>
-<meta name="description" content="PEEK PRESSURE provides auto detailing and vehicle cleaning in the Bay Area, with interior and exterior service focused on careful, material-appropriate cleaning.">
+<meta name="description" content="PEEK PRESSURE is preparing Bay Area auto detailing focused on interior and exterior vehicle cleaning. Early inquiries are welcome.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://peekpressure.com/auto-detailing/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="stylesheet" href="/style.css?v=20260929-services-pages">
-<link rel="stylesheet" href="/liquid-glass.css?v=20260929-services-pages">
+<link rel="stylesheet" href="/style.css?v=20260929-services-polished">
+<link rel="stylesheet" href="/liquid-glass.css?v=20260929-services-polished">
 <style>
-.detailing-hero{padding:clamp(9rem,15vw,13rem) 0 clamp(5rem,8vw,8rem);background:#f5f5f5}
-.detailing-hero h1{margin:1.2rem 0 0;max-width:1100px;font-size:clamp(4rem,10vw,10rem);line-height:.78;letter-spacing:-.105em}
-.detailing-hero p{max-width:650px;margin:2rem 0 0;color:#666;line-height:1.7;font-size:1rem}
-.detailing-status{display:inline-flex;margin-top:28px;padding:8px 12px;border:1px solid #ccc;border-radius:999px;font-size:.58rem;font-weight:800;letter-spacing:.12em}
-.detailing-content{padding:clamp(5rem,9vw,9rem) 0}
-.detailing-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:3rem}
-.detailing-card{border-top:1px solid #ccc;padding-top:20px}.detailing-card .number{color:#777;font-size:.7rem;font-weight:700}.detailing-card h2{margin:25px 0 12px;font-size:clamp(1.6rem,3vw,3rem);letter-spacing:-.06em;line-height:.9}.detailing-card p{margin:0;color:#666;line-height:1.65;font-size:.9rem}
-.service-page-bottom-cta{padding:clamp(5rem,10vw,10rem) 0;background:#f5f5f5}.service-page-bottom-cta h2{margin:14px 0 0;font-size:clamp(3rem,7vw,7rem);line-height:.82;letter-spacing:-.09em}.service-page-bottom-cta .service-page-cta{margin-top:30px}.detailing-note{margin-top:5rem;max-width:850px}.detailing-note h2{font-size:clamp(2.4rem,5vw,5rem);line-height:.85;letter-spacing:-.08em;margin:14px 0 0}.detailing-note p{color:#666;line-height:1.7}
-@media(max-width:900px){.detailing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.detailing-hero{padding-top:8rem}.detailing-hero h1{font-size:clamp(3.5rem,18vw,5rem)}.detailing-hero p{font-size:.9rem}.detailing-grid{grid-template-columns:1fr;gap:38px}}
+.service-page-hero{padding:clamp(9rem,15vw,13rem) 0 clamp(5rem,8vw,8rem);background:linear-gradient(180deg,#fff 0%,#f7f7f7 100%);border-bottom:1px solid #e7e7e7}
+.service-page-hero .eyebrow{margin-bottom:1rem}
+.service-page-hero h1{margin:0;max-width:1100px;font-size:clamp(4rem,10vw,10rem);line-height:.78;letter-spacing:-.105em}
+.service-page-hero p{max-width:690px;margin:2rem 0 0;color:#666;line-height:1.75;font-size:clamp(.9rem,1.2vw,1rem)}
+.service-launch{display:inline-flex;align-items:center;gap:8px;margin-top:26px;padding:9px 13px;border:1px solid #d2d2d2;border-radius:999px;background:#fff;color:#111;font-size:.58rem;font-weight:800;letter-spacing:.13em}
+.service-launch::before{content:"";width:7px;height:7px;border-radius:50%;background:#999}
+.service-detail-section{padding:clamp(5rem,9vw,9rem) 0}
+.service-detail-top{display:grid;grid-template-columns:minmax(220px,.6fr) minmax(0,1.4fr);gap:clamp(2rem,7vw,8rem);align-items:start}
+.service-detail-top h2{margin:12px 0 0;font-size:clamp(2.8rem,5.5vw,6rem);line-height:.84;letter-spacing:-.09em}
+.service-detail-top .lead{max-width:720px;color:#666;font-size:1rem;line-height:1.75}
+.service-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:clamp(4rem,7vw,6rem)}
+.service-detail-grid article{border-top:1px solid #cfcfcf;padding-top:18px}
+.service-detail-grid article>span{color:#777;font-size:.68rem;font-weight:700}
+.service-detail-grid h2{margin:24px 0 12px;font-size:clamp(1.45rem,2.6vw,2.6rem);line-height:.9;letter-spacing:-.06em}
+.service-detail-grid p{margin:0;color:#666;font-size:.88rem;line-height:1.7}
+.service-scope{margin-top:clamp(4rem,7vw,7rem);padding:clamp(1.5rem,4vw,3.5rem);background:#f3f3f3}
+.service-scope h3{margin:10px 0 12px;font-size:clamp(2rem,4vw,4rem);line-height:.88;letter-spacing:-.075em}
+.service-scope p{max-width:760px;color:#666;line-height:1.7}
+.service-page-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.service-page-bottom-cta{padding:clamp(5rem,10vw,10rem) 0;background:#f5f5f5}
+.service-page-bottom-cta h2{margin:14px 0 0;max-width:900px;font-size:clamp(3rem,7vw,7rem);line-height:.82;letter-spacing:-.09em}
+.service-page-footer{padding:38px 0 90px;border-top:1px solid #ddd;color:#777;font-size:.72rem}
+.service-page-footer a{text-decoration:underline;text-underline-offset:3px}
 
-.service-floating-actions{position:fixed;right:20px;bottom:24px;z-index:9990;display:flex;align-items:stretch;gap:0;padding:0;border:1px solid rgba(17,17,17,.14);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 12px 36px rgba(0,0,0,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);overflow:hidden}
-.service-floating-actions .peek-floating-action{appearance:none;-webkit-appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:112px;min-height:52px;padding:0 15px;border:0;border-right:1px solid rgba(17,17,17,.1);background:transparent;color:#111;text-decoration:none;font:700 .58rem/1 Inter,Arial,sans-serif;letter-spacing:.12em}
-.service-floating-actions .peek-floating-action:last-child{border-right:0}
-.service-floating-actions .peek-floating-action:hover,.service-floating-actions .peek-floating-action:focus-visible{background:#111;color:#fff}
-.service-floating-actions .peek-floating-icon{font-size:17px;line-height:1;letter-spacing:0}
-@media(max-width:700px){.service-floating-actions{right:10px;bottom:12px;left:10px;width:auto}.service-floating-actions .peek-floating-action{flex:1;min-width:0;min-height:50px;padding:0 8px;gap:6px}.service-floating-actions .peek-floating-icon{font-size:15px}}
-</style>
-</head>
+.peek-floating-actions{position:fixed;right:20px;bottom:24px;z-index:9990;display:flex;align-items:stretch;gap:0;padding:0;border:1px solid rgba(17,17,17,.14);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 12px 36px rgba(0,0,0,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);overflow:hidden}
+.peek-floating-action{appearance:none;-webkit-appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:112px;min-height:52px;padding:0 18px;border:0;border-right:1px solid rgba(17,17,17,.10);border-radius:0;background:transparent;color:#111;font:600 .68rem/1 Inter,Arial,sans-serif;letter-spacing:.13em;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .2s ease,color .2s ease,transform .2s ease}
+.peek-floating-action:last-child{border-right:0}
+.peek-floating-action:hover,.peek-floating-action:focus-visible{background:#111;color:#fff}
+.peek-floating-action:active{transform:scale(.98)}
+.peek-floating-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;font-size:15px;line-height:1;letter-spacing:0}
+.peek-floating-icon svg{width:18px;height:18px;display:block}
+@media(max-width:700px){.peek-floating-actions{right:12px;left:12px;bottom:calc(12px + env(safe-area-inset-bottom));width:auto;border-radius:16px}.peek-floating-action{flex:1 1 0;min-width:0;min-height:56px;padding:0 8px;gap:6px;font-size:.62rem;letter-spacing:.1em}.peek-floating-icon{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.peek-floating-action{transition:none}}
+@media(max-width:900px){.service-detail-top{grid-template-columns:1fr}.service-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.service-page-hero{padding-top:8rem}.service-page-hero h1{font-size:clamp(3.5rem,18vw,5rem)}.service-page-hero p{font-size:.9rem}.service-detail-grid{grid-template-columns:1fr;gap:38px}.service-detail-top h2{font-size:3.1rem}.service-page-cta .button{min-height:3.2rem}}
+</style></head>
 <body>
-<header class="header" aria-label="PEEK PRESSURE site header"><div class="container header-inner"><a href="/" class="logo">PEEK<span>PRESSURE</span></a><nav aria-label="Primary navigation"><a href="/">Home</a><a href="/pressure-washing/">Pressure Washing</a><a href="/auto-detailing/">Auto Detailing</a><a href="/pressure-washing/#process">Process</a></nav><span class="header-contact"><a href="tel:14156898377" class="header-phone">(415) 689-8377</a></span><a href="/#quoteForm" class="header-cta">GET A QUOTE</a><button type="button" class="peek-menu-toggle" id="peekMenuToggle" aria-label="Open menu" aria-controls="peekSideMenu" aria-expanded="false"><span></span><span></span><span></span></button></div></header>
-<div class="peek-side-menu" id="peekSideMenu" aria-hidden="true"><div class="peek-side-menu-backdrop" data-peek-menu-close></div><aside class="peek-side-menu-panel" role="dialog" aria-modal="true" aria-labelledby="menu-title" tabindex="-1"><div class="peek-side-menu-head"><span class="label">PEEK PRESSURE</span><button type="button" class="peek-side-menu-close" id="peekMenuClose" aria-label="Close menu">×</button></div><h2 id="menu-title">MENU.</h2><nav class="peek-side-menu-links" aria-label="Menu"><a href="/">Home <span>→</span></a><a href="/pressure-washing/">Pressure Washing <span>→</span></a><a href="/auto-detailing/">Auto Detailing <span>→</span></a><a href="/pressure-washing/#process">Process <span>→</span></a><a href="/#quoteForm">Get a Quote <span>→</span></a></nav><div class="peek-side-menu-footer"><a href="tel:14156898377">415-689-8377</a><a href="mailto:look@peekpressure.com">look@peekpressure.com</a></div></aside></div>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="header" aria-label="PEEK PRESSURE site header"><div class="container header-inner">
+<a href="/" class="logo">PEEK<span>PRESSURE</span></a>
+<nav aria-label="Primary navigation"><a href="/">Home</a><a href="/pressure-washing/">Pressure Washing</a><a href="/auto-detailing/">Auto Detailing</a><a href="/#process">Process</a></nav>
+<span class="header-contact"><a href="tel:14156898377" class="header-phone">(415) 689-8377</a></span><a href="/?open=quote" class="header-cta">GET A QUOTE</a>
+<button type="button" class="peek-menu-toggle" id="peekMenuToggle" aria-label="Open menu" aria-controls="peekSideMenu" aria-expanded="false"><span></span><span></span><span></span></button>
+</div></header>
+<div class="peek-side-menu" id="peekSideMenu" aria-hidden="true"><div class="peek-side-menu-backdrop" data-peek-menu-close></div><aside class="peek-side-menu-panel" role="dialog" aria-modal="true" aria-labelledby="menu-title" tabindex="-1"><div class="peek-side-menu-head"><span class="label">PEEK PRESSURE</span><button type="button" class="peek-side-menu-close" id="peekMenuClose" aria-label="Close menu">×</button></div><h2 id="menu-title">MENU.</h2><nav class="peek-side-menu-links" aria-label="Menu"><a href="/">Home <span>→</span></a><a href="/pressure-washing/">Pressure Washing <span>→</span></a><a href="/auto-detailing/">Auto Detailing <span>→</span></a><a href="/#process">Process <span>→</span></a><a href="/?open=quote">Get a Quote <span>→</span></a><a href="/?open=book">Book a Time <span>→</span></a></nav><div class="peek-side-menu-footer"><a href="tel:14156898377">415-689-8377</a><a href="mailto:look@peekpressure.com">look@peekpressure.com</a></div></aside></div>
 
-<nav class="peek-floating-actions service-floating-actions" aria-label="Quick contact actions">
-  <a class="peek-floating-action" href="/?open=chat" aria-label="Chat with Lucy"><span class="peek-floating-icon" aria-hidden="true">◌</span><span>CHAT</span></a>
-  <a class="peek-floating-action" href="mailto:look@peekpressure.com" aria-label="Email PEEK PRESSURE"><span class="peek-floating-icon" aria-hidden="true">✉</span><span>EMAIL</span></a>
-  <a class="peek-floating-action" href="sms:14156898377" aria-label="Text PEEK PRESSURE"><span class="peek-floating-icon" aria-hidden="true">▱</span><span>TEXT</span></a>
-  <a class="peek-floating-action" href="/#peekCalendlyModal" data-peek-book aria-label="Book a time with PEEK PRESSURE"><span class="peek-floating-icon" aria-hidden="true">□</span><span>BOOK</span></a>
+<nav class="peek-floating-actions" aria-label="Quick contact actions">
+  <a class="peek-floating-action" href="/?open=chat" aria-label="Chat with Lucy">
+    <span class="peek-floating-icon peek-icon-chat" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-4-.95L4 19l1.15-3.25A7.4 7.4 0 0 1 4.5 12 7.5 7.5 0 0 1 12 4.5a7.5 7.5 0 0 1 8 7Z"/><path d="M9 12h.01M12 12h.01M15 12h.01"/></svg></span><span>CHAT</span>
+  </a>
+  <a class="peek-floating-action" href="/?open=email" aria-label="Email PEEK PRESSURE">
+    <span class="peek-floating-icon peek-icon-email" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m5 7 7 5.5L19 7"/></svg></span><span>EMAIL</span>
+  </a>
+  <a class="peek-floating-action" href="/?open=text" aria-label="Text PEEK PRESSURE">
+    <span class="peek-floating-icon peek-icon-text" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="3" width="11" height="18" rx="2"/><path d="M10 6h4M11 18h2"/></svg></span><span>TEXT</span>
+  </a>
+  <a class="peek-floating-action" href="/?open=book" aria-label="Book a time with PEEK PRESSURE">
+    <span class="peek-floating-icon peek-icon-book" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M8 3.5v4M16 3.5v4M4 9.5h16M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01"/></svg></span><span>BOOK</span>
+  </a>
 </nav>
-<main><section class="detailing-hero"><div class="container"><div class="eyebrow">PEEK PRESSURE · BAY AREA</div><h1>AUTO<br>DETAILING.</h1><p>Professional vehicle cleaning with careful attention to the interior, exterior, and finish. Tell us what you drive and what you’d like cleaned, and we’ll review the request.</p><span class="detailing-status">AVAILABLE NOW</span></div></section>
-<section class="detailing-content"><div class="container"><span class="label">WHAT WE CLEAN</span><div class="detailing-grid"><article class="detailing-card"><span class="number">01</span><h2>EXTERIOR</h2><p>Vehicle exterior cleaning with attention to paint-safe washing, wheels, tires, and the finish.</p></article><article class="detailing-card"><span class="number">02</span><h2>INTERIOR</h2><p>Interior cleaning focused on a fresh, well-kept cabin and the surfaces that collect everyday dirt.</p></article><article class="detailing-card"><span class="number">03</span><h2>FULL DETAIL</h2><p>An inside-and-out vehicle cleaning option for customers who want a more complete refresh. Exact scope depends on the vehicle and requested service.</p></article><article class="detailing-card"><span class="number">04</span><h2>VEHICLE CARE</h2><p>Cleaning scope can be tailored to the vehicle and requested service. Specialized correction, coatings, or restoration work is not assumed unless confirmed.</p></article></div><div class="detailing-note"><span class="label">READY WHEN YOU ARE</span><h2>TELL US<br>WHAT YOU DRIVE.</h2><p>Detailing requests can vary by vehicle, condition, materials, and requested scope. Send the basic details through the quote form and PEEK PRESSURE can review what you need before confirming the work.</p><div class="service-page-cta"><a class="button primary" href="/#quoteForm">REQUEST DETAILING →</a><a class="button secondary" href="/pressure-washing/">PRESSURE WASHING →</a></div></div></div></section><section class="service-page-bottom-cta"><div class="container"><span class="label">NEED BOTH?</span><h2>GET THE<br>WHOLE THING CLEAN.</h2><div class="service-page-cta"><a class="button primary" href="/#quoteForm">REQUEST A QUOTE →</a><a class="button secondary" href="/pressure-washing/">PRESSURE WASHING →</a></div></div></section><footer class="service-page-footer"><div class="container"><a href="/">PEEK PRESSURE</a> · <a href="/pressure-washing/">Pressure Washing</a> · Auto Detailing</div></footer></main>
+<main id="main-content">
+<section class="service-page-hero"><div class="container"><div class="eyebrow">PEEK PRESSURE · BAY AREA</div><h1>AUTO<br>DETAILING.</h1><p>Interior and exterior vehicle cleaning for everyday dirt, dust, buildup, and general refresh. We are building out the service now; early inquiries are welcome.</p><span class="service-launch">COMING SOON · EARLY INQUIRIES WELCOME</span></div></section>
+<section class="service-detail-section"><div class="container"><div class="service-detail-top"><div><span class="label">AUTO DETAILING</span><h2>CLEAN THE CAR.<br>RESPECT THE FINISH.</h2></div><p class="lead">The goal is straightforward vehicle cleaning without pretending every car needs the same treatment. Tell us what you drive, what you want cleaned, and anything important about the condition. We’ll review the request and confirm the scope before work is scheduled.</p></div>
+ <div class="service-detail-grid">
+  <article><span>01</span><h2>EXTERIOR</h2><p>Exterior vehicle cleaning with material-appropriate washing and careful attention to paint, glass, wheels, tires, plastics, and trim.</p></article>
+  <article><span>02</span><h2>INTERIOR</h2><p>Interior cleaning for the cabin surfaces that collect everyday dust, dirt, crumbs, and grime. Exact scope depends on the vehicle and condition.</p></article>
+  <article><span>03</span><h2>INSIDE + OUT</h2><p>A combined interior and exterior cleaning request can be reviewed as one scope. We’ll confirm what can be handled before work is scheduled.</p></article>
+  <article><span>04</span><h2>NO SURPRISES</h2><p>No paint correction, machine polishing, coatings, ceramic protection, or restoration work is included unless PEEK PRESSURE explicitly confirms it.</p></article>
+ </div><div class="service-scope"><span class="label">CURRENT SCOPE</span><h3>INTERIOR + EXTERIOR.<br>THAT’S THE LANE.</h3><p>We’re keeping the launch scope simple: interior and exterior vehicle cleaning only. Specialized paint correction, polishing, compounding, coatings, ceramic protection, restoration, and similar work are outside the current scope.</p></div></div></section>
+<section class="service-page-bottom-cta"><div class="container"><span class="label">EARLY INQUIRIES</span><h2>GET ON THE DETAILING LIST.</h2><div class="service-page-cta"><a class="button primary" href="/?open=quote">START A REQUEST →</a><a class="button secondary" href="/?open=chat">ASK LUCY →</a></div></div></section>
+<footer class="service-page-footer"><div class="container"><a href="/">PEEK PRESSURE</a> · <a href="/pressure-washing/">Pressure Washing</a> · <a href="/auto-detailing/">Auto Detailing</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div></footer>
+</main>
 <script>
-(()=>{const t=document.getElementById('peekMenuToggle'),m=document.getElementById('peekSideMenu'),x=document.getElementById('peekMenuClose');if(!t||!m||!x)return;const close=()=>{m.classList.remove('is-open');m.setAttribute('aria-hidden','true');t.setAttribute('aria-expanded','false');document.body.classList.remove('peek-side-menu-open')};t.onclick=()=>{m.classList.contains('is-open')?close():(m.classList.add('is-open'),m.setAttribute('aria-hidden','false'),t.setAttribute('aria-expanded','true'),document.body.classList.add('peek-side-menu-open'),x.focus())};x.onclick=close;m.querySelector('[data-peek-menu-close]').onclick=close;document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})})();
-</script>
-</body></html>
+(()=>{const t=document.getElementById('peekMenuToggle'),m=document.getElementById('peekSideMenu'),x=document.getElementById('peekMenuClose');if(!t||!m||!x)return;const close=()=>{m.classList.remove('is-open');m.setAttribute('aria-hidden','true');t.setAttribute('aria-expanded','false');document.body.classList.remove('peek-side-menu-open')};t.addEventListener('click',()=>{m.classList.contains('is-open')?close():(m.classList.add('is-open'),m.setAttribute('aria-hidden','false'),t.setAttribute('aria-expanded','true'),document.body.classList.add('peek-side-menu-open'),x.focus())});x.addEventListener('click',close);m.querySelector('[data-peek-menu-close]')?.addEventListener('click',close);document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});})();
+</script></body></html>
