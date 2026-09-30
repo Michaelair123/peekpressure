@@ -356,29 +356,7 @@ body.peek-calendly-open{overflow:hidden}
       </div>
     </section>
 
-    <section class="about" aria-labelledby="about-title">
-      <div class="container about-grid">
-        <span class="label">ABOUT</span>
-        <div>
-          <h2 id="about-title">MAKE THE<br>OUTSIDE<br>LOOK RIGHT.</h2>
-          <p>PEEK PRESSURE is built around a simple idea: the outside of your property should look as cared for as the inside. We bring a property-management mindset to exterior cleaning — clear communication, respect for the property, and follow-through you can count on.</p>
-          <div class="about-expertise" aria-label="Cleaning expertise">
-            <div class="about-expertise-head">
-              <span class="about-kicker">CLEANING KNOWLEDGE</span>
-              <p>Different stains and surfaces need different approaches. We diagnose first, then choose the right chemistry and pressure.</p>
-            </div>
-            <div class="about-expertise-list" role="tablist" aria-label="Cleaning expertise topics">
-              <button type="button" class="about-expertise-trigger" data-about-topic="rust" aria-selected="false">RUST &amp; STAINS</button>
-              <button type="button" class="about-expertise-trigger" data-about-topic="chemistry" aria-selected="false">CHEMISTRY</button>
-              <button type="button" class="about-expertise-trigger" data-about-topic="surface" aria-selected="false">SURFACE CARE</button>
-              <button type="button" class="about-expertise-trigger" data-about-topic="etching" aria-selected="false">ETCHING PREVENTION</button>
-            </div>
-            <div class="about-expertise-detail" id="aboutExpertiseDetail" role="tabpanel" aria-live="polite" hidden></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    
     <section id="process" class="process">
       <div class="container">
 
@@ -2284,47 +2262,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('peek:popup-open', event => {
     if (event.detail?.except !== 'menu' && menu.classList.contains('is-open')) {
       closeMenu(false);
-    }
-  });
-})();
-</script>
-<script id="peek-about-expertise-script">
-(() => {
-  const section = document.querySelector('.about');
-  const detail = document.getElementById('aboutExpertiseDetail');
-  const triggers = [...document.querySelectorAll('.about-expertise-trigger')];
-  if (!section || !detail || !triggers.length) return;
-  const topics = {
-    rust: ['RUST & STAINS','Identify it before treating it.','Rust and iron staining are not the same problem as algae, dirt, or organic growth. The right treatment depends on the substrate, severity, and what is around it. We look at the surface first instead of simply turning up the pressure.'],
-    chemistry: ['CHEMISTRY','Use the chemistry that fits the problem.','Different stains respond to different cleaning approaches. Organic growth, oils, mineral deposits, and rust each call for different chemistry and handling. Product labels, surface compatibility, dwell time, rinsing, and runoff all matter.'],
-    surface: ['SURFACE CARE','Clean without treating every surface the same.','Concrete, brick, pavers, stone, coatings, and other exterior materials can react very differently to pressure and chemistry. The goal is a clean surface without unnecessary damage, finish loss, or disturbed material.'],
-    etching: ['ETCHING PREVENTION','Clean it without changing the surface.','Etching is surface alteration, not just a stubborn stain. Excessive pressure or incompatible chemistry can affect finishes and cementitious or acid-sensitive materials. We choose a method with the substrate in mind and test when appropriate.']
-  };
-  function selectTopic(key) {
-    const topic = topics[key];
-    if (!topic) return;
-    const same = detail.dataset.topic === key && section.classList.contains('about-expertise-open');
-    triggers.forEach(button => {
-      const active = button.dataset.aboutTopic === key && !same;
-      button.setAttribute('aria-selected', active ? 'true' : 'false');
-      button.classList.toggle('is-active', active);
-    });
-    if (same) {
-      section.classList.remove('about-expertise-open');
-      detail.hidden = true;
-      detail.removeAttribute('data-topic');
-      return;
-    }
-    detail.dataset.topic = key;
-    detail.innerHTML = '<span class="about-detail-label">' + topic[0] + '</span><h3>' + topic[1] + '</h3><p>' + topic[2] + '</p><button type="button" class="about-detail-close" aria-label="Close cleaning expertise detail">Close <span aria-hidden="true">×</span></button>';
-    detail.hidden = false;
-    section.classList.add('about-expertise-open');
-  }
-  triggers.forEach(button => button.addEventListener('click', () => selectTopic(button.dataset.aboutTopic)));
-  detail.addEventListener('click', event => {
-    if (event.target.closest('.about-detail-close')) {
-      const active = triggers.find(button => button.classList.contains('is-active'));
-      if (active) selectTopic(active.dataset.aboutTopic);
     }
   });
 })();
