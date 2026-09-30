@@ -47,7 +47,7 @@ PEEK PRESSURE currently services:
 
 ## Process
 
-1. Customers provide the property address, service type, and basic job details.
+1. Customers provide the service location, service type, and basic job details.
 2. Customers can optionally upload photos to help with quoting.
 3. PEEK PRESSURE reviews the request and provides clear pricing before work begins.
 4. PEEK PRESSURE performs the cleaning.
@@ -61,7 +61,7 @@ Quote requests collect:
 - Name
 - Email
 - Phone
-- Property address
+- Service location
 - Service type
 - Job details
 - Optional photos
