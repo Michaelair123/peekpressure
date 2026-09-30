@@ -1635,6 +1635,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('peekFloatingChat')?.addEventListener('click', () => openChat());
+    if (new URLSearchParams(window.location.search).get('open') === 'chat') window.setTimeout(() => openChat(), 120);
 
     function closeChat() {
       clearLucyInactivityTimer();
