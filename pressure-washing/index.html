@@ -32,6 +32,13 @@
 .service-page-bottom-cta{padding:clamp(5rem,10vw,10rem) 0;background:#f5f5f5}.service-page-bottom-cta h2{margin:14px 0 0;font-size:clamp(3rem,7vw,7rem);line-height:.82;letter-spacing:-.09em}.service-page-bottom-cta .service-page-cta{margin-top:30px}.service-page-footer{padding:40px 0 70px;border-top:1px solid #ddd;color:#777;font-size:.75rem}
 .service-page-footer a{text-decoration:underline;text-underline-offset:3px}
 @media(max-width:700px){.service-page-hero{padding-top:8rem}.service-page-hero h1{font-size:clamp(3.5rem,18vw,5rem)}.service-page-hero p{font-size:.9rem}.service-page-grid{grid-template-columns:1fr;gap:38px}.service-page-card h2{font-size:2.3rem}}
+
+.service-floating-actions{position:fixed;right:20px;bottom:24px;z-index:9990;display:flex;align-items:stretch;gap:0;padding:0;border:1px solid rgba(17,17,17,.14);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 12px 36px rgba(0,0,0,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);overflow:hidden}
+.service-floating-actions .peek-floating-action{appearance:none;-webkit-appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:112px;min-height:52px;padding:0 15px;border:0;border-right:1px solid rgba(17,17,17,.1);background:transparent;color:#111;text-decoration:none;font:700 .58rem/1 Inter,Arial,sans-serif;letter-spacing:.12em}
+.service-floating-actions .peek-floating-action:last-child{border-right:0}
+.service-floating-actions .peek-floating-action:hover,.service-floating-actions .peek-floating-action:focus-visible{background:#111;color:#fff}
+.service-floating-actions .peek-floating-icon{font-size:17px;line-height:1;letter-spacing:0}
+@media(max-width:700px){.service-floating-actions{right:10px;bottom:12px;left:10px;width:auto}.service-floating-actions .peek-floating-action{flex:1;min-width:0;min-height:50px;padding:0 8px;gap:6px}.service-floating-actions .peek-floating-icon{font-size:15px}}
 </style>
 </head>
 <body>
@@ -44,6 +51,13 @@
 <button type="button" class="peek-menu-toggle" id="peekMenuToggle" aria-label="Open menu" aria-controls="peekSideMenu" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></header>
 <div class="peek-side-menu" id="peekSideMenu" aria-hidden="true"><div class="peek-side-menu-backdrop" data-peek-menu-close></div><aside class="peek-side-menu-panel" role="dialog" aria-modal="true" aria-labelledby="menu-title" tabindex="-1"><div class="peek-side-menu-head"><span class="label">PEEK PRESSURE</span><button type="button" class="peek-side-menu-close" id="peekMenuClose" aria-label="Close menu">×</button></div><h2 id="menu-title">MENU.</h2><nav class="peek-side-menu-links" aria-label="Menu"><a href="/">Home <span>→</span></a><a href="/pressure-washing/">Pressure Washing <span>→</span></a><a href="/auto-detailing/">Auto Detailing <span>→</span></a><a href="#process">Process <span>→</span></a><a href="/#quoteForm">Get a Quote <span>→</span></a></nav><div class="peek-side-menu-footer"><a href="tel:14156898377">415-689-8377</a><a href="mailto:look@peekpressure.com">look@peekpressure.com</a></div></aside></div>
+
+<nav class="peek-floating-actions service-floating-actions" aria-label="Quick contact actions">
+  <a class="peek-floating-action" href="/?open=chat" aria-label="Chat with Lucy"><span class="peek-floating-icon" aria-hidden="true">◌</span><span>CHAT</span></a>
+  <a class="peek-floating-action" href="mailto:look@peekpressure.com" aria-label="Email PEEK PRESSURE"><span class="peek-floating-icon" aria-hidden="true">✉</span><span>EMAIL</span></a>
+  <a class="peek-floating-action" href="sms:14156898377" aria-label="Text PEEK PRESSURE"><span class="peek-floating-icon" aria-hidden="true">▱</span><span>TEXT</span></a>
+  <a class="peek-floating-action" href="/#peekCalendlyModal" data-peek-book aria-label="Book a time with PEEK PRESSURE"><span class="peek-floating-icon" aria-hidden="true">□</span><span>BOOK</span></a>
+</nav>
 <main>
 <section class="service-page-hero"><div class="container"><div class="eyebrow">PEEK PRESSURE · BAY AREA</div><h1>PRESSURE<br>WASHING.</h1><p>Professional exterior cleaning for the surfaces people see first. We focus on clear scope, careful surface treatment, and a clean result.</p><div class="service-page-cta"><a class="button primary" href="/#quoteForm">GET A QUOTE →</a><a class="button secondary" href="/#services">VIEW SERVICES →</a></div></div></section>
 <section class="service-page-intro"><div class="container"><span class="label">WHAT WE CLEAN</span><div class="service-page-grid">
