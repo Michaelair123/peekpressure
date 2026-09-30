@@ -29,7 +29,7 @@
 .service-page-note h2{margin:0;font-size:clamp(2rem,4vw,4rem);letter-spacing:-.07em;line-height:.9}
 .service-page-note p{max-width:700px;color:#666;line-height:1.7}
 .service-page-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
-.service-page-footer{padding:40px 0 70px;border-top:1px solid #ddd;color:#777;font-size:.75rem}
+.service-page-bottom-cta{padding:clamp(5rem,10vw,10rem) 0;background:#f5f5f5}.service-page-bottom-cta h2{margin:14px 0 0;font-size:clamp(3rem,7vw,7rem);line-height:.82;letter-spacing:-.09em}.service-page-bottom-cta .service-page-cta{margin-top:30px}.service-page-footer{padding:40px 0 70px;border-top:1px solid #ddd;color:#777;font-size:.75rem}
 .service-page-footer a{text-decoration:underline;text-underline-offset:3px}
 @media(max-width:700px){.service-page-hero{padding-top:8rem}.service-page-hero h1{font-size:clamp(3.5rem,18vw,5rem)}.service-page-hero p{font-size:.9rem}.service-page-grid{grid-template-columns:1fr;gap:38px}.service-page-card h2{font-size:2.3rem}}
 </style>
@@ -38,12 +38,12 @@
 <header class="header" aria-label="PEEK PRESSURE site header">
 <div class="container header-inner">
 <a href="/" class="logo">PEEK<span>PRESSURE</span></a>
-<nav aria-label="Primary navigation"><a href="/">Home</a><a href="/pressure-washing/">Pressure Washing</a><a href="/auto-detailing/">Auto Detailing</a><a href="/#process">Process</a><a href="/#quoteForm">Book</a></nav>
+<nav aria-label="Primary navigation"><a href="/">Home</a><a href="/pressure-washing/">Pressure Washing</a><a href="/auto-detailing/">Auto Detailing</a><a href="#process">Process</a><a href="/#quoteForm">Book</a></nav>
 <span class="header-contact"><a href="tel:14156898377" class="header-phone">(415) 689-8377</a></span>
 <a href="/#quoteForm" class="header-cta">GET A QUOTE</a>
 <button type="button" class="peek-menu-toggle" id="peekMenuToggle" aria-label="Open menu" aria-controls="peekSideMenu" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></header>
-<div class="peek-side-menu" id="peekSideMenu" aria-hidden="true"><div class="peek-side-menu-backdrop" data-peek-menu-close></div><aside class="peek-side-menu-panel" role="dialog" aria-modal="true" aria-labelledby="menu-title" tabindex="-1"><div class="peek-side-menu-head"><span class="label">PEEK PRESSURE</span><button type="button" class="peek-side-menu-close" id="peekMenuClose" aria-label="Close menu">×</button></div><h2 id="menu-title">MENU.</h2><nav class="peek-side-menu-links" aria-label="Menu"><a href="/">Home <span>→</span></a><a href="/pressure-washing/">Pressure Washing <span>→</span></a><a href="/auto-detailing/">Auto Detailing <span>→</span></a><a href="/#process">Process <span>→</span></a><a href="/#quoteForm">Get a Quote <span>→</span></a></nav><div class="peek-side-menu-footer"><a href="tel:14156898377">415-689-8377</a><a href="mailto:look@peekpressure.com">look@peekpressure.com</a></div></aside></div>
+<div class="peek-side-menu" id="peekSideMenu" aria-hidden="true"><div class="peek-side-menu-backdrop" data-peek-menu-close></div><aside class="peek-side-menu-panel" role="dialog" aria-modal="true" aria-labelledby="menu-title" tabindex="-1"><div class="peek-side-menu-head"><span class="label">PEEK PRESSURE</span><button type="button" class="peek-side-menu-close" id="peekMenuClose" aria-label="Close menu">×</button></div><h2 id="menu-title">MENU.</h2><nav class="peek-side-menu-links" aria-label="Menu"><a href="/">Home <span>→</span></a><a href="/pressure-washing/">Pressure Washing <span>→</span></a><a href="/auto-detailing/">Auto Detailing <span>→</span></a><a href="#process">Process <span>→</span></a><a href="/#quoteForm">Get a Quote <span>→</span></a></nav><div class="peek-side-menu-footer"><a href="tel:14156898377">415-689-8377</a><a href="mailto:look@peekpressure.com">look@peekpressure.com</a></div></aside></div>
 <main>
 <section class="service-page-hero"><div class="container"><div class="eyebrow">PEEK PRESSURE · BAY AREA</div><h1>PRESSURE<br>WASHING.</h1><p>Professional exterior cleaning for the surfaces people see first. We focus on clear scope, careful surface treatment, and a clean result.</p><div class="service-page-cta"><a class="button primary" href="/#quoteForm">GET A QUOTE →</a><a class="button secondary" href="/#services">VIEW SERVICES →</a></div></div></section>
 <section class="service-page-intro"><div class="container"><span class="label">WHAT WE CLEAN</span><div class="service-page-grid">
@@ -77,7 +77,7 @@
       </div>
     </section>
 
-<footer class="service-page-footer"><div class="container"><a href="/">PEEK PRESSURE</a> · <a href="/auto-detailing/">Auto Detailing</a> · <a href="/#service-area">Service Area</a></div></footer>
+<section class="service-page-bottom-cta"><div class="container"><span class="label">READY TO START?</span><h2>LET’S GET<br>IT WASHED.</h2><div class="service-page-cta"><a class="button primary" href="/#quoteForm">GET A QUOTE →</a><a class="button secondary" href="/auto-detailing/">EXPLORE AUTO DETAILING →</a></div></div></section><footer class="service-page-footer"><div class="container"><a href="/">PEEK PRESSURE</a> · <a href="/auto-detailing/">Auto Detailing</a> · <a href="#about-title">Our Approach</a></div></footer>
 </main>
 <script>
 (()=>{const t=document.getElementById('peekMenuToggle'),m=document.getElementById('peekSideMenu'),p=m?.querySelector('.peek-side-menu-panel'),x=document.getElementById('peekMenuClose');if(!t||!m||!p||!x)return;const close=()=>{m.classList.remove('is-open');m.setAttribute('aria-hidden','true');t.setAttribute('aria-expanded','false');document.body.classList.remove('peek-side-menu-open')};t.onclick=()=>{m.classList.contains('is-open')?close():(m.classList.add('is-open'),m.setAttribute('aria-hidden','false'),t.setAttribute('aria-expanded','true'),document.body.classList.add('peek-side-menu-open'),x.focus())};x.onclick=close;m.querySelector('[data-peek-menu-close]').onclick=close;document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})})();
