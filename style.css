@@ -116,3 +116,22 @@ img,video,iframe{max-width:100%!important}
 .service-zip-form{grid-template-columns:1fr!important}
 .service-zip-form button{width:100%!important}
 }
+
+/* SERVICE CATEGORY LAYOUT */
+.service-category-heading{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start;margin:0 0 28px;padding:0 0 20px;border-bottom:1px solid #ddd}
+.service-category-heading .number{font-size:.72rem;font-weight:700;color:#777;letter-spacing:.08em;padding-top:4px}
+.service-category-heading h3{margin:0;font-size:clamp(1.25rem,2vw,2rem);letter-spacing:-.04em;line-height:1}
+.service-category-heading p{margin:9px 0 0;max-width:650px;color:#666;font-size:.85rem;line-height:1.6}
+.service-category-heading-detailing{margin-top:clamp(5rem,9vw,9rem)}
+.service-status{display:inline-block;margin-left:10px;padding:5px 9px;border:1px solid #d5d5d5;border-radius:999px;color:#777;font-size:.55rem;letter-spacing:.1em;vertical-align:middle}
+.services-grid-detailing{margin-top:0}
+.service-card-detailing .service-image-detailing{display:flex;align-items:center;justify-content:center;background:#f3f3f3;min-height:280px;overflow:hidden}
+.service-detailing-placeholder{text-align:center;color:#111;font-size:clamp(1.6rem,4vw,3rem);font-weight:800;letter-spacing:-.09em;line-height:.8}
+@media(max-width:700px){
+.service-category-heading{grid-template-columns:auto minmax(0,1fr);gap:12px;margin-bottom:20px;padding-bottom:16px}
+.service-category-heading h3{font-size:1.35rem}
+.service-category-heading p{font-size:.92rem;line-height:1.55}
+.service-category-heading-detailing{margin-top:4.5rem}
+.service-status{display:block;width:max-content;margin:9px 0 0;font-size:.52rem}
+.service-card-detailing .service-image-detailing{min-height:220px}
+}
