@@ -369,4 +369,41 @@ export const LUCY_FAQ = [
     keywords:["exact price","exact quote","instant price","price without photo","guaranteed estimate"],
     answer:"Not reliably for every job. Lucy can provide a preliminary estimate when enough information is available, but exact scope and site conditions can require further review before a final price is confirmed."
   }
-];
+
+  {
+    id:"auto-detailing",
+    question:"Do you offer auto detailing?",
+    keywords:["auto detailing","car detailing","detailing","vehicle detailing","detail my car"],
+    answer:"Auto detailing is a planned PEEK PRESSURE service, but it is not open for booking yet. It’s coming soon. I can still answer general questions about vehicle-care and detailing, but I can’t quote, schedule, or promise specific detailing services yet."
+  },
+  {
+    id:"auto-detailing-services",
+    question:"What will auto detailing include?",
+    keywords:["detailing services","detailing packages","exterior detail","interior detail","full detail","car wash"],
+    answer:"PEEK PRESSURE is currently planning detailing around exterior, interior, and full-detail experiences. The exact services, packages, pricing, and availability have not been finalized, so I don’t want to make up details before launch."
+  },
+  {
+    id:"auto-detailing-care",
+    question:"What is the difference between a car wash and detailing?",
+    keywords:["car wash vs detail","difference detailing","what is detailing","detail vs wash"],
+    answer:"A basic wash mainly removes surface dirt. Detailing is a more thorough vehicle-care process that can involve careful cleaning and treatment of the exterior and interior, with methods chosen for different materials. The exact scope depends on the service package."
+  },
+  {
+    id:"auto-detailing-paint",
+    question:"Can detailing remove scratches or swirl marks?",
+    keywords:["scratches","swirl marks","paint correction","paint scratches","remove scratches"],
+    answer:"Not necessarily. Light defects may sometimes be improved through appropriate paint-care techniques, but true paint correction can require specialized polishing and should not be promised without inspecting the finish. PEEK PRESSURE does not currently offer paint correction as a confirmed service."
+  },
+  {
+    id:"auto-detailing-interior",
+    question:"What does interior detailing involve?",
+    keywords:["interior detailing","car interior","seats","dashboard","carpet","interior cleaning"],
+    answer:"General interior detailing can include careful vacuuming, cleaning of appropriate surfaces, glass care, and material-specific treatment. Leather, vinyl, fabric, plastics, and other materials need different products and techniques. PEEK PRESSURE’s exact interior-detailing scope will be announced when the service launches."
+  },
+  {
+    id:"auto-detailing-exterior",
+    question:"What does exterior detailing involve?",
+    keywords:["exterior detailing","car exterior","paint cleaning","wheels","tires","car wash"],
+    answer:"General exterior detailing can go beyond a basic wash and may include careful washing, drying, decontamination, wheel and tire care, and paint-safe surface care. Exact PEEK PRESSURE services and packages are still being finalized."
+  },
+\n];
