@@ -51,11 +51,75 @@
 <article class="service-page-card"><div class="service-page-image"><img src="https://images.unsplash.com/photo-1639367900693-66e4ac4a5ccb?auto=format&fit=crop&fm=webp&q=72&w=1000" alt="San Francisco sidewalk and street" loading="lazy" decoding="async" width="1000" height="667" sizes="(max-width: 700px) 100vw, 33vw"><a class="service-page-image-credit" href="https://unsplash.com/photos/a-city-street-at-night-with-cars-parked-on-the-side-of-the-street-yiUoPqOj5m8" target="_blank" rel="noopener noreferrer">Photo: Annie Spratt / Unsplash</a></div><div class="service-page-body"><span class="number">02</span><h2>SIDEWALKS / WALKWAYS</h2><p>Ground-level sidewalks, walkways, entrances, and pedestrian areas cleaned for homes and properties.</p></div></article>
 <article class="service-page-card"><div class="service-page-image"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/333%20Bush%20St.%2C%20SF%20front%20from%20street%20level%202.JPG?width=700" alt="333 Bush Street in San Francisco" loading="lazy" decoding="async" width="1000" height="667" sizes="(max-width: 700px) 100vw, 33vw"><a class="service-page-image-credit" href="https://commons.wikimedia.org/wiki/File:333_Bush_St.,_SF_main_entrance.JPG" target="_blank" rel="noopener noreferrer">Photo: BrokenSphere / Wikimedia Commons · CC BY-SA 3.0</a></div><div class="service-page-body"><span class="number">03</span><h2>COMMERCIAL</h2><p>Exterior concrete and pedestrian-area cleaning for offices, retail, apartments, and other commercial properties.</p></div></article>
 </div>
-<div class="service-page-note"><span class="label">OUR APPROACH</span><h2>CLEAN THE SURFACE.<br>RESPECT THE SURFACE.</h2><p>Pressure is only one part of exterior cleaning. Surface type, stain type, chemistry, dwell time, runoff, and the condition of the material all matter. We assess the job before deciding how aggressively to clean it.</p><div class="service-page-cta"><a class="button primary" href="/#quoteForm">START A REQUEST →</a><a class="button secondary" href="/#about-title">LEARN ABOUT OUR APPROACH →</a></div></div>
+<div class="service-page-note"><span class="label">OUR APPROACH</span><h2>CLEAN THE SURFACE.<br>RESPECT THE SURFACE.</h2><p>Pressure is only one part of exterior cleaning. Surface type, stain type, chemistry, dwell time, runoff, and the condition of the material all matter. We assess the job before deciding how aggressively to clean it.</p><div class="service-page-cta"><a class="button primary" href="/#quoteForm">START A REQUEST →</a><a class="button secondary" href="#about-title">LEARN ABOUT OUR APPROACH →</a></div></div>
 </div></section>
+
+    <section class="about" aria-labelledby="about-title">
+      <div class="container about-grid">
+        <span class="label">ABOUT</span>
+        <div>
+          <h2 id="about-title">MAKE THE<br>OUTSIDE<br>LOOK RIGHT.</h2>
+          <p>PEEK PRESSURE is built around a simple idea: the outside of your property should look as cared for as the inside. We bring a property-management mindset to exterior cleaning — clear communication, respect for the property, and follow-through you can count on.</p>
+          <div class="about-expertise" aria-label="Cleaning expertise">
+            <div class="about-expertise-head">
+              <span class="about-kicker">CLEANING KNOWLEDGE</span>
+              <p>Different stains and surfaces need different approaches. We diagnose first, then choose the right chemistry and pressure.</p>
+            </div>
+            <div class="about-expertise-list" role="tablist" aria-label="Cleaning expertise topics">
+              <button type="button" class="about-expertise-trigger" data-about-topic="rust" aria-selected="false">RUST &amp; STAINS</button>
+              <button type="button" class="about-expertise-trigger" data-about-topic="chemistry" aria-selected="false">CHEMISTRY</button>
+              <button type="button" class="about-expertise-trigger" data-about-topic="surface" aria-selected="false">SURFACE CARE</button>
+              <button type="button" class="about-expertise-trigger" data-about-topic="etching" aria-selected="false">ETCHING PREVENTION</button>
+            </div>
+            <div class="about-expertise-detail" id="aboutExpertiseDetail" role="tabpanel" aria-live="polite" hidden></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
 <footer class="service-page-footer"><div class="container"><a href="/">PEEK PRESSURE</a> · <a href="/auto-detailing/">Auto Detailing</a> · <a href="/#service-area">Service Area</a></div></footer>
 </main>
 <script>
 (()=>{const t=document.getElementById('peekMenuToggle'),m=document.getElementById('peekSideMenu'),p=m?.querySelector('.peek-side-menu-panel'),x=document.getElementById('peekMenuClose');if(!t||!m||!p||!x)return;const close=()=>{m.classList.remove('is-open');m.setAttribute('aria-hidden','true');t.setAttribute('aria-expanded','false');document.body.classList.remove('peek-side-menu-open')};t.onclick=()=>{m.classList.contains('is-open')?close():(m.classList.add('is-open'),m.setAttribute('aria-hidden','false'),t.setAttribute('aria-expanded','true'),document.body.classList.add('peek-side-menu-open'),x.focus())};x.onclick=close;m.querySelector('[data-peek-menu-close]').onclick=close;document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})})();
+<script id="peek-about-expertise-script">
+(() => {
+  const section = document.querySelector('.about');
+  const detail = document.getElementById('aboutExpertiseDetail');
+  const triggers = [...document.querySelectorAll('.about-expertise-trigger')];
+  if (!section || !detail || !triggers.length) return;
+  const topics = {
+    rust: ['RUST & STAINS','Identify it before treating it.','Rust and iron staining are not the same problem as algae, dirt, or organic growth. The right treatment depends on the substrate, severity, and what is around it. We look at the surface first instead of simply turning up the pressure.'],
+    chemistry: ['CHEMISTRY','Use the chemistry that fits the problem.','Different stains respond to different cleaning approaches. Organic growth, oils, mineral deposits, and rust each call for different chemistry and handling. Product labels, surface compatibility, dwell time, rinsing, and runoff all matter.'],
+    surface: ['SURFACE CARE','Clean without treating every surface the same.','Concrete, brick, pavers, stone, coatings, and other exterior materials can react very differently to pressure and chemistry. The goal is a clean surface without unnecessary damage, finish loss, or disturbed material.'],
+    etching: ['ETCHING PREVENTION','Clean it without changing the surface.','Etching is surface alteration, not just a stubborn stain. Excessive pressure or incompatible chemistry can affect finishes and cementitious or acid-sensitive materials. We choose a method with the substrate in mind and test when appropriate.']
+  };
+  function selectTopic(key) {
+    const topic = topics[key];
+    if (!topic) return;
+    const same = detail.dataset.topic === key && section.classList.contains('about-expertise-open');
+    triggers.forEach(button => {
+      const active = button.dataset.aboutTopic === key && !same;
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+      button.classList.toggle('is-active', active);
+    });
+    if (same) {
+      section.classList.remove('about-expertise-open');
+      detail.hidden = true;
+      detail.removeAttribute('data-topic');
+      return;
+    }
+    detail.dataset.topic = key;
+    detail.innerHTML = '<span class="about-detail-label">' + topic[0] + '</span><h3>' + topic[1] + '</h3><p>' + topic[2] + '</p><button type="button" class="about-detail-close" aria-label="Close cleaning expertise detail">Close <span aria-hidden="true">×</span></button>';
+    detail.hidden = false;
+    section.classList.add('about-expertise-open');
+  }
+  triggers.forEach(button => button.addEventListener('click', () => selectTopic(button.dataset.aboutTopic)));
+  detail.addEventListener('click', event => {
+    if (event.target.closest('.about-detail-close')) {
+      const active = triggers.find(button => button.classList.contains('is-active'));
+      if (active) selectTopic(active.dataset.aboutTopic);
+    }
+  });
+})();
 </script>
 </body></html>
