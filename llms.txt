@@ -1,6 +1,6 @@
 # PEEK PRESSURE
 
-> PEEK PRESSURE is a Bay Area cleaning company offering pressure washing for properties and auto detailing for vehicles across the San Francisco Bay Area.
+> PEEK PRESSURE is a Bay Area cleaning company preparing pressure washing for properties and auto detailing for vehicles across the San Francisco Bay Area. Early inquiries are welcome while the services prepare for launch.
 
 ## Business
 
@@ -8,15 +8,17 @@
 - Website: https://peekpressure.com/
 - Phone: 415-689-8377
 - Email: look@peekpressure.com
-- Service type: Pressure washing and auto detailing
+- Service type: Pressure washing and upcoming auto detailing
 - Property types: Residential and commercial
 - Quote pricing: Custom pricing after job details are reviewed; fixed service prices are not published.
 
 ## Services
 
-### Auto Detailing
+### Pressure Washing
+PEEK PRESSURE is preparing ground-level pressure washing for driveways, sidewalks, walkways, entrances, and commercial exterior areas.
 
-PEEK PRESSURE provides vehicle cleaning and detailing with interior and exterior service based on the vehicle, condition, materials, and requested scope. Specialized correction, coatings, restoration, or other work is not assumed unless explicitly confirmed.
+### Auto Detailing
+Auto detailing is an upcoming service. The intended scope is interior and exterior vehicle cleaning only. Early inquiries are welcome. Specialized correction, polishing, coatings, restoration, or other work is not assumed.
 
 ### Driveway Pressure Washing
 
@@ -75,7 +77,7 @@ Scheduling page: https://calendly.com/peekpressure/30min
 - Phone: 415-689-8377
 - Email: look@peekpressure.com
 - Quote form: https://peekpressure.com/#quoteForm
-- Service requests can include pressure washing or auto detailing.
+- Service requests can include pressure washing or an early inquiry about auto detailing.
 
 ## Website Sections
 
