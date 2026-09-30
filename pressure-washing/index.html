@@ -16,7 +16,12 @@
 .service-page-hero p{max-width:650px;margin:2rem 0 0;color:#666;line-height:1.7;font-size:1rem}
 .service-page-intro{padding:clamp(4rem,8vw,8rem) 0}
 .service-page-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:3rem}
-.service-page-card{border-top:1px solid #ccc;padding-top:20px}
+.service-page-card{border-top:1px solid #ccc;padding-top:0;overflow:hidden}
+.service-page-card .service-page-image{position:relative;aspect-ratio:3/2;overflow:hidden;background:#eee}
+.service-page-card .service-page-image img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.service-page-card:hover .service-page-image img{transform:scale(1.025)}
+.service-page-card .service-page-image-credit{position:absolute;left:10px;bottom:10px;padding:5px 7px;background:rgba(255,255,255,.88);color:#444;font-size:.58rem;line-height:1.2;text-decoration:none}
+.service-page-card .service-page-body{padding-top:20px}
 .service-page-card .number{color:#777;font-size:.7rem;font-weight:700}
 .service-page-card h2{margin:25px 0 12px;font-size:clamp(1.6rem,3vw,3rem);letter-spacing:-.06em;line-height:.9}
 .service-page-card p{margin:0;color:#666;line-height:1.65;font-size:.9rem}
@@ -42,9 +47,9 @@
 <main>
 <section class="service-page-hero"><div class="container"><div class="eyebrow">PEEK PRESSURE · BAY AREA</div><h1>PRESSURE<br>WASHING.</h1><p>Professional exterior cleaning for the surfaces people see first. We focus on clear scope, careful surface treatment, and a clean result.</p><div class="service-page-cta"><a class="button primary" href="/#quoteForm">GET A QUOTE →</a><a class="button secondary" href="/#services">VIEW SERVICES →</a></div></div></section>
 <section class="service-page-intro"><div class="container"><span class="label">WHAT WE CLEAN</span><div class="service-page-grid">
-<article class="service-page-card"><span class="number">01</span><h2>DRIVEWAYS</h2><p>Built-up dirt, grime, and staining on residential concrete driveways, with an approach suited to the surface.</p></article>
-<article class="service-page-card"><span class="number">02</span><h2>SIDEWALKS / WALKWAYS</h2><p>Ground-level sidewalks, walkways, entrances, and pedestrian areas cleaned for homes and properties.</p></article>
-<article class="service-page-card"><span class="number">03</span><h2>COMMERCIAL</h2><p>Exterior concrete and pedestrian-area cleaning for offices, retail, apartments, and other commercial properties.</p></article>
+<article class="service-page-card"><div class="service-page-image"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/Lombard_Street_%28San_Francisco%29-View_July_2022.JPG?width=700" alt="San Francisco street and concrete roadway" loading="lazy" decoding="async" width="1000" height="667" sizes="(max-width: 700px) 100vw, 33vw"><a class="service-page-image-credit" href="https://commons.wikimedia.org/wiki/File:Lombard_Street_(San_Francisco)-View_July_2022.JPG" target="_blank" rel="noopener noreferrer">Photo: Benoît Prieur / Wikimedia Commons · CC0</a></div><div class="service-page-body"><span class="number">01</span><h2>DRIVEWAYS</h2><p>Built-up dirt, grime, and staining on residential concrete driveways, with an approach suited to the surface.</p></div></article>
+<article class="service-page-card"><div class="service-page-image"><img src="https://images.unsplash.com/photo-1639367900693-66e4ac4a5ccb?auto=format&fit=crop&fm=webp&q=72&w=1000" alt="San Francisco sidewalk and street" loading="lazy" decoding="async" width="1000" height="667" sizes="(max-width: 700px) 100vw, 33vw"><a class="service-page-image-credit" href="https://unsplash.com/photos/a-city-street-at-night-with-cars-parked-on-the-side-of-the-street-yiUoPqOj5m8" target="_blank" rel="noopener noreferrer">Photo: Annie Spratt / Unsplash</a></div><div class="service-page-body"><span class="number">02</span><h2>SIDEWALKS / WALKWAYS</h2><p>Ground-level sidewalks, walkways, entrances, and pedestrian areas cleaned for homes and properties.</p></div></article>
+<article class="service-page-card"><div class="service-page-image"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/333%20Bush%20St.%2C%20SF%20front%20from%20street%20level%202.JPG?width=700" alt="333 Bush Street in San Francisco" loading="lazy" decoding="async" width="1000" height="667" sizes="(max-width: 700px) 100vw, 33vw"><a class="service-page-image-credit" href="https://commons.wikimedia.org/wiki/File:333_Bush_St.,_SF_main_entrance.JPG" target="_blank" rel="noopener noreferrer">Photo: BrokenSphere / Wikimedia Commons · CC BY-SA 3.0</a></div><div class="service-page-body"><span class="number">03</span><h2>COMMERCIAL</h2><p>Exterior concrete and pedestrian-area cleaning for offices, retail, apartments, and other commercial properties.</p></div></article>
 </div>
 <div class="service-page-note"><span class="label">OUR APPROACH</span><h2>CLEAN THE SURFACE.<br>RESPECT THE SURFACE.</h2><p>Pressure is only one part of exterior cleaning. Surface type, stain type, chemistry, dwell time, runoff, and the condition of the material all matter. We assess the job before deciding how aggressively to clean it.</p><div class="service-page-cta"><a class="button primary" href="/#quoteForm">START A REQUEST →</a><a class="button secondary" href="/#about-title">LEARN ABOUT OUR APPROACH →</a></div></div>
 </div></section>
