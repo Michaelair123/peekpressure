@@ -78,3 +78,41 @@ body{font-size:16px!important;line-height:1.6!important}
   .service h2,.service-card .service-body h2{font-size:20px!important;line-height:1.2!important}
   .process-step h3,.why-peek-point h3{font-size:16px!important;line-height:1.4!important}
 }
+
+/* MOBILE LAYOUT FIX — 2026-09-29 */
+@media (max-width:700px){
+:root{--page-padding:20px;--content-gap:16px}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body{min-width:0}
+.container,.about-grid,.contact-section,#quoteForm,main>form#quoteForm{width:calc(100% - 40px)!important;max-width:100%!important;min-width:0!important;margin-left:auto!important;margin-right:auto!important}
+.header-inner{width:calc(100% - 40px)!important;min-width:0!important;gap:10px!important}
+.header nav{display:none!important}
+.header-contact{min-width:0!important;max-width:100%;display:flex!important;align-items:center;gap:8px!important;margin-left:auto!important}
+.header-phone,.header-email,.header-cta,.peek-menu-toggle{flex:0 0 auto!important}
+.hero-copy,.hero-copy>p,.hero-buttons,.service,.service-body,.about-grid>*,.process-header>*,.process-step,.booking-cta,.booking-cta-inner,.booking-cta-copy,.booking-cta-action,.contact-container,.service-zip-check,.service-zip-copy,.service-zip-form,.proof-header,.why-peek-intro,.why-peek-point{min-width:0!important;max-width:100%!important}
+.hero-copy h1,.about h2,.process-header h2,main>h2,.why-peek-intro h2,.service-area h2,.contact-container>h2,.proof-header h2,.booking-cta-copy h3{max-width:100%!important;overflow-wrap:anywhere}
+.hero-buttons{width:100%;gap:10px!important}
+.hero-buttons .button{flex:1 1 145px;min-width:0!important;padding-left:16px!important;padding-right:16px!important;white-space:nowrap}
+.services-grid{grid-template-columns:minmax(0,1fr)!important;width:100%!important;min-width:0!important}
+.process-grid{grid-template-columns:minmax(0,1fr)!important;width:100%!important}
+.process-step{border-right:0!important;padding-left:0!important;padding-right:0!important}
+.about-grid{grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+.process-header{grid-template-columns:minmax(0,1fr)!important}
+.booking-cta{width:100%!important}
+.booking-cta-inner{display:flex!important;flex-direction:column!important;align-items:stretch!important;width:100%!important;gap:20px!important;padding:20px!important}
+.booking-cta-action{width:100%!important;flex:0 0 auto!important}
+.contact-container .booking-cta-inner{display:flex!important;grid-template-columns:none!important}
+.contact-container .calendly-inline-widget{width:100%!important;min-width:0!important;max-width:100%!important}
+.service-zip-form{grid-template-columns:minmax(0,1fr) minmax(0,auto)!important;width:100%!important}
+.service-zip-form input{min-width:0!important}
+img,video,iframe{max-width:100%!important}
+.peek-chat{max-width:calc(100vw - 16px)!important;min-width:0!important}
+}
+@media (max-width:380px){
+:root{--page-padding:16px}
+.container,.about-grid,.contact-section,#quoteForm,main>form#quoteForm,.header-inner{width:calc(100% - 32px)!important}
+.hero-buttons .button{flex-basis:100%;width:100%}
+.booking-cta-inner{padding:16px!important}
+.service-zip-form{grid-template-columns:1fr!important}
+.service-zip-form button{width:100%!important}
+}
