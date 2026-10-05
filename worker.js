@@ -178,7 +178,7 @@ export default {
       return Response.json({
         ok: true,
         worker: "peekpressure",
-        build: "2026-09-19-security-hardening"
+        build: "2026-10-05-site-audit"
       }, { headers: { ...cors, ...securityHeaders, "Cache-Control": "no-store" } });
     }
 
