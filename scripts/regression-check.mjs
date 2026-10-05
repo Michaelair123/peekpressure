@@ -39,7 +39,7 @@ check("Ladder work boundary", /does not currently offer work that requires ladde
 check("Ground-level patio boundary", /ground-level patios/i.test(faq) && /ground-level patios/i.test(chat), "Patio scope must remain ground-level.");
 check("No literal escaped newline syntax bug", !/\\n\s+(?:const|let|var)\b/.test(chat), "chat.js must not contain literal \n text before JavaScript statements.");
 check("No literal escaped newline artifacts", !/\\\\n/.test(index), "index.html must not contain literal escaped newline text.");
-check("Three-step process layout", /class=["']process-grid["']/.test(index) && /\.process-grid\s*\{[^}]*grid-template-columns\s*:\s*repeat\(3\s*,\s*minmax\(0\s*,\s*1fr\)\)/.test(css), "The process section contains three steps and should use a three-column desktop grid.");
+check("Four-step process layout", /class=["']process-grid["']/.test(index) && /\.process-grid\s*\{[^}]*grid-template-columns\s*:\s*repeat\(4\s*,\s*minmax\(0\s*,\s*1fr\)\)/.test(css), "The process section contains four steps and should use a four-column desktop grid.");
 check("CSP allows Calendly", /frame-src[^;]*https:\/\/calendly\.com/i.test(worker), "CSP frame-src must allow the embedded Calendly origin.");
 check("CSP allows Leaflet CSS", /style-src[^;]*https:\/\/cdn\.jsdelivr\.net/i.test(worker), "CSP style-src must allow the Leaflet stylesheet origin.");
 check("CSP allows map tiles", /img-src[^;]*https:\/\/tile\.openstreetmap\.org/i.test(worker), "CSP img-src must allow OpenStreetMap tiles.");
@@ -49,6 +49,14 @@ check("Skip link", /class=["']skip-link["'][^>]*href=["']#main-content["']/.test
 check("Visible focus styles", /:focus-visible/.test(css), "Interactive controls need an author-supplied visible keyboard focus indicator.");
 check("Focus-safe scrolling", /scroll-padding-(?:top|bottom)/.test(css), "Sticky navigation and mobile controls need scroll padding so focused elements remain visible.");
 check("Reduced motion", /prefers-reduced-motion\s*:\s*reduce/.test(css), "Motion-sensitive users need a reduced-motion path.");
+for (const page of ["auto-detailing/index.html", "pressure-washing/index.html"]) {
+  const html = await read(page);
+  check(`Launch status: ${page}`, /COMING SOON/i.test(html) && !/AVAILABLE NOW/i.test(html), "Service pages must not present either service as currently available.");
+  check(`Contact rail: ${page}`, /peek-floating-actions/.test(html) && /peek-icon-chat/.test(html) && /peek-icon-email/.test(html) && /peek-icon-text/.test(html) && /peek-icon-book/.test(html), "Service pages must use the shared four-action contact rail.");
+  check(`Menu: ${page}`, /id=["']peekMenuToggle["']/.test(html) && /id=["']peekSideMenu["']/.test(html), "Service pages must retain the accessible menu.");
+}
+const sitemap = await read("sitemap.xml");
+check("Sitemap includes service pages", /https:\/\/peekpressure\.com\/pressure-washing\//.test(sitemap) && /https:\/\/peekpressure\.com\/auto-detailing\//.test(sitemap), "Both service pages must be discoverable in the sitemap.");
 
 
 for (const file of ["worker.js", "functions/api/chat.js", "functions/api/faq.js", "functions/api/[[path]].js", "faq-data.js", "scripts/lucy-stress-test.mjs"]) {
