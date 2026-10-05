@@ -380,7 +380,7 @@ export const LUCY_FAQ = [
     id:"auto-detailing-services",
     question:"What will auto detailing include?",
     keywords:["detailing services","detailing packages","exterior detail","interior detail","full detail","car wash"],
-    answer:"PEEK PRESSURE is preparing auto detailing around interior and exterior vehicle cleaning only. Exact scope and pricing depend on the vehicle, condition, location, and requested work."
+    answer:"PEEK PRESSURE offers mobile auto detailing around interior and exterior vehicle cleaning. Exact scope and pricing depend on the vehicle, condition, location, and requested work."
   },
   {
     id:"auto-detailing-care",
@@ -398,12 +398,12 @@ export const LUCY_FAQ = [
     id:"auto-detailing-interior",
     question:"What does interior detailing involve?",
     keywords:["interior detailing","car interior","seats","dashboard","carpet","interior cleaning"],
-    answer:"General interior detailing can include careful vacuuming, cleaning of appropriate surfaces, glass care, and material-specific treatment. Leather, vinyl, fabric, plastics, and other materials need different products and techniques. PEEK PRESSURE’s exact interior-detailing scope will be announced when the service launches."
+    answer:"General interior detailing can include careful vacuuming, cleaning of appropriate surfaces, glass care, and material-specific treatment. Leather, vinyl, fabric, plastics, and other materials need different products and techniques. PEEK PRESSURE’s interior-detailing scope focuses on careful cleaning of appropriate cabin surfaces; exact work depends on vehicle condition and requested scope."
   },
   {
     id:"auto-detailing-exterior",
     question:"What does exterior detailing involve?",
     keywords:["exterior detailing","car exterior","paint cleaning","wheels","tires","car wash"],
-    answer:"General exterior detailing can go beyond a basic wash and may include careful washing, drying, decontamination, wheel and tire care, and paint-safe surface care. Exact PEEK PRESSURE services and packages are still being finalized."
+    answer:"General exterior detailing can go beyond a basic wash and may include careful washing, drying, decontamination, wheel and tire care, and paint-safe surface care. PEEK PRESSURE’s exterior-detailing scope focuses on careful vehicle cleaning and material-appropriate care; exact work depends on vehicle condition and requested scope."
   },
 \n];
