@@ -374,7 +374,7 @@ export const LUCY_FAQ = [
     id:"auto-detailing",
     question:"Do you offer auto detailing?",
     keywords:["auto detailing","car detailing","detailing","vehicle detailing","detail my car"],
-    answer:"Auto detailing is a planned PEEK PRESSURE service, but it is not open for booking yet. It’s coming soon. I can still answer general questions about vehicle-care and detailing, but I can’t quote, schedule, or promise specific detailing services yet."
+    answer:"PEEK PRESSURE offers mobile auto detailing focused on interior and exterior vehicle cleaning. Tell me what you drive, what you want cleaned, and where the vehicle is located, and I can help get the request started.
   },
   {
     id:"auto-detailing-services",
