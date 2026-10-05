@@ -91,3 +91,7 @@ jobs:
           grep -q 'https://peekpressure.com/sitemap.xml' robots.txt
           grep -q 'https://peekpressure.com/' sitemap.xml
           grep -q 'https://peekpressure.com/faq.html' sitemap.xml
+          grep -q 'https://peekpressure.com/pressure-washing/' sitemap.xml
+          grep -q 'https://peekpressure.com/auto-detailing/' sitemap.xml
+          grep -q 'https://peekpressure.com/privacy.html' sitemap.xml
+          grep -q 'https://peekpressure.com/terms.html' sitemap.xml
