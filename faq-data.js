@@ -380,13 +380,13 @@ export const LUCY_FAQ = [
     id:"auto-detailing-services",
     question:"What will auto detailing include?",
     keywords:["detailing services","detailing packages","exterior detail","interior detail","full detail","car wash"],
-    answer:"PEEK PRESSURE is preparing auto detailing around interior and exterior vehicle cleaning only. The service is coming soon, so exact scope, pricing, and availability have not been finalized."
+    answer:"PEEK PRESSURE is preparing auto detailing around interior and exterior vehicle cleaning only. Exact scope and pricing depend on the vehicle, condition, location, and requested work."
   },
   {
     id:"auto-detailing-care",
     question:"What is the difference between a car wash and detailing?",
     keywords:["car wash vs detail","difference detailing","what is detailing","detail vs wash"],
-    answer:"A basic wash mainly removes surface dirt. Detailing generally means more careful interior and exterior vehicle cleaning, with methods chosen for different materials and conditions. PEEK PRESSURE is keeping its upcoming service scope focused on cleaning rather than restoration or specialized paint work."
+    answer:"A basic wash mainly removes surface dirt. Detailing generally means more careful interior and exterior vehicle cleaning, with methods chosen for different materials and conditions. PEEK PRESSURE is keeping its current detailing scope focused on cleaning rather than restoration or specialized paint work."
   },
   {
     id:"auto-detailing-paint",
