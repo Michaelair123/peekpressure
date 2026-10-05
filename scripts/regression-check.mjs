@@ -51,7 +51,7 @@ check("Focus-safe scrolling", /scroll-padding-(?:top|bottom)/.test(css), "Sticky
 check("Reduced motion", /prefers-reduced-motion\s*:\s*reduce/.test(css), "Motion-sensitive users need a reduced-motion path.");
 for (const page of ["auto-detailing/index.html", "pressure-washing/index.html"]) {
   const html = await read(page);
-  check(`Launch status: ${page}`, /COMING SOON/i.test(html) && !/AVAILABLE NOW/i.test(html), "Service pages must not present either service as currently available.");
+  check(`Launch status: ${page}`, page === "auto-detailing/index.html" ? /MOBILE DETAILING/i.test(html) && !/COMING SOON/i.test(html) : /COMING SOON/i.test(html) && !/AVAILABLE NOW/i.test(html), "Auto detailing must be active; pressure washing remains coming soon.");
   check(`Contact rail: ${page}`, /peek-floating-actions/.test(html) && /peek-icon-chat/.test(html) && /peek-icon-email/.test(html) && /peek-icon-text/.test(html) && /peek-icon-book/.test(html), "Service pages must use the shared four-action contact rail.");
   check(`Menu: ${page}`, /id=["']peekMenuToggle["']/.test(html) && /id=["']peekSideMenu["']/.test(html), "Service pages must retain the accessible menu.");
 }
