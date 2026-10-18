@@ -368,13 +368,12 @@ export const LUCY_FAQ = [
     question:"Can Lucy give me an exact price without seeing the property?",
     keywords:["exact price","exact quote","instant price","price without photo","guaranteed estimate"],
     answer:"Not reliably for every job. Lucy can provide a preliminary estimate when enough information is available, but exact scope and site conditions can require further review before a final price is confirmed."
-  }
-
+  },
   {
     id:"auto-detailing",
     question:"Do you offer auto detailing?",
     keywords:["auto detailing","car detailing","detailing","vehicle detailing","detail my car"],
-    answer:"PEEK PRESSURE offers mobile auto detailing focused on interior and exterior vehicle cleaning. Tell me what you drive, what you want cleaned, and where the vehicle is located, and I can help get the request started.
+    answer:"PEEK PRESSURE offers mobile auto detailing focused on interior and exterior vehicle cleaning. Tell me what you drive, what you want cleaned, and where the vehicle is located, and I can help get the request started."
   },
   {
     id:"auto-detailing-services",
