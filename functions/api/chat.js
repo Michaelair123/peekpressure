@@ -1703,7 +1703,7 @@ function getFaqAnswer(text) {
       if (!phrase) continue;
       // Match whole words/phrases instead of arbitrary substrings (e.g. "car" inside another word).
       const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      if (new RegExp(`(?:^|\\\\s)${escaped}(?:$|\\\\s|[?!.,])`, "i").test(input)) {
+      if (new RegExp("(^|[^a-z0-9])" + escaped + "($|[^a-z0-9])", "i").test(input)) {
         score += phrase.length >= 8 ? 3 : 2;
       }
     }
