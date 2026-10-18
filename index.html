@@ -902,12 +902,8 @@ body.peek-calendly-open{overflow:hidden}
     })();
   </script>
 
-  <nav class="mobile-action-bar" aria-label="Quick contact actions">
-    <button type="button" onclick="document.getElementById('peekFloatingChat')?.click()">CHAT</button>
-    <button type="button" onclick="document.getElementById('peekFloatingEmail')?.click()">EMAIL</button>
-    <button type="button" onclick="document.getElementById('peekFloatingText')?.click()">TEXT</button>
-    <button type="button" onclick="document.getElementById('peekFloatingBook')?.click()">BOOK</button>
-  </nav>
+  <!-- The primary .peek-floating-actions rail already exposes CHAT, EMAIL, TEXT, and BOOK on mobile.
+       Avoid rendering a second fixed bar that duplicates those controls. -->
 
   <script>
 
