@@ -198,7 +198,7 @@ body.peek-side-menu-open{overflow:hidden}
     .header{position:fixed;inset:0 0 auto;z-index:100;padding-block:.9rem;background:#fff;border-bottom:1px solid rgba(0,0,0,.06)}
     .header-inner{display:flex;align-items:center;min-height:2.75rem;gap:clamp(.5rem,2vw,2rem)}
     .logo{flex-shrink:0;color:#111;font-size:clamp(.82rem,1.1vw,1rem);font-weight:800;letter-spacing:-.075em}
-    .logo span{margin-left:.25rem;color:#888;font-weight:400}
+    .logo span{margin-left:.25rem;color:#666;font-weight:400}
     .header nav{display:flex;align-items:center;gap:clamp(1rem,2vw,1.8rem);margin-left:auto}
     .header nav a,.header-phone{color:#666;font-size:.58rem;font-weight:600}
     .header-cta{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;padding:.65rem 1rem;border:1px solid #d4d4d4;border-radius:999px;background:#fff;color:#111;font-size:.58rem;font-weight:700}
@@ -1193,7 +1193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="peek-chat-messages" id="peekChatMessages" role="log" aria-live="polite" aria-relevant="additions text"></div>
     <div class="peek-chat-status-region" id="peekChatStatus" role="status" aria-live="polite" aria-atomic="true"></div>
     <div class="peek-chat-quick" id="peekChatQuick"></div>    <div class="peek-chat-attachments" id="peekChatAttachments" aria-live="polite"></div>
-    <form class="peek-chat-form" id="peekChatForm">      <button class="peek-chat-attach" id="peekChatAttach" type="button" aria-label="Attach a photo" title="Attach a photo">＋</button>      <input id="peekChatPhotoInput" type="file" accept="image/*" multiple hidden>
+    <form class="peek-chat-form" id="peekChatForm">      <button class="peek-chat-attach" id="peekChatAttach" type="button" aria-label="Attach a photo" title="Attach a photo">＋</button>      <input id="peekChatPhotoInput" type="file" accept="image/*" multiple hidden aria-label="Attach photos for Lucy">
       <textarea id="peekChatInput" rows="1" enterkeyhint="send" autocomplete="off" placeholder="Tell Lucy what you need cleaned…" aria-label="Message Lucy"></textarea>
       <button class="peek-chat-send" type="submit" aria-label="Send message">↑</button>
     </form>
