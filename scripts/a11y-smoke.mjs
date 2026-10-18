@@ -33,7 +33,7 @@ try {
     const missingNames = focusables.filter(el => {
       const ariaLabel = (el.getAttribute('aria-label') || '').trim();
       const labelledBy = (el.getAttribute('aria-labelledby') || '')
-        .split(/\\s+/)
+        .split(/\s+/)
         .filter(Boolean)
         .map(id => document.getElementById(id)?.textContent?.trim() || '')
         .filter(Boolean)
