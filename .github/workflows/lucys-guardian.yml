@@ -4,8 +4,6 @@ on:
   schedule:
     - cron: "17 16 * * *"
   workflow_dispatch:
-  pull_request:
-    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
@@ -140,8 +138,8 @@ jobs:
       - name: Publish guardian summary
         if: always()
         run: |
-          echo "## Lucy's Guardian" >> "\$GITHUB_STEP_SUMMARY"
-          echo "Review-only code-engineering cycle completed. No changes are pushed to main automatically." >> "\$GITHUB_STEP_SUMMARY"
-          echo "Trigger: ${{ github.event_name }}" >> "\$GITHUB_STEP_SUMMARY"
-          if [ -f .guardian/research.md ]; then cat .guardian/research.md >> "\$GITHUB_STEP_SUMMARY"; fi
+          echo "## Lucy's Guardian" >> "$GITHUB_STEP_SUMMARY"
+          echo "Review-only code-engineering cycle completed. No changes are pushed to main automatically." >> "$GITHUB_STEP_SUMMARY"
+          echo "Trigger: ${{ github.event_name }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f .guardian/research.md ]; then cat .guardian/research.md >> "$GITHUB_STEP_SUMMARY"; fi
           git status --short >> "\$GITHUB_STEP_SUMMARY" || true
