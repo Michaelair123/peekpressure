@@ -405,4 +405,4 @@ export const LUCY_FAQ = [
     keywords:["exterior detailing","car exterior","paint cleaning","wheels","tires","car wash"],
     answer:"General exterior detailing can go beyond a basic wash and may include careful washing, drying, decontamination, wheel and tire care, and paint-safe surface care. PEEK PRESSURE’s exterior-detailing scope focuses on careful vehicle cleaning and material-appropriate care; exact work depends on vehicle condition and requested scope."
   },
-\n];
+];
