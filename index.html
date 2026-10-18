@@ -198,13 +198,13 @@ body.peek-side-menu-open{overflow:hidden}
     .header{position:fixed;inset:0 0 auto;z-index:100;padding-block:.9rem;background:#fff;border-bottom:1px solid rgba(0,0,0,.06)}
     .header-inner{display:flex;align-items:center;min-height:2.75rem;gap:clamp(.5rem,2vw,2rem)}
     .logo{flex-shrink:0;color:#111;font-size:clamp(.82rem,1.1vw,1rem);font-weight:800;letter-spacing:-.075em}
-    .logo span{margin-left:.25rem;color:#888;font-weight:400}
+    .logo span{margin-left:.25rem;color:#666;font-weight:400}
     .header nav{display:flex;align-items:center;gap:clamp(1rem,2vw,1.8rem);margin-left:auto}
     .header nav a,.header-phone{color:#666;font-size:.58rem;font-weight:600}
     .header-cta{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;padding:.65rem 1rem;border:1px solid #d4d4d4;border-radius:999px;background:#fff;color:#111;font-size:.58rem;font-weight:700}
     .hero{display:flex;align-items:center;position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#fafafa 100%);padding-top:clamp(7.5rem,11vw,9.5rem);padding-bottom:clamp(4rem,6vw,5.5rem)}
     .hero-copy{max-width:1080px}
-    .eyebrow,.label{color:#777;font-size:.58rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase}
+    .eyebrow,.label{color:#666;font-size:.58rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase}
     .hero-copy h1{color:#111;font-weight:800;position:relative;max-width:980px;margin:1.5rem 0 0;letter-spacing:-.105em;font-size:clamp(4rem,8.5vw,8.5rem);line-height:.8}
     .hero-copy>p{color:#666;font-size:clamp(.75rem,.95vw,.9rem);line-height:1.7;margin:1.6rem 0 0;max-width:680px}
     .hero-buttons{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.35rem}
@@ -696,7 +696,7 @@ body.peek-calendly-open{overflow:hidden}
     .peek-text-form label{display:block;margin-bottom:8px;font-size:.7rem;font-weight:700;letter-spacing:.12em}
     .peek-text-form textarea{display:block;width:100%;min-height:140px;box-sizing:border-box;resize:vertical;padding:14px 15px;border:1px solid #d8d8d8;border-radius:12px;background:#fff;color:#111;font:inherit;font-size:16px;line-height:1.5}
     .peek-text-form textarea:focus{border-color:#111;outline:3px solid rgba(17,17,17,.12);outline-offset:1px}
-    .peek-text-consent{margin:10px 0 0;color:#777;font-size:11px;line-height:1.55;max-width:58rem}
+    .peek-text-consent{margin:10px 0 0;color:#666;font-size:11px;line-height:1.55;max-width:58rem}
     .peek-text-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px}
     .peek-text-number{font-size:.72rem;font-weight:700;letter-spacing:.08em;color:#666}
     .peek-text-actions button{min-height:48px;padding:0 18px;border:1px solid #111;border-radius:999px;background:#111;color:#fff;font:700 .72rem/1 Inter,Arial,sans-serif;letter-spacing:.1em;cursor:pointer}
@@ -902,12 +902,8 @@ body.peek-calendly-open{overflow:hidden}
     })();
   </script>
 
-  <nav class="mobile-action-bar" aria-label="Quick contact actions">
-    <button type="button" onclick="document.getElementById('peekFloatingChat')?.click()">CHAT</button>
-    <button type="button" onclick="document.getElementById('peekFloatingEmail')?.click()">EMAIL</button>
-    <button type="button" onclick="document.getElementById('peekFloatingText')?.click()">TEXT</button>
-    <button type="button" onclick="document.getElementById('peekFloatingBook')?.click()">BOOK</button>
-  </nav>
+  <!-- The primary .peek-floating-actions rail already exposes CHAT, EMAIL, TEXT, and BOOK on mobile.
+       Avoid rendering a second fixed bar that duplicates those controls. -->
 
   <script>
 
@@ -1197,7 +1193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="peek-chat-messages" id="peekChatMessages" role="log" aria-live="polite" aria-relevant="additions text"></div>
     <div class="peek-chat-status-region" id="peekChatStatus" role="status" aria-live="polite" aria-atomic="true"></div>
     <div class="peek-chat-quick" id="peekChatQuick"></div>    <div class="peek-chat-attachments" id="peekChatAttachments" aria-live="polite"></div>
-    <form class="peek-chat-form" id="peekChatForm">      <button class="peek-chat-attach" id="peekChatAttach" type="button" aria-label="Attach a photo" title="Attach a photo">＋</button>      <input id="peekChatPhotoInput" type="file" accept="image/*" multiple hidden>
+    <form class="peek-chat-form" id="peekChatForm">      <button class="peek-chat-attach" id="peekChatAttach" type="button" aria-label="Attach a photo" title="Attach a photo">＋</button>      <input id="peekChatPhotoInput" type="file" accept="image/*" multiple hidden aria-label="Attach photos for Lucy">
       <textarea id="peekChatInput" rows="1" enterkeyhint="send" autocomplete="off" placeholder="Tell Lucy what you need cleaned…" aria-label="Message Lucy"></textarea>
       <button class="peek-chat-send" type="submit" aria-label="Send message">↑</button>
     </form>

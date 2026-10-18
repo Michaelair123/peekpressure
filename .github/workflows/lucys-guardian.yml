@@ -2,17 +2,8 @@ name: Lucy's Guardian - Autonomous Site Improvement
 
 on:
   schedule:
-    - cron: "17 * * * *"
+    - cron: "17 16 * * *"
   workflow_dispatch:
-  push:
-    branches: [main]
-  pull_request:
-    types: [opened, synchronize, reopened]
-  issues:
-    types: [opened, reopened, labeled]
-  workflow_run:
-    workflows: ["*"]
-    types: [completed]
 
 permissions:
   contents: write
@@ -138,22 +129,17 @@ jobs:
             --title "Guardian: engineering improvement needs approval" \
             --body "Lucy's Guardian diagnosed, researched, implemented, and validated one production-impacting engineering improvement. Human approval is required before merge. Research notes are included in .guardian/research.md."
 
-      - name: Deploy low-risk maintenance
+      - name: Keep low-risk maintenance approval-only
         if: steps.guardian.outcome == 'success' && env.important == 'false'
         run: |
-          set -euo pipefail
-          if [ -z "$(git diff --name-only)" ]; then exit 0; fi
-          git config user.name "Lucy's Guardian"
-          git config user.email "guardian@peekpressure.com"
-          git add -A
-          git commit -m "Guardian: autonomous safe maintenance"
-          git push origin HEAD:main
+          echo "Low-risk changes are not pushed automatically. Review the workspace diff and submit a PR for owner review."
+          git status --short
 
       - name: Publish guardian summary
         if: always()
         run: |
-          echo "## Lucy's Guardian" >> "\$GITHUB_STEP_SUMMARY"
-          echo "Autonomous code-engineering cycle completed." >> "\$GITHUB_STEP_SUMMARY"
-          echo "Trigger: ${{ github.event_name }}" >> "\$GITHUB_STEP_SUMMARY"
-          if [ -f .guardian/research.md ]; then cat .guardian/research.md >> "\$GITHUB_STEP_SUMMARY"; fi
-          git status --short >> "\$GITHUB_STEP_SUMMARY" || true
+          echo "## Lucy's Guardian" >> "$GITHUB_STEP_SUMMARY"
+          echo "Review-only code-engineering cycle completed. No changes are pushed to main automatically." >> "$GITHUB_STEP_SUMMARY"
+          echo "Trigger: ${{ github.event_name }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f .guardian/research.md ]; then cat .guardian/research.md >> "$GITHUB_STEP_SUMMARY"; fi
+          git status --short >> "$GITHUB_STEP_SUMMARY" || true
