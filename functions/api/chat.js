@@ -1687,26 +1687,35 @@ function buildFastReply(text) {
 
 
 function getFaqAnswer(text) {
-  const input = String(text || "").trim().toLowerCase();
+  const input = String(text || "").trim().toLowerCase().replace(/\s+/g, " ");
   if (!input || input.length > 220 || isPricingRequest(input)) return null;
   if (/\b(book|booking|schedule|appointment|calendly)\b/i.test(input)) return null;
+
   const exact = LUCY_FAQ.find(item => input === String(item.question || "").trim().toLowerCase());
   if (exact) return exact.answer;
-  let best = null;
-  let bestScore = 0;
+
+  const matches = [];
   for (const item of LUCY_FAQ) {
     const keywords = Array.isArray(item.keywords) ? item.keywords : [];
     let score = 0;
     for (const keyword of keywords) {
-      const k = String(keyword || "").toLowerCase().trim();
-      if (k && input.includes(k)) score += k.length >= 8 ? 3 : 2;
+      const phrase = String(keyword || "").trim().toLowerCase().replace(/\s+/g, " ");
+      if (!phrase) continue;
+      // Match whole words/phrases instead of arbitrary substrings (e.g. "car" inside another word).
+      const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      if (new RegExp(`(?:^|\\\\s)${escaped}(?:$|\\\\s|[?!.,])`, "i").test(input)) {
+        score += phrase.length >= 8 ? 3 : 2;
+      }
     }
-    if (score > bestScore) {
-      best = item;
-      bestScore = score;
-    }
+    if (score > 0) matches.push({ item, score });
   }
-  return bestScore >= 3 ? best.answer : null;
+
+  matches.sort((a, b) => b.score - a.score);
+  const best = matches[0];
+  const runnerUp = matches[1];
+  // Only answer deterministically when one FAQ is a clear match; ambiguous questions stay conversational.
+  if (!best || best.score < 3 || (runnerUp && best.score - runnerUp.score < 2)) return null;
+  return best.item.answer;
 }
 
 function isPricingRequest(text) {
