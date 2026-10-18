@@ -142,4 +142,4 @@ jobs:
           echo "Review-only code-engineering cycle completed. No changes are pushed to main automatically." >> "$GITHUB_STEP_SUMMARY"
           echo "Trigger: ${{ github.event_name }}" >> "$GITHUB_STEP_SUMMARY"
           if [ -f .guardian/research.md ]; then cat .guardian/research.md >> "$GITHUB_STEP_SUMMARY"; fi
-          git status --short >> "\$GITHUB_STEP_SUMMARY" || true
+          git status --short >> "$GITHUB_STEP_SUMMARY" || true
