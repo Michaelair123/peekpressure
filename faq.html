@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lucy FAQ — PEEK PRESSURE</title>
-  <meta name="description" content="Frequently asked questions about PEEK PRESSURE pressure washing, rough estimates, photos, scheduling, and commercial cleaning.">
+  <meta name="description" content="Frequently asked questions about PEEK PRESSURE pressure washing, mobile auto detailing, estimates, photos, scheduling, and commercial cleaning.">
   <link rel="canonical" href="https://peekpressure.com/faq.html">
   <link rel="stylesheet" href="style.css?v=20260919-5">
   <style>
@@ -67,7 +67,10 @@
         items = Array.isArray(module.LUCY_FAQ) ? module.LUCY_FAQ : [];
         render();
       }catch(error){
-        list.innerHTML='<div class="faq-empty">The FAQ is temporarily unavailable. Please call or text PEEK PRESSURE at 415-689-8377.</div>';
+        const unavailable=document.createElement('div');
+        unavailable.className='faq-empty';
+        unavailable.textContent='The FAQ is temporarily unavailable. Please call or text PEEK PRESSURE at 415-689-8377.';
+        list.replaceChildren(unavailable);
       }
     }
     search.addEventListener('input',render);
