@@ -31,8 +31,21 @@ try {
   const keyboard = await page.evaluate(() => {
     const focusables = [...document.querySelectorAll('a[href],button,input:not([type="hidden"]),textarea,select,[tabindex]:not([tabindex="-1"])')];
     const missingNames = focusables.filter(el => {
-      const name = (el.getAttribute('aria-label') || el.getAttribute('aria-labelledby') || el.textContent || el.getAttribute('placeholder') || '').trim();
-      return !name;
+      const ariaLabel = (el.getAttribute('aria-label') || '').trim();
+      const labelledBy = (el.getAttribute('aria-labelledby') || '')
+        .split(/\\s+/)
+        .filter(Boolean)
+        .map(id => document.getElementById(id)?.textContent?.trim() || '')
+        .filter(Boolean)
+        .join(' ');
+      const associatedLabels = el.labels
+        ? [...el.labels].map(label => label.textContent.trim()).filter(Boolean).join(' ')
+        : '';
+      const wrappedLabel = el.closest('label')?.textContent?.trim() || '';
+      const text = /^(BUTTON|A)$/.test(el.tagName) ? (el.textContent || '').trim() : '';
+      const alt = (el.getAttribute('alt') || '').trim();
+      const title = (el.getAttribute('title') || '').trim();
+      return !(ariaLabel || labelledBy || associatedLabels || wrappedLabel || text || alt || title);
     });
     return {
       focusableCount: focusables.length,
