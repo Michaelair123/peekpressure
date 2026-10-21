@@ -4,7 +4,7 @@ const LUCY_PRIMARY_MODEL = "gpt-5.6-luna";
 const PEEK_BOOKING_URL = "https://calendly.com/peekpressure/30min";
 const LUCY_FAST_MODEL = "gpt-5.6-terra";
 const LUCY_FALLBACK_MODEL = "gpt-5.6-terra";
-const LUCY_REQUEST_TIMEOUT_MS = 10000;
+const LUCY_REQUEST_TIMEOUT_MS = 15000;
 const LUCY_MAX_RETRIES = 1;
 
 // Cheap edge-side abuse controls. These run before any OpenAI call.
@@ -224,8 +224,8 @@ function isTransientOpenAIStatus(status) {
 
 async function callOpenAI(body, requestId) {
   let lastError = null;
-  const primaryModel = LUCY_PRIMARY_MODEL;
-  const fallbackModel = LUCY_FALLBACK_MODEL;
+  const primaryModel = body.primaryModel || LUCY_PRIMARY_MODEL;
+  const fallbackModel = body.fallbackModel || LUCY_FALLBACK_MODEL;
 
   for (let attempt = 0; attempt <= LUCY_MAX_RETRIES; attempt++) {
     const model = attempt === 0 ? primaryModel : fallbackModel;
